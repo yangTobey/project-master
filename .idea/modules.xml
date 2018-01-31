@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://E:\IdeaProjects\project-master\pproject-api\pproject-api.iml" filepath="E:\IdeaProjects\project-master\pproject-api\pproject-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project-api/project-api.iml" filepath="$PROJECT_DIR$/project-api/project-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project-core/project-core.iml" filepath="$PROJECT_DIR$/project-core/project-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project-dao/project-dao.iml" filepath="$PROJECT_DIR$/project-dao/project-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project-master.iml" filepath="$PROJECT_DIR$/project-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project-service/project-service.iml" filepath="$PROJECT_DIR$/project-service/project-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project-web/project-web.iml" filepath="$PROJECT_DIR$/project-web/project-web.iml" />
+    </modules>
+  </component>
+</project>

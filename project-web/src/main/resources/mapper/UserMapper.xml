@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.UserDao">
+	<resultMap id="BaseResultMap" type="com.spring.boot.bean.User">
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="password" property="password" />
+	</resultMap>
+
+	<parameterMap id="User" type="com.spring.boot.bean.User"/>
+
+	<sql id="Base_Column_List">
+		user_id, user_name, password
+	</sql>
+
+	<select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where user_id = #{userId}
+	</select>
+
+</mapper>
