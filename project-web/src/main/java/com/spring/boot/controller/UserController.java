@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by Administrator on 2018/1/25.
@@ -20,7 +21,7 @@ public class UserController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(){
         System.out.println("hello world!");
-        return "";
+        return "views/main/index";
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)

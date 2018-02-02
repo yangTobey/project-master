@@ -15,7 +15,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public static String LOGIN_USER = "loginUser";
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("html/index");
+        registry.addViewController("/").setViewName("views/main/index");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         super.addViewControllers(registry);
     }

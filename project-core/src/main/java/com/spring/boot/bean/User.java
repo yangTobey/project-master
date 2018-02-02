@@ -6,15 +6,15 @@ package com.spring.boot.bean;
  */
 public class User {
 
-    private long userId;
+    private int userId;
     private String userName;
     private String password;
 
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
