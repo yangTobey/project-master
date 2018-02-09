@@ -1,6 +1,7 @@
 package com.spring.boot.shiro;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -56,19 +57,19 @@ public class ShiroConfiguration {
     @DependsOn("lifecycleBeanPostProcessor")
     public ShiroRealm shiroRealm() {
         ShiroRealm realm = new ShiroRealm();
-//        realm.setCredentialsMatcher(hashedCredentialsMatcher());
+        realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
     }
 
-//    /**
-//     * EhCacheManager，缓存管理，用户登陆成功后，把用户信息和权限信息缓存起来，
-//     * 然后每次用户请求时，放入用户的session中，如果不设置这个bean，每个请求都会查询一次数据库。
-//     */
-//    @Bean(name = "ehCacheManager")
-//    @DependsOn("lifecycleBeanPostProcessor")
-//    public EhCacheManager ehCacheManager() {
-//        return new EhCacheManager();
-//    }
+    /**
+     * EhCacheManager，缓存管理，用户登陆成功后，把用户信息和权限信息缓存起来，
+     * 然后每次用户请求时，放入用户的session中，如果不设置这个bean，每个请求都会查询一次数据库。
+     */
+    @Bean(name = "ehCacheManager")
+    @DependsOn("lifecycleBeanPostProcessor")
+    public EhCacheManager ehCacheManager() {
+        return new EhCacheManager();
+   }
 
     /**
      * SecurityManager，权限管理，这个类组合了登陆，登出，权限，session的处理，是个比较重要的类。
@@ -78,7 +79,7 @@ public class ShiroConfiguration {
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm());
-//        securityManager.setCacheManager(ehCacheManager());
+       securityManager.setCacheManager(ehCacheManager());
         return securityManager;
     }
 
@@ -92,21 +93,37 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setSecurityManager(securityManager());
 
         Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
-        LogoutFilter logoutFilter = new LogoutFilter();
-        logoutFilter.setRedirectUrl("/login");
+        //LogoutFilter logoutFilter = new LogoutFilter();
+        //logoutFilter.setRedirectUrl("/views/login/login");
 //        filters.put("logout",null);
         shiroFilterFactoryBean.setFilters(filters);
 
-        Map<String, String> filterChainDefinitionManager = new LinkedHashMap<String, String>();
-        filterChainDefinitionManager.put("/logout", "logout");
-        filterChainDefinitionManager.put("/user/**", "authc,roles[ROLE_USER]");
-        filterChainDefinitionManager.put("/events/**", "authc,roles[ROLE_ADMIN]");
+        /*定义shiro过滤链  Map结构
+         * Map中key(xml中是指value值)的第一个'/'代表的路径是相对于HttpServletRequest.getContextPath()的值来的
+         * anon：它对应的过滤器里面是空的,什么都没做,这里.do和.jsp后面的*表示参数,比方说login.jsp?main这种
+         * authc：该过滤器下的页面必须验证后才能访问,它是Shiro内置的一个拦截器org.apache.shiro.web.filter.authc.FormAuthenticationFilter
+         */
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+        /* 过滤链定义，从上向下顺序执行，一般将 / ** 放在最为下边:这是一个坑呢，一不小心代码就不好使了;
+          authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问 */
+        //filterChainDefinitionMap.put("/logout", "logout");
+        //filterChainDefinitionMap.put("/user/**", "authc,roles[ROLE_USER]");
+        //filterChainDefinitionMap.put("/events/**", "authc,roles[ROLE_ADMIN]");
 //        filterChainDefinitionManager.put("/user/edit/**", "authc,perms[user:edit]");// 这里为了测试，固定写死的值，也可以从数据库或其他配置中读取
-        filterChainDefinitionManager.put("/**", "anon");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionManager);
+        //filterChainDefinitionMap.put("/**", "anon");
 
+        filterChainDefinitionMap.put("/", "anon");
+        filterChainDefinitionMap.put("/static/**", "anon");
+        filterChainDefinitionMap.put("/templates/**", "anon");
+        filterChainDefinitionMap.put("/login/login", "anon");
+        filterChainDefinitionMap.put("/login/logout", "anon");
+        filterChainDefinitionMap.put("/error", "anon");
+        filterChainDefinitionMap.put("/**", "authc");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
-        shiroFilterFactoryBean.setSuccessUrl("/");
+        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
+       // shiroFilterFactoryBean.setLoginUrl("/login/login");
+        shiroFilterFactoryBean.setSuccessUrl("/view/main/index");
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         return shiroFilterFactoryBean;
     }
