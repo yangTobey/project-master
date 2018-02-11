@@ -7,6 +7,9 @@
           <element id="module-output" name="project-web" />
         </element>
         <element id="directory" name="lib">
+          <element id="archive" name="project-core-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="project-core" />
+          </element>
           <element id="archive" name="project-service-1.0-SNAPSHOT.jar">
             <element id="module-output" name="project-service" />
           </element>
@@ -19,9 +22,6 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: redis.clients:jedis:2.7.3" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-pool2:2.4.2" />
-          <element id="archive" name="project-core-1.0-SNAPSHOT.jar">
-            <element id="module-output" name="project-core" />
-          </element>
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-web:1.5.8.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:1.3.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:1.3.0.RELEASE" />

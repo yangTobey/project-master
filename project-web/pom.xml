@@ -11,19 +11,25 @@
     <name>project-web Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <dependencies>
-        <!--依赖于service模块-->
-        <dependency>
-            <groupId>project.common</groupId>
-            <artifactId>project-service</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
         <!--依赖于core模块-->
         <dependency>
             <groupId>project.common</groupId>
             <artifactId>project-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!--依赖于service模块-->
+        <dependency>
+            <groupId>project.common</groupId>
+            <artifactId>project-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>project.common</groupId>
+            <artifactId>project-dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>-->
+
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

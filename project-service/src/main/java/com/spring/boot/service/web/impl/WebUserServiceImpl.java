@@ -5,7 +5,6 @@ import com.spring.boot.dao.web.UserDao;
 import com.spring.boot.service.web.WebUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -26,7 +25,7 @@ public class WebUserServiceImpl implements WebUserService {
     public User findByUserId(String userId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userId", userId);
-        ValueOperations<String, String> operations = redisTemplate.opsForValue();
+        /*ValueOperations<String, String> operations = redisTemplate.opsForValue();
         // 缓存存在
         boolean hasKey = redisTemplate.hasKey("admin");
         if(hasKey){
@@ -35,7 +34,7 @@ public class WebUserServiceImpl implements WebUserService {
         }else{
             operations.set("admin","hello world everybody!");
             System.out.println("set-admin-value:"+operations.get("admin"));
-        }
+        }*/
         return userDao.findByUserId(map);
     }
 
