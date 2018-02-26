@@ -103,24 +103,33 @@ public class ShiroRealm extends AuthorizingRealm {
         //查询用户信息
         User user = userService.findByUserAccount(username);
 
+        if(user!=null){
+            Session session = SecurityUtils.getSubject().getSession();
+            session.setAttribute("user", user);
+            SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
+            return info;
+        }else{
+            //账号不存在
+            if(user == null) {
+                throw new UnknownAccountException("账号或密码不正确");
+            }
 
-        //账号不存在
-        if(user == null) {
-            throw new UnknownAccountException("账号或密码不正确");
+            //密码错误
+            if(!password.equals(user.getPassword())) {
+                throw new IncorrectCredentialsException("账号或密码不正确");
+            }
+
+            //账号锁定
+            if(user.getStatus() == 0){
+                throw new LockedAccountException("账号已被锁定,请联系管理员");
+            }
+            return null;
         }
 
-        //密码错误
-        if(!password.equals(user.getPassword())) {
-            throw new IncorrectCredentialsException("账号或密码不正确");
-        }
 
-        //账号锁定
-        if(user.getStatus() == 0){
-            throw new LockedAccountException("账号已被锁定,请联系管理员");
-        }
 
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
-        return info;
+
+
     }
 
 }

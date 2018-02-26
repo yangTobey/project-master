@@ -39,13 +39,22 @@ public class LoginController {
             System.out.println("密码："+password);
             UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
             subject.login(token);
+            //验证是否通过
+            System.out.println("登录："+subject.isAuthenticated());
+            if(subject.isAuthenticated()){
+                System.out.println("登录成功，请进行对应操作！！");
+            }
         }catch (UnknownAccountException e) {
+            e.printStackTrace();
            return "views/login/login";
         }catch (IncorrectCredentialsException e) {
+            e.printStackTrace();
             //return R.error(e.getMessage());
         }catch (LockedAccountException e) {
+            e.printStackTrace();
             return "views/login/login";
         }catch (AuthenticationException e) {
+            e.printStackTrace();
             return "views/login/login";
         }
         return "views/login/login";

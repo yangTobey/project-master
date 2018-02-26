@@ -43,7 +43,7 @@ public class ShiroConfiguration {
     @Bean(name = "hashedCredentialsMatcher")
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
-        credentialsMatcher.setHashAlgorithmName("MD5");
+        credentialsMatcher.setHashAlgorithmName("SHA-256");
         credentialsMatcher.setHashIterations(2);
         credentialsMatcher.setStoredCredentialsHexEncoded(true);
         return credentialsMatcher;
@@ -93,9 +93,9 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setSecurityManager(securityManager());
 
         Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
-        //LogoutFilter logoutFilter = new LogoutFilter();
-        //logoutFilter.setRedirectUrl("/views/login/login");
-//        filters.put("logout",null);
+        LogoutFilter logoutFilter = new LogoutFilter();
+        logoutFilter.setRedirectUrl("/views/login/login");
+        filters.put("logout",null);
         shiroFilterFactoryBean.setFilters(filters);
 
         /*定义shiro过滤链  Map结构
@@ -115,6 +115,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/templates/**", "anon");
+        //filterChainDefinitionMap.put("/mapper/**", "anon");
         filterChainDefinitionMap.put("/login/login", "anon");
         filterChainDefinitionMap.put("/login/logout", "anon");
         filterChainDefinitionMap.put("/error", "anon");
@@ -122,8 +123,8 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-       // shiroFilterFactoryBean.setLoginUrl("/login/login");
-        shiroFilterFactoryBean.setSuccessUrl("/view/main/index");
+        //shiroFilterFactoryBean.setLoginUrl("/views/login/login");
+        shiroFilterFactoryBean.setSuccessUrl("/views/main/index");
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         return shiroFilterFactoryBean;
     }
