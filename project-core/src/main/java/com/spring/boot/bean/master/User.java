@@ -1,4 +1,4 @@
-package com.spring.boot.bean;
+package com.spring.boot.bean.master;
 
 /**
  * 用户基本信息实体类

@@ -43,7 +43,9 @@ public class ShiroConfiguration {
     @Bean(name = "hashedCredentialsMatcher")
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
-        credentialsMatcher.setHashAlgorithmName("SHA-256");
+        //散列算法:这里使用MD5算法;
+        credentialsMatcher.setHashAlgorithmName("MD5");
+        //散列的次数，比如散列两次，相当于 md5(md5(""));
         credentialsMatcher.setHashIterations(2);
         credentialsMatcher.setStoredCredentialsHexEncoded(true);
         return credentialsMatcher;
@@ -69,17 +71,16 @@ public class ShiroConfiguration {
     @DependsOn("lifecycleBeanPostProcessor")
     public EhCacheManager ehCacheManager() {
         return new EhCacheManager();
-   }
+    }
 
     /**
      * SecurityManager，权限管理，这个类组合了登陆，登出，权限，session的处理，是个比较重要的类。
-     * //
      */
     @Bean(name = "securityManager")
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm());
-       securityManager.setCacheManager(ehCacheManager());
+        securityManager.setCacheManager(ehCacheManager());
         return securityManager;
     }
 
@@ -95,7 +96,7 @@ public class ShiroConfiguration {
         Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
         LogoutFilter logoutFilter = new LogoutFilter();
         logoutFilter.setRedirectUrl("/views/login/login");
-        filters.put("logout",null);
+        filters.put("logout", null);
         shiroFilterFactoryBean.setFilters(filters);
 
         /*定义shiro过滤链  Map结构

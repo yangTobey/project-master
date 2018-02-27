@@ -1,7 +1,10 @@
 package com.spring.boot.service.impl;
 
+import com.spring.boot.bean.cluster.ActivityUser;
 import com.spring.boot.bean.master.User;
+import com.spring.boot.dao.web.cluster.ActivityUserDao;
 import com.spring.boot.dao.web.master.UserDao;
+import com.spring.boot.service.ActivityUserService;
 import com.spring.boot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -14,15 +17,15 @@ import java.util.Map;
  * Created by Administrator on 2018/1/25.
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class ActivityUserServiceImpl implements ActivityUserService {
     @Autowired
-    private UserDao userDao;
+    private ActivityUserDao activityUserDao;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public User findByUserId(String userId) {
+    public ActivityUser findByUserId(String userId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userId", userId);
         /*ValueOperations<String, String> operations = redisTemplate.opsForValue();
@@ -35,13 +38,7 @@ public class UserServiceImpl implements UserService {
             operations.set("admin","hello world everybody!");
             System.out.println("set-admin-value:"+operations.get("admin"));
         }*/
-        return userDao.findByUserId(map);
+        return activityUserDao.findByUserId(map);
     }
 
-    @Override
-    public User findByUserAccount(String account) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("account", account);
-        return userDao.findByUserAccount(map);
-    }
 }

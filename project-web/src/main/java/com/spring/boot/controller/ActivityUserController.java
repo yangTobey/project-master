@@ -1,6 +1,8 @@
 package com.spring.boot.controller;
 
+import com.spring.boot.bean.cluster.ActivityUser;
 import com.spring.boot.bean.master.User;
+import com.spring.boot.service.ActivityUserService;
 import com.spring.boot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,20 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by Administrator on 2018/1/25.
  */
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/activtyUser")
+public class ActivityUserController {
     @Autowired
-    private UserService userService;
+    private ActivityUserService activityUserService;
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(){
-        System.out.println("hello world!");
-        return "views/main/index";
-    }
+
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public User findByUserId(@RequestParam(value = "id", required = true) String id) {
-        return userService.findByUserId(id);
+    public ActivityUser findByUserId(@RequestParam(value = "id", required = true) String id) {
+        return activityUserService.findByUserId(id);
     }
 
 }

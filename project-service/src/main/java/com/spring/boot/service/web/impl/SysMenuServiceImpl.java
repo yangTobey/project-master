@@ -1,7 +1,7 @@
 package com.spring.boot.service.web.impl;
 
-import com.spring.boot.bean.SysMenu;
-import com.spring.boot.dao.web.SysMenuDao;
+import com.spring.boot.bean.master.SysMenu;
+import com.spring.boot.dao.web.master.SysMenuDao;
 import com.spring.boot.service.web.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

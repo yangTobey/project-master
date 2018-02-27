@@ -1,4 +1,4 @@
-package com.spring.boot.bean;
+package com.spring.boot.bean.master;
 
 import java.sql.Timestamp;
 

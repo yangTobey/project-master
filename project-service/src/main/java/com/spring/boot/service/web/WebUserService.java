@@ -1,6 +1,6 @@
 package com.spring.boot.service.web;
 
-import com.spring.boot.bean.User;
+import com.spring.boot.bean.master.User;
 
 /**
  * Created by Administrator on 2018/1/25.

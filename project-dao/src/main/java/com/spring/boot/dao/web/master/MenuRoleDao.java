@@ -1,6 +1,6 @@
-package com.spring.boot.dao.web;
+package com.spring.boot.dao.web.master;
 
-import com.spring.boot.bean.MenuRole;
+import com.spring.boot.bean.master.MenuRole;
 
 import java.util.List;
 

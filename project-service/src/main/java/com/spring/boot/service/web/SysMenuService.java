@@ -1,6 +1,6 @@
 package com.spring.boot.service.web;
 
-import com.spring.boot.bean.SysMenu;
+import com.spring.boot.bean.master.SysMenu;
 
 /**
  * Created by Administrator on 2018/2/6.

@@ -1,12 +1,11 @@
-package com.spring.boot.bean;
+package com.spring.boot.bean.master;
 
 /**
- * Created by Administrator on 2018/2/6.
+ * Created by Administrator on 2018/2/5.
  */
-public class MenuRole {
-
+public class UserRole {
     private long id;
-    private long menuId;
+    private long userId;
     private long roleId;
 
     public long getId() {
@@ -17,12 +16,12 @@ public class MenuRole {
         this.id = id;
     }
 
-    public long getMenuId() {
-        return menuId;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setMenuId(long menuId) {
-        this.menuId = menuId;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public long getRoleId() {

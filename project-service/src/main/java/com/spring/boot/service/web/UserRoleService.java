@@ -1,6 +1,6 @@
 package com.spring.boot.service.web;
 
-import com.spring.boot.bean.UserRole;
+import com.spring.boot.bean.master.UserRole;
 
 import java.util.List;
 

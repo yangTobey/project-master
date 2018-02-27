@@ -1,6 +1,6 @@
 package com.spring.boot.service.web;
 
-import com.spring.boot.bean.MenuRole;
+import com.spring.boot.bean.master.MenuRole;
 
 import java.util.List;
 

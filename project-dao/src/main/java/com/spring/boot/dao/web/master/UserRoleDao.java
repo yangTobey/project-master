@@ -1,7 +1,6 @@
-package com.spring.boot.dao.web;
+package com.spring.boot.dao.web.master;
 
-import com.spring.boot.bean.User;
-import com.spring.boot.bean.UserRole;
+import com.spring.boot.bean.master.UserRole;
 
 import java.util.List;
 import java.util.Map;

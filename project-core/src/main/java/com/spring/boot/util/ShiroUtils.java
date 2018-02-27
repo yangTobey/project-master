@@ -1,6 +1,6 @@
 package com.spring.boot.util;
 
-import com.spring.boot.bean.User;
+import com.spring.boot.bean.master.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;

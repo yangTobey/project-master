@@ -1,6 +1,6 @@
 package com.spring.boot.service.web.impl;
 
-import com.spring.boot.bean.MenuRole;
+import com.spring.boot.bean.master.MenuRole;
 import com.spring.boot.service.web.MenuRoleService;
 import org.springframework.stereotype.Service;
 

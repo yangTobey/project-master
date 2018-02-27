@@ -1,7 +1,7 @@
 package com.spring.boot.service.web.impl;
 
-import com.spring.boot.bean.User;
-import com.spring.boot.dao.web.UserDao;
+import com.spring.boot.bean.master.User;
+import com.spring.boot.dao.web.master.UserDao;
 import com.spring.boot.service.web.WebUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
