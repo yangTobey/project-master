@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html style="font-size: 14px;">
+<head>
+	<meta charset="utf-8"/>
+	<title>报表统计</title>
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1, minimum-scale=1"/>
+	<link rel="stylesheet" type="text/css" href="../../../static/css/statistical/style.css"/>
+	<script>
+		(function(){
+			var designWidth = 1920;	//设计稿的宽度
+
+			function resize(){
+				var clientWidth = document.documentElement.clientWidth;
+				var fontSize = clientWidth / designWidth * 100;
+				document.documentElement.style.fontSize = fontSize + 'px';
+			}
+			
+			resize(); //初始化
+			window.addEventListener('resize', resize);
+		})();
+	</script>
+</head>
+<body>
+	<header class="header">
+		<h1 class="logo"><a href="/"><img src="../../../static/images/statistical/logo.png" alt="国瑞物业" title="国瑞物业"/></a></h1>
+		<h2 class="title">国瑞物业数据可视化平台</h2>
+		<div class="current-datetime" id="currentDatetime">2018年12月22日 10:00:00</div>
+	</header>
+	<div class="main">
+		<div class="col-left">
+			<dl class="project-manage mb-10">
+				<dt class="module-header"><span>&gt;&gt;</span>工程管理</dt>
+				<dd class="module-body">
+					<div class="col-count">
+						<div class="item-name">工程遗留问题数量</div>
+						<div class="item-value"><span class="value" data-max="100" data-value="300">300</span></div>
+						<div class="item-name">已处理工程遗留问题数量</div>
+						<div class="item-value"><span class="value" data-max="100" data-value="300">300</span></div>
+					</div>
+					<div class="col-rate">
+						<div class="item-rate pie-chart" data-value="75">75%</div>
+						<div class="item-name">问题处理率</div>
+					</div>
+				</dd>
+			</dl>
+			<dl class="quality-inspection mb-10">
+				<dt class="module-header"><span>&gt;&gt;</span>品质巡检(年)</dt>
+				<dd class="module-body">
+					<ul class="items">
+						<li>
+							<div class="item-name">总检查合格项</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="80">80</span></div>
+						</li>
+						<li>
+							<div class="item-name">总未整改项</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="80">80</span></div>
+						</li>
+						<li>
+							<div class="item-name">总不合格项</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="80">80</span></div>
+						</li>
+						<li>
+							<div class="item-name">总检查项</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="80">80</span></div>
+						</li>
+						<li>
+							<div class="item-name">品质合格率</div>
+							<div class="item-rate pie-chart" data-value="80">80</div>
+						</li>
+						<li>
+							<div class="item-name">整改合格率</div>
+							<div class="item-rate pie-chart" data-value="80">80</div>
+						</li>
+					</ul>
+				</dd>
+			</dl>
+			<dl class="order-state mb-10">
+				<dt class="module-header"><span>&gt;&gt;</span>工单情况</dt>
+				<dd class="module-body">
+					<div class="col-count">
+						<div class="item-name">工单数量</div>
+						<div class="item-value"><span class="value" data-max="100" data-value="000300">000300</span></div>
+					</div>
+					<div class="col-rate">
+						<div class="item-rate pie-chart" data-value="75"></div>
+						<div class="item-name">工单完成率</div>
+					</div>
+				</dd>
+			</dl>
+			<dl class="order-total">
+				<dt class="module-header"><span>&gt;&gt;</span>工单统计</dt>
+				<dd class="module-body">
+					<div class="order-total-chart" id="orderTotalChart"></div>
+				</dd>
+			</dl>
+		</div>
+		<div class="col-center">
+			<dl class="base-data mb-10">
+				<dt class="module-header"><span>&gt;&gt;</span>基础数据</dt>
+				<dd class="module-body">
+					<div class="base-area-total">
+						<div class="item">
+							<div class="item-name">建筑总面积(平米)</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="888">888</span>万</div>
+						</div>
+						<div class="item">
+							<div class="item-name">收费总面积(平米)</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="888">888</span>万</div>
+						</div>
+					</div>
+					<div class="base-project-total">
+						<div class="item">
+							<div class="item-name">分公司总数量</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="7">7</span></div>
+						</div>
+						<div class="item">
+							<div class="item-name">覆盖城市数</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="9">9</span></div>
+						</div>
+						<div class="item">
+							<div class="item-name">项目总数据</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="99">99</span></div>
+						</div>
+						<div class="item">
+							<div class="item-name">销配案场</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="99">99</span></div>
+						</div>
+					</div>
+					<div class="base-unit-total">
+						<div class="items-left">
+							<div class="item">
+								<div class="item-name">房屋总数</div>
+								<div class="item-value"><span class="value" data-max="100" data-value="12000">12000</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">装修总数</div>
+								<div class="item-value"><span class="value" data-max="100" data-value="11000">11000</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">车位总数</div>
+								<div class="item-value"><span class="value" data-max="100" data-value="11000">11000</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">已收房数</div>
+								<div class="item-value"><span class="value" data-max="100" data-value="12000">12000</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">空置房数</div>
+								<div class="item-value"><span class="value" data-max="100" data-value="1000">1000</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">空置车位</div>
+								<div class="item-value"><span class="value" data-max="100" data-value="300">300</span></div>
+							</div>
+						</div>
+						<div class="items-right">
+							<div class="item">
+								<div class="item-name">房屋入住率</div>
+								<div class="item-rate pie-chart" data-value="75"></div>
+							</div>
+							<div class="item">
+								<div class="item-name">房屋装修率</div>
+								<div class="item-rate pie-chart" data-value="75"></div>
+							</div>
+							<div class="item">
+								<div class="item-name">车位空置率</div>
+								<div class="item-rate pie-chart" data-value="75"></div>
+							</div>
+						</div>
+					</div>
+				</dd>
+			</dl>
+			<div class="maps">
+				<div class="maps-chart" id="mapsChart"></div>
+			</div>
+		</div>
+		<div class="col-right">
+			<div class="energy mb-10">
+				<dl class="energy-manage">
+					<dt class="module-header"><span>&gt;&gt;</span>能耗管理</dt>
+					<dd class="module-body">
+						<div class="items-top">
+							<div class="item">
+								<div class="item-name">年耗电总量(度)</div>
+								<div class="item-value"><span class="value" data-max="1000000" data-value="888888">888888</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">年用水总量(吨)</div>
+								<div class="item-value"><span class="value" data-max="1000000" data-value="888888">888888</span></div>
+							</div>
+						</div>
+						<div class="items-bottom">
+							<div class="item">
+								<div class="item-name">月耗电量(度)</div>
+								<div class="item-value"><span class="value" data-max="1000000" data-value="888888">888888</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">月耗电量同比增长</div>
+								<div class="item-value"><span class="value" data-max="100" data-value="50">50</span>%<span class="arrow-up">↑</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">月耗电量环比增长</div>
+								<div class="item-value"><span class="value" data-max="100" data-value="50">50</span>%<span class="arrow-down">↓</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">月用水量(吨)</div>
+								<div class="item-value"><span class="value" data-max="1000000" data-value="888888">888888</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">月用水量同比增长</div>
+								<div class="item-value"><span class="value" data-max="100" data-value="50">50</span>%<span class="arrow-up">↑</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">月用水量环比增长</div>
+								<div class="item-value"><span class="value" data-max="100" data-value="50">50</span>%<span class="arrow-down">↓</span></div>
+							</div>
+						</div>
+					</dd>
+				</dl>
+				<dl class="energy-increase">
+					<dt class="module-header"><span>&gt;&gt;</span>能耗增长情况</dt>
+					<dd class="module-body">
+						<div class="energy-increase-chart" id="energyIncreaseChart"></div>
+					</dd>
+				</dl>
+			</div>
+			<div class="quality mb-10">
+				<dl class="quality-rate mb-10">
+					<dt class="module-header"><span>&gt;&gt;</span>合格率情况</dt>
+					<dd class="module-body">
+						<div class="pass-rate-chart" id="passRateChart"></div>
+					</dd>
+				</dl>
+				<dl class="quality-inspection-month">
+					<dt class="module-header"><span>&gt;&gt;</span>品质巡检</dt>
+					<dd class="module-body">
+						<div class="item">
+							<div class="item-name">检查项(月)</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="80">80</span></div>
+						</div>
+						<div class="item">
+							<div class="item-name">检查合格项(月)</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="80">80</span></div>
+						</div>
+						<div class="item">
+							<div class="item-name">品质合格率</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="80">80</span>%</div>
+						</div>
+						<div class="item">
+							<div class="item-name">不合格项(月)</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="80">80</span></div>
+						</div>
+						<div class="item">
+							<div class="item-name">未整改项(月)</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="80">80</span></div>
+						</div>
+						<div class="item">
+							<div class="item-name">整改合格率</div>
+							<div class="item-value"><span class="value" data-max="100" data-value="90">90</span>%</div>
+						</div>
+						<div class="item">
+							<div class="item-name">安全事故数量</div>
+							<div class="item-value"><span class="value" data-max="0" data-value="0">0</span></div>
+						</div>
+					</dd>
+				</dl>
+			</div>
+			<dl class="member-manage mb-10">
+				<dt class="module-header"><span>&gt;&gt;</span>人员管理</dt>
+				<dd class="module-body">
+					<div class="member-left">
+						<div class="member-cost-rate">
+							<div class="item">
+								<div class="item-name">总人工成本支出(月)</div>
+								<div class="item-value"><span class="value" data-max="10000" data-value="18870">18870</span>元</div>
+							</div>
+							<div class="item">
+								<div class="item-name">总人均成本支出(月)</div>
+								<div class="item-value"><span class="value" data-max="10000" data-value="4870">4870</span>元</div>
+							</div>
+						</div>
+						<div class="member-total">
+							<div class="item">
+								<div class="item-name">编制总人数</div>
+								<div class="item-value"><span class="value" data-max="10000" data-value="3000">3000</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">在职总人数</div>
+								<div class="item-value"><span class="value" data-max="10000" data-value="3000">3000</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">本月入职总人数</div>
+								<div class="item-value"><span class="value" data-max="100" data-value="18">18</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">本月离职总人数</div>
+								<div class="item-value"><span class="value" data-max="100" data-value="18">18</span></div>
+							</div>
+						</div>
+					</div>
+					<div class="member-rate">
+						<div class="item-rate pie-chart" data-value="75"></div>
+						<div class="item-name">缺编率</div>
+					</div>
+				</dd>
+			</dl>
+			<div class="member">
+				<dl class="member-proportion">
+					<dt class="module-header"><span>&gt;&gt;</span>人员占比</dt>
+					<dd class="module-body">
+						<div class="item">
+							<div class="item-rate pie-chart" data-value="75"></div>
+							<div class="item-name">人工支出占比</div>
+						</div>
+						<div class="item">
+							<div class="item-rate pie-chart" data-value="75"></div>
+							<div class="item-name">上月人工支出占比</div>
+						</div>
+						<div class="item">
+							<div class="item-rate pie-chart" data-value="75"></div>
+							<div class="item-name">流失率</div>
+						</div>
+					</dd>
+				</dl>
+				<dl class="cost-compose">
+					<dt class="module-header"><span>&gt;&gt;</span>成本构成</dt>
+					<dd class="module-body">
+						<div class="cost-compose-chart" id="costComposeChart"></div>
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<script src="../../../static/js/jquery/jquery.min.js"></script>
+	<script src="../../../static/js/echarts/echarts.min.js"></script>
+	<script src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+	<script src="../../../static/js/jquery/jquery.animateNumber.js"></script>
+	<script src="../../../static/js/statistical/utils.js"></script>
+	<script src="../../../static/js/statistical/app.js"></script>
+</body>
+</html>

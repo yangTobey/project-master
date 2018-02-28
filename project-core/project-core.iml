@@ -67,5 +67,6 @@
     <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-core:2.5.3" level="project" />
     <orderEntry type="library" name="Maven: com.github.theborakompanioni:thymeleaf-extras-shiro:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.8" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
   </component>
 </module>

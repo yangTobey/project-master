@@ -8,6 +8,7 @@ import com.spring.boot.bean.master.SysMenu;
 public interface SysMenuService {
     /**
      * 根据菜单id获取菜单信息
+     *
      * @param menuId 菜单id
      * @return
      */

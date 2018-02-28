@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html style="font-size: 14px;">
+<head>
+	<meta charset="utf-8">
+	<title>报表统计</title>
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1, minimum-scale=1">
+	<link rel="stylesheet" type="text/css" href="./css/style.css"/>
+	<script>
+		(function(){
+			var designWidth = 1920;	//设计稿的宽度
+
+			function resize(){
+				var clientWidth = document.documentElement.clientWidth;
+				var fontSize = clientWidth / designWidth * 100;
+				document.documentElement.style.fontSize = fontSize + 'px';
+			}
+			
+			resize(); //初始化
+			window.addEventListener('resize', resize);
+		})();
+	</script>
+</head>
+<body>
+	<header class="header">
+		<h1 class="logo"><a href="/"><img src="../../../static/images/statistical/logo.png" alt="国瑞物业" title="国瑞物业"></a></h1>
+		<h2 class="title">国瑞物业数据可视化平台</h2>
+		<div class="current-datetime" id="currentDatetime">2018年12月22日 10:00:00</div>
+	</header>
+	<div class="main">
+		<div class="base-info">
+			<div class="item">
+				<div class="item-value"><span class="value" data-max="100000000">3,516,882</span></div>
+				<div class="item-name">当期收款</div>
+			</div>
+			<div class="item">
+				<div class="item-value"><span class="value" data-max="100000000">3,516,882</span></div>
+				<div class="item-name">清欠收款</div>
+			</div>
+			<div class="item">
+				<div class="item-value"><span class="value" data-max="100000000">3,516,882</span></div>
+				<div class="item-name">已收款(地产)</div>
+			</div>
+			<div class="item">
+				<div class="item-value"><span class="value" data-max="100000000">3,516,882</span></div>
+				<div class="item-name">已收款(小业主)</div>
+			</div>
+			<div class="item">
+				<div class="item-value"><span class="value text-white" data-max="1000000">68,882</span></div>
+				<div class="item-name">实际收入</div>
+			</div>
+			<div class="item">
+				<div class="item-value"><span class="value text-white" data-max="1000000">38,882</span></div>
+				<div class="item-name">实际利润</div>
+			</div>
+		</div>
+		<div class="summary">
+			<div class="col-left">
+				<dl class="task-rate mb-10">
+					<dt class="module-header"><span>&gt;&gt;</span>任务收缴率</dt>
+					<dd class="module-body">
+						<div class="item">
+							<span class="item-name">收费任务额</span>
+							<span class="item-value"><span class="value" data-max="100000000">65,162,882</span></span>
+						</div>
+						<div class="item">
+							<span class="item-name">预算收入</span>
+							<span class="item-value"><span class="value" data-max="100000000">65,162,882</span></span>
+						</div>
+						<div class="item">
+							<span class="item-name">清欠任务额</span>
+							<span class="item-value"><span class="value" data-max="100000000">65,162,882</span></span>
+						</div>
+						<div class="item">
+							<span class="item-name">预算利润</span>
+							<span class="item-value"><span class="value" data-max="100000000">65,162,882</span></span>
+						</div>
+						<div class="item item-full">
+							<span class="item-name">地产应收款</span>
+							<span class="item-value"><span class="value" data-max="100000000">65,162,882</span></span>
+						</div>
+						<div class="item item-full">
+							<span class="item-name">小业主应收款</span>
+							<span class="item-value"><span class="value" data-max="100000000">65,162,882</span></span>
+						</div>
+						<div class="rate clearfix">
+							<div class="item">
+								<div class="item-rate pie-chart">75%</div>
+								<div class="item-name">当期收缴率</div>
+							</div>
+							<div class="item">
+								<div class="item-rate pie-chart">75%</div>
+								<div class="item-name">清欠收缴率</div>
+							</div>
+						</div>
+					</dd>
+				</dl>
+				<dl class="charges">
+					<dt class="module-header"><span>&gt;&gt;</span>收费情况</dt>
+					<dd class="module-body">
+						<div class="charges-chart" id="chargesChart"></div>
+					</dd>
+				</dl>
+			</div>
+			<div class="col-center">
+				<dl class="accounts-receivable mb-10">
+					<dt class="module-header"><span>&gt;&gt;</span>应收账款</dt>
+					<dd class="module-body clearfix">
+						<div class="item">
+							<h4>地产收款情况</h4>
+							<div class="estate-receivable-chart" id="estateReceivableChart"></div>
+						</div>
+						<div class="item">
+							<h4>小业主收款情况</h4>
+							<div class="owner-receivable-chart" id="ownerReceivableChart"></div>
+						</div>
+					</dd>
+				</dl>
+				<dl class="budget-execution">
+					<dt class="module-header"><span>&gt;&gt;</span>预算执行</dt>
+					<dd class="module-body">
+						<div class="item">
+							<h4>收入情况</h4>
+							<div class="income-chart" id="incomeChart"></div>
+						</div>
+						<div class="item">
+							<h4>利润情况</h4>
+							<div class="profit-chart" id="profitChart"></div>
+						</div>
+					</dd>
+				</dl>
+			</div>
+			<div class="col-right">
+				<dl class="expenditure-ratio mb-10">
+					<dt class="module-header"><span>&gt;&gt;</span>支出占比</dt>
+					<dd class="module-body clearfix">
+						<div class="items">
+							<div class="item">
+								<div class="item-name">实际支出</div>
+								<div class="item-value"><span class="value" data-max="100000000">35,168,882</span></div>
+							</div>
+							<div class="item">
+								<div class="item-name">预算支出</div>
+								<div class="item-value"><span class="value" data-max="10000">8,882</span></div>
+							</div>
+						</div>
+						<div class="expenditure-chart" id="expenditureChart"></div>
+					</dd>
+				</dl>
+				<dl class="financial-expenses">
+					<dt class="module-header"><span>&gt;&gt;</span>财务支出情况</dt>
+					<dd class="module-body">
+						<div class="financial-expenses-chart" id="financialExpensesChart"></div>
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<script src="../../../static/js/jquery/jquery.min.js"></script>
+	<script src="../../../static/js/echarts/echarts.min.js"></script>
+	<script src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+	<script src="../../../static/js/jquery/jquery.animateNumber.js"></script>
+	<script src="../../../static/js/statistical/utils.js"></script>
+	<script src="../../../static/js/statistical/area.js"></script>
+</body>
+</html>

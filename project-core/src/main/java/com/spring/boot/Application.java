@@ -13,18 +13,18 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
  */
 @SpringBootApplication  // Spring Boot 应用的标识
 @MapperScan("com.spring.boot.dao.*")  // mapper 接口类扫描包配置
-public class WebApplication extends SpringBootServletInitializer {
+public class Application extends SpringBootServletInitializer {
 
     /*注：外部tomcat启动，类需要继承SpringBootServletInitializer,实现SpringBootServletInitializer可以让spring-boot项目在web容器中运行 */
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(WebApplication.class);
+        return application.sources(Application.class);
     }
 
     public static void main(String[] args) {
         // 程序启动入口
         // 启动嵌入式的 Tomcat 并初始化 Spring 环境及其各 Spring 组件
-        SpringApplication.run(WebApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }

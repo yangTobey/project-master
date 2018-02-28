@@ -27,6 +27,8 @@
         <mybatis-spring-boot>1.0.0</mybatis-spring-boot>
         <spring-boot-starter-redis-version>1.3.2.RELEASE</spring-boot-starter-redis-version>
         <druid>1.1.8</druid>
+        <fastjson>1.2.46</fastjson>
+        <commons-lang>2.6</commons-lang>
     </properties>
     <!-- 阿里云maven仓库 -->
     <repositories>
@@ -130,6 +132,16 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>${druid}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang}</version>
             </dependency>
             <!--<dependency>
                 <groupId>org.springframework.boot</groupId>

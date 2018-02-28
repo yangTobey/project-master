@@ -1,0 +1,697 @@
+@font-face {
+    font-family: SketchRockwell;
+    src: url('RuiZiBiGeQingChunTiJian2-0-1.ttf');
+}
+
+html, body, div, h1, h2, h3, h4, h5, h6, dl, dt, dd, ul, li, p, span, a, img{
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
+}
+ul, li, ol{
+	list-style-type: none;
+}
+
+body{
+	background: #040612 url(../../images/statistical/bg.png) center top;
+	background-size: cover;
+	color: #fff;
+	font-size: 0.14rem;
+	font-family: SketchRockwell;
+}
+
+.clearfix:after{
+	content: '';
+	clear: both;
+	display: block;
+	width: 0;
+	height: 0;
+}
+
+.mb-10{
+	margin-bottom: 0.1rem; 
+}
+
+.text-white{
+	color: #fff!important;
+}
+
+.header{
+	padding: 0.24rem 0.28rem 0.2rem;
+	overflow: hidden;
+}
+.logo{
+	float: left;
+	width: 20%;
+}
+.logo a{
+	display: block;
+}
+.logo a img{
+	display: block;
+	width: 2.34rem
+}
+.title{
+	float: left;
+	width: 50%;
+	text-align: center;
+	font-size: 0.32rem;
+	line-height: 1;
+}
+.current-datetime{
+	float: right;
+	width: 30%;
+	text-align: right;
+	font-size: 0.22rem;
+	line-height: 1.5;
+}
+
+.main{
+	padding: 0 0.28rem;
+	overflow: hidden;
+}
+.col-left{
+	float: left;
+	width: 20%;
+}
+.col-center{
+	float: left;
+	margin: 0 0.1rem;
+	width: calc(45% - (0.1rem * 2));
+}
+.col-right{
+	float: right;
+	width: 35%;
+}
+
+.module-header{
+	border-radius: 5px 5px 0 0;
+	padding: 0.07rem 0.16rem;
+	background: #1b2746;
+	font-size: 0.16rem;
+	line-height: 1.5;
+}
+.module-header span{
+	margin: 0 0.1rem 0 0;
+	color: #a79fb7;
+}
+.module-body{
+	overflow: hidden;
+	border-radius: 0 0 5px 5px;
+	padding: 0.24rem 0.16rem 0.16rem;
+	background: rgba(255,255,255,0.05);
+}
+
+.item-value{
+	color: #7bcce6;
+	text-align: center;
+}
+.item-name{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #fff;
+	text-align: center;
+	font-size: 0.16rem;
+	line-height: 2;
+}
+
+/*工程管理*/
+.project-manage{
+
+}
+.project-manage .col-count{
+	float: left;
+	width: 60%;
+}
+.project-manage .col-count .item-name{
+	text-align: left;
+}
+.project-manage .col-count .item-value{
+	font-size: 0.18rem;
+	line-height: 1.8;
+	text-align: left;
+}
+.project-manage .col-count .item-value:nth-child(2){
+	margin: 0 0 0.14rem;
+}
+.project-manage .col-rate{
+	float: left;
+	width: 40%;
+}
+.project-manage .col-rate .item-rate{
+	width: 1.12rem;
+	height: 1.12rem;
+	margin: 0 auto;
+	text-align: center;
+}
+.project-manage .col-rate .item-name{
+	margin: 0.08rem 0 0;
+	height: 0.32rem;
+}
+
+/*品质巡检*/
+.quality-inspection{
+
+}
+.quality-inspection .items{
+	overflow: hidden;
+}
+.quality-inspection .items li{
+	float: left;
+	width: 33.33%;
+	margin: 0 0 0.2rem;
+}
+.quality-inspection .item-name{
+	margin: 0 0 0.02rem;
+	height: 0.32rem;
+}
+.quality-inspection .item-value{
+	font-size: 0.18rem;
+	line-height: 1.5;
+}
+.quality-inspection .item-rate{
+	width: 0.8rem;
+	height: 0.8rem;
+	margin: 0 auto;
+}
+
+/*工单情况*/
+.order-state{
+
+}
+.order-state .module-body{
+	padding-top: 0.12rem;
+}
+.order-state .col-count{
+	float: left;
+	width: 70%;
+}
+.order-state .col-count .item-name{
+	text-align: left;
+}
+.order-state .col-count .item-value{
+	font-size: 0.36rem;
+	line-height: 1.5;
+	text-align: left;
+}
+.order-state .col-rate{
+	float: left;
+	width: 30%;
+}
+.order-state .col-rate .item-name{
+	height: 0.32rem;	
+}
+.order-state .col-rate .item-rate{
+	width: 0.8rem;
+	height: 0.8rem;
+	margin: 0 auto;
+}
+
+/*工单统计*/
+.order-total{
+
+}
+.order-total .module-body{
+	padding: 0;
+}
+.order-total-chart{
+	height: 2.24rem;
+}
+
+/*基础数据*/
+.base-data{
+
+}
+.base-area-total{
+	padding: 0.05rem 0 0;
+	overflow: hidden;
+}
+.base-area-total .item{
+	float: left;
+	width: 50%;
+}
+.base-area-total .item-name{
+	
+}
+.base-area-total .item-value{
+	font-size: 0.36rem;
+	line-height: 1.8;
+}
+
+.base-project-total{
+	margin: 0.36rem 0 0;
+	overflow: hidden;
+}
+.base-project-total .item{
+	float: left;
+	width: 25%;
+}
+.base-project-total .item-name{
+
+}
+.base-project-total .item-value{
+	font-size: 0.36rem;
+	line-height: 1.5;
+}
+
+.base-unit-total{
+	margin: 0.36rem 0 0.2rem;
+	overflow: hidden;
+}
+.base-unit-total .items-left{
+	float: left;
+	width: 50%;
+}
+.base-unit-total .items-left .item{
+	float: left;
+	width: 33.33%;
+	margin: 0 0 0.36rem;
+}
+.base-unit-total .items-left .item-name{
+
+}
+.base-unit-total .items-left .item-value{
+	font-size: 0.18rem;
+	line-height: 2;
+}
+.base-unit-total .items-right{
+	float: right;
+	width: 50%;
+}
+.base-unit-total .items-right .item{
+	float: left;
+	width: 33.33%;
+}
+.base-unit-total .items-right .item-name{
+	
+}
+.base-unit-total .items-right .item-rate{
+	width: 0.8rem;
+	height: 0.8rem;
+	margin: 0.36rem auto 0;
+}
+
+.maps{
+	border-radius: 5px;
+	padding: 0.16rem 0.16rem;
+	background: rgba(255,255,255,0.05);
+}
+.maps-chart{
+	width: 100%;
+	height: 3.85rem;
+}
+
+.energy{
+	overflow: hidden;
+}
+/*能耗管理*/
+.energy-manage{
+	float: left;
+	width: calc(50% - 0.03rem);
+	margin: 0 0.06rem 0 0;
+}
+.energy-manage .module-body{
+	padding-top: 0.12rem;
+	padding-bottom: 0.08rem;
+}
+.energy-manage .items-top{
+	overflow: hidden;
+	margin: 0 0 0.08rem;
+}
+.energy-manage .items-top .item{
+	float: left;
+	width: 50%;
+}
+.energy-manage .items-top .item-name{
+	font-size: 0.14rem;
+	line-height: 1.5;
+	height: 0.21rem;
+}
+.energy-manage .items-top .item-value{
+	font-size: 0.24rem;
+	line-height: 1.5;
+}
+.energy-manage .items-bottom{
+	overflow: hidden;
+}
+.energy-manage .items-bottom .item{
+	float: left;
+	width: 33.33%;
+	margin: 0 0 0.12rem;
+}
+.energy-manage .items-bottom .item-name{
+	font-size: 0.12rem;
+	transform: scale(0.9);
+	height: 0.24rem;
+}
+.energy-manage .items-bottom .item-value{
+	font-size: 0.14rem;
+	line-height: 1.5;
+	height: 0.21rem;
+}
+.arrow-up{
+	color: #c30d23;
+	font-size: 0.18rem;
+	line-height: 1;
+	font-weight: bold;
+}
+.arrow-down{
+	color: #89c221;
+	font-size: 0.18rem;
+	line-height: 1;
+	font-weight: bold;
+}
+.energy-increase{
+	float: left;
+	width: calc(50% - 0.03rem);
+}
+.energy-increase .module-body{
+	padding: 0;
+	overflow: visible;
+}
+.energy-increase-chart{
+	height: 1.994rem;
+	width: 100%;
+}
+
+.quality{
+	overflow: hidden;
+}
+.quality-rate{
+	float: left;
+	width: calc(50% - 0.03rem);
+	margin: 0 0.06rem 0 0;
+}
+.quality-rate .module-body{
+	padding: 0;
+	overflow: visible;
+}
+.pass-rate-chart{
+	height: 1.81rem;
+}
+.quality-inspection-month{
+	float: left;
+	width: calc(50% - 0.03rem);
+}
+.quality-inspection-month .module-body{
+	padding-top: 0.12rem;
+}
+.quality-inspection-month .item{
+	float: left;
+	width: 33.33%;
+	margin: 0 0 0.12rem;
+}
+.quality-inspection-month .item-name{
+	font-size: 0.12rem;
+	line-height: 1.5;
+	height: 0.18rem;
+}
+.quality-inspection-month .item-value{
+	font-size: 0.14rem;
+	line-height: 1.5;
+	height: 0.21rem;
+}
+
+/*人员管理*/
+.member-manage{
+	overflow: hidden;
+}
+.member-manage .member-left{
+	float: left;
+	width: 75%;
+}
+.member-manage .member-cost-rate{
+	overflow: hidden;
+}
+.member-manage .member-cost-rate .item{
+	float: left;
+	width: 50%;
+}
+.member-manage .member-cost-rate .item-name{
+	
+}
+.member-manage .member-cost-rate .item-value{
+	font-size: 0.24rem;
+	line-height: 1.5;
+}
+.member-manage .member-total{
+	overflow: hidden;
+	margin: 0.32rem;
+}
+.member-manage .member-total .item{
+	float: left;
+	width: 25%;
+}
+.member-manage .member-total .item-name{
+	font-size: 0.12rem;
+	height: 0.24rem;
+}
+.member-manage .member-total .item-value{
+	font-size: 0.18rem;
+	line-height: 2;
+}
+.member-manage .member-rate{
+	float: left;
+	width: 25%;
+}
+.member-manage .member-rate .item-rate{
+	width: 1.12rem;
+	height: 1.12rem;
+	margin: 0.16rem auto 0;
+}
+.member-manage .member-rate .item-name{
+	margin: 0.08rem;
+	line-height: 2;
+}
+
+/*人员占比*/
+.member{
+	overflow: hidden;
+}
+.member-proportion{
+	float: left;
+	width: calc(50% - 0.03rem);
+	margin: 0 0.06rem 0 0;
+}
+.member-proportion .module-body{
+	padding-top: 0.30rem;
+	padding-bottom: 0.4rem;
+}
+.member-proportion .item{
+	float: left;
+	width: 33.33%;
+}
+.member-proportion .item-rate{
+	width: 0.8rem;
+	height: 0.8rem;
+	margin: 0 auto;
+}
+.member-proportion .item-name{
+	margin: 0.24rem 0 0;
+	font-size: 0.12rem;
+	line-height: 2;
+	height: 0.24rem;
+}
+.cost-compose{
+	float: left;
+	width: calc(50% - 0.03rem);
+}
+.cost-compose .module-body{
+	overflow: visible;
+}
+.cost-compose-chart{
+	height: 1.58rem;
+}
+
+/**/
+.base-info{
+	overflow: hidden;
+	/*margin: 0 0.28rem;*/
+	background: rgba(255,255,255,0.05);
+}
+.base-info .item{
+	float: left;
+	padding: 0.35rem 0 0.25rem;
+	width: 16.66%;
+}
+.base-info .item-name{
+	font-size: 0.2rem;
+	line-height: 2;
+}
+.base-info .item-value{
+	font-size: 0.32rem;
+	line-height: 1.5;
+}
+.summary{
+	margin: 0.1rem 0 0;
+}
+.summary:after{
+	content: '';
+	clear: both;
+	display: block;
+	width: 0;
+	height: 0;
+}
+.summary .col-left{
+	width: 27%;
+}
+.summary .col-center{
+	width: calc(46% - (0.1rem * 2));
+}
+.summary .col-right{
+	width: 27%;
+}
+
+.task-rate{
+
+}
+.task-rate .module-body{
+	padding-top: 0.05rem;
+	padding-bottom: 0.2rem;
+}
+.task-rate .module-body>.item{
+	float: left;
+	width: 50%;
+	line-height: 1.5;
+	overflow: hidden;
+}
+.task-rate .module-body>.item.item-full{
+	float: none;
+	clear: both;
+}
+.task-rate .module-body>.item .item-name{
+	float: left;
+	width: 42%;
+	height: 0.32rem;
+	vertical-align: middle;
+	text-align: left;
+}
+.task-rate .module-body>.item .item-value{
+	float: left;
+	height: 0.32rem;
+	width: 58%;
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 0.16rem;
+	line-height: 2;
+	text-align: left;
+}
+.task-rate .rate{
+	margin: 0.24rem 0 0;
+}
+.task-rate .rate .item{
+	float: left;
+	width: 50%;
+}
+.task-rate .rate .item-rate{
+	width: 1.35rem;
+	height: 1.35rem;
+	margin: 0 auto;
+	/*border-radius: 50%;*/
+	/*box-shadow: 0 0 0 5px #a790c3 inset;*/
+	/*text-align: center;*/
+	/*line-height: 1.35rem;*/
+}
+.task-rate .rate .item-name{
+	margin: 0.12rem;
+	line-height: 2;
+	height: 0.32rem;
+}
+
+.charges{
+
+}
+.charges .module-body{
+	padding: 0;
+}
+.charges-chart{
+	height: 3.68rem;
+}
+
+.accounts-receivable{
+
+}
+.accounts-receivable .module-body{
+	padding-left: 0;
+	padding-right: 0;
+	padding-bottom: 0;
+}
+.accounts-receivable .item{
+	float: left;
+	width: 50%;
+}
+.accounts-receivable h4{
+	padding: 0 0.16rem;
+	font-size: 0.16rem;
+	line-height: 2;
+	height: 0.32rem;
+}
+.estate-receivable-chart{
+	height: 3.12rem;
+}
+.owner-receivable-chart{
+	height: 3.12rem;
+}
+
+.budget-execution{
+
+}
+.budget-execution .module-body{
+	padding-left: 0;
+	padding-right: 0;
+	padding-bottom: 0;
+}
+.budget-execution .item{
+	float: left;
+	width: 50%;
+}
+.budget-execution h4{
+	padding: 0 0.16rem;
+	font-size: 0.16rem;
+	line-height: 2;
+}
+.income-chart{
+	height: 3.12rem;
+}
+.profit-chart{
+	height: 3.12rem;
+}
+
+.expenditure-ratio{
+
+}
+.expenditure-ratio .module-body{
+	padding-bottom: 0.94rem
+}
+.expenditure-ratio .items{
+	float: left;
+	width: 2.16rem;
+}
+.expenditure-ratio .item{
+	margin: 0 0 0.32rem;
+}
+.expenditure-ratio .item-name{
+	text-align: left;
+	line-height: 1.5;
+}
+.expenditure-ratio .item-value{
+	text-align: left;
+	font-size: 0.24rem;
+	line-height: 1.5;
+}
+.expenditure-chart{
+	float: right;
+	width: 2.5rem;
+	height: 2.5rem;
+}
+
+.financial-expenses{
+
+}
+.financial-expenses .module-body{
+	padding: 0;
+}
+.financial-expenses-chart{
+	height: 3.68rem;
+}

@@ -10,6 +10,7 @@ import java.util.List;
 public interface UserRoleService {
     /**
      * 根据用户id查找用户权限列表信息
+     *
      * @param userId
      * @return
      */

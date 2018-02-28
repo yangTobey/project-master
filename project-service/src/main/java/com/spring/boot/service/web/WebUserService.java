@@ -4,7 +4,6 @@ import com.spring.boot.bean.master.User;
 
 /**
  * Created by Administrator on 2018/1/25.
- *
  */
 public interface WebUserService {
     /**
@@ -17,6 +16,7 @@ public interface WebUserService {
 
     /**
      * 根据用户账号查找用户信息你
+     *
      * @param account
      * @return
      */

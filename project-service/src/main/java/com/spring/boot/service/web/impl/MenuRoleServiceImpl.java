@@ -10,9 +10,9 @@ import java.util.List;
  * Created by Administrator on 2018/2/6.
  */
 @Service
-public class MenuRoleServiceImpl implements MenuRoleService{
+public class MenuRoleServiceImpl implements MenuRoleService {
     @Override
-    public List<MenuRole> findMenuRoleInfoByRoleId(long roleId){
+    public List<MenuRole> findMenuRoleInfoByRoleId(long roleId) {
         return null;
     }
 

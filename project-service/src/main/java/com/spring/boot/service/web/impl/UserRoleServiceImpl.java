@@ -14,9 +14,10 @@ import java.util.Map;
  * Created by Administrator on 2018/2/6.
  */
 @Service
-public class UserRoleServiceImpl implements UserRoleService{
+public class UserRoleServiceImpl implements UserRoleService {
     @Autowired
     private UserRoleDao userRoleDao;
+
     @Override
     public List<UserRole> findRoleByUserId(long userId) {
         Map<String, Object> map = new HashMap<String, Object>();
