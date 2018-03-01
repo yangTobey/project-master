@@ -4,6 +4,9 @@ import com.spring.boot.bean.master.User;
 import com.spring.boot.dao.web.master.UserDao;
 import com.spring.boot.service.UserService;
 import com.spring.boot.service.web.UserBusinessService;
+import com.spring.boot.util.ShiroUtils;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -50,6 +53,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updatePassword(long userId, String password, String newPassword) {
         Map<String, Object> map = new HashMap<String, Object>();
+        //根据用户提交的密码，利用md5加密得到加密后的原密码
+        password= new SimpleHash("md5", password,  ByteSource.Util.bytes(ShiroUtils.getUserEntity().getAccount()), 2).toHex();
+        //根据用户提交的新密码，利用md5加密得到加密后的新密码
+        newPassword= new SimpleHash("md5", newPassword,  ByteSource.Util.bytes(ShiroUtils.getUserEntity().getAccount()), 2).toHex();
         map.put("userId", userId);
         map.put("password", password);
         map.put("newPassword", newPassword);

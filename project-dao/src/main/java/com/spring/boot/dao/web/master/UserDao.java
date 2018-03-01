@@ -17,4 +17,11 @@ public interface UserDao {
      * @return
      */
     User findByUserAccount(Map<String, Object> map);
+
+    /**
+     * 更新账号密码
+     * @param map
+     * @return
+     */
+    int updatePassword(Map<String, Object> map);
 }

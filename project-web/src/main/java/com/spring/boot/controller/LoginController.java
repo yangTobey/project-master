@@ -3,7 +3,9 @@ package com.spring.boot.controller;
 import com.spring.boot.service.UserService;
 import com.spring.boot.util.ShiroUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +34,7 @@ public class LoginController {
             //sha256加密
             //password = new Sha256Hash(password).toHex();
            // password= new SimpleHash("md5", password,  ByteSource.Util.bytes(userName), 2).toHex();
-
+            System.out.println("密码："+new SimpleHash("md5", password,  ByteSource.Util.bytes(userName), 2).toHex());
             UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
             subject.login(token);
             //验证是否通过

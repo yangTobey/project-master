@@ -4,6 +4,7 @@ import com.spring.boot.bean.master.User;
 import com.spring.boot.service.UserService;
 import com.spring.boot.util.ShiroUtils;
 import com.spring.boot.util.UtilHelper;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private static final Logger logger = Logger.getLogger(UserController.class);
     @Autowired
     private UserService userService;
 
@@ -32,6 +34,7 @@ public class UserController {
 
     @RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
     public String updatePassword(String password, String newPassword) {
+        logger.info("hello world");
         if(UtilHelper.isEmpty(password)){
            return "原密码不能为空！";
         }
@@ -39,7 +42,11 @@ public class UserController {
             return "新密码不能为空！";
         }
         int count = userService.updatePassword(ShiroUtils.getUserEntity().getUserId(), password, newPassword);
-        return "修改成功！";
+        if(count>0){
+            return "修改成功！";
+        }
+        return "error";
+
     }
 
 }

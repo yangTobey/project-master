@@ -103,9 +103,9 @@ public class UtilHelper {
 
     public static boolean isEmpty(String str) {
         if (StringUtils.isEmpty(str) || StringUtils.isBlank(str)) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**

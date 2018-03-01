@@ -33,6 +33,6 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     public int updatePassword(Map<String, Object> map) {
-        return 0;
+        return userDao.updatePassword(map);
     }
 }

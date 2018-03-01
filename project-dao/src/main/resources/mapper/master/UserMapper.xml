@@ -27,5 +27,9 @@
 		from user
 		where account = #{account}
 	</select>
+	<update id="updatePassword" parameterType="map">
+		update user set `password` = #{newPassword}
+		where id = #{userId} and password = #{password}
+	</update>
 
 </mapper>
