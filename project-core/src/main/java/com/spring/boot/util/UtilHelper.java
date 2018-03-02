@@ -28,6 +28,7 @@ public class UtilHelper {
     public static final SimpleDateFormat DATEFORMATE = new SimpleDateFormat("yyyy-MM-dd");
     public static final SimpleDateFormat TIMEFORMATE = new SimpleDateFormat("HH:mm:ss");
     public static final String[] beforeShuffle = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    public static final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final int PAGE_SIZE = 10;
     private static int currentid = 1;
 
