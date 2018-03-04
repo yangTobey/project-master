@@ -29,4 +29,5 @@ public class DepartmentServiceImpl implements DepartmentService {
     public int addDepartment(String department, String companyId) {
         return 0;
     }
+
 }
