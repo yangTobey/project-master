@@ -11,7 +11,7 @@ public interface UserBusinessService {
     /**
      * 根据用户id查找用户信息
      *
-     * @param userId
+     * @param map
      * @return
      */
     User findByUserId(Map<String, Object> map);
@@ -19,7 +19,7 @@ public interface UserBusinessService {
     /**
      * 根据用户账号查找用户信息你
      *
-     * @param account
+     * @param map
      * @return
      */
     User findByUserAccount(Map<String, Object> map);

@@ -28,4 +28,9 @@ public class CompanyBusinessServiceImpl implements CompanyBusinessService {
     public int updateCompanyInfo(Map<String, Object> map) {
         return companyDao.updateCompanyInfo(map);
     }
+
+    @Override
+    public int deleteCompanyInfo(Map<String, Object> map) {
+        return companyDao.deleteCompanyInfo(map);
+    }
 }

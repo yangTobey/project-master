@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.web.master.DepartmentDao">
+	<resultMap id="Department" type="com.spring.boot.bean.master.Department">
+		<result column="department_id" property="departmentId" />
+		<result column="department_name" property="departmentName" />
+		<result column="department_code" property="departmentCode" />
+		<result column="company_id" property="companyId" />
+		<result column="status" property="status" />
+	</resultMap>
+
+	<!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
+
+	<sql id="Base_Column_List">
+		department_id, department_name, department_code, company_id,status
+	</sql>
+
+	<!--<select id="findByUserId" resultMap="User" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where id = #{userId}
+	</select>
+
+	<select id="findByUserAccount" resultMap="User" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where account = #{account}
+	</select>-->
+	<update id="updateDepartmentInfo" parameterType="map">
+		update department set department_name = #{departmentName},company_id= #{companyId},status = #{status}
+		where department_id = #{departmentId}
+	</update>
+	<insert id="addDepartment" parameterType="map">
+		INSERT INTO department (department_name, department_code, company_id　)
+              VALUES   (#{departmentName},#{departmentCode},#{companyId})
+	</insert>
+	<!-- 删除部门信息，只更新部门状态 -->
+	<update id="deleteDepartment" parameterType="map">
+		update department set status =2
+		where department_id = #{departmentId}
+	</update>
+
+</mapper>

@@ -51,4 +51,11 @@ public class CompanyServiceImpl implements CompanyService {
         map.put("companyAddress", companyAddress);
         return companyBusinessService.updateCompanyInfo(map);
     }
+
+    @Override
+    public int deleteCompanyInfo(String companyId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("companyId", companyId);
+        return companyBusinessService.updateCompanyInfo(map);
+    }
 }

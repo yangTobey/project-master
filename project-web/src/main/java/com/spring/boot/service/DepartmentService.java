@@ -9,10 +9,24 @@ import com.spring.boot.bean.master.User;
 public interface DepartmentService {
     /**
      * 添加部门
-     * @param department
+     * @param departmentName
      * @param companyId
      * @return
      */
-    int addDepartment(String department,String companyId);
+    int addDepartment(String departmentName,String companyId);
+
+    /**
+     * 更新部门信息
+     * @param departmentName
+     * @param companyId
+     * @return
+     */
+    int updateDepartmentInfo(String departmentId,String departmentName,String companyId);
+    /**
+     * 删除
+     * @param departmentId
+     * @return
+     */
+    int deleteDepartment(String departmentId);
 
 }

@@ -22,4 +22,10 @@ public interface CompanyDao {
      * @return
      */
     int updateCompanyInfo(Map<String, Object> map);
+    /**
+     * 删除公司信息
+     * @param map
+     * @return
+     */
+    int deleteCompanyInfo(Map<String, Object> map);
 }

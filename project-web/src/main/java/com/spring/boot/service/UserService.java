@@ -23,4 +23,10 @@ public interface UserService {
     User findByUserAccount(String account);
 
     int updatePassword(long userId, String password, String newPassword);
+
+    int addUser(String userAccount, String password, String companyId,String roldId,String departmentId);
+
+    int updateUser(String userId , String companyId,String roldId,String departmentId);
+
+    int deleteUser(String userId);
 }

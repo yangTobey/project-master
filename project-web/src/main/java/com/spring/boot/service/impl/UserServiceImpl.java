@@ -62,4 +62,34 @@ public class UserServiceImpl implements UserService {
         map.put("newPassword", newPassword);
         return userBusinessService.updatePassword(map);
     }
+
+    @Override
+    public int addUser(String userAccount, String password, String companyId, String roldId, String departmentId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        //根据用户提交的密码，利用md5加密得到加密后的原密码
+        password= new SimpleHash("md5", password,  ByteSource.Util.bytes(userAccount), 2).toHex();
+        map.put("userAccount", userAccount);
+        map.put("password", password);
+        map.put("companyId", companyId);
+        map.put("roldId", roldId);
+        map.put("departmentId", departmentId);
+        return userBusinessService.updatePassword(map);
+    }
+
+    @Override
+    public int updateUser(String userId, String companyId, String roldId, String departmentId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userId", userId);
+        map.put("companyId", companyId);
+        map.put("roldId", roldId);
+        map.put("departmentId", departmentId);
+        return userBusinessService.updatePassword(map);
+    }
+
+    @Override
+    public int deleteUser(String userId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userId", userId);
+        return userBusinessService.updatePassword(map);
+    }
 }

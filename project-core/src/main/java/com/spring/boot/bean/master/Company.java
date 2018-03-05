@@ -11,6 +11,7 @@ public class Company {
     private long parentId;
     private String companyPhone;
     private String companyAddress;
+    private int status;
 
     public long getCompanyId() {
         return companyId;
@@ -58,5 +59,13 @@ public class Company {
 
     public void setCompanyAddress(String companyAddress) {
         this.companyAddress = companyAddress;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

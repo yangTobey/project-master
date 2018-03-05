@@ -39,8 +39,27 @@ public class DepartmentController {
      * @return
      */
     @RequestMapping(value = "addDepartment", method = RequestMethod.GET)
-    public String addDepartment(String department,String companyId) {
-        departmentService.addDepartment(department,companyId);
+    public String addDepartment(String departmentName,String companyId) {
+        departmentService.addDepartment(departmentName,companyId);
+        return "views/login/login";
+    }
+    /**
+     * 更新部门信息
+     * @return
+     */
+    @RequestMapping(value = "updateDepartmentInfo", method = RequestMethod.GET)
+    public String updateDepartmentInfo(String departmentId, String departmentName,String companyId) {
+        departmentService.updateDepartmentInfo(departmentId,departmentName,companyId);
+        return "views/login/login";
+    }
+    /**
+     * 添加部门
+     * @return
+     */
+    @RequestMapping(value = "deleteDepartment", method = RequestMethod.GET)
+    public String deleteDepartment(String departmentId) {
+        int count=departmentService.deleteDepartment(departmentId);
+        System.out.println("删除条数："+count);
         return "views/login/login";
     }
 }

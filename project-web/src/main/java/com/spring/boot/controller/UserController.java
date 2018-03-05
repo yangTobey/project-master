@@ -49,4 +49,45 @@ public class UserController {
 
     }
 
+    @RequestMapping(value = "/addUser", method = RequestMethod.GET)
+    public String addUser(String userAccount, String password,String companyId,String roldId,String departmentId) {
+        if(UtilHelper.isEmpty(userAccount)){
+            return "登录账号不能为空！";
+        }
+        if(UtilHelper.isEmpty(password)){
+            return "登录密码不能为空！";
+        }
+        int count = userService.addUser(userAccount, password, companyId,roldId,departmentId);
+        if(count>0){
+            return "修改成功！";
+        }
+        return "error";
+
+    }
+
+    @RequestMapping(value = "/updateUser", method = RequestMethod.GET)
+    public String updateUser(String userId,String companyId,String roldId,String departmentId) {
+        if(UtilHelper.isEmpty(userId)){
+            return "用户编号不能为空，请联系系统管理员！";
+        }
+        int count = userService.updateUser(userId, companyId,roldId,departmentId);
+        if(count>0){
+            return "修改成功！";
+        }
+        return "error";
+
+    }
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.GET)
+    public String deleteUser(String userId) {
+        if(UtilHelper.isEmpty(userId)){
+            return "用户编号不能为空，请联系系统管理员！";
+        }
+        int count = userService.deleteUser(userId);
+        if(count>0){
+            return "修改成功！";
+        }
+        return "error";
+
+    }
+
 }

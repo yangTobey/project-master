@@ -26,4 +26,10 @@ public interface CompanyService {
      * @return
      */
     int updateCompanyInfo(String companyId,String companyName,String companyPhone,String companyAddress);
+    /**
+     * 删除公司信息
+     * @param companyId 公司id
+     * @return
+     */
+    int deleteCompanyInfo(String companyId);
 }
