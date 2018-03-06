@@ -1,13 +1,13 @@
 package com.spring.boot.shiro;
 
-import com.spring.boot.bean.master.MenuRole;
+import com.spring.boot.bean.master.SysMenuRole;
 import com.spring.boot.bean.master.SysMenu;
-import com.spring.boot.bean.master.User;
-import com.spring.boot.bean.master.UserRole;
-import com.spring.boot.service.web.MenuRoleService;
+import com.spring.boot.bean.master.SysUser;
+import com.spring.boot.bean.master.SysUserRole;
+import com.spring.boot.service.web.SysMenuRoleService;
 import com.spring.boot.service.web.SysMenuService;
-import com.spring.boot.service.web.UserRoleService;
-import com.spring.boot.service.UserService;
+import com.spring.boot.service.web.SysUserRoleService;
+import com.spring.boot.service.SysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -33,18 +33,18 @@ public class ShiroRealm extends AuthorizingRealm {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private UserService userService;
+    private SysUserService sysUserService;
     @Autowired
-    private UserRoleService userRoleService;
+    private SysUserRoleService sysUserRoleService;
     @Autowired
     private SysMenuService sysMenuService;
     @Autowired
-    private MenuRoleService menuRoleService;
+    private SysMenuRoleService menuRoleService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         logger.info("doGetAuthorizationInfo+" + principalCollection.toString());
-        User user = ((User) principalCollection.getPrimaryPrincipal());
+        SysUser user = ((SysUser) principalCollection.getPrimaryPrincipal());
         List<String> permissions = new ArrayList<String>();
         //用户权限列表
         Set<String> permsSet = new HashSet<String>();
@@ -55,7 +55,7 @@ public class ShiroRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
         //获得所有的权限
-        List<UserRole> permissionList = userRoleService.findRoleByUserId(user.getUserId());
+        List<SysUserRole> permissionList = sysUserRoleService.findRoleByUserId(user.getUserId());
         //赋予角色
         //for(Role userRole:user.getRoles()){
         //  info.addRole(userRole.getName());
@@ -65,9 +65,9 @@ public class ShiroRealm extends AuthorizingRealm {
 //            if(StringUtils.isNotBlank(permission.getPermCode()))
         //  info.addStringPermission(permission.getName());
         // }
-        for (UserRole userRole : permissionList) {
-            List<MenuRole> menuRoleList = menuRoleService.findMenuRoleInfoByRoleId(userRole.getRoleId());
-            for (MenuRole menuRole : menuRoleList) {
+        for (SysUserRole userRole : permissionList) {
+            List<SysMenuRole> menuRoleList = menuRoleService.findMenuRoleInfoByRoleId(userRole.getRoleId());
+            for (SysMenuRole menuRole : menuRoleList) {
                 SysMenu sysMenu = sysMenuService.findSysMenuInfoByMenuId(menuRole.getMenuId());
                 if (sysMenu != null) {
                     permsSet.add(sysMenu.getPerms());
@@ -106,10 +106,10 @@ public class ShiroRealm extends AuthorizingRealm {
         //UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         //String userName=token.getUsername();
         //logger.info(userName+token.getPassword());
-        User u = userService.findByUserId("1");
+        SysUser u = sysUserService.findByUserId("1");
         System.out.println("测试账号：" + u.getAccount());
         //查询用户信息
-        User user = userService.findByUserAccount(username);
+        SysUser user = sysUserService.findByUserAccount(username);
         if (user != null) {
             Session session = SecurityUtils.getSubject().getSession();
             session.setAttribute("user", user);

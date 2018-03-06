@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.web.master.SysUserDao">
+	<resultMap id="User" type="com.spring.boot.bean.master.SysUser">
+		<result column="id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="user_password" property="password" />
+		<result column="user_account" property="account" />
+		<result column="status" property="status" />
+		<result column="phone" property="phone" />
+		<result column="gender" property="gender" />
+		<result column="user_type" property="userType" />
+
+	</resultMap>
+
+	<!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
+
+	<sql id="Base_Column_List">
+		id, user_name, user_password, user_account,user_type,gender,phone,status,company_id,role_id,department_id
+	</sql>
+
+	<select id="findByUserId" resultMap="User" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		where id = #{userId}
+	</select>
+
+	<select id="findByUserAccount" resultMap="User" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		where user_account = #{account}
+	</select>
+	<update id="updatePassword" parameterType="map">
+		update sys_user set `user_password` = #{newPassword}
+		where id = #{userId} and user_password = #{password}
+	</update>
+	<insert id="addUser" parameterType="map">
+		INSERT INTO sys_user (user_account, user_password, company_id, role_id,department_id)
+		VALUES   (#{userAccount},#{password},#{companyId},#{roleId},#{departmentId})
+	</insert>
+	<update id="updateUserInfo" parameterType="map">
+		update sys_user set company_id = #{companyId},role_id = #{roleId},department_id = #{departmentId}
+		where id = #{userId}
+	</update>
+	<update id="deleteUser" parameterType="map">
+		update sys_user set `status` = 3
+		where id = #{userId}
+	</update>
+
+</mapper>

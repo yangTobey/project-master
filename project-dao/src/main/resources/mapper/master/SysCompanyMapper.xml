@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.web.master.SysCompanyDao">
+	<resultMap id="User" type="com.spring.boot.bean.master.SysCompany">
+		<result column="company_id" property="companyId" />
+		<result column="company_name" property="companyName" />
+		<result column="company_code" property="companyCode" />
+		<result column="parent_id" property="parentId" />
+		<result column="company_phone" property="companyPhone" />
+		<result column="company_address" property="companyAddress" />
+		<result column="status" property="status" />
+	</resultMap>
+
+	<!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
+
+	<sql id="Base_Column_List">
+		company_id, company_name, company_code, parent_id,company_phone,company_address,status
+	</sql>
+
+	<!--<select id="findByUserId" resultMap="User" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where id = #{userId}
+	</select>
+
+	<select id="findByUserAccount" resultMap="User" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where account = #{account}
+	</select>-->
+	<update id="updateCompanyInfo" parameterType="map">
+		update sys_company set company_name = #{companyName},parent_id = #{parentId},company_phone = #{companyPhone},company_address = #{companyAddress}
+		where company_id = #{companyId}
+	</update>
+	<insert id="addCompany" parameterType="map">
+		INSERT INTO sys_company (company_name, company_code, parent_id, company_phone,company_address)
+              VALUES   (#{companyName},#{companyCode},#{parentId},#{companyPhone},#{companyAddress})
+	</insert>
+	<update id="deleteCompanyInfo" parameterType="map">
+		update sys_company set status = #{status}
+		where company_id = #{companyId}
+	</update>
+
+</mapper>

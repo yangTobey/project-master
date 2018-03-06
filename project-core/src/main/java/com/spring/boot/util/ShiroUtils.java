@@ -1,6 +1,6 @@
 package com.spring.boot.util;
 
-import com.spring.boot.bean.master.User;
+import com.spring.boot.bean.master.SysUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -22,8 +22,8 @@ public class ShiroUtils {
 		return SecurityUtils.getSubject();
 	}
 
-	public static User getUserEntity() {
-		return (User)SecurityUtils.getSubject().getPrincipal();
+	public static SysUser getUserEntity() {
+		return (SysUser)SecurityUtils.getSubject().getPrincipal();
 	}
 
 	public static Long getUserId() {
