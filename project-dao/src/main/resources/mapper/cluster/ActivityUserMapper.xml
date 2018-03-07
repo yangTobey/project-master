@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.spring.boot.dao.web.cluster.ActivityUserDao">
-	<resultMap id="User" type="com.spring.boot.bean.cluster.ActivityUser">
+	<resultMap id="activityUser" type="com.spring.boot.bean.cluster.ActivityUser">
 		<result column="id" property="id" />
 		<result column="name" property="name" />
 		<result column="phone" property="phone" />
@@ -14,7 +14,7 @@
 		id, name, phone, address
 	</sql>
 
-	<select id="findByUserId" resultMap="User" parameterType="map">
+	<select id="findByUserId" resultMap="activityUser" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
 		from activityUser

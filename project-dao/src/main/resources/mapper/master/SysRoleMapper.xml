@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.spring.boot.dao.web.master.SysUserDao">
-	<resultMap id="User" type="com.spring.boot.bean.master.SysUser">
-		<result column="id" property="userId" />
-		<result column="user_name" property="userName" />
-		<result column="user_password" property="password" />
-		<result column="user_account" property="account" />
+<mapper namespace="com.spring.boot.dao.web.master.SysRoleDao">
+	<resultMap id="sysRole" type="com.spring.boot.bean.master.SysRole">
+		<result column="role_id" property="roleId" />
+		<result column="role_name" property="roleName" />
+		<result column="remark" property="remark" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
 		<result column="status" property="status" />
-		<result column="phone" property="phone" />
-		<result column="gender" property="gender" />
-		<result column="user_type" property="userType" />
 
 	</resultMap>
 
@@ -19,32 +17,32 @@
 		role_id, role_name, remark, create_time,status
 	</sql>
 
-	<select id="findByUserId" resultMap="User" parameterType="map">
+	<select id="findByUserId" resultMap="sysRole" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
 		from sys_role
 		where role_id = #{roleId}
 	</select>
 
-	<select id="findByUserAccount" resultMap="User" parameterType="map">
+	<select id="getSysRoleList" resultType="com.spring.boot.bean.master.SysRole" >
 		select
 		<include refid="Base_Column_List" />
 		from sys_role
-		where user_account = #{account}
+		where `status` !=2
 	</select>
 	<update id="updatePassword" parameterType="map">
 		update sys_role set `user_password` = #{newPassword}
 		where id = #{userId} and user_password = #{password}
 	</update>
-	<insert id="addSysRole" parameterType="map">
+	<insert id="save" parameterType="map" useGeneratedKeys="true" keyProperty="roleId">
 		INSERT INTO sys_role (role_name, remark, create_time)
 		VALUES   (#{roleName},#{remark},#{createTime} )
 	</insert>
-	<update id="updateSysRole" parameterType="map">
-		update sys_role set role_name = #{RoleName},remark = #{remark},department_id = #{departmentId}
+	<update id="update" parameterType="map">
+		update sys_role set role_name = #{roleName},remark = #{remark}
 		where role_id = #{roleId}
 	</update>
-	<update id="deleteSysRole" parameterType="map">
+	<update id="delete" parameterType="map">
 		update sys_role set `status` =2
 		where role_id = #{roleId}
 	</update>

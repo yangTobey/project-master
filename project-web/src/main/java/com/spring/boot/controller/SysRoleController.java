@@ -1,5 +1,6 @@
 package com.spring.boot.controller;
 
+import com.spring.boot.bean.master.SysRole;
 import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.service.SysRoleService;
 import com.spring.boot.service.SysUserService;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/1/25.
@@ -28,7 +31,22 @@ public class SysRoleController {
         return "views/main/index";
     }
 
+    @RequestMapping(value = "/getSysRoleList", method = RequestMethod.GET)
+    public Map<String, Object> getSysRoleList() {
 
+        Map<String, Object> map=sysRoleService.getSysRoleList();
+        System.out.println(map.get("list"));
+
+        return map;
+
+    }
+
+    /**
+     * 添加角色
+     * @param roleName
+     * @param remark
+     * @return
+     */
     @RequestMapping(value = "/addSysRole", method = RequestMethod.GET)
     public String addUser(String roleName, String remark) {
         if(UtilHelper.isEmpty(roleName)){
@@ -36,6 +54,7 @@ public class SysRoleController {
         }
         int count = sysRoleService.addSysRole(roleName, remark);
         if(count>0){
+            System.out.println("id值："+count);
             return "修改成功！";
         }
         return "error";

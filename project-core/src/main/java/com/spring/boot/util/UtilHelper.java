@@ -39,9 +39,20 @@ public class UtilHelper {
             return null;
         }
     }
-
+    /**
+     * 获取系统当前时间（yyyy-MM-dd ）
+     * @return
+     */
     public static String getNowDateStr() {
         return DATEFORMATE.format(new java.util.Date());
+    }
+
+    /**
+     * 获取系统当前时间（yyyy-MM-dd HH:mm:ss）
+     * @return
+     */
+    public static String getNowTimeStr() {
+        return DATETIMEFULLFORMATE.format(new java.util.Date());
     }
 
     public static Date toDate(String strDate) {

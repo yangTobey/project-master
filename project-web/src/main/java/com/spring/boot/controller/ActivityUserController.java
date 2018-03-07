@@ -1,9 +1,7 @@
 package com.spring.boot.controller;
 
 import com.spring.boot.bean.cluster.ActivityUser;
-import com.spring.boot.bean.master.User;
 import com.spring.boot.service.ActivityUserService;
-import com.spring.boot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

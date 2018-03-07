@@ -1,11 +1,8 @@
 package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.cluster.ActivityUser;
-import com.spring.boot.bean.master.User;
 import com.spring.boot.dao.web.cluster.ActivityUserDao;
-import com.spring.boot.dao.web.master.UserDao;
 import com.spring.boot.service.ActivityUserService;
-import com.spring.boot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;

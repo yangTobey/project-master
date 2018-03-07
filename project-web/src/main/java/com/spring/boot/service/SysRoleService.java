@@ -1,11 +1,19 @@
 package com.spring.boot.service;
 
+import com.spring.boot.bean.master.SysRole;
 import com.spring.boot.bean.master.SysUser;
+
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/1/25.
  */
 public interface SysRoleService {
+    /**
+     * 获取角色列表数据
+     * @return
+     */
+    Map<String,Object> getSysRoleList();
 
     /**
      * 新增角色信息

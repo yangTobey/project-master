@@ -1,5 +1,6 @@
 package com.spring.boot.service.web.impl;
 
+import com.spring.boot.bean.master.SysRole;
 import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.dao.web.master.SysRoleDao;
 import com.spring.boot.dao.web.master.SysUserDao;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,17 +25,22 @@ public class SysRoleBusinessServiceImpl implements SysRoleBusinessService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public int addSysRole(Map<String, Object> map) {
-        return sysRoleDao.addSysRole(map);
+    public List<SysRole> getSysRoleList() {
+        return sysRoleDao.getSysRoleList();
+    }
+
+    @Override
+    public int addSysRole(SysRole sysRole) {
+        return sysRoleDao.save(sysRole);
     }
 
     @Override
     public int updateSysRole(Map<String, Object> map) {
-        return sysRoleDao.updateSysRole(map);
+        return sysRoleDao.update(map);
     }
 
     @Override
     public int deleteSysRole(Map<String, Object> map) {
-        return sysRoleDao.deleteSysRole(map);
+        return sysRoleDao.delete(map);
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.spring.boot.dao.web.master.SysUserDao">
-	<resultMap id="User" type="com.spring.boot.bean.master.SysUser">
+	<resultMap id="sysUser" type="com.spring.boot.bean.master.SysUser">
 		<result column="id" property="userId" />
 		<result column="user_name" property="userName" />
 		<result column="user_password" property="password" />
@@ -13,20 +13,20 @@
 
 	</resultMap>
 
-	<!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
+	<!--<parameterMap id="sysUser" type="com.spring.boot.bean.sysUser"/>-->
 
 	<sql id="Base_Column_List">
 		id, user_name, user_password, user_account,user_type,gender,phone,status,company_id,role_id,department_id
 	</sql>
 
-	<select id="findByUserId" resultMap="User" parameterType="map">
+	<select id="findByUserId" resultMap="sysUser" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
 		from sys_user
 		where id = #{userId}
 	</select>
 
-	<select id="findByUserAccount" resultMap="User" parameterType="map">
+	<select id="findByUserAccount" resultMap="sysUser" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
 		from sys_user

@@ -1,7 +1,9 @@
 package com.spring.boot.service.web;
 
+import com.spring.boot.bean.master.SysRole;
 import com.spring.boot.bean.master.SysUser;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,14 +11,18 @@ import java.util.Map;
  */
 public interface SysRoleBusinessService {
 
-
+    /**
+     * 获取角色列表数据
+     * @return
+     */
+    List<SysRole> getSysRoleList();
     /**
      * 新增角色信息
      *
-     * @param map
+     * @param sysRole
      * @return
      */
-    int addSysRole(Map<String, Object> map);
+    int addSysRole(SysRole sysRole);
 
     /**
      * 更新角色信息

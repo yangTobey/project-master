@@ -1,7 +1,6 @@
 package com.spring.boot.service;
 
 import com.spring.boot.bean.cluster.ActivityUser;
-import com.spring.boot.bean.master.User;
 
 /**
  * Created by Administrator on 2018/1/25.
