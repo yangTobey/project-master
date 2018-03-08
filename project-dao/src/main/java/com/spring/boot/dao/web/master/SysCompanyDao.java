@@ -1,16 +1,19 @@
 package com.spring.boot.dao.web.master;
 
+import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysUser;
+import com.spring.boot.dao.BaseDao;
 
 import java.util.Map;
 
 /**
  * Created by Administrator on 2018/1/25.
  */
-public interface SysCompanyDao {
+public interface SysCompanyDao extends BaseDao<SysCompany> {
 
     /**
      * 新增公司
+     *
      * @param map
      * @return
      */
@@ -18,12 +21,15 @@ public interface SysCompanyDao {
 
     /**
      * 更新公司信息
+     *
      * @param map
      * @return
      */
     int updateCompanyInfo(Map<String, Object> map);
+
     /**
      * 删除公司信息
+     *
      * @param map
      * @return
      */

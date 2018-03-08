@@ -29,30 +29,38 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public int addDepartment(String departmentName, String companyId) {
+    public Map<String, Object> getSysDepartmentInfo() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("total", sysDepartmentBusinessService.getSysDepartmentInfo().size());
+        map.put("list", sysDepartmentBusinessService.getSysDepartmentInfo());
+        return map;
+    }
+
+    @Override
+    public int addSysDepartment(String departmentName, String companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         //公司编码（服务识别号）
         String departmentCode="D"+ RandomUtils.nextInt(10)+RandomUtils.nextInt(10)+String.valueOf(System.currentTimeMillis()).substring(5,12)+ UtilHelper.chars.charAt((int)(Math.random() * 52));
         map.put("departmentName", departmentName);
         map.put("companyId", companyId);
         map.put("departmentCode", departmentCode);
-        return sysDepartmentBusinessService.addDepartment(map);
+        return sysDepartmentBusinessService.addSysDepartment(map);
     }
 
     @Override
-    public int updateDepartmentInfo(String departmentId, String departmentName, String companyId) {
+    public int updateSysDepartmentInfo(String departmentId, String departmentName, String companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("departmentId", departmentId);
         map.put("departmentName", departmentName);
         map.put("companyId", companyId);
         map.put("status", 2);
-        return sysDepartmentBusinessService.updateDepartmentInfo(map);
+        return sysDepartmentBusinessService.updateSysDepartmentInfo(map);
     }
 
     @Override
-    public int deleteDepartment(String departmentId) {
+    public int deleteSysDepartment(String departmentId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("departmentId", departmentId);
-        return sysDepartmentBusinessService.deleteDepartment(map);
+        return sysDepartmentBusinessService.deleteSysDepartment(map);
     }
 }

@@ -11,7 +11,7 @@ public interface BaseDao<T> {
 	int save(T t);
 
 	/**
-	 * 保存实体信息，返回主键
+	 * 保存实体信息，返回条数
 	 * @param map
 	 * @return
 	 */
@@ -34,6 +34,8 @@ public interface BaseDao<T> {
 	List<T> queryList(Map<String, Object> map);
 	
 	List<T> queryList(Object id);
+
+	List<T> queryList();
 	
 	int queryTotal(Map<String, Object> map);
 

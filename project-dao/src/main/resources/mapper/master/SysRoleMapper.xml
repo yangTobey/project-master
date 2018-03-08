@@ -14,7 +14,7 @@
 	<!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
 
 	<sql id="Base_Column_List">
-		role_id, role_name, remark, create_time,status
+		role_id, role_name, remark, create_time,status,create_user_id
 	</sql>
 
 	<select id="findByUserId" resultMap="sysRole" parameterType="map">
@@ -24,11 +24,11 @@
 		where role_id = #{roleId}
 	</select>
 
-	<select id="getSysRoleList" resultType="com.spring.boot.bean.master.SysRole" >
+	<select id="queryList" resultMap="sysRole" >
 		select
 		<include refid="Base_Column_List" />
 		from sys_role
-		where `status` !=2
+		where `status`!=2
 	</select>
 	<update id="updatePassword" parameterType="map">
 		update sys_role set `user_password` = #{newPassword}

@@ -15,7 +15,7 @@ public interface SysRoleDao extends BaseDao<SysRole>{
      * 获取角色列表数据
      * @return
      */
-     List<SysRole> getSysRoleList();
+     /*List<SysRole> getSysRoleList();*/
     /**
      * 新增角色信息
      *

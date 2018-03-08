@@ -1,5 +1,6 @@
 package com.spring.boot.service.web.impl;
 
+import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.dao.web.master.SysCompanyDao;
 import com.spring.boot.dao.web.master.SysUserDao;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,17 +22,22 @@ public class SysCompanyBusinessServiceImpl implements SysCompanyBusinessService 
     private SysCompanyDao sysCompanyDao;
 
     @Override
-    public int addCompany(Map<String, Object> map) {
-        return sysCompanyDao.addCompany(map);
+    public List<SysCompany> getSysCompanyList() {
+        return sysCompanyDao.queryList();
     }
 
     @Override
-    public int updateCompanyInfo(Map<String, Object> map) {
-        return sysCompanyDao.updateCompanyInfo(map);
+    public int addSysCompany(Map<String, Object> map) {
+        return sysCompanyDao.save(map);
     }
 
     @Override
-    public int deleteCompanyInfo(Map<String, Object> map) {
-        return sysCompanyDao.deleteCompanyInfo(map);
+    public int updateSysCompanyInfo(Map<String, Object> map) {
+        return sysCompanyDao.update(map);
+    }
+
+    @Override
+    public int deleteSysCompanyInfo(Map<String, Object> map) {
+        return sysCompanyDao.delete(map);
     }
 }

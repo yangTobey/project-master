@@ -26,7 +26,7 @@ public class SysRoleBusinessServiceImpl implements SysRoleBusinessService {
 
     @Override
     public List<SysRole> getSysRoleList() {
-        return sysRoleDao.getSysRoleList();
+        return sysRoleDao.queryList();
     }
 
     @Override

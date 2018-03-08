@@ -1,7 +1,9 @@
 package com.spring.boot.service.web;
 
+import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysUser;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,22 +12,33 @@ import java.util.Map;
 public interface SysCompanyBusinessService {
 
     /**
+     * 获取公司列表数据
+     *
+     * @return
+     */
+    List<SysCompany> getSysCompanyList();
+
+    /**
      * 新增公司
+     *
      * @param map
      * @return
      */
-    int addCompany(Map<String, Object> map);
+    int addSysCompany(Map<String, Object> map);
 
     /**
      * 更新公司信息
+     *
      * @param map
      * @return
      */
-    int updateCompanyInfo(Map<String, Object> map);
+    int updateSysCompanyInfo(Map<String, Object> map);
+
     /**
      * 删除公司信息
+     *
      * @param map
      * @return
      */
-    int deleteCompanyInfo(Map<String, Object> map);
+    int deleteSysCompanyInfo(Map<String, Object> map);
 }
