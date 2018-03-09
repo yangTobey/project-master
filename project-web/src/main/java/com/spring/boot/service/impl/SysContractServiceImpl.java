@@ -49,4 +49,19 @@ public class SysContractServiceImpl implements SysContractService {
         map.put("contractTypeId", contractTypeId);
         return sysContractBusinessService.deleteContractType(map);
     }
+
+    @Override
+    public int addSysContract(String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime, String contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("contractName", contractName);
+        map.put("contractCode", contractCode);
+        map.put("contractMoney", contractMoney);
+        map.put("contractStartTime", contractStartTime);
+        map.put("contractEndTime", contractEndTime);
+        map.put("contractTypeId", contractTypeId);
+        map.put("firstPartyCompany", firstPartyCompany);
+        map.put("secondPartyCompany", secondPartyCompany);
+        map.put("personLiableName", personLiableName);
+        return sysContractBusinessService.addSysContract(map);
+    }
 }

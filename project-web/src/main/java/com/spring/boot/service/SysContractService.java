@@ -25,4 +25,12 @@ public interface SysContractService {
      */
     int deleteContractType(String contractTypeId);
 
+    /**
+     * 添加合同
+     * @param contractName
+     * @return
+     */
+    int addSysContract(String contractName,String contractCode,String contractMoney,String contractStartTime, String contractEndTime,
+                       String contractTypeId,String firstPartyCompany,String secondPartyCompany,String personLiableName);
+
 }

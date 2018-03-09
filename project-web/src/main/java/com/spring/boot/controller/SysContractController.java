@@ -64,9 +64,11 @@ public class SysContractController {
      * 添加合同
      * @return
      */
-    @RequestMapping(value = "addContractInfo", method = RequestMethod.GET)
-    public String addContractInfo(String contractTypeName,String companyId) {
-        sysContractService.addContractType(contractTypeName);
+    @RequestMapping(value = "addSysContract", method = RequestMethod.GET)
+    public String addSysContract(String contractName,String contractCode,String contractMoney,String contractStartTime, String contractEndTime,
+                                 String contractTypeId,String firstPartyCompany,String secondPartyCompany,String personLiableName) {
+        sysContractService.addSysContract(contractName,contractCode,contractMoney,contractStartTime, contractEndTime,
+                contractTypeId,firstPartyCompany,secondPartyCompany,personLiableName);
         return "views/login/login";
     }
     /**

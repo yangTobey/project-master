@@ -1,11 +1,14 @@
-package com.spring.boot.service.web;
+package com.spring.boot.dao.web.master;
+
+import com.spring.boot.bean.master.SysContractType;
+import com.spring.boot.dao.BaseDao;
 
 import java.util.Map;
 
 /**
  * Created by Administrator on 2018/1/25.
  */
-public interface SysContractBusinessService {
+public interface SysContractTypeDao extends BaseDao<SysContractType>{
 
     /**
      * 新增合同分类
@@ -19,7 +22,6 @@ public interface SysContractBusinessService {
      * @return
      */
     int updateContractType(Map<String, Object> map);
-
     /**
      * 删除合同分类
      * @param map
@@ -27,10 +29,5 @@ public interface SysContractBusinessService {
      */
     int deleteContractType(Map<String, Object> map);
 
-    /**
-     * 新增合同
-     * @param map
-     * @return
-     */
-    int addSysContract(Map<String, Object> map);
+
 }
