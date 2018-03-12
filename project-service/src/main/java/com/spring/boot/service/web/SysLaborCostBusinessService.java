@@ -3,6 +3,7 @@ package com.spring.boot.service.web;
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysDepartment;
 import com.spring.boot.bean.master.SysLaborCost;
+import com.spring.boot.bean.master.SysLaborCostDetails;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ public interface SysLaborCostBusinessService {
      * 获取人员成本列表数据
      * @return
      */
-    List<SysDepartment> getSysLaborCostInfoInfo();
+    List<SysLaborCost> getSysLaborCostList();
 
     /**
      * 新增人员成本
@@ -26,10 +27,10 @@ public interface SysLaborCostBusinessService {
     int addSysLaborCost(SysLaborCost sysLaborCost);
     /**
      * 新增人员成本详细信息
-     * @param map
+     * @param sysLaborCostDetails
      * @return
      */
-    int addSysLaborCostDetails(Map<String, Object> map);
+    int addSysLaborCostDetails(SysLaborCostDetails sysLaborCostDetails);
     /**
      * 更新人员成本
      * @param map

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.spring.boot.dao.web.master.SysContractDao">
+<mapper namespace="com.spring.boot.dao.web.master.SysContractTypeDao">
 	<resultMap id="contractType" type="com.spring.boot.bean.master.SysContractType">
 		<result column="contractType_id" property="contractTypeId" />
 		<result column="contractType_name" property="contractTypeName" />

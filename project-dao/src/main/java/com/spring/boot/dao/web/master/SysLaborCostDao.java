@@ -2,6 +2,7 @@ package com.spring.boot.dao.web.master;
 
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysLaborCost;
+import com.spring.boot.bean.master.SysLaborCostDetails;
 import com.spring.boot.dao.BaseDao;
 
 import java.util.Map;
@@ -21,10 +22,10 @@ public interface SysLaborCostDao extends BaseDao<SysLaborCost> {
     /**
      * 新增人员成本详情信息
      *
-     * @param map
+     * @param sysLaborCostDetails
      * @return
      */
-    int addSysLaborCostDetails(Map<String, Object> map);
+    int addSysLaborCostDetails(SysLaborCostDetails sysLaborCostDetails);
 
     /**
      * 更新人员成本信息

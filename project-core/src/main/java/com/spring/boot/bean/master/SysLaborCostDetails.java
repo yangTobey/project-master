@@ -4,7 +4,7 @@ package com.spring.boot.bean.master;
  * Created by Administrator on 2018/3/12.
  */
 public class SysLaborCostDetails {
-    private long id;
+    private long detailsId;
     private int employeeTotal;
     private int headcountTotal;
     private int entryTotal;
@@ -13,12 +13,12 @@ public class SysLaborCostDetails {
     private long laborCostId;
     private int departmentType;
 
-    public long getId() {
-        return id;
+    public long getDetailsId() {
+        return detailsId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setDetailsId(long detailsId) {
+        this.detailsId = detailsId;
     }
 
     public int getEmployeeTotal() {

@@ -28,8 +28,8 @@ public class SysLaborCostController {
      *
      * @return
      */
-    @RequestMapping(value = "/getSysCompanyList", method = RequestMethod.GET)
-    public R getSysCompanyList() {
+    @RequestMapping(value = "/getSysLaborCostList", method = RequestMethod.GET)
+    public R getSysLaborCostList() {
         Map<String, Object> map = sysLaborCostService.getSysLaborCostList();
         return R.ok().put("200", map);
     }
