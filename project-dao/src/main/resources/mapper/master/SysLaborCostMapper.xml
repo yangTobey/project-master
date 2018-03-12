@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.web.master.SysCompanyDao">
+    <resultMap id="sysCompany" type="com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity">
+        <result column="labor_cost_id" property="laborCostId"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="company_id" property="companyId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="status_code" property="statusCode"/>
+
+        <result column="details_id" property="laborCostDetailsId"/>
+        <result column="employee_total" property="employeeTotal"/>
+        <result column="headcount_total" property="headcountTotal"/>
+        <result column="entry_total" property="entryTotal"/>
+        <result column="demission_total" property="demissionTotal"/>
+        <result column="labor_cost_total" property="laborCostTotal"/>
+        <result column="department_type" property="departmentType"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		laborCost.labor_cost_id, laborCost.year, laborCost.month, laborCost.company_id,laborCost.create_time,laborCost.status_code,
+		details.details_id,details.employee_total,details.headcount_total,details.entry_total,details.demission_total,details.labor_cost_total,details.department_type
+	</sql>
+
+    <select id="queryList" resultMap="sysCompany">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_labor_cost as laborCost LEFT JOIN sys_labor_cost_details as details on laborCost.labor_cost_id=details.labor_cost_id
+        where laborCost.status_code!=2
+    </select>
+    <update id="update" parameterType="map">
+		update sys_company set company_name = #{companyName},parent_id = #{parentId},company_phone = #{companyPhone},company_address = #{companyAddress}
+		where company_id = #{companyId}
+	</update>
+    <insert id="addSysLaborCost" parameterType="map" useGeneratedKeys="true" keyProperty="roleId">
+		INSERT INTO sys_labor_cost (year, month, company_id, create_time )
+              VALUES   (#{laborCostId},#{year},#{month},#{companyId},#{createTime})
+	</insert>
+    <insert id="addSysLaborCostDetails" parameterType="map">
+        INSERT INTO sys_labor_cost_details (employee_total, headcount_total, entry_total, demission_total,labor_cost_total,department_type,labor_cost_id )
+        VALUES   (#{employeeTotal},#{headcountTotal},#{entryTotal},#{demissionTotal},#{laborCostTotal},#{departmentType},#{laborCostId})
+    </insert>
+    <update id="delete" parameterType="map">
+		update sys_labor_cost set status_code = 2
+		where labor_cost_id = #{laborCostId}
+	</update>
+
+</mapper>
