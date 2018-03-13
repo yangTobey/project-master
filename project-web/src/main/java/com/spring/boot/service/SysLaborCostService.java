@@ -8,10 +8,14 @@ import java.util.Map;
  */
 public interface SysLaborCostService {
     /**
-     * 获取人员成本列表数据
+     * 查询人员成本信息（根据操作类型查询信息，数据分析图表数据或者列表数据）
+     * @param companyId 公司id
+     * @param year 年份
+     * @param operationType 操作类型（all:全部查询，list:只查询列表信息）
      * @return
      */
-    Map<String,Object> getSysLaborCostList();
+    Map<String,Object> getSysLaborCostInfo(String companyId,String year,String operationType);
+
 
     /**
      * 新增人员成本信息
@@ -41,17 +45,34 @@ public interface SysLaborCostService {
 
     /**
      * 更新人员成本信息
-     * @param companyId 公司id
-     * @param companyName 公司名称
-     * @param companyPhone 公司联系电话
-     * @param companyAddress 公司地址
+     * @param laborCostId 人员成本主表id
+     * @param companyId
+     * @param year
+     * @param month
+     * @param propertyLaborCost
+     * @param propertyHeadcountTotal
+     * @param propertyEmployeeTotal
+     * @param propertyEntryTotal
+     * @param propertyDemissionTotal
+     * @param eBusinessLaborCost
+     * @param eBusinessHeadcountTotal
+     * @param eBusinessEmployeeTotal
+     * @param eBusinessEntryTotal
+     * @param eBusinessDemissionTotal
+     * @param saleLaborCost
+     * @param saleHeadcountTotal
+     * @param saleEmployeeTotal
+     * @param saleEntryTotal
+     * @param saleDemissionTotal
      * @return
      */
-    int updateSysLaborCostInfo(String companyId, String companyName, String companyPhone, String companyAddress);
+    int updateSysLaborCostInfo(String laborCostId,String companyId, String year, String month,String propertyLaborCost,String propertyHeadcountTotal,String propertyEmployeeTotal,String propertyEntryTotal,String propertyDemissionTotal,
+                               String eBusinessLaborCost,String eBusinessHeadcountTotal,String eBusinessEmployeeTotal,String eBusinessEntryTotal,String eBusinessDemissionTotal,
+                               String saleLaborCost,String saleHeadcountTotal,String saleEmployeeTotal,String saleEntryTotal,String saleDemissionTotal);
     /**
      * 删除人员成本信息
-     * @param companyId 公司id
+     * @param laborCostId 人员成本主表id
      * @return
      */
-    int deleteSysLaborCostInfo(String companyId);
+    int deleteSysLaborCostInfo(String laborCostId);
 }

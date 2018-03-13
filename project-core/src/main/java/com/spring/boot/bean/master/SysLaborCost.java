@@ -7,8 +7,8 @@ import java.sql.Timestamp;
  */
 public class SysLaborCost {
     private long laborCostId;
-    private String year;
-    private String month;
+    private int year;
+    private int month;
     private long companyId;
     private Timestamp createTime;
     private int statusCode;
@@ -21,19 +21,19 @@ public class SysLaborCost {
         this.laborCostId = laborCostId;
     }
 
-    public String getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(int year) {
         this.year = year;
     }
 
-    public String getMonth() {
+    public int getMonth() {
         return month;
     }
 
-    public void setMonth(String month) {
+    public void setMonth(int month) {
         this.month = month;
     }
 

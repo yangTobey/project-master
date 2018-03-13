@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.spring.boot.dao.web.master.SysLaborCostDao">
+    <resultMap id="sysLaborCost" type="com.spring.boot.bean.master.SysLaborCost">
+        <result column="labor_cost_id" property="laborCostId"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="company_id" property="companyId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="status_code" property="statusCode"/>
+    </resultMap>
+
     <resultMap id="sysLaborCostDetails" type="com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity">
         <result column="labor_cost_id" property="laborCostId"/>
         <result column="year" property="year"/>
@@ -23,16 +32,53 @@
 		details.details_id,details.employee_total,details.headcount_total,details.entry_total,details.demission_total,details.labor_cost_total,details.department_type
 	</sql>
 
+    <sql id="Base_Column_List_SysLaborCost">
+        labor_cost_id, year, month, company_id,create_time,status_code
+    </sql>
+
+    <select id="querySysLaborCostTotal" resultMap="sysLaborCostDetails">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_labor_cost as laborCost LEFT JOIN sys_labor_cost_details as details on laborCost.labor_cost_id=details.labor_cost_id
+        where 1=1
+        <if test="companyId != 0">
+            and laborCost.company_id=#{companyId}
+        </if>
+        and laborCost.month=#{month}
+        and laborCost.status_code!=2
+    </select>
     <select id="queryList" resultMap="sysLaborCostDetails">
         select
         <include refid="Base_Column_List"/>
         from sys_labor_cost as laborCost LEFT JOIN sys_labor_cost_details as details on laborCost.labor_cost_id=details.labor_cost_id
-        where laborCost.status_code!=2
+        where 1=1
+        <if test="companyId != 0">
+            and laborCost.company_id=#{companyId}
+        </if>
+        <if test="companyId == 0">
+            and laborCost.company_id=#{companyId}
+        </if>
+        laborCost.status_code!=2
     </select>
-    <update id="update" parameterType="map">
-		update sys_company set company_name = #{companyName},parent_id = #{parentId},company_phone = #{companyPhone},company_address = #{companyAddress}
-		where company_id = #{companyId}
+    <!--根据人员成本id查找对应的信息-->
+    <select id="findSysLaborCostByLaborCostId" resultMap="sysLaborCost" parameterType="int">
+        select
+        <include refid="Base_Column_List_SysLaborCost"/>
+        from sys_labor_cost
+        where labor_cost_id = #{laborCostId}
+    </select>
+    <!--更新人员成本信息-->
+    <update id="updateSysLaborCost" parameterType="com.spring.boot.bean.master.SysLaborCost">
+		update sys_labor_cost set year = #{year},month = #{month},company_id = #{companyId}
+		where labor_cost_id = #{laborCostId}
 	</update>
+    <!--更新人员成本详细信息-->
+    <update id="updateSysLaborCostDetails" parameterType="com.spring.boot.bean.master.SysLaborCostDetails">
+        update sys_labor_cost_details set employee_total = #{employeeTotal},headcount_total = #{headcountTotal},entry_total = #{entryTotal},demission_total = #{demissionTotal},
+        labor_cost_total = #{laborCostTotal},department_type = #{departmentType}
+        where labor_cost_id = #{laborCostId}
+    </update>
+
     <insert id="addSysLaborCost"  useGeneratedKeys="true" keyProperty="laborCostId">
 		INSERT INTO sys_labor_cost (year, month, company_id, create_time )
               VALUES   (#{laborCostId},#{year},#{month},#{companyId},#{createTime})

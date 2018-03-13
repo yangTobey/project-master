@@ -23,8 +23,18 @@ public class SysLaborCostBusinessServiceImpl implements SysLaborCostBusinessServ
     private SysLaborCostDao sysLaborCostDao;
 
     @Override
+    public int getSysLaborCostTotal(long companyId,String year,int month,String operationType) {
+        return sysLaborCostDao.getSysLaborCostTotal(companyId,year,month,operationType);
+    }
+
+    @Override
     public List<SysLaborCost> getSysLaborCostList() {
         return sysLaborCostDao.queryList();
+    }
+
+    @Override
+    public SysLaborCost findSysLaborCostByLaborCostId(long laborCostId) {
+        return sysLaborCostDao.findSysLaborCostByLaborCostId(laborCostId);
     }
 
     @Override
@@ -38,8 +48,13 @@ public class SysLaborCostBusinessServiceImpl implements SysLaborCostBusinessServ
     }
 
     @Override
-    public int updateSysLaborCostInfo(Map<String, Object> map) {
-        return sysLaborCostDao.update(map);
+    public int updateSysLaborCostInfo(SysLaborCost sysLaborCost) {
+        return sysLaborCostDao.updateSysLaborCostInfo(sysLaborCost);
+    }
+
+    @Override
+    public int updateSysLaborCostDetailsInfo(SysLaborCostDetails sysLaborCostDetails) {
+        return sysLaborCostDao.updateSysLaborCostDetailsInfo(sysLaborCostDetails);
     }
 
     @Override

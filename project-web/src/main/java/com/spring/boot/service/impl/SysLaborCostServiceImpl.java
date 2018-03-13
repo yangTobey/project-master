@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,12 +30,22 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public Map<String, Object> getSysLaborCostList() {
+    public Map<String, Object> getSysLaborCostInfo(String companyId,String year,String operationType) {
         Map<String, Object> map = new HashMap<String, Object>();
+        Calendar a= Calendar.getInstance();
+        int month=a.get(Calendar.MONTH)+1;
+        if("all".equals(operationType)){
+            sysLaborCostBusinessService.getSysLaborCostTotal(Long.valueOf(companyId),year,month,operationType);
+        }else{
+
+        }
+
         map.put("total", sysLaborCostBusinessService.getSysLaborCostList().size());
         map.put("list", sysLaborCostBusinessService.getSysLaborCostList());
         return map;
     }
+
+
 
     @Override
     public int addSysLaborCost(String companyId, String year, String month, String propertyLaborCost, String propertyHeadcountTotal, String propertyEmployeeTotal, String propertyEntryTotal, String propertyDemissionTotal,
@@ -42,8 +54,8 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
         SysLaborCost sysLaborCost=new SysLaborCost();
         sysLaborCost.setCompanyId(Integer.valueOf(companyId));
         sysLaborCost.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-        sysLaborCost.setYear(year);
-        sysLaborCost.setMonth(month);
+        sysLaborCost.setYear(Integer.valueOf(year));
+        sysLaborCost.setMonth(Integer.valueOf(month));
         int count=sysLaborCostBusinessService.addSysLaborCost(sysLaborCost);
         if (count>0) {
             long laborCostId=sysLaborCost.getLaborCostId();
@@ -83,12 +95,55 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
     }
 
     @Override
-    public int updateSysLaborCostInfo(String companyId, String companyName, String companyPhone, String companyAddress) {
+    public int updateSysLaborCostInfo(String laborCostId,String companyId, String year, String month,String propertyLaborCost,String propertyHeadcountTotal,String propertyEmployeeTotal,String propertyEntryTotal,String propertyDemissionTotal,
+                                      String eBusinessLaborCost,String eBusinessHeadcountTotal,String eBusinessEmployeeTotal,String eBusinessEntryTotal,String eBusinessDemissionTotal,
+                                      String saleLaborCost,String saleHeadcountTotal,String saleEmployeeTotal,String saleEntryTotal,String saleDemissionTotal) {
+        SysLaborCost sysLaborCost=sysLaborCostBusinessService.findSysLaborCostByLaborCostId(Long.valueOf(laborCostId));
+        if(sysLaborCost!=null){
+            sysLaborCost.setMonth(Integer.valueOf(month));
+            sysLaborCost.setYear(Integer.valueOf(year));
+            sysLaborCost.setCompanyId(Long.valueOf(companyId));
+            sysLaborCostBusinessService.updateSysLaborCostInfo(sysLaborCost);
+
+            long laborCostIdUpdate=Long.valueOf(laborCostId);
+            SysLaborCostDetails propertySysLaborCostDetails=new SysLaborCostDetails();
+            propertySysLaborCostDetails.setDemissionTotal(Integer.valueOf(propertyDemissionTotal));
+            propertySysLaborCostDetails.setDepartmentType(1);
+            propertySysLaborCostDetails.setEmployeeTotal(Integer.valueOf(propertyEmployeeTotal));
+            propertySysLaborCostDetails.setEntryTotal(Integer.valueOf(propertyEntryTotal));
+            propertySysLaborCostDetails.setHeadcountTotal(Integer.valueOf(propertyHeadcountTotal));
+            propertySysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
+            propertySysLaborCostDetails.setLaborCostTotal(Integer.valueOf(propertyLaborCost));
+            int propertyCount=sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(propertySysLaborCostDetails);
+
+            SysLaborCostDetails eBusinessSysLaborCostDetails=new SysLaborCostDetails();
+            eBusinessSysLaborCostDetails.setDemissionTotal(Integer.valueOf(eBusinessDemissionTotal));
+            eBusinessSysLaborCostDetails.setDepartmentType(2);
+            eBusinessSysLaborCostDetails.setEmployeeTotal(Integer.valueOf(eBusinessEmployeeTotal));
+            eBusinessSysLaborCostDetails.setEntryTotal(Integer.valueOf(eBusinessEntryTotal));
+            eBusinessSysLaborCostDetails.setHeadcountTotal(Integer.valueOf(eBusinessHeadcountTotal));
+            eBusinessSysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
+            eBusinessSysLaborCostDetails.setLaborCostTotal(Integer.valueOf(eBusinessLaborCost));
+            int eBusinessCount=sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(eBusinessSysLaborCostDetails);
+
+            SysLaborCostDetails saleSysLaborCostDetails=new SysLaborCostDetails();
+            saleSysLaborCostDetails.setDemissionTotal(Integer.valueOf(saleDemissionTotal));
+            saleSysLaborCostDetails.setDepartmentType(3);
+            saleSysLaborCostDetails.setEmployeeTotal(Integer.valueOf(saleEmployeeTotal));
+            saleSysLaborCostDetails.setEntryTotal(Integer.valueOf(saleEntryTotal));
+            saleSysLaborCostDetails.setHeadcountTotal(Integer.valueOf(saleHeadcountTotal));
+            saleSysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
+            saleSysLaborCostDetails.setLaborCostTotal(Integer.valueOf(saleLaborCost));
+            sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(saleSysLaborCostDetails);
+
+        }
         return 0;
     }
 
     @Override
-    public int deleteSysLaborCostInfo(String companyId) {
-        return 0;
+    public int deleteSysLaborCostInfo(String laborCostId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("laborCostId", laborCostId);
+        return sysLaborCostBusinessService.deleteSysLaborCostInfo(map);
     }
 }

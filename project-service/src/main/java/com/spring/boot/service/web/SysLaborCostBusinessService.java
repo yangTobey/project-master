@@ -14,11 +14,21 @@ import java.util.Map;
 public interface SysLaborCostBusinessService {
 
     /**
+     * 获取人工总成本
+     * @return
+     */
+    int  getSysLaborCostTotal(long companyId,String year,int month,String operationType);
+    /**
      * 获取人员成本列表数据
      * @return
      */
     List<SysLaborCost> getSysLaborCostList();
 
+    /**
+     * 根据人员成本id查找对应的信息
+     * @return
+     */
+    SysLaborCost findSysLaborCostByLaborCostId(long laborCostId);
     /**
      * 新增人员成本
      * @param sysLaborCost
@@ -33,10 +43,17 @@ public interface SysLaborCostBusinessService {
     int addSysLaborCostDetails(SysLaborCostDetails sysLaborCostDetails);
     /**
      * 更新人员成本
-     * @param map
+     * @param sysLaborCost
      * @return
      */
-    int updateSysLaborCostInfo(Map<String, Object> map);
+    int updateSysLaborCostInfo(SysLaborCost sysLaborCost);
+
+    /**
+     * 更新人员成本详情
+     * @param sysLaborCostDetails
+     * @return
+     */
+    int updateSysLaborCostDetailsInfo(SysLaborCostDetails sysLaborCostDetails);
 
     /**
      * 删除人员成本
