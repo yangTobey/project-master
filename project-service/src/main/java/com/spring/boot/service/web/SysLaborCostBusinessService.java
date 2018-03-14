@@ -4,6 +4,7 @@ import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysDepartment;
 import com.spring.boot.bean.master.SysLaborCost;
 import com.spring.boot.bean.master.SysLaborCostDetails;
+import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -17,12 +18,12 @@ public interface SysLaborCostBusinessService {
      * 获取人工总成本
      * @return
      */
-    int  getSysLaborCostTotal(long companyId,String year,int month,String operationType);
+    SysLaborCostDetailsEntity  getSysLaborCostTotal(Map<String, Object> map);
     /**
      * 获取人员成本列表数据
      * @return
      */
-    List<SysLaborCost> getSysLaborCostList();
+    List<SysLaborCostDetailsEntity> getSysLaborCostList(Map<String, Object> map);
 
     /**
      * 根据人员成本id查找对应的信息

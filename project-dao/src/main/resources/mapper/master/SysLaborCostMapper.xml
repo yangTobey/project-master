@@ -17,7 +17,6 @@
         <result column="company_id" property="companyId"/>
         <result column="create_time" property="createTime"/>
         <result column="status_code" property="statusCode"/>
-
         <result column="details_id" property="laborCostDetailsId"/>
         <result column="employee_total" property="employeeTotal"/>
         <result column="headcount_total" property="headcountTotal"/>
@@ -32,33 +31,45 @@
 		details.details_id,details.employee_total,details.headcount_total,details.entry_total,details.demission_total,details.labor_cost_total,details.department_type
 	</sql>
 
+    <sql id="Base_Column_List_Details">
+        laborCost.labor_cost_id,laborCost.company_id,
+        laborCost.year,laborCost.month,laborCost.create_time,laborCost.status_code,company.company_name,
+        IFNULL(SUM(details.demission_total), 0) AS demission_total,
+        IFNULL(SUM(details.headcount_total), 0) AS headcount_total,
+        IFNULL(SUM(details.employee_total), 0) AS employee_total,
+        IFNULL(SUM(details.entry_total), 0) AS entry_total,
+        IFNULL(SUM(details.labor_cost_total), 0) AS labor_cost_total
+    </sql>
+
     <sql id="Base_Column_List_SysLaborCost">
         labor_cost_id, year, month, company_id,create_time,status_code
     </sql>
 
-    <select id="querySysLaborCostTotal" resultMap="sysLaborCostDetails">
-        select
-        <include refid="Base_Column_List"/>
-        from sys_labor_cost as laborCost LEFT JOIN sys_labor_cost_details as details on laborCost.labor_cost_id=details.labor_cost_id
-        where 1=1
-        <if test="companyId != 0">
-            and laborCost.company_id=#{companyId}
-        </if>
-        and laborCost.month=#{month}
-        and laborCost.status_code!=2
+    <select id="getSysLaborCostTotal" resultMap="sysLaborCostDetails" parameterType="map">
+        SELECT SUM(sum.demission_total) as demission_total,SUM(sum.headcount_total)as headcount_total,SUM(sum.employee_total) as employee_total,
+        SUM(sum.entry_total) AS entry_total,SUM(sum.labor_cost_total) AS labor_cost_total
+        from (SELECT
+        IFNULL(SUM(details.demission_total), 0) AS demission_total,
+        IFNULL(SUM(details.headcount_total), 0) AS headcount_total,
+        IFNULL(SUM(details.employee_total), 0) AS employee_total,
+        IFNULL(SUM(details.entry_total), 0) AS entry_total,
+        IFNULL(SUM(details.labor_cost_total), 0) AS labor_cost_total FROM sys_labor_cost AS laborCost
+        LEFT JOIN sys_labor_cost_details AS details ON laborCost.labor_cost_id = details.labor_cost_id
+        LEFT JOIN sys_company as company on company.company_id=laborCost.company_id
+        GROUP BY laborCost.labor_cost_id) as sum
     </select>
-    <select id="queryList" resultMap="sysLaborCostDetails">
+    <select id="getSysLaborCostList" resultMap="sysLaborCostDetails" parameterType="map">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List_Details"/>
         from sys_labor_cost as laborCost LEFT JOIN sys_labor_cost_details as details on laborCost.labor_cost_id=details.labor_cost_id
+        LEFT JOIN sys_company as company on company.company_id=laborCost.company_id
         where 1=1
         <if test="companyId != 0">
             and laborCost.company_id=#{companyId}
         </if>
-        <if test="companyId == 0">
-            and laborCost.company_id=#{companyId}
-        </if>
-        laborCost.status_code!=2
+        and laborCost.year=#{year}
+        and laborCost.status_code!=2
+        GROUP BY  laborCost.labor_cost_id
     </select>
     <!--根据人员成本id查找对应的信息-->
     <select id="findSysLaborCostByLaborCostId" resultMap="sysLaborCost" parameterType="int">

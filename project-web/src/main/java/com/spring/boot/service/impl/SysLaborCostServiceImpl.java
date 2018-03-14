@@ -2,6 +2,7 @@ package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.SysLaborCost;
 import com.spring.boot.bean.master.SysLaborCostDetails;
+import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
 import com.spring.boot.service.SysCompanyService;
 import com.spring.boot.service.SysLaborCostService;
 import com.spring.boot.service.web.SysCompanyBusinessService;
@@ -16,6 +17,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,21 +34,35 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
     @Override
     public Map<String, Object> getSysLaborCostInfo(String companyId,String year,String operationType) {
         Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
         Calendar a= Calendar.getInstance();
         int month=a.get(Calendar.MONTH)+1;
+        int total=0;
+        int sysLaborCostTotal=0;
+        SysLaborCostDetailsEntity sysLaborCostDetailsEntity=null;
+        List<SysLaborCostDetailsEntity> listA=null;
         if("all".equals(operationType)){
-            sysLaborCostBusinessService.getSysLaborCostTotal(Long.valueOf(companyId),year,month,operationType);
+            map.put("companyId",companyId);
+            map.put("year",year);
+            map.put("month",month);
+            sysLaborCostDetailsEntity= sysLaborCostBusinessService.getSysLaborCostTotal(map);
+            listA=sysLaborCostBusinessService.getSysLaborCostList(map);
+            resultMap.put("sysLaborCostTotal", sysLaborCostDetailsEntity);
+            resultMap.put("sysLaborCostDetailsList", listA);
+            //人工支出占比
+            resultMap.put("sysLaborCostScale", 0);
+            //人员缺编率
+            resultMap.put("sysEmployeeScale", (sysLaborCostDetailsEntity.getEmployeeTotal()/sysLaborCostDetailsEntity.getHeadcountTotal())*100);
+            //人员流失率
+            resultMap.put("sysDemissionScale", (sysLaborCostDetailsEntity.getDemissionTotal()/sysLaborCostDetailsEntity.getEntryTotal())*100);
         }else{
-
+            map.put("companyId",companyId);
+            map.put("year",year);
+            listA=sysLaborCostBusinessService.getSysLaborCostList(map);
+            resultMap.put("sysLaborCostDetailsList", listA);
         }
-
-        map.put("total", sysLaborCostBusinessService.getSysLaborCostList().size());
-        map.put("list", sysLaborCostBusinessService.getSysLaborCostList());
-        return map;
+        return resultMap;
     }
-
-
-
     @Override
     public int addSysLaborCost(String companyId, String year, String month, String propertyLaborCost, String propertyHeadcountTotal, String propertyEmployeeTotal, String propertyEntryTotal, String propertyDemissionTotal,
                                String eBusinessLaborCost, String eBusinessHeadcountTotal, String eBusinessEmployeeTotal, String eBusinessEntryTotal, String eBusinessDemissionTotal,

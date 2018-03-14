@@ -4,6 +4,7 @@ import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysDepartment;
 import com.spring.boot.bean.master.SysLaborCost;
 import com.spring.boot.bean.master.SysLaborCostDetails;
+import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
 import com.spring.boot.dao.web.master.SysCompanyDao;
 import com.spring.boot.dao.web.master.SysLaborCostDao;
 import com.spring.boot.service.web.SysCompanyBusinessService;
@@ -23,13 +24,13 @@ public class SysLaborCostBusinessServiceImpl implements SysLaborCostBusinessServ
     private SysLaborCostDao sysLaborCostDao;
 
     @Override
-    public int getSysLaborCostTotal(long companyId,String year,int month,String operationType) {
-        return sysLaborCostDao.getSysLaborCostTotal(companyId,year,month,operationType);
+    public SysLaborCostDetailsEntity getSysLaborCostTotal(Map<String, Object> map) {
+        return sysLaborCostDao.getSysLaborCostTotal(map);
     }
 
     @Override
-    public List<SysLaborCost> getSysLaborCostList() {
-        return sysLaborCostDao.queryList();
+    public List<SysLaborCostDetailsEntity> getSysLaborCostList(Map<String, Object> map) {
+        return sysLaborCostDao.getSysLaborCostList(map);
     }
 
     @Override

@@ -3,9 +3,11 @@ package com.spring.boot.dao.web.master;
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysLaborCost;
 import com.spring.boot.bean.master.SysLaborCostDetails;
+import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
 import com.spring.boot.dao.BaseDao;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +18,13 @@ public interface SysLaborCostDao extends BaseDao<SysLaborCost> {
      * 获取人工总成本
      * @return
      */
-    int  getSysLaborCostTotal(@Param("companyId")long companyId, @Param("year")String year,@Param("month") int month, @Param("operationType")String operationType);
+    SysLaborCostDetailsEntity  getSysLaborCostTotal(Map<String, Object> map);
+
+    /**
+     * 获取人工成本列表信息
+     * @return
+     */
+    List<SysLaborCostDetailsEntity> getSysLaborCostList(Map<String, Object> map);
 
     /**
      * 新增人员成本
