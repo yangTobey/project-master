@@ -32,37 +32,49 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public Map<String, Object> getSysLaborCostInfo(String companyId,String year,String operationType) {
+    public Map<String, Object> getSysLaborCostInfo(String companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Calendar a= Calendar.getInstance();
         int month=a.get(Calendar.MONTH)+1;
-        int total=0;
-        int sysLaborCostTotal=0;
-        SysLaborCostDetailsEntity sysLaborCostDetailsEntity=null;
-        List<SysLaborCostDetailsEntity> listA=null;
-        if("all".equals(operationType)){
+        int year=a.get(Calendar.YEAR);
+        SysLaborCostDetailsEntity sysLaborCostDetails=null;
+        List<SysLaborCostDetailsEntity> sysLaborCostDepartmentList=null;
             map.put("companyId",companyId);
             map.put("year",year);
             map.put("month",month);
-            sysLaborCostDetailsEntity= sysLaborCostBusinessService.getSysLaborCostTotal(map);
-            listA=sysLaborCostBusinessService.getSysLaborCostList(map);
-            resultMap.put("sysLaborCostTotal", sysLaborCostDetailsEntity);
-            resultMap.put("sysLaborCostDetailsList", listA);
+        sysLaborCostDetails= sysLaborCostBusinessService.getSysLaborCostTotal(map);
+        sysLaborCostDepartmentList= sysLaborCostBusinessService.getSysLaborCostDepartmentTotal(map);
+            resultMap.put("sysLaborCostTotal", sysLaborCostDetails);
             //人工支出占比
             resultMap.put("sysLaborCostScale", 0);
             //人员缺编率
-            resultMap.put("sysEmployeeScale", (sysLaborCostDetailsEntity.getEmployeeTotal()/sysLaborCostDetailsEntity.getHeadcountTotal())*100);
+            resultMap.put("sysEmployeeScale", (sysLaborCostDetails.getEmployeeTotal()/sysLaborCostDetails.getHeadcountTotal())*100);
             //人员流失率
-            resultMap.put("sysDemissionScale", (sysLaborCostDetailsEntity.getDemissionTotal()/sysLaborCostDetailsEntity.getEntryTotal())*100);
-        }else{
-            map.put("companyId",companyId);
-            map.put("year",year);
-            listA=sysLaborCostBusinessService.getSysLaborCostList(map);
-            resultMap.put("sysLaborCostDetailsList", listA);
-        }
+            resultMap.put("sysDemissionScale", (sysLaborCostDetails.getDemissionTotal()/sysLaborCostDetails.getEntryTotal())*100);
+            //成本构成
+        resultMap.put("sysLaborCostsDepartmentList", sysLaborCostDepartmentList);
+
         return resultMap;
     }
+
+    @Override
+    public Map<String, Object> getSysLaborCostList(String companyId, int year) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Calendar a= Calendar.getInstance();
+        int month=a.get(Calendar.MONTH)+1;
+        SysLaborCostDetailsEntity sysLaborCostDetailsEntity=null;
+        List<SysLaborCostDetailsEntity> list=null;
+
+            map.put("companyId",companyId);
+            map.put("year",year);
+            list=sysLaborCostBusinessService.getSysLaborCostList(map);
+            resultMap.put("sysLaborCostDetailsList", list);
+
+        return resultMap;
+    }
+
     @Override
     public int addSysLaborCost(String companyId, String year, String month, String propertyLaborCost, String propertyHeadcountTotal, String propertyEmployeeTotal, String propertyEntryTotal, String propertyDemissionTotal,
                                String eBusinessLaborCost, String eBusinessHeadcountTotal, String eBusinessEmployeeTotal, String eBusinessEntryTotal, String eBusinessDemissionTotal,

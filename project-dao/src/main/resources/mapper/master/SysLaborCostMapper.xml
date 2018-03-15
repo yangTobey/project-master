@@ -25,12 +25,20 @@
         <result column="labor_cost_total" property="laborCostTotal"/>
         <result column="department_type" property="departmentType"/>
     </resultMap>
+    <resultMap id="sysLaborCostDepartment" type="com.spring.boot.bean.master.entity.SysLaborCostDepartmentEntity">
+        <result column="employee_total" property="employeeTotal"/>
+        <result column="headcount_total" property="headcountTotal"/>
+        <result column="entry_total" property="entryTotal"/>
+        <result column="demission_total" property="demissionTotal"/>
+        <result column="labor_cost_total" property="laborCostTotal"/>
+        <result column="department_type" property="departmentType"/>
+    </resultMap>
 
     <sql id="Base_Column_List">
 		laborCost.labor_cost_id, laborCost.year, laborCost.month, laborCost.company_id,laborCost.create_time,laborCost.status_code,
 		details.details_id,details.employee_total,details.headcount_total,details.entry_total,details.demission_total,details.labor_cost_total,details.department_type
 	</sql>
-
+    <!--根据分公司id获取 物业、电商、销配当月在职总人数、编制总人数、入职总人数、离职总人数、人工总成本-->
     <sql id="Base_Column_List_Details">
         laborCost.labor_cost_id,laborCost.company_id,
         laborCost.year,laborCost.month,laborCost.create_time,laborCost.status_code,company.company_name,
@@ -41,10 +49,20 @@
         IFNULL(SUM(details.labor_cost_total), 0) AS labor_cost_total
     </sql>
 
+    <!--根据 物业、电商、销配部门类型获取当月人工总成本-->
+    <sql id="SysLaborCost_Department_Total">
+        IFNULL(SUM(details.demission_total), 0) AS demission_total,
+        IFNULL(SUM(details.headcount_total), 0) AS headcount_total,
+        IFNULL(SUM(details.employee_total), 0) AS employee_total,
+        IFNULL(SUM(details.entry_total), 0) AS entry_total,
+        IFNULL(SUM(details.labor_cost_total), 0) AS labor_cost_total,
+        details.department_type
+    </sql>
+
     <sql id="Base_Column_List_SysLaborCost">
         labor_cost_id, year, month, company_id,create_time,status_code
     </sql>
-
+    <!--获取 全国分公司 物业、电商、销配当月在职总人数、编制总人数、入职总人数、离职总人数、人工总成本-->
     <select id="getSysLaborCostTotal" resultMap="sysLaborCostDetails" parameterType="map">
         SELECT SUM(sum.demission_total) as demission_total,SUM(sum.headcount_total)as headcount_total,SUM(sum.employee_total) as employee_total,
         SUM(sum.entry_total) AS entry_total,SUM(sum.labor_cost_total) AS labor_cost_total
@@ -56,7 +74,28 @@
         IFNULL(SUM(details.labor_cost_total), 0) AS labor_cost_total FROM sys_labor_cost AS laborCost
         LEFT JOIN sys_labor_cost_details AS details ON laborCost.labor_cost_id = details.labor_cost_id
         LEFT JOIN sys_company as company on company.company_id=laborCost.company_id
+        where 1=1
+        <if test="companyId != 0">
+            and laborCost.company_id=#{companyId}
+        </if>
+        and laborCost.year=#{year}
+        and laborCost.month=#{month}
+        and laborCost.status_code!=2
         GROUP BY laborCost.labor_cost_id) as sum
+    </select>
+    <!--根据 物业、电商、销配部门类型获取当月人工总成本-->
+    <select id="getSysLaborCostDepartmentTotal" resultMap="sysLaborCostDepartment" parameterType="map">
+        select
+        <include refid="SysLaborCost_Department_Total"/>
+        FROM sys_labor_cost AS laborCost
+        right JOIN sys_labor_cost_details AS details ON laborCost.labor_cost_id = details.labor_cost_id
+        where 1=1
+        <if test="companyId != 0">
+            and laborCost.company_id=#{companyId}
+        </if>
+        and laborCost.year=#{year}
+        and laborCost.month=#{month}
+        GROUP BY details.department_type
     </select>
     <select id="getSysLaborCostList" resultMap="sysLaborCostDetails" parameterType="map">
         select

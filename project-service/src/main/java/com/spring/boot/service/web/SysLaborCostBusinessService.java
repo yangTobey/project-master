@@ -20,6 +20,11 @@ public interface SysLaborCostBusinessService {
      */
     SysLaborCostDetailsEntity  getSysLaborCostTotal(Map<String, Object> map);
     /**
+     * 根据 物业、电商、销配部门类型获取当月人工总成本
+     * @return
+     */
+    List<SysLaborCostDetailsEntity>  getSysLaborCostDepartmentTotal(Map<String, Object> map);
+    /**
      * 获取人员成本列表数据
      * @return
      */

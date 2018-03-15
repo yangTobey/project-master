@@ -23,16 +23,30 @@ public class SysLaborCostController {
     private SysLaborCostService sysLaborCostService;
 
     /**
-     * 查询人员成本信息（根据操作类型查询信息，数据分析图表数据或者列表数据）
+     * 查询人员成本信息（数据分析图表数据）
      * @param companyId 公司id
-     * @param year 年份
-     * @param operationType 操作类型（all:全部查询，list:只查询列表信息）
      * @return
      */
     @RequestMapping(value = "/getSysLaborCostInfo", method = RequestMethod.GET)
-    public R getSysLaborCostInfo(String companyId,String year,String operationType) {
-        Map<String, Object> map = sysLaborCostService.getSysLaborCostInfo(companyId,year,operationType);
+    public R getSysLaborCostInfo(String companyId) {
+        Map<String, Object> map = sysLaborCostService.getSysLaborCostInfo(companyId);
         return R.ok().put("200", map);
+    }
+    /**
+     * 查询人员成本信息（列表数据）
+     * @param companyId 公司id
+     * @param year 年份
+     * @return
+     */
+    @RequestMapping(value = "/getSysLaborCostList", method = RequestMethod.GET)
+    public R getSysLaborCostList(String companyId,String year) {
+        if(!UtilHelper.isNumer(year)){
+            return R.error(101,"年份格式不合理！");
+        }else{
+            Map<String, Object> map = sysLaborCostService.getSysLaborCostList(companyId,Integer.valueOf(year));
+            return R.ok().put("200", map);
+        }
+
     }
 
 

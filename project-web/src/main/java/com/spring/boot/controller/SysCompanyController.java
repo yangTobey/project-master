@@ -24,11 +24,13 @@ public class SysCompanyController {
     /**
      * 查询公司信息
      *
+     * @param limit 每页限制条数
+     * @param offset 页码
      * @return
      */
     @RequestMapping(value = "/getSysCompanyList", method = RequestMethod.GET)
-    public R getSysCompanyList() {
-        Map<String, Object> map = sysCompanyService.getSysCompanyList();
+    public R getSysCompanyList(String limit,String offset) {
+        Map<String, Object> map = sysCompanyService.getSysCompanyList(limit,offset);
         return R.ok().put("200", map);
     }
 

@@ -29,10 +29,13 @@ public class SysCompanyServiceImpl implements SysCompanyService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public Map<String, Object> getSysCompanyList() {
+    public Map<String, Object> getSysCompanyList(String limit,String offset) {
+        Map<String, Object> mapData = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("total", sysCompanyBusinessService.getSysCompanyList().size());
-        map.put("list", sysCompanyBusinessService.getSysCompanyList());
+        map.put("limit",limit);
+        map.put("offset",offset);
+        mapData.put("total", sysCompanyBusinessService.getSysCompanyList(map).size());
+        mapData.put("list", sysCompanyBusinessService.getSysCompanyList(map));
         return map;
     }
 

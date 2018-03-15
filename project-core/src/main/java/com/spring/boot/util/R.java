@@ -62,9 +62,21 @@ public class R extends HashMap<String, Object> {
 	 * @param map
 	 * @return
 	 */
-	public R put(String code,Map<String, Object> map) {
+	public R putData(String code,Map<String, Object> map) {
 		super.put("code", code);
 		super.put("data", map);
 		return this;
+	}
+	/**
+	 * 接口正常返回数据（格式：返回码100，map数据集）
+	 * @param code
+	 * @param map
+	 * @return
+	 */
+	public R put(String code,Map<String, Object> map) {
+		R r = new R();
+		map.put("code", code);
+		r.putAll(map);
+		return r;
 	}
 }

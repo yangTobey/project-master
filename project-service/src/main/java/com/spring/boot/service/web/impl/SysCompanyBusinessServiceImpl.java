@@ -22,8 +22,8 @@ public class SysCompanyBusinessServiceImpl implements SysCompanyBusinessService 
     private SysCompanyDao sysCompanyDao;
 
     @Override
-    public List<SysCompany> getSysCompanyList() {
-        return sysCompanyDao.queryList();
+    public List<SysCompany> getSysCompanyList(Map<String, Object> map) {
+        return sysCompanyDao.queryList(map);
     }
 
     @Override

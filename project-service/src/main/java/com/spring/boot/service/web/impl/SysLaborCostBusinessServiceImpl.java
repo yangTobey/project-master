@@ -29,6 +29,11 @@ public class SysLaborCostBusinessServiceImpl implements SysLaborCostBusinessServ
     }
 
     @Override
+    public List<SysLaborCostDetailsEntity> getSysLaborCostDepartmentTotal(Map<String, Object> map) {
+        return sysLaborCostDao.getSysLaborCostDepartmentTotal(map);
+    }
+
+    @Override
     public List<SysLaborCostDetailsEntity> getSysLaborCostList(Map<String, Object> map) {
         return sysLaborCostDao.getSysLaborCostList(map);
     }

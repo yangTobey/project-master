@@ -11,7 +11,7 @@ public interface SysCompanyService {
      * 获取公司列表数据
      * @return
      */
-    Map<String,Object> getSysCompanyList();
+    Map<String,Object> getSysCompanyList(String limit,String offset);
 
     /**
      * 新增公司信息

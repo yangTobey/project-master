@@ -157,6 +157,23 @@ public class UtilHelper {
         }
         return b;
     }
+    /**
+     * 利用正则表达式判断字符串是否是数字
+     * @param str
+     * @return
+     */
+    public static boolean isNumer(String str){
+        if (UtilHelper.isEmpty(str)) {
+            return false;
+        }else{
+            Pattern pattern = Pattern.compile("[0-9]*");
+            Matcher isNum = pattern.matcher(str);
+            if( !isNum.matches() ){
+                return false;
+            }
+            return true;
+        }
+    }
 
     /**
      * 生成校验码

@@ -16,7 +16,7 @@ public interface SysCompanyBusinessService {
      *
      * @return
      */
-    List<SysCompany> getSysCompanyList();
+    List<SysCompany> getSysCompanyList(Map<String, Object> map);
 
     /**
      * 新增公司
