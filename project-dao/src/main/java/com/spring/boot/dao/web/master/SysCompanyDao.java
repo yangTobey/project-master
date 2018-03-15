@@ -12,6 +12,13 @@ import java.util.Map;
 public interface SysCompanyDao extends BaseDao<SysCompany> {
 
     /**
+     * 获取公司列表条数
+     *
+     * @param map
+     * @return
+     */
+    int getSysCompanyListTotal(Map<String, Object> map);
+    /**
      * 新增公司
      *
      * @param map

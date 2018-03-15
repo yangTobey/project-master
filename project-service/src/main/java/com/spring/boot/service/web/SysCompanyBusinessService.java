@@ -19,6 +19,13 @@ public interface SysCompanyBusinessService {
     List<SysCompany> getSysCompanyList(Map<String, Object> map);
 
     /**
+     * 获取公司列表数据条数
+     *
+     * @return
+     */
+   int getSysCompanyListTotal(Map<String, Object> map);
+
+    /**
      * 新增公司
      *
      * @param map

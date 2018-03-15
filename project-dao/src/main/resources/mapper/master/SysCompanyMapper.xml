@@ -30,8 +30,17 @@
         from user
         where account = #{account}
     </select>-->
-    <select id="queryList" resultMap="sysCompany">
+    <select id="queryList" resultMap="sysCompany" parameterType="map">
         select
+        <include refid="Base_Column_List"/>
+        from sys_company
+        where `status`!=2
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+    <select id="queryListTotal" resultType="int"  parameterType="map">
+        select count(company_id)
         <include refid="Base_Column_List"/>
         from sys_company
         where `status`!=2

@@ -11,6 +11,12 @@ import java.util.Map;
 public interface SysDepartmentDao extends BaseDao<SysDepartment>{
 
     /**
+     * 获取部门列表数据条数
+     *
+     * @return
+     */
+    int getSysDepartmentTotal(Map<String, Object> map);
+    /**
      * 新增部门
      * @param map
      * @return

@@ -20,8 +20,13 @@ public class SysDepartmentBusinessServiceImpl implements SysDepartmentBusinessSe
     private SysDepartmentDao sysDepartmentDao;
 
     @Override
-    public List<SysDepartment> getSysDepartmentInfo() {
-        return sysDepartmentDao.queryList();
+    public List<SysDepartment> getSysDepartmentInfo(Map<String, Object> map) {
+        return sysDepartmentDao.queryList(map);
+    }
+
+    @Override
+    public int getSysDepartmentTotal(Map<String, Object> map) {
+        return sysDepartmentDao.getSysDepartmentTotal(map);
     }
 
     @Override

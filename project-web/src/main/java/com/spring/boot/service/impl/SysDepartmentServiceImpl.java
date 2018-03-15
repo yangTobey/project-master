@@ -29,10 +29,13 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public Map<String, Object> getSysDepartmentInfo() {
+    public Map<String, Object> getSysDepartmentInfo(String limit,String offset) {
+        Map<String, Object> mapData = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("total", sysDepartmentBusinessService.getSysDepartmentInfo().size());
-        map.put("list", sysDepartmentBusinessService.getSysDepartmentInfo());
+        map.put("limit",limit);
+        map.put("offset",offset);
+        mapData.put("total", sysDepartmentBusinessService.getSysDepartmentTotal(map));
+        mapData.put("list", sysDepartmentBusinessService.getSysDepartmentInfo(map));
         return map;
     }
 

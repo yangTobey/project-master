@@ -11,8 +11,17 @@
 	<sql id="Base_Column_List">
 		department_id, department_name, department_code, company_id,status
 	</sql>
-	<select id="queryList" resultMap="sysDepartment">
+	<select id="queryList" resultMap="sysDepartment" parameterType="map">
 		select
+		<include refid="Base_Column_List"/>
+		from sys_department
+		where `status`!=3
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<select id="getSysDepartmentTotal" resultType="int" parameterType="map">
+		select count(department_id)
 		<include refid="Base_Column_List"/>
 		from sys_department
 		where `status`!=3

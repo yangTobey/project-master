@@ -33,8 +33,8 @@ public class SysDepartmentController {
      */
     @RequestMapping(value = "/getSysDepartmentInfo", method = RequestMethod.GET)
     @ResponseBody
-    public R getSysDepartmentInfo(){
-        Map<String, Object> map=sysDepartmentService.getSysDepartmentInfo();
+    public R getSysDepartmentInfo(String limit,String offset){
+        Map<String, Object> map=sysDepartmentService.getSysDepartmentInfo(limit,offset);
         System.out.println(map.get("list"));
         return R.ok().put("200",map);
     }

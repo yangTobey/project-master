@@ -34,7 +34,7 @@ public class SysCompanyServiceImpl implements SysCompanyService {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("limit",limit);
         map.put("offset",offset);
-        mapData.put("total", sysCompanyBusinessService.getSysCompanyList(map).size());
+        mapData.put("total", sysCompanyBusinessService.getSysCompanyListTotal(map));
         mapData.put("list", sysCompanyBusinessService.getSysCompanyList(map));
         return map;
     }

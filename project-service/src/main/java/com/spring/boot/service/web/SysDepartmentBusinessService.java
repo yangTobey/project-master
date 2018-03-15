@@ -13,7 +13,13 @@ public interface SysDepartmentBusinessService {
      * 获取部门列表数据
      * @return
      */
-    List<SysDepartment> getSysDepartmentInfo();
+    List<SysDepartment> getSysDepartmentInfo(Map<String, Object> map);
+    /**
+     * 获取部门列表数据条数
+     *
+     * @return
+     */
+    int getSysDepartmentTotal(Map<String, Object> map);
 
     /**
      * 新增部门

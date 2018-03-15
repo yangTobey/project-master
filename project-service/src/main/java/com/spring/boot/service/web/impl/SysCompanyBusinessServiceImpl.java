@@ -27,6 +27,11 @@ public class SysCompanyBusinessServiceImpl implements SysCompanyBusinessService 
     }
 
     @Override
+    public int getSysCompanyListTotal(Map<String, Object> map) {
+        return sysCompanyDao.getSysCompanyListTotal(map);
+    }
+
+    @Override
     public int addSysCompany(Map<String, Object> map) {
         return sysCompanyDao.save(map);
     }

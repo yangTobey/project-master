@@ -11,7 +11,7 @@ public interface SysDepartmentService {
      * 获取部门列表数据
      * @return
      */
-    Map<String,Object> getSysDepartmentInfo();
+    Map<String,Object> getSysDepartmentInfo(String limit,String offset);
     /**
      * 添加部门
      * @param departmentName
