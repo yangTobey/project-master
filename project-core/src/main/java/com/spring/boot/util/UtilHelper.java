@@ -158,7 +158,7 @@ public class UtilHelper {
         return b;
     }
     /**
-     * 利用正则表达式判断字符串是否是数字
+     * 利用正则表达式判断字符串是否是数字（不包含小数点）
      * @param str
      * @return
      */
@@ -167,6 +167,23 @@ public class UtilHelper {
             return false;
         }else{
             Pattern pattern = Pattern.compile("[0-9]*");
+            Matcher isNum = pattern.matcher(str);
+            if( !isNum.matches() ){
+                return false;
+            }
+            return true;
+        }
+    }
+    /**
+     * 利用正则表达式判断字符串是否是两位小数数字
+     * @param str
+     * @return
+     */
+    public static boolean isDoubleNumer(String str){
+        if (UtilHelper.isEmpty(str)) {
+            return false;
+        }else{
+            Pattern pattern = Pattern.compile("^[0-9]+(.[0-9]{2})?$");
             Matcher isNum = pattern.matcher(str);
             if( !isNum.matches() ){
                 return false;

@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -29,8 +30,14 @@ public class SysCompanyController {
      * @return
      */
     @RequestMapping(value = "/getSysCompanyList", method = RequestMethod.GET)
-    public R getSysCompanyList(String limit,String offset) {
-        Map<String, Object> map = sysCompanyService.getSysCompanyList(limit,offset);
+    public R getSysCompanyList(@RequestParam(value = "limit",required=false)String limit,@RequestParam(value = "offset",required=false)String offset) {
+        if(!UtilHelper.isNumer(limit)){
+            return R.error(400,"分页控制，每页条数limit只能为数字！");
+        }
+        if(!UtilHelper.isNumer(offset)){
+            return R.error(400,"分页控制，页码offset只能为数字！");
+        }
+        Map<String, Object> map = sysCompanyService.getSysCompanyList(Integer.valueOf(limit),Integer.valueOf(offset));
         return R.ok().put("200", map);
     }
 
@@ -86,7 +93,7 @@ public class SysCompanyController {
     @RequestMapping(value = "/deleteSysCompany", method = RequestMethod.GET)
     public R deleteSysCompanyInfo(String companyId) {
         if (UtilHelper.isEmpty(companyId)) {
-            return R.error(201, "公司编号不能为空，请联系系统管理员！");
+            return R.error(400, "公司编号不能为空，请联系系统管理员！");
         }
         int count = sysCompanyService.deleteSysCompanyInfo(companyId);
         if (count > 0) {

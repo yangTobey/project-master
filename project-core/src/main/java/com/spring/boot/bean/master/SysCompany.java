@@ -11,7 +11,7 @@ public class SysCompany {
     private long parentId;
     private String companyPhone;
     private String companyAddress;
-    private int status;
+    private int statusCode;
 
     public long getCompanyId() {
         return companyId;
@@ -61,11 +61,13 @@ public class SysCompany {
         this.companyAddress = companyAddress;
     }
 
-    public int getStatus() {
-        return status;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
+
+
 }

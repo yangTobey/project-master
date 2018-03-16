@@ -8,13 +8,13 @@
         <result column="parent_id" property="parentId"/>
         <result column="company_phone" property="companyPhone"/>
         <result column="company_address" property="companyAddress"/>
-        <result column="status" property="status"/>
+        <result column="status_code" property="statusCode"/>
     </resultMap>
 
     <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
 
     <sql id="Base_Column_List">
-		company_id, company_name, company_code, parent_id,company_phone,company_address,status
+		company_id, company_name, company_code, parent_id,company_phone,company_address,status_code
 	</sql>
 
     <!--<select id="findByUserId" resultMap="User" parameterType="map">
@@ -34,16 +34,16 @@
         select
         <include refid="Base_Column_List"/>
         from sys_company
-        where `status`!=2
+        where status_code!=2
         <if test="offset != null and limit != null">
-            limit #{offset}, #{limit}
+            limit #{offset},#{limit}
         </if>
     </select>
-    <select id="queryListTotal" resultType="int"  parameterType="map">
+    <select id="getSysCompanyListTotal" resultType="int"  parameterType="map">
         select count(company_id)
         <include refid="Base_Column_List"/>
         from sys_company
-        where `status`!=2
+        where status_code!=2
     </select>
     <update id="update" parameterType="map">
 		update sys_company set company_name = #{companyName},parent_id = #{parentId},company_phone = #{companyPhone},company_address = #{companyAddress}
