@@ -2,6 +2,7 @@ package com.spring.boot.service.web.impl;
 
 import com.spring.boot.bean.master.SysBasicData;
 import com.spring.boot.bean.master.SysCompany;
+import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 import com.spring.boot.dao.web.master.SysBasicDataDao;
 import com.spring.boot.dao.web.master.SysCompanyDao;
 import com.spring.boot.service.web.SysBasicDataBusinessService;
@@ -21,18 +22,18 @@ public class SysBasicDataBusinessServiceImpl implements SysBasicDataBusinessServ
     private SysBasicDataDao sysBasicDataDao;
 
     @Override
-    public List<SysBasicData> sysBasicDataAnalysisData(Map<String, Object> map) {
-        return null;
+    public SysBasicDataEntity sysBasicDataAnalysisData(Map<String, Object> map) {
+        return sysBasicDataDao.sysBasicDataAnalysisData(map);
     }
 
     @Override
-    public List<SysBasicData> sysBasicDataAnalysisList(Map<String, Object> map) {
-        return sysBasicDataDao.queryList(map);
+    public List<SysBasicDataEntity> sysBasicDataAnalysisList(Map<String, Object> map) {
+        return sysBasicDataDao.sysBasicDataAnalysisList(map);
     }
 
     @Override
     public int sysBasicDataAnalysisListTotal(Map<String, Object> map) {
-        return sysBasicDataDao.getSysCompanyListTotal(map);
+        return sysBasicDataDao.sysBasicDataAnalysisListTotal(map);
     }
 
     @Override

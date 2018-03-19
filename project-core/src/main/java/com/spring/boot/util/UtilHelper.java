@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -190,6 +191,17 @@ public class UtilHelper {
             }
             return true;
         }
+    }
+
+    /**
+     * 两个数相除，保留四位小数返回（因需要计算百分比，需要保留四位小数）
+     * @param numberOne
+     * @param numberTwo
+     * @return
+     */
+    public static String DecimalFormatNumber(int numberOne,int numberTwo){
+        DecimalFormat df=new DecimalFormat("0.0000");
+        return df.format((float)numberOne/numberTwo);
     }
 
     /**

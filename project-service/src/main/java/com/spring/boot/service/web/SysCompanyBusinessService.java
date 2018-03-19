@@ -26,6 +26,12 @@ public interface SysCompanyBusinessService {
    int getSysCompanyListTotal(Map<String, Object> map);
 
     /**
+     * 根据公司id查找子公司总数
+     *
+     * @return
+     */
+    int querySubsidiaryCount(Map<String, Object> map);
+    /**
      * 新增公司
      *
      * @param map

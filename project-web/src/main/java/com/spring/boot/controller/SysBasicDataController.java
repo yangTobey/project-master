@@ -42,7 +42,7 @@ public class SysBasicDataController {
         } else if (!UtilHelper.isNumer(month)) {
             return R.error(400, "月份格式不正确！");
         }
-        Map<String, Object> map = sysBasicDataService.sysBasicDataAnalysisData(Integer.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month));
+        Map<String, Object> map = sysBasicDataService.sysBasicDataAnalysisData(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month));
         return R.ok().put("200", map);
     }
 
@@ -54,17 +54,20 @@ public class SysBasicDataController {
      * @return
      */
     @RequestMapping(value = "/sysBasicDataAnalysisList", method = RequestMethod.GET)
-    public R sysBasicDataAnalysisList(@RequestParam(value = "limit", required = false) String limit,
-                                      @RequestParam(value = "offset", required = false) String offset,
-                                      @RequestParam(value = "year", required = false) String year) {
-        if (!UtilHelper.isNumer(limit)) {
+    public R sysBasicDataAnalysisList(@RequestParam(value = "companyId", required = false) String companyId,
+            @RequestParam(value = "limit", required = false) String limit,
+            @RequestParam(value = "offset", required = false) String offset,
+            @RequestParam(value = "year", required = false) String year) {
+        if (!UtilHelper.isNumer(companyId)) {
+            return R.error(400, "公司id格式不正确！");
+        }else if (!UtilHelper.isNumer(limit)) {
             return R.error(400, "分页控制，每页条数limit只能为数字！");
         } else if (!UtilHelper.isNumer(offset)) {
             return R.error(400, "分页控制，页码offset只能为数字！");
         } else if (!UtilHelper.isNumer(year)) {
             return R.error(400, "年份格式不正确！");
         }
-        Map<String, Object> map = sysBasicDataService.sysBasicDataAnalysisList(Integer.valueOf(limit), Integer.valueOf(offset), Integer.valueOf(year));
+        Map<String, Object> map = sysBasicDataService.sysBasicDataAnalysisList(Long.valueOf(companyId),Integer.valueOf(limit), Integer.valueOf(offset), Integer.valueOf(year));
         return R.ok().put("200", map);
     }
 

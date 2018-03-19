@@ -14,7 +14,7 @@ public interface SysBasicDataService {
      * @param month     月份
      * @return
      */
-    Map<String, Object> sysBasicDataAnalysisData(int companyId, int year, int month);
+    Map<String, Object> sysBasicDataAnalysisData(long companyId, int year, int month);
 
     /**
      * 查询公司基础数据列表信息
@@ -24,7 +24,7 @@ public interface SysBasicDataService {
      * @param year   年份
      * @return
      */
-    Map<String, Object> sysBasicDataAnalysisList(int limit, int offset, int year);
+    Map<String, Object> sysBasicDataAnalysisList(long companyId,int limit, int offset, int year);
 
     /**
      * 新增基础数据信息

@@ -32,6 +32,11 @@ public class SysCompanyBusinessServiceImpl implements SysCompanyBusinessService 
     }
 
     @Override
+    public int querySubsidiaryCount(Map<String, Object> map) {
+        return sysCompanyDao.querySubsidiaryCount(map);
+    }
+
+    @Override
     public int addSysCompany(Map<String, Object> map) {
         return sysCompanyDao.save(map);
     }

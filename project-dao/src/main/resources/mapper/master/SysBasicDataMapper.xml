@@ -11,30 +11,65 @@
         <result column="status_code" property="statusCode"/>
     </resultMap>-->
 
-    <sql id="Base_Column_List">
+    <!--<sql id="Base_Column_List">
 		basic_id as basicId, company_id as companyId, year, month,construction_area as constructionArea,charge_area as chargeArea,city_number as cityNumber,project_number as projectNumber
 		,house_number as houseNumber,accept_house_number as acceptHouseNumber,for_sale_house_number as forSaleHouseNumber,decorate_house_number as decorateHouseNumber
 		,parking_space as parkingSpace,for_sale_parking_space as forSaleParkingSpace,sales_distribution as salesDistribution,status_code as statusCode
-	</sql>
+	</sql>-->
+    <sql id="Base_Column_List">
+       basic.basic_id as basicId, basic.company_id as companyId, basic.year, basic.month,basic.construction_area as constructionArea,basic.charge_area as chargeArea,basic.city_number as cityNumber,
+       basic.project_number as projectNumber,basic.house_number as houseNumber,basic.accept_house_number as acceptHouseNumber,basic.for_sale_house_number as forSaleHouseNumber,basic.decorate_house_number as decorateHouseNumber,
+       basic.parking_space as parkingSpace,basic.for_sale_parking_space as forSaleParkingSpace,basic.sales_distribution as salesDistribution,basic.status_code as statusCode,basic.create_time as createTIme,company.company_name as companyName
+    </sql>
+    <sql id="Base_Data_Total">
+        SUM(basic.construction_area) AS constructionArea,
+        SUM(basic.charge_area) AS chargeArea,
+        sum(basic.project_number) AS projectNumber,
+        SUM(basic.house_number) AS houseNumber,
+        SUM(basic.accept_house_number) AS acceptHouseNumber,
+        SUM(basic.for_sale_house_number) AS forSaleHouseNumber,
+        SUM(basic.decorate_house_number) AS decorateHouseNumber,
+        SUM(basic.parking_space) AS parkingSpace,
+        SUM(basic.for_sale_parking_space) AS forSaleParkingSpace,
+        SUM(basic.sales_distribution) AS salesDistribution
+    </sql>
 
-    <select id="sysBasicDataAnalysisData" resultType="com.spring.boot.bean.master.SysBasicData" parameterType="map">
+    <select id="sysBasicDataAnalysisData" resultType="com.spring.boot.bean.master.entity.SysBasicDataEntity" parameterType="map">
         select
-        <include refid="Base_Column_List"/>
-        from sys_basic_data
+        <include refid="Base_Data_Total"/>
+        from sys_basic_data as basic
         where 1=1
         <if test="companyId != 0">
-            and laborCost.company_id=#{companyId}
+            and basic.company_id=#{companyId}
         </if>
-        and year = #{year}
-        and month = #{month}
-        status_code!=2
+        and basic.year = #{year}
+        and basic.month = #{month}
+        and basic.status_code!=2
 
     </select>
-    <select id="getSysCompanyListTotal" resultType="int"  parameterType="map">
-        select count(company_id)
+    <select id="sysBasicDataAnalysisListTotal" resultType="int"  parameterType="map">
+        select count(basic_id)
+        from sys_basic_data where 1=1
+        <if test="companyId != 0">
+            and company_id=#{companyId}
+        </if>
+        and year = #{year}
+        and status_code!=2
+    </select>
+    <select id="sysBasicDataAnalysisList" resultType="com.spring.boot.bean.master.entity.SysBasicDataEntity"  parameterType="map">
+        select
         <include refid="Base_Column_List"/>
-        from sys_company
-        where status_code!=2
+        from sys_basic_data  as basic LEFT JOIN sys_company AS company ON basic.company_id = company.company_id
+        where 1=1
+        <if test="companyId != 0">
+            and basic.company_id=#{companyId}
+        </if>
+        and basic.year = #{year}
+        and basic.status_code!=2
+        ORDER BY basic.create_time DESC
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
     </select>
     <update id="updateSysBasicData" parameterType="map">
 		update sys_basic_data set company_id = #{companyId},year = #{year},month = #{month},construction_area = #{constructionArea},charge_area = #{chargeArea}

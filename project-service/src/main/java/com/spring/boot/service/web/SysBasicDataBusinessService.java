@@ -2,6 +2,7 @@ package com.spring.boot.service.web;
 
 import com.spring.boot.bean.master.SysBasicData;
 import com.spring.boot.bean.master.SysCompany;
+import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -12,11 +13,11 @@ import java.util.Map;
 public interface SysBasicDataBusinessService {
 
     /**
-     * 获取公司列表数据
+     * 获取公司基础数据分析统计分析信息
      *
      * @return
      */
-    List<SysBasicData> sysBasicDataAnalysisData(Map<String, Object> map);
+    SysBasicDataEntity sysBasicDataAnalysisData(Map<String, Object> map);
 
     /**
      * 获取基础数据列表数据条数
@@ -29,7 +30,7 @@ public interface SysBasicDataBusinessService {
      *
      * @return
      */
-    List<SysBasicData> sysBasicDataAnalysisList(Map<String, Object> map);
+    List<SysBasicDataEntity> sysBasicDataAnalysisList(Map<String, Object> map);
 
     /**
      * 新增信息

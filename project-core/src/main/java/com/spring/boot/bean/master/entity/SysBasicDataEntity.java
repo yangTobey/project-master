@@ -1,12 +1,12 @@
-package com.spring.boot.bean.master;
+package com.spring.boot.bean.master.entity;
 
 import java.sql.Timestamp;
 
 /**
- * 基础数据实体类
+ * 基础数据
  * Created by Administrator on 2018/3/16.
  */
-public class SysBasicData {
+public class SysBasicDataEntity {
 
     private long basicId;
     private long companyId;
@@ -25,6 +25,12 @@ public class SysBasicData {
     private int salesDistribution;
     private int statusCode;
     private Timestamp createTime;
+    private int subsidiaryCount;//分公司总数
+
+    private double forSaleHouseScale;//房屋空置率(转化后保留两位小数)
+    private double decorateHouseScale;//房屋装修率(转化后保留两位小数)
+    private double forSaleParkingSpaceScale;//车位空置率(转化后保留两位小数)
+    private String companyName;
 
     public long getBasicId() {
         return basicId;
@@ -160,6 +166,46 @@ public class SysBasicData {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+
+    public int getSubsidiaryCount() {
+        return subsidiaryCount;
+    }
+
+    public void setSubsidiaryCount(int subsidiaryCount) {
+        this.subsidiaryCount = subsidiaryCount;
+    }
+
+    public double getForSaleHouseScale() {
+        return forSaleHouseScale;
+    }
+
+    public void setForSaleHouseScale(double forSaleHouseScale) {
+        this.forSaleHouseScale = forSaleHouseScale;
+    }
+
+    public double getDecorateHouseScale() {
+        return decorateHouseScale;
+    }
+
+    public void setDecorateHouseScale(double decorateHouseScale) {
+        this.decorateHouseScale = decorateHouseScale;
+    }
+
+    public double getForSaleParkingSpaceScale() {
+        return forSaleParkingSpaceScale;
+    }
+
+    public void setForSaleParkingSpaceScale(double forSaleParkingSpaceScale) {
+        this.forSaleParkingSpaceScale = forSaleParkingSpaceScale;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }
 
