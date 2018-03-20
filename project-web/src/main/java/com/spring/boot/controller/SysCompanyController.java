@@ -25,20 +25,20 @@ public class SysCompanyController {
     /**
      * 查询公司信息
      *
-     * @param limit 每页限制条数
+     * @param limit  每页限制条数
      * @param offset 页码
      * @return
      */
     @RequestMapping(value = "/getSysCompanyList", method = RequestMethod.GET)
-    public R getSysCompanyList(@RequestParam(value = "limit",required=false)String limit,@RequestParam(value = "offset",required=false)String offset) {
-        if(!UtilHelper.isNumer(limit)){
-            return R.error(400,"分页控制，每页条数limit只能为数字！");
+    public R getSysCompanyList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
+        if (!UtilHelper.isNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字！");
         }
-        if(!UtilHelper.isNumer(offset)){
-            return R.error(400,"分页控制，页码offset只能为数字！");
+        if (!UtilHelper.isNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字！");
         }
-        Map<String, Object> map = sysCompanyService.getSysCompanyList(Integer.valueOf(limit),Integer.valueOf(offset));
-        return R.ok().put("200", map);
+        Map<String, Object> map = sysCompanyService.getSysCompanyList(Integer.valueOf(limit), Integer.valueOf(offset));
+        return R.ok().put(200, map,"获取成功！");
     }
 
     /**
@@ -50,12 +50,13 @@ public class SysCompanyController {
      * @return
      */
     @RequestMapping(value = "/addSysCompany", method = RequestMethod.GET)
-    public String addSysCompany(String companyName, String companyPhone, String companyAddress) {
+    public R addSysCompany(@RequestParam(value = "companyName", required = false)String companyName, @RequestParam(value = "companyPhone", required = false)String companyPhone
+            , @RequestParam(value = "companyAddress", required = false)String companyAddress) {
         int count = sysCompanyService.addSysCompany(companyName, companyPhone, companyAddress);
         if (count > 0) {
-            System.out.println("新增成功！");
+            return R.ok(200, "新增成功！");
         }
-        return "success";
+        return R.error(500, "新增失败，服务器异常，请联系系统管理员！");
     }
 
     /**
@@ -68,19 +69,20 @@ public class SysCompanyController {
      * @return
      */
     @RequestMapping(value = "/updateSysCompanyInfo", method = RequestMethod.GET)
-    public String updateSysCompanyInfo(String companyId, String companyName, String companyPhone, String companyAddress) {
-        logger.info("hello world");
-        if (UtilHelper.isEmpty(companyId)) {
-            return "公司id不能为空，请联系系统管理员进行修改！";
+    public R updateSysCompanyInfo(@RequestParam(value = "companyId", required = false)String companyId, @RequestParam(value = "companyName", required = false)String companyName
+            , @RequestParam(value = "companyPhone", required = false)String companyPhone,@RequestParam(value = "companyAddress", required = false) String companyAddress) {
+        logger.info("公司信息更新操作！");
+        if(!UtilHelper.isNumer(companyId)){
+            return R.error(400, "公司编号格式不正确，请联系系统管理员！");
         }
         if (UtilHelper.isEmpty(companyName)) {
-            return "新密码不能为空！";
+            return R.error(400, "新密码不能为空！");
         }
         int count = sysCompanyService.updateSysCompanyInfo(companyId, companyName, companyPhone, companyAddress);
         if (count > 0) {
-            System.out.println("新增成功！");
+            return R.ok(200, "更新成功！");
         }
-        return "success";
+        return R.error(500, "更新失败，服务器异常，请联系系统管理员！");
 
     }
 
@@ -90,17 +92,29 @@ public class SysCompanyController {
      * @param companyId
      * @return
      */
-    @RequestMapping(value = "/deleteSysCompany", method = RequestMethod.GET)
-    public R deleteSysCompanyInfo(String companyId) {
-        if (UtilHelper.isEmpty(companyId)) {
-            return R.error(400, "公司编号不能为空，请联系系统管理员！");
+    @RequestMapping(value = "/deleteSysCompanyById", method = RequestMethod.GET)
+    public R deleteSysCompanyById(@RequestParam(value = "companyId", required = false)String companyId) {
+         if(!UtilHelper.isNumer(companyId)){
+            return R.error(400, "公司编号格式不正确，请联系系统管理员！");
         }
-        int count = sysCompanyService.deleteSysCompanyInfo(companyId);
+        int count = sysCompanyService.deleteSysCompanyById(companyId);
         if (count > 0) {
-            return R.ok(200, "公司编号不能为空，请联系系统管理员！");
+            return R.ok(200, "更新成功！");
         }
-        return R.error(201, "系统异常，请联系系统管理员！");
-
+        return R.error(500, "删除失败，系统异常，请联系系统管理员！");
     }
-
+    /**
+     * 根据公司id获取信息
+     *
+     * @param companyId
+     * @return
+     */
+    @RequestMapping(value = "/findSysCompanyByCompanyId", method = RequestMethod.GET)
+    public R findSysCompanyByCompanyId(@RequestParam(value = "companyId", required = false)String companyId){
+        if(!UtilHelper.isNumer(companyId)){
+            return R.error(400, "公司编号格式不正确，请联系系统管理员！");
+        }
+        Map<String, Object> map = sysCompanyService.findSysCompanyByCompanyId(Long.valueOf(companyId));
+        return R.ok().put(200, map,"获取成功！");
+    }
 }

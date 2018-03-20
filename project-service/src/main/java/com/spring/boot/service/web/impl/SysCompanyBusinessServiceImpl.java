@@ -47,7 +47,12 @@ public class SysCompanyBusinessServiceImpl implements SysCompanyBusinessService 
     }
 
     @Override
-    public int deleteSysCompanyInfo(Map<String, Object> map) {
+    public int deleteSysCompanyById(Map<String, Object> map) {
         return sysCompanyDao.delete(map);
+    }
+
+    @Override
+    public SysCompany findSysCompanyByCompanyId(Map<String, Object> map) {
+        return sysCompanyDao.findSysCompanyByCompanyId(map);
     }
 }

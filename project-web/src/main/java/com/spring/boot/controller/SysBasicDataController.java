@@ -43,7 +43,7 @@ public class SysBasicDataController {
             return R.error(400, "月份格式不正确！");
         }
         Map<String, Object> map = sysBasicDataService.sysBasicDataAnalysisData(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month));
-        return R.ok().put("200", map);
+        return R.ok().put(200, map,"获取成功！");
     }
 
     /**
@@ -68,7 +68,7 @@ public class SysBasicDataController {
             return R.error(400, "年份格式不正确！");
         }
         Map<String, Object> map = sysBasicDataService.sysBasicDataAnalysisList(Long.valueOf(companyId),Integer.valueOf(limit), Integer.valueOf(offset), Integer.valueOf(year));
-        return R.ok().put("200", map);
+        return R.ok().put(200, map,"获取成功！");
     }
 
     /**

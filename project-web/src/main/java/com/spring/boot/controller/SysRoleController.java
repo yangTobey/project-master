@@ -36,7 +36,7 @@ public class SysRoleController {
     public R getSysRoleList() {
         Map<String, Object> map=sysRoleService.getSysRoleList();
         System.out.println(map.get("list"));
-        return R.ok().put("200",map);
+        return R.ok().put(200,map,"获取成功！");
 
     }
 

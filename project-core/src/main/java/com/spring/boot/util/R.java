@@ -51,8 +51,9 @@ public class R extends HashMap<String, Object> {
 		return new R();
 	}
 
-	public R put(String key, Object value) {
+	public R putValue(String key, Object value,String msg) {
 		super.put(key, value);
+		super.put("msg", msg);
 		return this;
 	}
 
@@ -62,8 +63,9 @@ public class R extends HashMap<String, Object> {
 	 * @param map
 	 * @return
 	 */
-	public R putData(String code,Map<String, Object> map) {
+	public R putData(int code,Map<String, Object> map,String msg) {
 		super.put("code", code);
+		super.put("msg", msg);
 		super.put("data", map);
 		return this;
 	}
@@ -73,9 +75,10 @@ public class R extends HashMap<String, Object> {
 	 * @param map
 	 * @return
 	 */
-	public R put(String code,Map<String, Object> map) {
+	public R put(int code,Map<String, Object> map,String msg) {
 		R r = new R();
 		map.put("code", code);
+		map.put("msg", msg);
 		r.putAll(map);
 		return r;
 	}

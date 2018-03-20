@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.web.master.SysQualityManageDao">
+    <resultMap id="sysQualityManage" type="com.spring.boot.bean.master.SysQualityManage">
+        <result column="quality_id" property="qualityId"/>
+        <result column="company_id" property="companyId"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="quality_check" property="qualityCheck"/>
+        <result column="quality_check_pass" property="qualityCheckPass"/>
+        <result column="quality_check_fail" property="qualityCheckFail"/>
+        <result column="security_event" property="securityEvent"/>
+        <result column="quality_check_unmodified" property="qualityCheckUnmodified"/>
+        <result column="status_code" property="statusCode"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
+
+    <sql id="Base_Column_List">
+		quality_id,company_id, year, month, quality_check,quality_check_pass,quality_check_fail,quality_check_unmodified,status_code,create_time
+	</sql>
+    <select id="queryList" resultMap="sysQualityManage" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_company
+        where status_code!=2
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+    <!--根据公司id查找子公司总数-->
+    <select id="querySubsidiaryCount" resultType="int" parameterType="map">
+        SELECT COUNT(company_id) FROM sys_company WHERE 1=1
+        <if test="companyId != 0">
+            and parent_id=#{companyId}
+        </if>
+        and status_code!=2
+    </select>
+    <select id="getSysCompanyListTotal" resultType="int"  parameterType="map">
+        select count(company_id)
+        from sys_company
+        where status_code!=2
+    </select>
+    <update id="updateSysQualityManage" parameterType="map">
+		update sys_quality_manage set company_id = #{companyId},year = #{year},month = #{month},quality_check = #{qualityCheck},quality_check_pass = #{qualityCheckPass}
+		,quality_check_fail = #{qualityCheckFail},security_event = #{securityEvent},quality_check_unmodified = #{qualityCheckUnmodified},create_time = #{createTime}
+		where quality_id = #{qualityId}
+	</update>
+    <insert id="addSysQualityManage" parameterType="map">
+		INSERT INTO sys_quality_manage (company_id, year, month, quality_check,quality_check_pass,quality_check_fail,security_event,quality_check_unmodified,create_time)
+              VALUES   (#{companyId},#{year},#{month},#{qualityCheck},#{qualityCheckPass},#{qualityCheckFail},#{securityEvent},#{qualityCheckUnmodified},#{createTime})
+	</insert>
+    <update id="deleteSysQualityManageById" parameterType="map">
+		update sys_quality_manage set status_code = 2
+		where quality_id = #{qualityId}
+	</update>
+    <!--根据公司id查找公司信息-->
+    <select id="findSysCompanyByCompanyId" resultMap="sysQualityManage" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_company
+        where 1=1 and company_id = #{companyId} and status_code!=2
+    </select>
+
+</mapper>

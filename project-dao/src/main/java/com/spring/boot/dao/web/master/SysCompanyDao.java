@@ -48,4 +48,9 @@ public interface SysCompanyDao extends BaseDao<SysCompany> {
      * @return
      */
     int deleteCompanyInfo(Map<String, Object> map);
+    /**
+     * 根据公司id获取公司数据
+     * @return
+     */
+    SysCompany findSysCompanyByCompanyId(Map<String, Object> map);
 }

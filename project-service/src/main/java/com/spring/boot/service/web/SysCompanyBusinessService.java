@@ -53,5 +53,10 @@ public interface SysCompanyBusinessService {
      * @param map
      * @return
      */
-    int deleteSysCompanyInfo(Map<String, Object> map);
+    int deleteSysCompanyById(Map<String, Object> map);
+    /**
+     * 根据公司id获取公司数据
+     * @return
+     */
+    SysCompany findSysCompanyByCompanyId(Map<String, Object> map);
 }

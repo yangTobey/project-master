@@ -30,7 +30,7 @@ public class SysLaborCostController {
     @RequestMapping(value = "/getSysLaborCostInfo", method = RequestMethod.GET)
     public R getSysLaborCostInfo(String companyId) {
         Map<String, Object> map = sysLaborCostService.getSysLaborCostInfo(companyId);
-        return R.ok().put("200", map);
+        return R.ok().put(200, map,"获取成功！");
     }
     /**
      * 查询人员成本信息（列表数据）
@@ -44,7 +44,7 @@ public class SysLaborCostController {
             return R.error(101,"年份格式不合理！");
         }else{
             Map<String, Object> map = sysLaborCostService.getSysLaborCostList(companyId,Integer.valueOf(year));
-            return R.ok().put("200", map);
+            return R.ok().put(200, map,"获取成功！");
         }
 
     }
