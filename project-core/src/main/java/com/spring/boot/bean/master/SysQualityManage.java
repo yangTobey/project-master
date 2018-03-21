@@ -1,5 +1,7 @@
 package com.spring.boot.bean.master;
 
+import java.sql.Timestamp;
+
 /**
  * Created by Administrator on 2018/3/20.
  */
@@ -14,7 +16,7 @@ public class SysQualityManage {
     private int securityEvent;
     private int qualityCheckUnmodified;
     private int statusCode;
-    private int createTime;
+    private Timestamp createTime;
 
     public long getQualityId() {
         return qualityId;
@@ -96,11 +98,11 @@ public class SysQualityManage {
         this.statusCode = statusCode;
     }
 
-    public int getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(int createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 }

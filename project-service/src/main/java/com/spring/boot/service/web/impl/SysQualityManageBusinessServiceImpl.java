@@ -2,6 +2,7 @@ package com.spring.boot.service.web.impl;
 
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysQualityManage;
+import com.spring.boot.bean.master.entity.SysQualityManageEntity;
 import com.spring.boot.dao.web.master.SysCompanyDao;
 import com.spring.boot.dao.web.master.SysQualityManageDao;
 import com.spring.boot.service.web.SysCompanyBusinessService;
@@ -19,6 +20,21 @@ import java.util.Map;
 public class SysQualityManageBusinessServiceImpl implements SysQualityManageBusinessService {
     @Autowired
     private SysQualityManageDao sysQualityManageDao;
+
+    @Override
+    public SysQualityManageEntity sysQualityManageAnalysisForYear(Map<String, Object> map) {
+        return sysQualityManageDao.sysQualityManageAnalysisForYear(map);
+    }
+
+    @Override
+    public SysQualityManageEntity sysQualityManageAnalysisForMonth(Map<String, Object> map) {
+        return sysQualityManageDao.sysQualityManageAnalysisForMonth(map);
+    }
+
+    @Override
+    public List<SysQualityManage> sysQualityManageAnalysisList(Map<String, Object> map) {
+        return sysQualityManageDao.sysQualityManageAnalysisList(map);
+    }
 
     @Override
     public List<SysQualityManage> getSysQualityManageList(Map<String, Object> map) {

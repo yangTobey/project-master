@@ -19,7 +19,7 @@
     <sql id="Base_Column_List">
        basic.basic_id as basicId, basic.company_id as companyId, basic.year, basic.month,basic.construction_area as constructionArea,basic.charge_area as chargeArea,basic.city_number as cityNumber,
        basic.project_number as projectNumber,basic.house_number as houseNumber,basic.accept_house_number as acceptHouseNumber,basic.for_sale_house_number as forSaleHouseNumber,basic.decorate_house_number as decorateHouseNumber,
-       basic.parking_space as parkingSpace,basic.for_sale_parking_space as forSaleParkingSpace,basic.sales_distribution as salesDistribution,basic.status_code as statusCode,basic.create_time as createTIme,company.company_name as companyName
+       basic.parking_space as parkingSpace,basic.for_sale_parking_space as forSaleParkingSpace,basic.sales_distribution as salesDistribution,basic.status_code as statusCode,basic.create_time as createTime,company.company_name as companyName
     </sql>
     <sql id="Base_Data_Total">
         SUM(basic.construction_area) AS constructionArea,

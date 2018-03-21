@@ -18,29 +18,83 @@
     <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
 
     <sql id="Base_Column_List">
-		quality_id,company_id, year, month, quality_check,quality_check_pass,quality_check_fail,quality_check_unmodified,status_code,create_time
+		quality.quality_id,quality.company_id, quality.year, quality.month, quality.quality_check,quality.quality_check_pass,quality.quality_check_fail,quality.quality_check_unmodified
+		,quality.status_code,quality.create_time
 	</sql>
     <select id="queryList" resultMap="sysQualityManage" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from sys_company
-        where status_code!=2
+        from sys_quality_manage as quality LEFT JOIN sys_company as company on quality.company_id=company.company_id
+        where 1=1
+        <if test="companyId != 0">
+            and quality.company_id=#{companyId}
+        </if>
+        and quality.year = #{year}
+        and quality.status_code!=2
+        ORDER BY quality.create_time DESC
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
         </if>
     </select>
-    <!--根据公司id查找子公司总数-->
-    <select id="querySubsidiaryCount" resultType="int" parameterType="map">
-        SELECT COUNT(company_id) FROM sys_company WHERE 1=1
+    <!--根据公司id查找 年 度品质管理分析情况-->
+    <select id="sysQualityManageAnalysisForYear" resultType="com.spring.boot.bean.master.entity.SysQualityManageEntity" parameterType="map">
+        SELECT
+        SUM(quality.quality_check) as qualityCheck,
+        SUM(quality.quality_check_pass) as qualityCheckPass,
+        SUM(quality.quality_check_fail) as qualityCheckFail,
+        SUM(
+            quality.quality_check_unmodified
+        ) as qualityCheckUnmodified,
+        SUM(quality.security_event) as securityEvent
+        FROM sys_quality_manage AS quality
+        WHERE 1 = 1
         <if test="companyId != 0">
-            and parent_id=#{companyId}
+            and quality.company_id=#{companyId}
         </if>
-        and status_code!=2
+        and quality.year = #{year}
+        and quality.status_code!=2
     </select>
-    <select id="getSysCompanyListTotal" resultType="int"  parameterType="map">
-        select count(company_id)
-        from sys_company
-        where status_code!=2
+    <!--根据公司id查找 月 度品质管理分析情况-->
+    <select id="sysQualityManageAnalysisForMonth" resultType="com.spring.boot.bean.master.entity.SysQualityManageEntity" parameterType="map">
+        SELECT
+        SUM(quality.quality_check) as qualityCheck,
+        SUM(quality.quality_check_pass) as qualityCheckPass,
+        SUM(quality.quality_check_fail) as qualityCheckFail,
+        SUM(
+        quality.quality_check_unmodified
+        ) as qualityCheckUnmodified,
+        SUM(quality.security_event) as securityEvent
+        FROM sys_quality_manage AS quality
+        WHERE 1 = 1
+        <if test="companyId != 0">
+            and quality.company_id=#{companyId}
+        </if>
+        and quality.year = #{year}
+        and quality.month = #{month}
+        and quality.status_code!=2
+    </select>
+    <!--根据公司id、年份、月份查找品质管理分析列表情况-->
+    <select id="sysQualityManageAnalysisList" resultMap="sysQualityManage" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_quality_manage AS quality
+        WHERE 1 = 1
+        <if test="companyId != 0">
+            and quality.company_id=#{companyId}
+        </if>
+        and quality.year = #{year}
+        and quality.month = #{month}
+        and quality.status_code!=2
+    </select>
+    <select id="getSysQualityManageListTotal" resultType="int"  parameterType="map">
+        select count(quality_id)
+        from sys_quality_manage
+        where 1=1
+        <if test="companyId != 0">
+            and company_id=#{companyId}
+        </if>
+        and year = #{year}
+        and status_code!=2
     </select>
     <update id="updateSysQualityManage" parameterType="map">
 		update sys_quality_manage set company_id = #{companyId},year = #{year},month = #{month},quality_check = #{qualityCheck},quality_check_pass = #{qualityCheckPass}

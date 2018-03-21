@@ -2,6 +2,7 @@ package com.spring.boot.util;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -9,6 +10,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -32,6 +34,7 @@ public class UtilHelper {
     public static final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final int PAGE_SIZE = 10;
     private static int currentid = 1;
+    private static Calendar calendar = Calendar.getInstance();
 
     public static Timestamp formatTime(String date, String time) {
         try {
@@ -54,6 +57,22 @@ public class UtilHelper {
      */
     public static String getNowTimeStr() {
         return DATETIMEFULLFORMATE.format(new java.util.Date());
+    }
+
+    /**
+     * 获取当前年份
+     * @return
+     */
+    public static int getYear(){
+        return calendar.get(Calendar.YEAR);
+    }
+
+    /**
+     * 获取当前月份
+     * @return
+     */
+    public static int getMonth(){
+        return calendar.get(Calendar.MONTH) + 1;
     }
 
     public static Date toDate(String strDate) {
@@ -194,14 +213,29 @@ public class UtilHelper {
     }
 
     /**
-     * 两个数相除，保留四位小数返回（因需要计算百分比，需要保留四位小数）
+     * 两个数相除，保留四位小数返回（因需要计算百分比，需要保留四位小数,如：90.98%，小数为：0.9098）
      * @param numberOne
      * @param numberTwo
      * @return
      */
     public static String DecimalFormatNumber(int numberOne,int numberTwo){
         DecimalFormat df=new DecimalFormat("0.0000");
+        if(numberTwo==0){
+            return "0";
+        }
         return df.format((float)numberOne/numberTwo);
+    }
+    /**
+     * 乘以100后保留2位小数返回
+     * @param number
+     * @return
+     */
+    public static Double DecimalFormatDouble(String number){
+        DecimalFormat twoDouble=new DecimalFormat("0.00");
+        if("0".equals(number)){
+            return 0.00;
+        }
+        return Double.valueOf(twoDouble.format(Double.valueOf(number)*100));
     }
 
     /**

@@ -8,10 +8,15 @@ import java.util.Map;
  */
 public interface SysQualityManageService {
     /**
+     * 获取品质管理年度报表数据
+     * @return
+     */
+    Map<String,Object> sysQualityManageAnalysisForYear(long companyId,String type);
+    /**
      * 获取列表数据
      * @return
      */
-    Map<String,Object> getSysQualityManageList(int limit, int offset);
+    Map<String,Object> getSysQualityManageList(long companyId,int year,int limit, int offset);
 
     /**
      * 新增质量管理信息
