@@ -3,6 +3,7 @@ package com.spring.boot.dao.web.master;
 import com.spring.boot.bean.master.SysContract;
 import com.spring.boot.dao.BaseDao;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,4 +30,16 @@ public interface SysContractDao extends BaseDao<SysContract>{
      * @return
      */
     SysContract findSysContractByContractCode(String contractCode);
+    /**
+     * 合同列表
+     * @param map
+     * @return
+     */
+    List<SysContract> sysContractDataList(Map<String, Object> map);
+    /**
+     * 合同列表总数
+     * @param map
+     * @return
+     */
+    int sysContractDataTotal(Map<String, Object> map);
 }

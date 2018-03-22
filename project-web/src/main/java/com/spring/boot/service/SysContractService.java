@@ -31,6 +31,13 @@ public interface SysContractService {
      * 添加合同
      * @param contractName
      * @return
+             */
+    Map<String, Object> sysContractDataList(String contractName, String contractCode,  String contractEndTime,
+                                       String contractTypeId, String firstPartyCompany, String secondPartyCompany, Integer limit,Integer offset,Long companyId);
+    /**
+     * 添加合同
+     * @param contractName
+     * @return
      */
     Map<String, Object> addSysContract(String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime,
                                        String contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName);

@@ -53,6 +53,25 @@ public class SysContractServiceImpl implements SysContractService {
     }
 
     @Override
+    public Map<String, Object> sysContractDataList(String contractName, String contractCode, String contractEndTime, String contractTypeId, String firstPartyCompany
+            , String secondPartyCompany, Integer limit, Integer offset,Long companyId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        map.put("contractName", contractName);
+        map.put("contractCode", contractCode);
+        map.put("companyId", companyId);
+        map.put("contractEndTime", contractEndTime);
+        map.put("contractTypeId", contractTypeId);
+        map.put("firstPartyCompany", firstPartyCompany);
+        map.put("secondPartyCompany", secondPartyCompany);
+        map.put("limit", limit);
+        map.put("offset", offset);
+        resultMap.put("total", sysContractBusinessService.sysContractDataTotal(map));
+        resultMap.put("list", sysContractBusinessService.sysContractDataList(map));
+        return null;
+    }
+
+    @Override
     public Map<String, Object> addSysContract(String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime, String contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -101,7 +120,7 @@ public class SysContractServiceImpl implements SysContractService {
         map.put("secondPartyCompany", secondPartyCompany);
         map.put("personLiableName", personLiableName);
         map.put("createTime", Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-        return sysContractBusinessService.addSysContract(map);
+        return sysContractBusinessService.updateSysContract(map);
 
     }
 

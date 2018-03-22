@@ -9,6 +9,7 @@ import com.spring.boot.service.web.SysContractBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,5 +56,15 @@ public class SysContractBusinessServiceImpl implements SysContractBusinessServic
     @Override
     public SysContract findSysContractByContractCode(String contractCode) {
         return sysContractDao.findSysContractByContractCode(contractCode);
+    }
+
+    @Override
+    public List<SysContract> sysContractDataList(Map<String, Object> map) {
+        return sysContractDao.sysContractDataList(map);
+    }
+
+    @Override
+    public int sysContractDataTotal(Map<String, Object> map) {
+        return sysContractDao.sysContractDataTotal(map);
     }
 }

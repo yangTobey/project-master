@@ -7,24 +7,33 @@ import java.sql.Timestamp;
  */
 public class SysContract {
 
-    private long contractId;
+    private Long contractId;
     private String contractName;
     private String contractCode;
-    private int contractMoney;
+    private Integer contractMoney;
     private Timestamp contractStartTime;
     private Timestamp contractEndTime;
-    private int contractTypeId;
+    private Integer contractTypeId;
     private String firstPartyCompany;
     private String secondPartyCompany;
     private String personLiableName;
     private Timestamp createTime;
-    private int statusCode;
+    private Integer statusCode;
+    private Long companyId;
 
-    public long getContractId() {
+    //合同总数
+    private Integer contractNumber;
+    //正在执行合同数
+    private Integer contractWorking;
+    //过期合同
+    private int contractexpired;
+    private String companyName;
+
+    public Long getContractId() {
         return contractId;
     }
 
-    public void setContractId(long contractId) {
+    public void setContractId(Long contractId) {
         this.contractId = contractId;
     }
 
@@ -44,11 +53,11 @@ public class SysContract {
         this.contractCode = contractCode;
     }
 
-    public int getContractMoney() {
+    public Integer getContractMoney() {
         return contractMoney;
     }
 
-    public void setContractMoney(int contractMoney) {
+    public void setContractMoney(Integer contractMoney) {
         this.contractMoney = contractMoney;
     }
 
@@ -68,11 +77,11 @@ public class SysContract {
         this.contractEndTime = contractEndTime;
     }
 
-    public int getContractTypeId() {
+    public Integer getContractTypeId() {
         return contractTypeId;
     }
 
-    public void setContractTypeId(int contractTypeId) {
+    public void setContractTypeId(Integer contractTypeId) {
         this.contractTypeId = contractTypeId;
     }
 
@@ -108,11 +117,51 @@ public class SysContract {
         this.createTime = createTime;
     }
 
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public Integer getContractNumber() {
+        return contractNumber;
+    }
+
+    public void setContractNumber(Integer contractNumber) {
+        this.contractNumber = contractNumber;
+    }
+
+    public Integer getContractWorking() {
+        return contractWorking;
+    }
+
+    public void setContractWorking(Integer contractWorking) {
+        this.contractWorking = contractWorking;
+    }
+
+    public int getContractexpired() {
+        return contractexpired;
+    }
+
+    public void setContractexpired(int contractexpired) {
+        this.contractexpired = contractexpired;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }
