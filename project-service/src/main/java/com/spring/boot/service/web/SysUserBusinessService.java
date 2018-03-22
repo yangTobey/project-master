@@ -2,6 +2,7 @@ package com.spring.boot.service.web;
 
 import com.spring.boot.bean.master.SysUser;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,5 +56,9 @@ public interface SysUserBusinessService {
      * @return
      */
     int deleteUser(Map<String, Object> map);
+    /**
+     * 查询用户的所有菜单ID
+     */
+    List<Long> queryUserAllMenuId(Long userId);
 
 }

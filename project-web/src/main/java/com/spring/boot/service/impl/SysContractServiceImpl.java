@@ -1,5 +1,6 @@
 package com.spring.boot.service.impl;
 
+import com.spring.boot.bean.master.SysContract;
 import com.spring.boot.service.SysContractService;
 import com.spring.boot.service.SysDepartmentService;
 import com.spring.boot.service.web.SysContractBusinessService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,8 +53,9 @@ public class SysContractServiceImpl implements SysContractService {
     }
 
     @Override
-    public int addSysContract(String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime, String contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName) {
+    public Map<String, Object> addSysContract(String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime, String contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName) {
         Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
         map.put("contractName", contractName);
         map.put("contractCode", contractCode);
         map.put("contractMoney", contractMoney);
@@ -62,6 +65,50 @@ public class SysContractServiceImpl implements SysContractService {
         map.put("firstPartyCompany", firstPartyCompany);
         map.put("secondPartyCompany", secondPartyCompany);
         map.put("personLiableName", personLiableName);
+        map.put("createTime", Timestamp.valueOf(UtilHelper.getNowTimeStr()));
+        SysContract sysContract=sysContractBusinessService.findSysContractByContractCode(contractCode);
+        if(sysContract!=null){
+            resultMap.put("code",200);
+            resultMap.put("msg","添加合同失败，系统已存在相同编号的合同，请重新添加或者联系系统管理员！");
+        }else{
+            try{
+                int count= sysContractBusinessService.addSysContract(map);
+                if(count>0){
+                    resultMap.put("code",200);
+                    resultMap.put("msg","添加合同成功！");
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                resultMap.put("code",500);
+                resultMap.put("msg","服务器异常，请联系管理员！");
+            }
+
+        }
+        return resultMap;
+    }
+
+    @Override
+    public int updateSysContract(Long contractId, String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime, String contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("contractId", contractId);
+        map.put("contractName", contractName);
+        map.put("contractCode", contractCode);
+        map.put("contractMoney", contractMoney);
+        map.put("contractStartTime", contractStartTime);
+        map.put("contractEndTime", contractEndTime);
+        map.put("contractTypeId", contractTypeId);
+        map.put("firstPartyCompany", firstPartyCompany);
+        map.put("secondPartyCompany", secondPartyCompany);
+        map.put("personLiableName", personLiableName);
+        map.put("createTime", Timestamp.valueOf(UtilHelper.getNowTimeStr()));
         return sysContractBusinessService.addSysContract(map);
+
+    }
+
+    @Override
+    public int deleteSysContract(Long contractId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("contractId", contractId);
+        return sysContractBusinessService.deleteSysContract(map);
     }
 }

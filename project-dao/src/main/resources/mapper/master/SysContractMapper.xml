@@ -19,19 +19,27 @@
 	<sql id="Base_Column_List">
 		 contractType_id,contractType_name,contractType_code,status_code
 	</sql>
+	<select id="findSysContractByContractCode" resultMap="sysContract" >
+		select *
+		from sys_contract
+		where contract_code = #{contractCode}
+
+	</select>
 
 	<update id="update" parameterType="map">
-		update sys_contract set contractType_name = #{contractTypeName}
-		where contractType_id = #{contractTypeId}
+		update sys_contract set contract_name = #{contractName},contract_code = #{contractCode},contract_money = #{contractMoney},contract_startTime = #{contractStartTime},
+		contract_endTime = #{contractEndTime},contract_type_id = #{contractTypeId},first_party_company = #{firstPartyCompany},second_party_company = #{secondPartyCompany},
+		person_liable_name = #{personLiableName}
+		where contract_id = #{contractId}
 	</update>
 	<insert id="save" parameterType="map">
 		INSERT INTO sys_contract  (contract_name, contract_code,contract_money,contract_startTime,contract_endTime,contract_type_id,first_party_company,second_party_company,person_liable_name,
 		 create_time)
               VALUES   (#{contractName},#{contractCode},#{contractMoney},#{contractStartTime},#{contractEndTime},#{contractTypeId},#{firstPartyCompany},#{secondPartyCompany},#{personLiableName},#{createTime} )
 	</insert>
-	<update id="delete" parameterType="map">
-		update sys_contract  set status_code = 2
-		where contractType_id = #{contractTypeId}
+	<update id="deleteSysContract" parameterType="map">
+		update sys_contract  set status_code = 5
+		where contract_id = #{contractId}
 	</update>
 
 </mapper>

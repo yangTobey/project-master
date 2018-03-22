@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,5 +50,10 @@ public class SysUserBusinessServiceImpl implements SysUserBusinessService {
     @Override
     public int deleteUser(Map<String, Object> map) {
         return sysUserDao.deleteUser(map);
+    }
+
+    @Override
+    public List<Long> queryUserAllMenuId(Long userId) {
+        return sysUserDao.queryUserAllMenuId(userId);
     }
 }

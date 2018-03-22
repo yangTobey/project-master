@@ -1,27 +1,29 @@
 package com.spring.boot.bean.master;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/2/5.
  */
 public class SysMenu {
-    private long menuId;
+    private Long menuId;
     private String manuName;
-    private long parentId;
+    private Long parentId;
     private String url;
     private String perms;
-    private int type;
+    private Integer type;
     private String icon;
-    private int sort;
-    private int isUse;
+    private Integer sort;
+    private Integer isUse;
     private String remark;
+    private List<?> list;
 
-    public long getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(long menuId) {
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 
@@ -33,11 +35,11 @@ public class SysMenu {
         this.manuName = manuName;
     }
 
-    public long getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(long parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
@@ -57,11 +59,11 @@ public class SysMenu {
         this.perms = perms;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -73,19 +75,19 @@ public class SysMenu {
         this.icon = icon;
     }
 
-    public int getSort() {
+    public Integer getSort() {
         return sort;
     }
 
-    public void setSort(int sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
     }
 
-    public int getIsUse() {
+    public Integer getIsUse() {
         return isUse;
     }
 
-    public void setIsUse(int isUse) {
+    public void setIsUse(Integer isUse) {
         this.isUse = isUse;
     }
 
@@ -95,5 +97,13 @@ public class SysMenu {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<?> getList() {
+        return list;
+    }
+
+    public void setList(List<?> list) {
+        this.list = list;
     }
 }

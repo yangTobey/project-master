@@ -1,5 +1,7 @@
 package com.spring.boot.service;
 
+import java.util.Map;
+
 /**
  * Created by Administrator on 2018/1/25.
  *
@@ -30,7 +32,20 @@ public interface SysContractService {
      * @param contractName
      * @return
      */
-    int addSysContract(String contractName,String contractCode,String contractMoney,String contractStartTime, String contractEndTime,
+    Map<String, Object> addSysContract(String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime,
+                                       String contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName);
+    /**
+     * 更新合同
+     * @param contractName
+     * @return
+     */
+    int updateSysContract(Long contractId,String contractName,String contractCode,String contractMoney,String contractStartTime, String contractEndTime,
                        String contractTypeId,String firstPartyCompany,String secondPartyCompany,String personLiableName);
+    /**
+     * 删除合同
+     * @param contractId
+     * @return
+     */
+    int deleteSysContract(Long contractId);
 
 }

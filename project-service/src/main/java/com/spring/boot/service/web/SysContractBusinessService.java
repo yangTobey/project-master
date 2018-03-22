@@ -1,5 +1,7 @@
 package com.spring.boot.service.web;
 
+import com.spring.boot.bean.master.SysContract;
+
 import java.util.Map;
 
 /**
@@ -33,4 +35,23 @@ public interface SysContractBusinessService {
      * @return
      */
     int addSysContract(Map<String, Object> map);
+    /**
+     * 更新合同
+     * @param map
+     * @return
+     */
+    int updateSysContract(Map<String, Object> map);
+    /**
+     * 删除合同
+     * @param map
+     * @return
+     */
+    int deleteSysContract(Map<String, Object> map);
+
+    /**
+     * 根据合同编号查找合同
+     * @param contractCode
+     * @return
+     */
+    SysContract findSysContractByContractCode(String contractCode);
 }

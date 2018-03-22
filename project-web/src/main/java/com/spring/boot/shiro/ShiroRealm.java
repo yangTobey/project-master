@@ -1,13 +1,13 @@
 package com.spring.boot.shiro;
 
-import com.spring.boot.bean.master.SysMenuRole;
 import com.spring.boot.bean.master.SysMenu;
+import com.spring.boot.bean.master.SysMenuRole;
 import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.bean.master.SysUserRole;
-import com.spring.boot.service.web.SysMenuRoleService;
-import com.spring.boot.service.web.SysMenuService;
-import com.spring.boot.service.web.SysUserRoleService;
 import com.spring.boot.service.SysUserService;
+import com.spring.boot.service.web.SysMenuBusinessService;
+import com.spring.boot.service.web.SysMenuRoleService;
+import com.spring.boot.service.web.SysUserRoleService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -37,7 +37,7 @@ public class ShiroRealm extends AuthorizingRealm {
     @Autowired
     private SysUserRoleService sysUserRoleService;
     @Autowired
-    private SysMenuService sysMenuService;
+    private SysMenuBusinessService sysMenuBusinessService;
     @Autowired
     private SysMenuRoleService menuRoleService;
 
@@ -68,7 +68,7 @@ public class ShiroRealm extends AuthorizingRealm {
         for (SysUserRole userRole : permissionList) {
             List<SysMenuRole> menuRoleList = menuRoleService.findMenuRoleInfoByRoleId(userRole.getRoleId());
             for (SysMenuRole menuRole : menuRoleList) {
-                SysMenu sysMenu = sysMenuService.findSysMenuInfoByMenuId(menuRole.getMenuId());
+                SysMenu sysMenu = sysMenuBusinessService.findSysMenuInfoByMenuId(menuRole.getMenuId());
                 if (sysMenu != null) {
                     permsSet.add(sysMenu.getPerms());
                 }

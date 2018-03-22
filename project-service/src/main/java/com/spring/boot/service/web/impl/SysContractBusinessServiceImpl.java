@@ -1,5 +1,6 @@
 package com.spring.boot.service.web.impl;
 
+import com.spring.boot.bean.master.SysContract;
 import com.spring.boot.dao.web.master.SysContractDao;
 import com.spring.boot.dao.web.master.SysContractTypeDao;
 import com.spring.boot.service.web.SysContractBusinessService;
@@ -39,5 +40,20 @@ public class SysContractBusinessServiceImpl implements SysContractBusinessServic
     @Override
     public int addSysContract(Map<String, Object> map) {
         return sysContractDao.save(map);
+    }
+
+    @Override
+    public int updateSysContract(Map<String, Object> map) {
+        return sysContractDao.updateSysContract(map);
+    }
+
+    @Override
+    public int deleteSysContract(Map<String, Object> map) {
+        return sysContractDao.deleteSysContract(map);
+    }
+
+    @Override
+    public SysContract findSysContractByContractCode(String contractCode) {
+        return sysContractDao.findSysContractByContractCode(contractCode);
     }
 }

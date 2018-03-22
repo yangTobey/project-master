@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.web.master.SysMenuDao">
+    <resultMap id="sysMenu" type="com.spring.boot.bean.master.SysMenu">
+        <result column="menu_id" property="menuId"/>
+        <result column="menu_name" property="manuName"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="url" property="url"/>
+        <result column="perms" property="perms"/>
+        <result column="type" property="type"/>
+        <result column="icon" property="icon"/>
+        <result column="sort" property="sort"/>
+        <result column="is_use" property="isUse"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
+
+    <sql id="Base_Column_List">
+		company_id, company_name, company_code, parent_id,company_phone,company_address,status_code
+	</sql>
+ <!--   <select id="queryList" resultMap="sysCompany" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_company
+        where status_code!=2
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+    </select>-->
+    <!--根据公司id查找子公司总数-->
+    <select id="querySubsidiaryCount" resultType="int" parameterType="map">
+        SELECT COUNT(company_id) FROM sys_company WHERE 1=1
+        <if test="companyId != 0">
+            and parent_id=#{companyId}
+        </if>
+        and status_code!=2
+    </select>
+    <select id="findMenuByParentId" resultMap="sysMenu" >
+        select * from sys_menu where parent_id = #{parentId} and is_use=1
+    </select>
+    <select id="getSysCompanyListTotal" resultType="int"  parameterType="map">
+        select count(company_id)
+        from sys_company
+        where status_code!=2
+    </select>
+    <update id="update" parameterType="map">
+		update sys_company set company_name = #{companyName},parent_id = #{parentId},company_phone = #{companyPhone,jdbcType=VARCHAR},company_address = #{companyAddress,jdbcType=VARCHAR}
+		where company_id = #{companyId}
+	</update>
+    <insert id="save" parameterType="map">
+		INSERT INTO sys_company (company_name, company_code, parent_id, company_phone,company_address)
+              VALUES   (#{companyName},#{companyCode},#{parentId},#{companyPhone,jdbcType=VARCHAR},#{companyAddress,jdbcType=VARCHAR})
+	</insert>
+    <update id="delete" parameterType="map">
+		update sys_company set status_code = 2
+		where company_id = #{companyId}
+	</update>
+
+
+</mapper>
