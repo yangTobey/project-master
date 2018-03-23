@@ -111,7 +111,7 @@
         GROUP BY  laborCost.labor_cost_id
     </select>
     <!--根据人员成本id查找对应的信息-->
-    <select id="findSysLaborCostByLaborCostId" resultMap="sysLaborCost" parameterType="int">
+    <select id="findSysLaborCostByLaborCostId" resultMap="sysLaborCost" parameterType="Long">
         select
         <include refid="Base_Column_List_SysLaborCost"/>
         from sys_labor_cost

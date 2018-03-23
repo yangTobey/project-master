@@ -26,7 +26,9 @@ public class SysContract {
     //正在执行合同数
     private Integer contractWorking;
     //过期合同
-    private int contractexpired;
+    private Integer contractexpired;
+    //正在执行或者过期合同总数
+    private Integer total;
     private String companyName;
 
     public Long getContractId() {
@@ -149,11 +151,11 @@ public class SysContract {
         this.contractWorking = contractWorking;
     }
 
-    public int getContractexpired() {
+    public Integer getContractexpired() {
         return contractexpired;
     }
 
-    public void setContractexpired(int contractexpired) {
+    public void setContractexpired(Integer contractexpired) {
         this.contractexpired = contractexpired;
     }
 
@@ -163,5 +165,13 @@ public class SysContract {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
     }
 }

@@ -42,7 +42,7 @@ public interface SysLaborCostDao extends BaseDao<SysLaborCost> {
      * 根据人员成本id查找对应的信息
      * @return
      */
-    SysLaborCost findSysLaborCostByLaborCostId(long laborCostId);
+    SysLaborCost findSysLaborCostByLaborCostId(Long laborCostId);
     /**
      * 新增人员成本详情信息
      *

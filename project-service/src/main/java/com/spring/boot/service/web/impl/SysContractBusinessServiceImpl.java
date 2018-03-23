@@ -1,6 +1,7 @@
 package com.spring.boot.service.web.impl;
 
 import com.spring.boot.bean.master.SysContract;
+import com.spring.boot.bean.master.SysContractType;
 import com.spring.boot.dao.web.master.SysContractDao;
 import com.spring.boot.dao.web.master.SysContractTypeDao;
 import com.spring.boot.service.web.SysContractBusinessService;
@@ -24,17 +25,27 @@ public class SysContractBusinessServiceImpl implements SysContractBusinessServic
     private SysContractTypeDao sysContractTypeDao;
 
     @Override
-    public int addContractType(Map<String, Object> map) {
+    public List<SysContractType> sysContractTypeList(Map<String, Object> map) {
+        return sysContractTypeDao.sysContractTypeList(map);
+    }
+
+    @Override
+    public int sysContractTypeDataTotal(Map<String, Object> map) {
+        return sysContractTypeDao.sysContractTypeDataTotal(map);
+    }
+
+    @Override
+    public int addSysContractType(Map<String, Object> map) {
         return sysContractTypeDao.save(map);
     }
 
     @Override
-    public int updateContractType(Map<String, Object> map) {
+    public int updateSysContractType(Map<String, Object> map) {
         return sysContractTypeDao.update(map);
     }
 
     @Override
-    public int deleteContractType(Map<String, Object> map) {
+    public int deleteSysContractType(Map<String, Object> map) {
         return sysContractTypeDao.delete(map);
     }
 
@@ -66,5 +77,10 @@ public class SysContractBusinessServiceImpl implements SysContractBusinessServic
     @Override
     public int sysContractDataTotal(Map<String, Object> map) {
         return sysContractDao.sysContractDataTotal(map);
+    }
+
+    @Override
+    public List<SysContract> sysContractAnalysisData(Long companyId) {
+        return sysContractDao.sysContractAnalysisData(companyId);
     }
 }

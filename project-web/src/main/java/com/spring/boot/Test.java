@@ -21,5 +21,6 @@ public class Test {
         BigDecimal bigd = new BigDecimal((float)20/21);
         System.out.println(bigd);
         System.out.println(bigd.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue()*100);
+        System.out.println(System.currentTimeMillis());
     }
 }

@@ -20,23 +20,112 @@
 		<result column="contractNumber" property="contractNumber" />
 		<result column="contractWorking" property="contractWorking" />
 		<result column="contractexpired" property="contractexpired" />
+		<result column="total" property="total" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
 		 contract.contract_id,contract.contract_name,contract.contract_code,contract.contract_money,contract.contract_startTime,contract.contract_endTime,contract.contract_type_id,
 		 contract.first_party_company,contract.second_party_company,contract.person_liable_name,contract.status_code,contract.company_id,contract.status_code,company.company_name
 	</sql>
+	<!--根据查询条件，查询合同列表数据-->
 	<select id="sysContractDataList" resultMap="sysContract" >
 		SELECT
 		<include refid="Base_Column_List"/>
 		from sys_contract as contract LEFT JOIN sys_company as company on contract.company_id=company.company_id
+		where 1=1
+		<if test="status_code != null and status_code!=''">
+			/*status_code状态（1：未执行，2：在执行，3：即将过期，4：已经过期，5：已经删除）*/
+			<choose>
+				<when test="status_code==1">
+					and contract.status_code=1
+				</when>
+				<when test="status_code==2">
+					and contract.status_code=2
+				</when>
+				<when test="status_code==3">
+					and contract.status_code=3
+				</when>
+				<when test="status_code==4">
+					and contract.status_code=4
+				</when>
+				<when test="status_code==0">
+					and contract.status_code!=5
+				</when>
+			</choose>
+			/*and TO_DAYS( contract.contract_endTime )- TO_DAYS(NOW()) BETWEEN 0 and 30*/
+		</if>
+		<if test="companyId != 0">
+			and contract.company_id=#{companyId}
+		</if>
+		<if test="offset != null and limit != null">
+			limit #{offset},#{limit}
+		</if>
 
 	</select>
-	<select id="sysContractDataTotal" resultMap="sysContract" >
-		SELECT count(contract_id)
+	<!--获取报表统计数据-->
+	<select id="sysContractAnalysisData" resultMap="sysContract" parameterType="long">
+		SELECT status_code,COUNT(contract_id) as total
+		 from sys_contract as contract
+		 where 1=1
+		 and contract.status_code!=5
+		<if test="companyId != 0">
+			and contract.company_id=#{companyId}
+		</if>
+		GROUP BY contract.status_code
+	</select>
+	<!--查询即将到期合同列表数据（结束时间-当前时间<=31天）-->
+	<!--<select id="sysContractExpireDataList" resultMap="sysContract" >
+		SELECT
 		<include refid="Base_Column_List"/>
+		from sys_contract as contract LEFT JOIN sys_company as company on contract.company_id=company.company_id
+		where 1=1
+		and TO_DAYS( contract.contract_endTime )- TO_DAYS(NOW()) BETWEEN 0 and 30
+		and status_code!=2
+		<if test="companyId != 0">
+			and contract.company_id=#{companyId}
+		</if>
+	</select>-->
+	<!--查询即将到期合同列表总数量（结束时间-当前时间<=31天）-->
+	<!--<select id="sysContractExpireDataTotal" resultType="int" >
+		SELECT
+		COUNT(contract_id)
 		from sys_contract as contract
-		where status_code!=2
+		where 1=1
+		and TO_DAYS( contract.contract_endTime )- TO_DAYS(NOW()) BETWEEN 0 and 30
+		and status_code!=2
+		<if test="companyId != 0">
+			and contract.company_id=#{companyId}
+		</if>
+
+	</select>-->
+	<select id="sysContractDataTotal" resultType="int" >
+		SELECT count(contract.contract_id)
+		from sys_contract as contract
+		where 1=1
+		<if test="status_code != null and status_code!=''">
+			/*status_code状态（1：未执行，2：在执行，3：即将过期，4：已经过期，5：已经删除）*/
+			<choose>
+				<when test="status_code==1">
+					and contract.status_code=1
+				</when>
+				<when test="status_code==2">
+					and contract.status_code=2
+				</when>
+				<when test="status_code==3">
+					and contract.status_code=3
+				</when>
+				<when test="status_code==4">
+					and contract.status_code=4
+				</when>
+				<when test="status_code==0">
+					and contract.status_code!=5
+				</when>
+			</choose>
+			/*and TO_DAYS( contract.contract_endTime )- TO_DAYS(NOW()) BETWEEN 0 and 30*/
+		</if>
+		<if test="companyId != 0">
+			and contract.company_id=#{companyId}
+		</if>
 
 	</select>
 	<select id="findSysContractByContractCode" resultMap="sysContract" >

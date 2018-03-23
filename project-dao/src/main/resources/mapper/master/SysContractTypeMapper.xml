@@ -13,6 +13,25 @@
 		 contractType_id,contractType_name,contractType_code,status_code
 	</sql>
 
+	<!--根据查询条件，查询合同分类列表数据-->
+	<select id="sysContractTypeList" resultMap="contractType" parameterType="map">
+		SELECT
+		<include refid="Base_Column_List"/>
+		from sys_contract_type
+		where 1=1 and status_code!=2
+		<if test="offset != null and limit != null">
+			limit #{offset},#{limit}
+		</if>
+
+	</select>
+	<!--查询合同分类条数-->
+	<select id="sysContractTypeDataTotal" resultType="int" parameterType="map">
+		SELECT count(contractType_id)
+		from sys_contract_type
+		where 1=1 and status_code!=2
+
+	</select>
+
 	<update id="update" parameterType="map">
 		update sys_contract_type set contractType_name = #{contractTypeName}
 		where contractType_id = #{contractTypeId}
