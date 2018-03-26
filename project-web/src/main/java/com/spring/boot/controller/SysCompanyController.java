@@ -37,7 +37,7 @@ public class SysCompanyController {
             return R.error(400, "分页控制，页码offset只能为数字！");
         }
         Map<String, Object> map = sysCompanyService.getSysCompanyList(Integer.valueOf(limit), Integer.valueOf(offset));
-        return R.ok().put(200, map,"获取成功！");
+        return R.ok(map);
     }
 
     /**
@@ -51,11 +51,11 @@ public class SysCompanyController {
     @RequestMapping(value = "/addSysCompany", method = RequestMethod.GET)
     public R addSysCompany(@RequestParam(value = "companyName", required = false)String companyName, @RequestParam(value = "companyPhone", required = false)String companyPhone
             , @RequestParam(value = "companyAddress", required = false)String companyAddress) {
-        int count = sysCompanyService.addSysCompany(companyName, companyPhone, companyAddress);
-        if (count > 0) {
-            return R.ok(200, "新增成功！");
+        if (UtilHelper.isEmpty(companyName)) {
+            return R.error(400, "公司名称不能为空！");
         }
-        return R.error(500, "新增失败，服务器异常，请联系系统管理员！");
+        Map<String, Object> map  = sysCompanyService.addSysCompany(companyName, companyPhone, companyAddress);
+        return R.ok(map);
     }
 
     /**
@@ -73,15 +73,11 @@ public class SysCompanyController {
         logger.info("公司信息更新操作！");
         if(!UtilHelper.isNumer(companyId)){
             return R.error(400, "公司编号格式不正确，请联系系统管理员！");
+        }else if (UtilHelper.isEmpty(companyName)) {
+            return R.error(400, "公司名称不能为空！");
         }
-        if (UtilHelper.isEmpty(companyName)) {
-            return R.error(400, "新密码不能为空！");
-        }
-        int count = sysCompanyService.updateSysCompanyInfo(companyId, companyName, companyPhone, companyAddress);
-        if (count > 0) {
-            return R.ok(200, "更新成功！");
-        }
-        return R.error(500, "更新失败，服务器异常，请联系系统管理员！");
+        Map<String, Object> map  = sysCompanyService.updateSysCompanyInfo(companyId, companyName, companyPhone, companyAddress);
+        return R.ok(map);
 
     }
 
@@ -96,11 +92,8 @@ public class SysCompanyController {
          if(!UtilHelper.isNumer(companyId)){
             return R.error(400, "公司编号格式不正确，请联系系统管理员！");
         }
-        int count = sysCompanyService.deleteSysCompanyById(companyId);
-        if (count > 0) {
-            return R.ok(200, "更新成功！");
-        }
-        return R.error(500, "删除失败，系统异常，请联系系统管理员！");
+        Map<String, Object> map = sysCompanyService.deleteSysCompanyById(companyId);
+        return R.ok(map);
     }
     /**
      * 根据公司id获取信息

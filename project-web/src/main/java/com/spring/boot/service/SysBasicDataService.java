@@ -45,7 +45,7 @@ public interface SysBasicDataService {
      * @param companyId           公司id
      * @return
      */
-    int addSysBasicData(int year, int month, double constructionArea, double chargeArea, int cityNumber, int projectNumber, int houseNumber, int acceptHouseNumber
+    Map<String, Object> addSysBasicData(int year, int month, double constructionArea, double chargeArea, int cityNumber, int projectNumber, int houseNumber, int acceptHouseNumber
             , int forSaleHouseNumber, int decorateHouseNumber, int parkingSpace, int forSaleParkingSpace, int salesDistribution, int companyId);
 
     /**
@@ -68,7 +68,7 @@ public interface SysBasicDataService {
      * @param companyId           公司id
      * @return
      */
-    int updateSysBasicData(int basicId, int year, int month, double constructionArea, double chargeArea, int cityNumber, int projectNumber, int houseNumber, int acceptHouseNumber
+    Map<String, Object> updateSysBasicData(int basicId, int year, int month, double constructionArea, double chargeArea, int cityNumber, int projectNumber, int houseNumber, int acceptHouseNumber
             , int forSaleHouseNumber, int decorateHouseNumber, int parkingSpace, int forSaleParkingSpace, int salesDistribution, int companyId);
 
     /**
@@ -77,5 +77,12 @@ public interface SysBasicDataService {
      * @param basicId 主键id
      * @return
      */
-    int deleteSysBasicData(int basicId);
+    Map<String, Object> deleteSysBasicData(int basicId);
+    /**
+     * 根据id查找基础数据信息
+     *
+     * @param basicId 主键id
+     * @return
+     */
+    Map<String, Object> findSysBasicDataById(int basicId);
 }

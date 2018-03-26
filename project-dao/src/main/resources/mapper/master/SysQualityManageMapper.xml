@@ -13,13 +13,15 @@
         <result column="quality_check_unmodified" property="qualityCheckUnmodified"/>
         <result column="status_code" property="statusCode"/>
         <result column="create_time" property="createTime"/>
+        <result column="companyName" property="companyName"/>
+        <result column="fileNum" property="fileNum"/>
     </resultMap>
 
     <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
 
     <sql id="Base_Column_List">
 		quality.quality_id,quality.company_id, quality.year, quality.month, quality.quality_check,quality.quality_check_pass,quality.quality_check_fail,quality.quality_check_unmodified
-		,quality.status_code,quality.create_time
+		,quality.security_event,quality.status_code,quality.create_time,company.company_name as companyName
 	</sql>
     <select id="queryList" resultMap="sysQualityManage" parameterType="map">
         select

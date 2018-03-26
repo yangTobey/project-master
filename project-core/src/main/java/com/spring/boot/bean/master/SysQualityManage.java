@@ -6,95 +6,99 @@ import java.sql.Timestamp;
  * Created by Administrator on 2018/3/20.
  */
 public class SysQualityManage {
-    private long qualityId;
-    private long companyId;
-    private int year;
-    private int month;
-    private int qualityCheck;
-    private int qualityCheckPass;
-    private int qualityCheckFail;
-    private int securityEvent;
-    private int qualityCheckUnmodified;
-    private int statusCode;
+    private Long qualityId;
+    private Long companyId;
+    private Integer year;
+    private Integer month;
+    private Integer qualityCheck;
+    private Integer qualityCheckPass;
+    private Integer qualityCheckFail;
+    private Integer securityEvent;
+    private Integer qualityCheckUnmodified;
+    private Integer statusCode;
     private Timestamp createTime;
 
-    public long getQualityId() {
+    private String companyName;
+
+    private Integer fileNum;
+
+    public Long getQualityId() {
         return qualityId;
     }
 
-    public void setQualityId(long qualityId) {
+    public void setQualityId(Long qualityId) {
         this.qualityId = qualityId;
     }
 
-    public long getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(long companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public int getMonth() {
+    public Integer getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(Integer month) {
         this.month = month;
     }
 
-    public int getQualityCheck() {
+    public Integer getQualityCheck() {
         return qualityCheck;
     }
 
-    public void setQualityCheck(int qualityCheck) {
+    public void setQualityCheck(Integer qualityCheck) {
         this.qualityCheck = qualityCheck;
     }
 
-    public int getQualityCheckPass() {
+    public Integer getQualityCheckPass() {
         return qualityCheckPass;
     }
 
-    public void setQualityCheckPass(int qualityCheckPass) {
+    public void setQualityCheckPass(Integer qualityCheckPass) {
         this.qualityCheckPass = qualityCheckPass;
     }
 
-    public int getQualityCheckFail() {
+    public Integer getQualityCheckFail() {
         return qualityCheckFail;
     }
 
-    public void setQualityCheckFail(int qualityCheckFail) {
+    public void setQualityCheckFail(Integer qualityCheckFail) {
         this.qualityCheckFail = qualityCheckFail;
     }
 
-    public int getSecurityEvent() {
+    public Integer getSecurityEvent() {
         return securityEvent;
     }
 
-    public void setSecurityEvent(int securityEvent) {
+    public void setSecurityEvent(Integer securityEvent) {
         this.securityEvent = securityEvent;
     }
 
-    public int getQualityCheckUnmodified() {
+    public Integer getQualityCheckUnmodified() {
         return qualityCheckUnmodified;
     }
 
-    public void setQualityCheckUnmodified(int qualityCheckUnmodified) {
+    public void setQualityCheckUnmodified(Integer qualityCheckUnmodified) {
         this.qualityCheckUnmodified = qualityCheckUnmodified;
     }
 
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
 
@@ -104,5 +108,21 @@ public class SysQualityManage {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public Integer getFileNum() {
+        return fileNum;
+    }
+
+    public void setFileNum(Integer fileNum) {
+        this.fileNum = fileNum;
     }
 }

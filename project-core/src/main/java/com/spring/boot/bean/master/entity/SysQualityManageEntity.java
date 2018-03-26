@@ -6,320 +6,319 @@ import java.sql.Timestamp;
  * Created by Administrator on 2018/3/20.
  */
 public class SysQualityManageEntity {
-    private long qualityId;
-    private int qualityCheck;
-    private int qualityCheckPass;
-    private int qualityCheckFail;
-    private int securityEvent;
-    private int qualityCheckUnmodified;
+    private Long qualityId;
+    private Integer qualityCheck;
+    private Integer qualityCheckPass;
+    private Integer qualityCheckFail;
+    private Integer securityEvent;
+    private Integer qualityCheckUnmodified;
     //检查合格率
-    private double qualityCheckPassScale;
+    private Double qualityCheckPassScale;
     //整改合格率
-    private double modifiedPassScale;
+    private Double modifiedPassScale;
     //一月份合格率
-    private double checkPassScaleJan;
+    private Double checkPassScaleJan;
     //二月份合格率
-    private double checkPassScaleFeb;
+    private Double checkPassScaleFeb;
     //三月份合格率
-    private double checkPassScaleMar;
+    private Double checkPassScaleMar;
     //四月份合格率
-    private double checkPassScaleApr;
+    private Double checkPassScaleApr;
     //五月份合格率
-    private double checkPassScaleMay;
+    private Double checkPassScaleMay;
     //六月份合格率
-    private double checkPassScaleJune;
+    private Double checkPassScaleJune;
     //七月份合格率
-    private double checkPassScaleJuly;
+    private Double checkPassScaleJuly;
     //八月份合格率
-    private double checkPassScaleAug;
+    private Double checkPassScaleAug;
     //九月份合格率
-    private double checkPassScaleSept;
+    private Double checkPassScaleSept;
     //十月份合格率
-    private double checkPassScaleOct;
+    private Double checkPassScaleOct;
     //十一月份合格率
-    private double checkPassScaleNov;
+    private Double checkPassScaleNov;
     //十二月份合格率
-    private double checkPassScaleDec;
+    private Double checkPassScaleDec;
 
     //一月份整改合格率
-    private double modifiedPassScaleJan;
+    private Double modifiedPassScaleJan;
     //二月份整改合格率
-    private double modifiedPassScaleFeb;
+    private Double modifiedPassScaleFeb;
     //三月份整改合格率
-    private double modifiedPassScaleMar;
+    private Double modifiedPassScaleMar;
     //四月份整改合格率
-    private double modifiedPassScaleApr;
+    private Double modifiedPassScaleApr;
     //五月份整改合格率
-    private double modifiedPassScaleMay;
+    private Double modifiedPassScaleMay;
     //六月份整改合格率
-    private double modifiedPassScaleJune;
+    private Double modifiedPassScaleJune;
     //七月份整改合格率
-    private double modifiedPassScaleJuly;
+    private Double modifiedPassScaleJuly;
     //八月份整改合格率
-    private double modifiedPassScaleAug;
+    private Double modifiedPassScaleAug;
     //九月份整改合格率
-    private double modifiedPassScaleSept;
+    private Double modifiedPassScaleSept;
     //十月份整改合格率
-    private double modifiedPassScaleOct;
+    private Double modifiedPassScaleOct;
     //十一月份整改合格率
-    private double modifiedPassScaleNov;
+    private Double modifiedPassScaleNov;
     //十二月份整改合格率
-    private double modifiedPassScaleDec;
+    private Double modifiedPassScaleDec;
 
-
-    public long getQualityId() {
+    public Long getQualityId() {
         return qualityId;
     }
 
-    public void setQualityId(long qualityId) {
+    public void setQualityId(Long qualityId) {
         this.qualityId = qualityId;
     }
 
-    public int getQualityCheck() {
+    public Integer getQualityCheck() {
         return qualityCheck;
     }
 
-    public void setQualityCheck(int qualityCheck) {
+    public void setQualityCheck(Integer qualityCheck) {
         this.qualityCheck = qualityCheck;
     }
 
-    public int getQualityCheckPass() {
+    public Integer getQualityCheckPass() {
         return qualityCheckPass;
     }
 
-    public void setQualityCheckPass(int qualityCheckPass) {
+    public void setQualityCheckPass(Integer qualityCheckPass) {
         this.qualityCheckPass = qualityCheckPass;
     }
 
-    public int getQualityCheckFail() {
+    public Integer getQualityCheckFail() {
         return qualityCheckFail;
     }
 
-    public void setQualityCheckFail(int qualityCheckFail) {
+    public void setQualityCheckFail(Integer qualityCheckFail) {
         this.qualityCheckFail = qualityCheckFail;
     }
 
-    public int getSecurityEvent() {
+    public Integer getSecurityEvent() {
         return securityEvent;
     }
 
-    public void setSecurityEvent(int securityEvent) {
+    public void setSecurityEvent(Integer securityEvent) {
         this.securityEvent = securityEvent;
     }
 
-    public int getQualityCheckUnmodified() {
+    public Integer getQualityCheckUnmodified() {
         return qualityCheckUnmodified;
     }
 
-    public void setQualityCheckUnmodified(int qualityCheckUnmodified) {
+    public void setQualityCheckUnmodified(Integer qualityCheckUnmodified) {
         this.qualityCheckUnmodified = qualityCheckUnmodified;
     }
 
-    public double getQualityCheckPassScale() {
+    public Double getQualityCheckPassScale() {
         return qualityCheckPassScale;
     }
 
-    public void setQualityCheckPassScale(double qualityCheckPassScale) {
+    public void setQualityCheckPassScale(Double qualityCheckPassScale) {
         this.qualityCheckPassScale = qualityCheckPassScale;
     }
 
-    public double getModifiedPassScale() {
+    public Double getModifiedPassScale() {
         return modifiedPassScale;
     }
 
-    public void setModifiedPassScale(double modifiedPassScale) {
+    public void setModifiedPassScale(Double modifiedPassScale) {
         this.modifiedPassScale = modifiedPassScale;
     }
 
-    public double getCheckPassScaleJan() {
+    public Double getCheckPassScaleJan() {
         return checkPassScaleJan;
     }
 
-    public void setCheckPassScaleJan(double checkPassScaleJan) {
+    public void setCheckPassScaleJan(Double checkPassScaleJan) {
         this.checkPassScaleJan = checkPassScaleJan;
     }
 
-    public double getCheckPassScaleFeb() {
+    public Double getCheckPassScaleFeb() {
         return checkPassScaleFeb;
     }
 
-    public void setCheckPassScaleFeb(double checkPassScaleFeb) {
+    public void setCheckPassScaleFeb(Double checkPassScaleFeb) {
         this.checkPassScaleFeb = checkPassScaleFeb;
     }
 
-    public double getCheckPassScaleMar() {
+    public Double getCheckPassScaleMar() {
         return checkPassScaleMar;
     }
 
-    public void setCheckPassScaleMar(double checkPassScaleMar) {
+    public void setCheckPassScaleMar(Double checkPassScaleMar) {
         this.checkPassScaleMar = checkPassScaleMar;
     }
 
-    public double getCheckPassScaleApr() {
+    public Double getCheckPassScaleApr() {
         return checkPassScaleApr;
     }
 
-    public void setCheckPassScaleApr(double checkPassScaleApr) {
+    public void setCheckPassScaleApr(Double checkPassScaleApr) {
         this.checkPassScaleApr = checkPassScaleApr;
     }
 
-    public double getCheckPassScaleMay() {
+    public Double getCheckPassScaleMay() {
         return checkPassScaleMay;
     }
 
-    public void setCheckPassScaleMay(double checkPassScaleMay) {
+    public void setCheckPassScaleMay(Double checkPassScaleMay) {
         this.checkPassScaleMay = checkPassScaleMay;
     }
 
-    public double getCheckPassScaleJune() {
+    public Double getCheckPassScaleJune() {
         return checkPassScaleJune;
     }
 
-    public void setCheckPassScaleJune(double checkPassScaleJune) {
+    public void setCheckPassScaleJune(Double checkPassScaleJune) {
         this.checkPassScaleJune = checkPassScaleJune;
     }
 
-    public double getCheckPassScaleJuly() {
+    public Double getCheckPassScaleJuly() {
         return checkPassScaleJuly;
     }
 
-    public void setCheckPassScaleJuly(double checkPassScaleJuly) {
+    public void setCheckPassScaleJuly(Double checkPassScaleJuly) {
         this.checkPassScaleJuly = checkPassScaleJuly;
     }
 
-    public double getCheckPassScaleAug() {
+    public Double getCheckPassScaleAug() {
         return checkPassScaleAug;
     }
 
-    public void setCheckPassScaleAug(double checkPassScaleAug) {
+    public void setCheckPassScaleAug(Double checkPassScaleAug) {
         this.checkPassScaleAug = checkPassScaleAug;
     }
 
-    public double getCheckPassScaleSept() {
+    public Double getCheckPassScaleSept() {
         return checkPassScaleSept;
     }
 
-    public void setCheckPassScaleSept(double checkPassScaleSept) {
+    public void setCheckPassScaleSept(Double checkPassScaleSept) {
         this.checkPassScaleSept = checkPassScaleSept;
     }
 
-    public double getCheckPassScaleOct() {
+    public Double getCheckPassScaleOct() {
         return checkPassScaleOct;
     }
 
-    public void setCheckPassScaleOct(double checkPassScaleOct) {
+    public void setCheckPassScaleOct(Double checkPassScaleOct) {
         this.checkPassScaleOct = checkPassScaleOct;
     }
 
-    public double getCheckPassScaleNov() {
+    public Double getCheckPassScaleNov() {
         return checkPassScaleNov;
     }
 
-    public void setCheckPassScaleNov(double checkPassScaleNov) {
+    public void setCheckPassScaleNov(Double checkPassScaleNov) {
         this.checkPassScaleNov = checkPassScaleNov;
     }
 
-    public double getCheckPassScaleDec() {
+    public Double getCheckPassScaleDec() {
         return checkPassScaleDec;
     }
 
-    public void setCheckPassScaleDec(double checkPassScaleDec) {
+    public void setCheckPassScaleDec(Double checkPassScaleDec) {
         this.checkPassScaleDec = checkPassScaleDec;
     }
 
-    public double getModifiedPassScaleJan() {
+    public Double getModifiedPassScaleJan() {
         return modifiedPassScaleJan;
     }
 
-    public void setModifiedPassScaleJan(double modifiedPassScaleJan) {
+    public void setModifiedPassScaleJan(Double modifiedPassScaleJan) {
         this.modifiedPassScaleJan = modifiedPassScaleJan;
     }
 
-    public double getModifiedPassScaleFeb() {
+    public Double getModifiedPassScaleFeb() {
         return modifiedPassScaleFeb;
     }
 
-    public void setModifiedPassScaleFeb(double modifiedPassScaleFeb) {
+    public void setModifiedPassScaleFeb(Double modifiedPassScaleFeb) {
         this.modifiedPassScaleFeb = modifiedPassScaleFeb;
     }
 
-    public double getModifiedPassScaleMar() {
+    public Double getModifiedPassScaleMar() {
         return modifiedPassScaleMar;
     }
 
-    public void setModifiedPassScaleMar(double modifiedPassScaleMar) {
+    public void setModifiedPassScaleMar(Double modifiedPassScaleMar) {
         this.modifiedPassScaleMar = modifiedPassScaleMar;
     }
 
-    public double getModifiedPassScaleApr() {
+    public Double getModifiedPassScaleApr() {
         return modifiedPassScaleApr;
     }
 
-    public void setModifiedPassScaleApr(double modifiedPassScaleApr) {
+    public void setModifiedPassScaleApr(Double modifiedPassScaleApr) {
         this.modifiedPassScaleApr = modifiedPassScaleApr;
     }
 
-    public double getModifiedPassScaleMay() {
+    public Double getModifiedPassScaleMay() {
         return modifiedPassScaleMay;
     }
 
-    public void setModifiedPassScaleMay(double modifiedPassScaleMay) {
+    public void setModifiedPassScaleMay(Double modifiedPassScaleMay) {
         this.modifiedPassScaleMay = modifiedPassScaleMay;
     }
 
-    public double getModifiedPassScaleJune() {
+    public Double getModifiedPassScaleJune() {
         return modifiedPassScaleJune;
     }
 
-    public void setModifiedPassScaleJune(double modifiedPassScaleJune) {
+    public void setModifiedPassScaleJune(Double modifiedPassScaleJune) {
         this.modifiedPassScaleJune = modifiedPassScaleJune;
     }
 
-    public double getModifiedPassScaleJuly() {
+    public Double getModifiedPassScaleJuly() {
         return modifiedPassScaleJuly;
     }
 
-    public void setModifiedPassScaleJuly(double modifiedPassScaleJuly) {
+    public void setModifiedPassScaleJuly(Double modifiedPassScaleJuly) {
         this.modifiedPassScaleJuly = modifiedPassScaleJuly;
     }
 
-    public double getModifiedPassScaleAug() {
+    public Double getModifiedPassScaleAug() {
         return modifiedPassScaleAug;
     }
 
-    public void setModifiedPassScaleAug(double modifiedPassScaleAug) {
+    public void setModifiedPassScaleAug(Double modifiedPassScaleAug) {
         this.modifiedPassScaleAug = modifiedPassScaleAug;
     }
 
-    public double getModifiedPassScaleSept() {
+    public Double getModifiedPassScaleSept() {
         return modifiedPassScaleSept;
     }
 
-    public void setModifiedPassScaleSept(double modifiedPassScaleSept) {
+    public void setModifiedPassScaleSept(Double modifiedPassScaleSept) {
         this.modifiedPassScaleSept = modifiedPassScaleSept;
     }
 
-    public double getModifiedPassScaleOct() {
+    public Double getModifiedPassScaleOct() {
         return modifiedPassScaleOct;
     }
 
-    public void setModifiedPassScaleOct(double modifiedPassScaleOct) {
+    public void setModifiedPassScaleOct(Double modifiedPassScaleOct) {
         this.modifiedPassScaleOct = modifiedPassScaleOct;
     }
 
-    public double getModifiedPassScaleNov() {
+    public Double getModifiedPassScaleNov() {
         return modifiedPassScaleNov;
     }
 
-    public void setModifiedPassScaleNov(double modifiedPassScaleNov) {
+    public void setModifiedPassScaleNov(Double modifiedPassScaleNov) {
         this.modifiedPassScaleNov = modifiedPassScaleNov;
     }
 
-    public double getModifiedPassScaleDec() {
+    public Double getModifiedPassScaleDec() {
         return modifiedPassScaleDec;
     }
 
-    public void setModifiedPassScaleDec(double modifiedPassScaleDec) {
+    public void setModifiedPassScaleDec(Double modifiedPassScaleDec) {
         this.modifiedPassScaleDec = modifiedPassScaleDec;
     }
 }

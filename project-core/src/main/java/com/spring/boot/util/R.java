@@ -72,6 +72,18 @@ public class R extends HashMap<String, Object> {
 	/**
 	 * 接口正常返回数据（格式：返回码100，map数据集）
 	 * @param code
+	 * @param object
+	 * @return
+	 */
+	public R putData(int code, Object object,String msg) {
+		super.put("code", code);
+		super.put("msg", msg);
+		super.put("data", object);
+		return this;
+	}
+	/**
+	 * 接口正常返回数据（格式：返回码100，map数据集）
+	 * @param code
 	 * @param map
 	 * @return
 	 */

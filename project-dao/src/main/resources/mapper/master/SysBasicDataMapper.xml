@@ -71,6 +71,15 @@
             limit #{offset},#{limit}
         </if>
     </select>
+    <!--根据信息id查找详情信息-->
+    <select id="findSysBasicDataById" resultType="com.spring.boot.bean.master.entity.SysBasicDataEntity"  parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_basic_data  as basic LEFT JOIN sys_company AS company ON basic.company_id = company.company_id
+        where 1=1
+        and basic.basic_id = #{basicId}
+        and basic.status_code!=2
+    </select>
     <update id="updateSysBasicData" parameterType="map">
 		update sys_basic_data set company_id = #{companyId},year = #{year},month = #{month},construction_area = #{constructionArea},charge_area = #{chargeArea}
 		,city_number = #{cityNumber},project_number = #{projectNumber},house_number = #{houseNumber},accept_house_number = #{acceptHouseNumber},accept_house_number = #{acceptHouseNumber}

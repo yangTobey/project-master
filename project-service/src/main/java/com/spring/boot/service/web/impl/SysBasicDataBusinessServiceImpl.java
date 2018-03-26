@@ -50,4 +50,9 @@ public class SysBasicDataBusinessServiceImpl implements SysBasicDataBusinessServ
     public int deleteSysBasicData(Map<String, Object> map) {
         return sysBasicDataDao.deleteSysBasicData(map);
     }
+
+    @Override
+    public SysBasicDataEntity findSysBasicDataById(Map<String, Object> map) {
+        return sysBasicDataDao.findSysBasicDataById(map);
+    }
 }

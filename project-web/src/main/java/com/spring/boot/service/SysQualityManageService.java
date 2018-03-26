@@ -11,7 +11,7 @@ public interface SysQualityManageService {
      * 获取品质管理年度报表数据
      * @return
      */
-    Map<String,Object> sysQualityManageAnalysisForYear(long companyId,String type);
+    Map<String,Object> sysQualityManageAnalysis(long companyId);
     /**
      * 获取列表数据
      * @return
@@ -30,7 +30,7 @@ public interface SysQualityManageService {
      * @param qualityCheckUnmodified
      * @return
      */
-    int addSysQualityManage(long companyId, int year, int month,int qualityCheck,int qualityCheckPass,int qualityCheckFail,int securityEvent,int qualityCheckUnmodified);
+    Map<String,Object> addSysQualityManage(long companyId, int year, int month,int qualityCheck,int qualityCheckPass,int qualityCheckFail,int securityEvent,int qualityCheckUnmodified);
 
     /**
      * 更新信息
@@ -45,16 +45,21 @@ public interface SysQualityManageService {
      * @param qualityCheckUnmodified
      * @return
      */
-    int updateSysQualityManage(long qualityId,long companyId, int year, int month,int qualityCheck,int qualityCheckPass,int qualityCheckFail,int securityEvent,int qualityCheckUnmodified);
+    Map<String,Object> updateSysQualityManage(long qualityId,long companyId, int year, int month,int qualityCheck,int qualityCheckPass,int qualityCheckFail,int securityEvent,int qualityCheckUnmodified);
     /**
      * 删除信息
      * @param qualityId id
      * @return
      */
-    int deleteSysQualityManageById(long qualityId);
+    Map<String,Object> deleteSysQualityManageById(long qualityId);
     /**
      * 根据公司id获取公司数据
      * @return
      */
     Map<String,Object> findSysQualityManageById(long companyId);
+    /**
+     * 根据公司id获取附件文档信息
+     * @return
+     */
+    Map<String,Object> findSysQualityManageFileById(long companyId);
 }

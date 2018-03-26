@@ -7,8 +7,10 @@ import com.spring.boot.service.SysCompanyService;
 import com.spring.boot.service.SysQualityManageService;
 import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.service.web.SysQualityManageBusinessService;
+import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
 import org.apache.commons.lang.math.RandomUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import java.util.Map;
  */
 @Service
 public class SysQualityManageServiceImpl implements SysQualityManageService {
+    private static final Logger logger = Logger.getLogger(SysQualityManageServiceImpl.class);
     @Autowired
     private SysQualityManageBusinessService sysQualityManageBusinessService;
 
@@ -31,89 +34,104 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     Map<String, Object> map = null;
 
     @Override
-    public Map<String, Object> sysQualityManageAnalysisForYear(long companyId,String type) {
+    public Map<String, Object> sysQualityManageAnalysis(long companyId) {
         resultMap = new HashMap<String, Object>();
         map = new HashMap<String, Object>();
         map.put("companyId", companyId);
         map.put("year",UtilHelper.getYear());
         map.put("month",UtilHelper.getMonth());
-        SysQualityManageEntity sysQualityManageEntity=null;
-        if("year".equals(type)){
-            //查找年度报表数据
-            sysQualityManageEntity=sysQualityManageBusinessService.sysQualityManageAnalysisForYear(map);
-            sysQualityManageEntity.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntity.getQualityCheckPass(),sysQualityManageEntity.getQualityCheck())));
-            sysQualityManageEntity.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntity.getQualityCheckUnmodified(),sysQualityManageEntity.getQualityCheckFail())));
-            resultMap.put("qualityManageYear", sysQualityManageEntity);
-        }else{
-            //查找月度报表数据
-            sysQualityManageEntity=sysQualityManageBusinessService.sysQualityManageAnalysisForMonth(map);
-            List<SysQualityManage> list=sysQualityManageBusinessService.sysQualityManageAnalysisList(map);
-            //月度品质合格率
-            double qualityCheckPassScale=0;
-            //月度品质整改合格率
-            double modifiedPassScale=0;
-            if(list.size()>0){
-                for(SysQualityManage sysQualityManage:list){
-                    qualityCheckPassScale=UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckPass(),sysQualityManage.getQualityCheck()));
-                    modifiedPassScale=UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckUnmodified(),sysQualityManage.getQualityCheckFail()));
-                    switch (sysQualityManage.getMonth()){
-                        case 1:
-                            sysQualityManageEntity.setCheckPassScaleJan(qualityCheckPassScale);
-                            sysQualityManageEntity.setModifiedPassScaleJan(modifiedPassScale);
-                            break;
-                        case 2:
-                            sysQualityManageEntity.setCheckPassScaleFeb(qualityCheckPassScale);
-                            sysQualityManageEntity.setModifiedPassScaleFeb(modifiedPassScale);
-                            break;
-                        case 3:
-                            sysQualityManageEntity.setCheckPassScaleMar(qualityCheckPassScale);
-                            sysQualityManageEntity.setModifiedPassScaleMar(modifiedPassScale);
-                            break;
-                        case 4:
-                            sysQualityManageEntity.setCheckPassScaleApr(qualityCheckPassScale);
-                            sysQualityManageEntity.setModifiedPassScaleApr(modifiedPassScale);
-                            break;
-                        case 5:
-                            sysQualityManageEntity.setCheckPassScaleMay(qualityCheckPassScale);
-                            sysQualityManageEntity.setModifiedPassScaleMay(modifiedPassScale);
-                            break;
-                        case 6:
-                            sysQualityManageEntity.setCheckPassScaleJune(qualityCheckPassScale);
-                            sysQualityManageEntity.setModifiedPassScaleJune(modifiedPassScale);
-                            break;
-                        case 7:
-                            sysQualityManageEntity.setCheckPassScaleJuly(qualityCheckPassScale);
-                            sysQualityManageEntity.setModifiedPassScaleJuly(modifiedPassScale);
-                            break;
-                        case 8:
-                            sysQualityManageEntity.setCheckPassScaleAug(qualityCheckPassScale);
-                            sysQualityManageEntity.setModifiedPassScaleAug(modifiedPassScale);
-                            break;
-                        case 9:
-                            sysQualityManageEntity.setCheckPassScaleSept(qualityCheckPassScale);
-                            sysQualityManageEntity.setModifiedPassScaleSept(modifiedPassScale);
-                            break;
-                        case 10:
-                            sysQualityManageEntity.setCheckPassScaleOct(qualityCheckPassScale);
-                            sysQualityManageEntity.setModifiedPassScaleOct(modifiedPassScale);
-                            break;
-                        case 11:
-                            sysQualityManageEntity.setCheckPassScaleNov(qualityCheckPassScale);
-                            sysQualityManageEntity.setModifiedPassScaleNov(modifiedPassScale);
-                            break;
-                        case 12:
-                            sysQualityManageEntity.setCheckPassScaleDec(qualityCheckPassScale);
-                            sysQualityManageEntity.setModifiedPassScaleDec(modifiedPassScale);
-                            break;
-                    }
+        SysQualityManageEntity sysQualityManageEntityForYear=null;
+        SysQualityManageEntity sysQualityManageEntityForMonth=null;
+        try {
+                //查找年度报表数据
+                sysQualityManageEntityForYear=sysQualityManageBusinessService.sysQualityManageAnalysisForYear(map);
+                if(sysQualityManageEntityForYear!=null){
+                    sysQualityManageEntityForYear.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckPass(),sysQualityManageEntityForYear.getQualityCheck())));
+                    sysQualityManageEntityForYear.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckUnmodified(),sysQualityManageEntityForYear.getQualityCheckFail())));
+                    resultMap.put("qualityManageYear", sysQualityManageEntityForYear);
+                    //return R.ok().putData(200,sysQualityManageEntityForYear,"获取信息成功！");
+                }else{
+                    return R.error(500,"获取信息失败,不存在数据！");
                 }
-            }
-            sysQualityManageEntity.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntity.getQualityCheckPass(),sysQualityManageEntity.getQualityCheck())));
-            sysQualityManageEntity.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntity.getQualityCheckUnmodified(),sysQualityManageEntity.getQualityCheckFail())));
-            resultMap.put("qualityManageMonth", sysQualityManageEntity);
-        }
+                //resultMap.put("data", sysQualityManageEntity);
 
-        return resultMap;
+                //查找月度报表数据
+                sysQualityManageEntityForMonth=sysQualityManageBusinessService.sysQualityManageAnalysisForMonth(map);
+                if(sysQualityManageEntityForMonth!=null){
+                    List<SysQualityManage> list=sysQualityManageBusinessService.sysQualityManageAnalysisList(map);
+                    //月度品质合格率
+                    double qualityCheckPassScale=0;
+                    //月度品质整改合格率
+                    double modifiedPassScale=0;
+                    if(list.size()>0){
+                        for(SysQualityManage sysQualityManage:list){
+                            qualityCheckPassScale=UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckPass(),sysQualityManage.getQualityCheck()));
+                            modifiedPassScale=UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckUnmodified(),sysQualityManage.getQualityCheckFail()));
+                            switch (sysQualityManage.getMonth()){
+                                case 1:
+                                    sysQualityManageEntityForMonth.setCheckPassScaleJan(qualityCheckPassScale);
+                                    sysQualityManageEntityForMonth.setModifiedPassScaleJan(modifiedPassScale);
+                                    break;
+                                case 2:
+                                    sysQualityManageEntityForMonth.setCheckPassScaleFeb(qualityCheckPassScale);
+                                    sysQualityManageEntityForMonth.setModifiedPassScaleFeb(modifiedPassScale);
+                                    break;
+                                case 3:
+                                    sysQualityManageEntityForMonth.setCheckPassScaleMar(qualityCheckPassScale);
+                                    sysQualityManageEntityForMonth.setModifiedPassScaleMar(modifiedPassScale);
+                                    break;
+                                case 4:
+                                    sysQualityManageEntityForMonth.setCheckPassScaleApr(qualityCheckPassScale);
+                                    sysQualityManageEntityForMonth.setModifiedPassScaleApr(modifiedPassScale);
+                                    break;
+                                case 5:
+                                    sysQualityManageEntityForMonth.setCheckPassScaleMay(qualityCheckPassScale);
+                                    sysQualityManageEntityForMonth.setModifiedPassScaleMay(modifiedPassScale);
+                                    break;
+                                case 6:
+                                    sysQualityManageEntityForMonth.setCheckPassScaleJune(qualityCheckPassScale);
+                                    sysQualityManageEntityForMonth.setModifiedPassScaleJune(modifiedPassScale);
+                                    break;
+                                case 7:
+                                    sysQualityManageEntityForMonth.setCheckPassScaleJuly(qualityCheckPassScale);
+                                    sysQualityManageEntityForMonth.setModifiedPassScaleJuly(modifiedPassScale);
+                                    break;
+                                case 8:
+                                    sysQualityManageEntityForMonth.setCheckPassScaleAug(qualityCheckPassScale);
+                                    sysQualityManageEntityForMonth.setModifiedPassScaleAug(modifiedPassScale);
+                                    break;
+                                case 9:
+                                    sysQualityManageEntityForMonth.setCheckPassScaleSept(qualityCheckPassScale);
+                                    sysQualityManageEntityForMonth.setModifiedPassScaleSept(modifiedPassScale);
+                                    break;
+                                case 10:
+                                    sysQualityManageEntityForMonth.setCheckPassScaleOct(qualityCheckPassScale);
+                                    sysQualityManageEntityForMonth.setModifiedPassScaleOct(modifiedPassScale);
+                                    break;
+                                case 11:
+                                    sysQualityManageEntityForMonth.setCheckPassScaleNov(qualityCheckPassScale);
+                                    sysQualityManageEntityForMonth.setModifiedPassScaleNov(modifiedPassScale);
+                                    break;
+                                case 12:
+                                    sysQualityManageEntityForMonth.setCheckPassScaleDec(qualityCheckPassScale);
+                                    sysQualityManageEntityForMonth.setModifiedPassScaleDec(modifiedPassScale);
+                                    break;
+                            }
+                        }
+                    }
+                    sysQualityManageEntityForMonth.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckPass(),sysQualityManageEntityForMonth.getQualityCheck())));
+                    sysQualityManageEntityForMonth.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckUnmodified(),sysQualityManageEntityForMonth.getQualityCheckFail())));
+                    resultMap.put("qualityManageMonth", sysQualityManageEntityForMonth);
+                }else{
+                    return R.error(500,"获取信息失败，不存在数据！");
+                }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取品质管理数据失败："+e.getMessage());
+            return R.error(500,"获取信息失败，服务器异常，请联系系统管理员！");
+        }
+        return R.ok().putData(200,resultMap,"获取信息成功！");
     }
 
     @Override
@@ -124,13 +142,19 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         map.put("year", year);
         map.put("limit", limit);
         map.put("offset", offset);
-        resultMap.put("total", sysQualityManageBusinessService.getSysQualityManageListTotal(map));
-        resultMap.put("list", sysQualityManageBusinessService.getSysQualityManageList(map));
-        return resultMap;
+        try {
+            resultMap.put("total", sysQualityManageBusinessService.getSysQualityManageListTotal(map));
+            resultMap.put("list", sysQualityManageBusinessService.getSysQualityManageList(map));
+            return R.ok().putData(200,resultMap,"获取数据成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取品质管理列表数据失败："+e.getMessage());
+            return R.error(500,"获取品质管理列表数据失败，服务器异常，请联系系统管理员！");
+        }
     }
 
     @Override
-    public int addSysQualityManage(long companyId, int year, int month, int qualityCheck, int qualityCheckPass, int qualityCheckFail, int securityEvent, int qualityCheckUnmodified) {
+    public Map<String,Object> addSysQualityManage(long companyId, int year, int month, int qualityCheck, int qualityCheckPass, int qualityCheckFail, int securityEvent, int qualityCheckUnmodified) {
         map = new HashMap<String, Object>();
         map.put("companyId", companyId);
         map.put("year", year);
@@ -141,11 +165,22 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         map.put("securityEvent", securityEvent);
         map.put("qualityCheckUnmodified", qualityCheckUnmodified);
         map.put("createTime", UtilHelper.getNowTimeStr());
-        return sysQualityManageBusinessService.addSysQualityManage(map);
+        try {
+            int count=sysQualityManageBusinessService.addSysQualityManage(map);
+            if(count>0){
+                return R.ok(200,"新增数据成功！");
+            }else{
+                return R.error(500,"获取数据失败，服务器异常！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("新增品质管理数据失败："+e.getMessage());
+            return R.error(500,"新增品质管理数据失败，服务器异常，请联系系统管理员！");
+        }
     }
 
     @Override
-    public int updateSysQualityManage(long qualityId, long companyId, int year, int month, int qualityCheck, int qualityCheckPass, int qualityCheckFail, int securityEvent, int qualityCheckUnmodified) {
+    public Map<String,Object> updateSysQualityManage(long qualityId, long companyId, int year, int month, int qualityCheck, int qualityCheckPass, int qualityCheckFail, int securityEvent, int qualityCheckUnmodified) {
         map = new HashMap<String, Object>();
         map.put("qualityId", qualityId);
         map.put("companyId", companyId);
@@ -156,14 +191,36 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         map.put("qualityCheckFail", qualityCheckFail);
         map.put("securityEvent", securityEvent);
         map.put("qualityCheckUnmodified", qualityCheckUnmodified);
-        return sysQualityManageBusinessService.updateSysQualityManage(map);
+        try {
+            int count=sysQualityManageBusinessService.updateSysQualityManage(map);
+            if(count>0){
+                return R.ok(200,"更新数据成功！");
+            }else{
+                return R.error(500,"更新数据失败，服务器异常！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("更新品质管理数据失败："+e.getMessage());
+            return R.error(500,"更新品质管理数据失败，服务器异常，请联系系统管理员！");
+        }
     }
 
     @Override
-    public int deleteSysQualityManageById(long qualityId) {
+    public Map<String,Object> deleteSysQualityManageById(long qualityId) {
         map = new HashMap<String, Object>();
         map.put("qualityId", qualityId);
-        return sysQualityManageBusinessService.deleteSysQualityManageById(map);
+        try {
+            int count=sysQualityManageBusinessService.deleteSysQualityManageById(map);
+            if(count>0){
+                return R.ok(200,"删除数据成功！");
+            }else{
+                return R.error(500,"删除数据失败，服务器异常！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("删除品质管理数据失败："+e.getMessage());
+            return R.error(500,"删除品质管理数据失败，服务器异常，请联系系统管理员！");
+        }
     }
 
     @Override
@@ -171,8 +228,26 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         map = new HashMap<String, Object>();
         resultMap = new HashMap<String, Object>();
         map.put("qualityId", qualityId);
-        SysQualityManage sysCompany = sysQualityManageBusinessService.findSysQualityManageById(map);
-        resultMap.put("data", sysQualityManageBusinessService.findSysQualityManageById(map));
-        return resultMap;
+        //SysQualityManage sysCompany = sysQualityManageBusinessService.findSysQualityManageById(map);
+        try {
+            SysQualityManage sysQualityManage=sysQualityManageBusinessService.findSysQualityManageById(map);
+            return R.ok().putData(200,sysQualityManage,"根据id查找品质管理数据成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("根据id查找品质管理数据失败："+e.getMessage());
+            return R.error(500,"根据id查找品质管理数据失败，服务器异常，请联系系统管理员！");
+        }
+    }
+
+    @Override
+    public Map<String, Object> findSysQualityManageFileById(long companyId) {
+        try {
+
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取品质管理文件失败："+e.getMessage());
+            return R.error(500,"获取品质管理文件，服务器异常，请联系系统管理员！");
+        }
+        return null;
     }
 }

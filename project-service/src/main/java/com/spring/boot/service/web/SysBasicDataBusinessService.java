@@ -55,4 +55,11 @@ public interface SysBasicDataBusinessService {
      * @return
      */
     int deleteSysBasicData(Map<String, Object> map);
+
+    /**
+     * 根据id查找基础数据信息
+     *
+     * @return
+     */
+    SysBasicDataEntity findSysBasicDataById(Map<String, Object> map);
 }
