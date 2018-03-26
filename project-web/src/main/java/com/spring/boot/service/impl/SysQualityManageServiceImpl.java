@@ -2,6 +2,7 @@ package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysQualityManage;
+import com.spring.boot.bean.master.SysQualityManageFile;
 import com.spring.boot.bean.master.entity.SysQualityManageEntity;
 import com.spring.boot.service.SysCompanyService;
 import com.spring.boot.service.SysQualityManageService;
@@ -240,14 +241,19 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     }
 
     @Override
-    public Map<String, Object> findSysQualityManageFileById(long companyId) {
+    public Map<String, Object> findSysQualityManageFileById(long qualityId) {
         try {
-
+            List<SysQualityManageFile> fileList=sysQualityManageBusinessService.findSysQualityManageFileById(qualityId);
+            if(fileList!=null){
+                resultMap.put("list", fileList);
+                return R.ok().putData(200,resultMap,"根据id查找品质管理数据成功！");
+            }else{
+                return R.error(500,"不存在文件！");
+            }
         }catch (Exception e){
             e.printStackTrace();
             logger.info("获取品质管理文件失败："+e.getMessage());
             return R.error(500,"获取品质管理文件，服务器异常，请联系系统管理员！");
         }
-        return null;
     }
 }

@@ -2,12 +2,15 @@ package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.SysContract;
 import com.spring.boot.bean.master.SysContractType;
+import com.spring.boot.controller.SysCompanyController;
 import com.spring.boot.service.SysContractService;
 import com.spring.boot.service.SysDepartmentService;
 import com.spring.boot.service.web.SysContractBusinessService;
 import com.spring.boot.service.web.SysDepartmentBusinessService;
+import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
 import org.apache.commons.lang.math.RandomUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ import java.util.Map;
  */
 @Service
 public class SysContractServiceImpl implements SysContractService {
+    private static final Logger logger = Logger.getLogger(SysContractServiceImpl.class);
     @Autowired
     private SysContractBusinessService sysContractBusinessService;
 
@@ -34,18 +38,18 @@ public class SysContractServiceImpl implements SysContractService {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         map.put("limit", limit);
         map.put("offset", offset);
+        try {
+            int count = sysContractBusinessService.sysContractTypeDataTotal(map);
+            List<SysContractType> list = sysContractBusinessService.sysContractTypeList(map);
 
-        int count = sysContractBusinessService.sysContractTypeDataTotal(map);
-        List<SysContractType> list = sysContractBusinessService.sysContractTypeList(map);
-
-        map = new HashMap<String, Object>();
-        resultMap.put("code", 200);
-        resultMap.put("msg", "获取成功！");
-
-        map.put("total", count);
-        map.put("list", list);
-        resultMap.put("data", map);
-        return resultMap;
+            resultMap.put("total", count);
+            resultMap.put("list", list);
+            return R.ok().putData(200,resultMap,"获取成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取合同分类列表失败："+e.getMessage());
+            return R.error(500,"获取合同分类列表失败,服务器异常，请联系管理员！");
+        }
     }
 
     @Override
@@ -56,15 +60,18 @@ public class SysContractServiceImpl implements SysContractService {
         String contractTypeCode = "D" + RandomUtils.nextInt(10) + RandomUtils.nextInt(10) + String.valueOf(System.currentTimeMillis()).substring(5, 12) + UtilHelper.chars.charAt((int) (Math.random() * 52));
         map.put("contractTypeName", contractTypeName);
         map.put("contractTypeCode", contractTypeCode);
-        int count=sysContractBusinessService.addSysContractType(map);
-        if(count>0){
-            resultMap.put("code", 200);
-            resultMap.put("msg", "新增成功！");
-        }else{
-            resultMap.put("code", 200);
-            resultMap.put("msg", "新增失败！");
+        try {
+            int count=sysContractBusinessService.addSysContractType(map);
+            if(count>0){
+                return R.ok(200,"新增成功！");
+            }else{
+                return R.error(200,"新增失败！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("新增合同分类失败："+e.getMessage());
+            return R.error(500,"新增合同分类失败,服务器异常，请联系管理员！");
         }
-        return resultMap;
     }
 
     @Override

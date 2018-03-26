@@ -21,18 +21,22 @@
 
     <sql id="Base_Column_List">
 		quality.quality_id,quality.company_id, quality.year, quality.month, quality.quality_check,quality.quality_check_pass,quality.quality_check_fail,quality.quality_check_unmodified
-		,quality.security_event,quality.status_code,quality.create_time,company.company_name as companyName
+		,quality.security_event,quality.status_code,quality.create_time
 	</sql>
     <select id="queryList" resultMap="sysQualityManage" parameterType="map">
         select
         <include refid="Base_Column_List"/>
+        ,company.company_name as companyName,COUNT(file.file_id) AS fileNum
         from sys_quality_manage as quality LEFT JOIN sys_company as company on quality.company_id=company.company_id
+        LEFT JOIN sys_quality_manage_file AS file ON quality.quality_id = file.quality_id
         where 1=1
         <if test="companyId != 0">
             and quality.company_id=#{companyId}
         </if>
         and quality.year = #{year}
         and quality.status_code!=2
+        GROUP BY
+        quality.quality_id
         ORDER BY quality.create_time DESC
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
@@ -117,6 +121,19 @@
         <include refid="Base_Column_List"/>
         from sys_company
         where 1=1 and company_id = #{companyId} and status_code!=2
+    </select>
+
+    <!--根据id查找文档信息-->
+    <select id="findSysQualityManageFileById" resultType="com.spring.boot.bean.master.SysQualityManageFile" >
+        SELECT
+        file_id AS fileId,
+        quality_id AS qualityId,
+        file_name AS fileName,
+        file_size AS fileSize,
+        file_url AS fileUrl FROM
+	    sys_quality_manage_file where 1=1
+	    and quality_id = #{qualityId}
+	    and status_code!=2
     </select>
 
 </mapper>

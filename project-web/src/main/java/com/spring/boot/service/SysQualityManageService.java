@@ -53,13 +53,13 @@ public interface SysQualityManageService {
      */
     Map<String,Object> deleteSysQualityManageById(long qualityId);
     /**
-     * 根据公司id获取公司数据
+     * 根据id获取公司数据
      * @return
      */
-    Map<String,Object> findSysQualityManageById(long companyId);
+    Map<String,Object> findSysQualityManageById(long qualityId);
     /**
-     * 根据公司id获取附件文档信息
+     * 根据id获取附件文档信息
      * @return
      */
-    Map<String,Object> findSysQualityManageFileById(long companyId);
+    Map<String,Object> findSysQualityManageFileById(long qualityId);
 }

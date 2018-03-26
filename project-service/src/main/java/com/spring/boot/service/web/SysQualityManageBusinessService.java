@@ -2,6 +2,7 @@ package com.spring.boot.service.web;
 
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysQualityManage;
+import com.spring.boot.bean.master.SysQualityManageFile;
 import com.spring.boot.bean.master.entity.SysQualityManageEntity;
 
 import java.util.List;
@@ -65,4 +66,10 @@ public interface SysQualityManageBusinessService {
      * @return
      */
     SysQualityManage findSysQualityManageById(Map<String, Object> map);
+
+    /**
+     * 根据id获取附件文档信息
+     * @return
+     */
+    List<SysQualityManageFile> findSysQualityManageFileById(Long qualityId);
 }

@@ -2,9 +2,11 @@ package com.spring.boot.service.web.impl;
 
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysQualityManage;
+import com.spring.boot.bean.master.SysQualityManageFile;
 import com.spring.boot.bean.master.entity.SysQualityManageEntity;
 import com.spring.boot.dao.web.master.SysCompanyDao;
 import com.spring.boot.dao.web.master.SysQualityManageDao;
+import com.spring.boot.dao.web.master.SysQualityManageFileDao;
 import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.service.web.SysQualityManageBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +67,10 @@ public class SysQualityManageBusinessServiceImpl implements SysQualityManageBusi
     @Override
     public SysQualityManage findSysQualityManageById(Map<String, Object> map) {
         return sysQualityManageDao.findSysQualityManageById(map);
+    }
+
+    @Override
+    public List<SysQualityManageFile> findSysQualityManageFileById(Long qualityId) {
+        return sysQualityManageDao.findSysQualityManageFileById(qualityId);
     }
 }

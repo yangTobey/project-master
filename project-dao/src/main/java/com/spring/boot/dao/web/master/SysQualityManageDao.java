@@ -2,6 +2,7 @@ package com.spring.boot.dao.web.master;
 
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysQualityManage;
+import com.spring.boot.bean.master.SysQualityManageFile;
 import com.spring.boot.bean.master.entity.SysQualityManageEntity;
 import com.spring.boot.dao.BaseDao;
 
@@ -65,4 +66,9 @@ public interface SysQualityManageDao extends BaseDao<SysQualityManage> {
      * @return
      */
     SysQualityManage findSysQualityManageById(Map<String, Object> map);
+    /**
+     * 根据品质id查找文件
+     * @return
+     */
+    List<SysQualityManageFile> findSysQualityManageFileById(Long qualityId);
 }
