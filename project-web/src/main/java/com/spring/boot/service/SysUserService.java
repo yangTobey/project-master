@@ -2,6 +2,8 @@ package com.spring.boot.service;
 
 import com.spring.boot.bean.master.SysUser;
 
+import java.util.Map;
+
 /**
  * Created by Administrator on 2018/1/25.
  */
@@ -29,7 +31,7 @@ public interface SysUserService {
      * @param newPassword
      * @return
      */
-    int updatePassword(long userId, String password, String newPassword);
+    Map<String, Object> updatePassword(long userId, String password, String newPassword);
 
     /**
      * 新增用户信息
@@ -41,7 +43,7 @@ public interface SysUserService {
      * @param departmentId 部门id
      * @return
      */
-    int addUser(String userAccount, String password, String companyId, String roleId, String departmentId);
+    Map<String, Object> addUser(String userAccount, String password, String companyId, String roleId, String departmentId);
 
     /**
      * 更新用户信息
@@ -52,7 +54,7 @@ public interface SysUserService {
      * @param departmentId 部门id
      * @return
      */
-    int updateUserInfo(String userId, String companyId, String roleId, String departmentId);
+    Map<String, Object> updateUserInfo(String userId, String companyId, String roleId, String departmentId);
 
     /**
      * 删除用户信息（只更新用户账号状态，不作删除处理）
@@ -60,5 +62,5 @@ public interface SysUserService {
      * @param userId 用户id
      * @return
      */
-    int deleteUser(String userId);
+    Map<String, Object>  deleteUser(String userId);
 }

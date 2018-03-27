@@ -10,10 +10,7 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -33,10 +30,9 @@ public class SysDepartmentController {
      */
     @RequestMapping(value = "/getSysDepartmentInfo", method = RequestMethod.GET)
     @ResponseBody
-    public R getSysDepartmentInfo(String limit,String offset){
+    public R getSysDepartmentInfo(@RequestParam(value = "limit", required = false)String limit,@RequestParam(value = "offset", required = false) String offset){
         Map<String, Object> map=sysDepartmentService.getSysDepartmentInfo(limit,offset);
-        System.out.println(map.get("list"));
-        return R.ok().put(200,map,"获取成功！");
+        return R.ok(map);
     }
 
     /**
@@ -44,18 +40,18 @@ public class SysDepartmentController {
      * @return
      */
     @RequestMapping(value = "addSysDepartment", method = RequestMethod.GET)
-    public String addSysDepartment(String departmentName,String companyId) {
-        sysDepartmentService.addSysDepartment(departmentName,companyId);
-        return "views/login/login";
+    public R addSysDepartment(String departmentName,String companyId) {
+        Map<String, Object> map =sysDepartmentService.addSysDepartment(departmentName,companyId);
+        return R.ok(map);
     }
     /**
      * 更新部门信息
      * @return
      */
     @RequestMapping(value = "updateSysDepartmentInfo", method = RequestMethod.GET)
-    public String updateSysDepartmentInfo(String departmentId, String departmentName,String companyId) {
-        sysDepartmentService.updateSysDepartmentInfo(departmentId,departmentName,companyId);
-        return "views/login/login";
+    public R updateSysDepartmentInfo(String departmentId, String departmentName,String companyId) {
+        Map<String, Object> map =sysDepartmentService.updateSysDepartmentInfo(departmentId,departmentName,companyId);
+        return R.ok(map);
     }
     /**
      * 添加部门
@@ -63,9 +59,8 @@ public class SysDepartmentController {
      */
     @RequestMapping(value = "deleteSysDepartment", method = RequestMethod.GET)
     @ResponseBody
-    public String deleteSysDepartment(String departmentId) {
-        int count=sysDepartmentService.deleteSysDepartment(departmentId);
-        System.out.println("删除条数："+count);
-        return "views/login/login";
+    public R deleteSysDepartment(String departmentId) {
+        Map<String, Object> map =sysDepartmentService.deleteSysDepartment(departmentId);
+        return R.ok(map);
     }
 }

@@ -35,8 +35,7 @@ public class SysRoleController {
     @RequestMapping(value = "/getSysRoleList", method = RequestMethod.GET)
     public R getSysRoleList() {
         Map<String, Object> map=sysRoleService.getSysRoleList();
-        System.out.println(map.get("list"));
-        return R.ok().put(200,map,"获取成功！");
+        return R.ok(map);
 
     }
 
@@ -47,41 +46,31 @@ public class SysRoleController {
      * @return
      */
     @RequestMapping(value = "/addSysRole", method = RequestMethod.GET)
-    public String addSysRole(String roleName, String remark) {
+    public R addSysRole(String roleName, String remark) {
         if(UtilHelper.isEmpty(roleName)){
-            return "登录账号不能为空！";
+            return R.error(400, "角色名称不能为空，请联系系统管理员！");
         }
-        int count = sysRoleService.addSysRole(roleName, remark);
-        if(count>0){
-            System.out.println("id值："+count);
-            return "修改成功！";
-        }
-        return "error";
+        Map<String, Object> map= sysRoleService.addSysRole(roleName, remark);
+        return R.ok(map);
 
     }
 
     @RequestMapping(value = "/updateSysRole", method = RequestMethod.GET)
-    public String updateSysRole(String roleId,String roleName,String remark) {
-        if(UtilHelper.isEmpty(roleId)){
-            return "角色编号不能为空，请联系系统管理员！";
+    public R updateSysRole(String roleId,String roleName,String remark) {
+        if(!UtilHelper.isNumer(roleId)){
+            return R.error(400, "角色编号格式不正确，请联系系统管理员！");
         }
-        int count = sysRoleService.updateSysRole(roleId,roleName,remark);
-        if(count>0){
-            return "修改成功！";
-        }
-        return "error";
+        Map<String, Object> map= sysRoleService.updateSysRole(roleId,roleName,remark);
+        return R.ok(map);
 
     }
     @RequestMapping(value = "/deleteSysRole", method = RequestMethod.GET)
-    public String deleteSysRole(String roleId) {
-        if(UtilHelper.isEmpty(roleId)){
-            return "角色编号不能为空，请联系系统管理员！";
+    public R  deleteSysRole(String roleId) {
+        if(!UtilHelper.isNumer(roleId)){
+            return R.error(400, "角色编号格式不正确，请联系系统管理员！");
         }
-        int count = sysRoleService.deleteSysRole(roleId);
-        if(count>0){
-            return "修改成功！";
-        }
-        return "error";
+        Map<String, Object> map= sysRoleService.deleteSysRole(roleId);
+        return R.ok(map);
 
     }
 

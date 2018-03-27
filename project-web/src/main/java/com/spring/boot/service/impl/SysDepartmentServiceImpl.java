@@ -5,9 +5,11 @@ import com.spring.boot.service.SysDepartmentService;
 import com.spring.boot.service.SysUserService;
 import com.spring.boot.service.web.SysDepartmentBusinessService;
 import com.spring.boot.service.web.SysUserBusinessService;
+import com.spring.boot.util.R;
 import com.spring.boot.util.ShiroUtils;
 import com.spring.boot.util.UtilHelper;
 import org.apache.commons.lang.math.RandomUtils;
+import org.apache.log4j.Logger;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import java.util.Map;
  */
 @Service
 public class SysDepartmentServiceImpl implements SysDepartmentService {
+    private static final Logger logger = Logger.getLogger(SysDepartmentServiceImpl.class);
     @Autowired
     private SysDepartmentBusinessService sysDepartmentBusinessService;
 
@@ -30,40 +33,79 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
 
     @Override
     public Map<String, Object> getSysDepartmentInfo(String limit,String offset) {
-        Map<String, Object> mapData = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("limit",limit);
         map.put("offset",offset);
-        mapData.put("total", sysDepartmentBusinessService.getSysDepartmentTotal(map));
-        mapData.put("list", sysDepartmentBusinessService.getSysDepartmentInfo(map));
-        return map;
+        try {
+            resultMap.put("total", sysDepartmentBusinessService.getSysDepartmentTotal(map));
+            resultMap.put("list", sysDepartmentBusinessService.getSysDepartmentInfo(map));
+            return R.ok().putData(200,resultMap,"获取成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取部门信息失败！"+e.getMessage());
+            return R.error(500,"服务器异常，请联系管理员！");
+        }
     }
 
     @Override
-    public int addSysDepartment(String departmentName, String companyId) {
+    public Map<String, Object> addSysDepartment(String departmentName, String companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         //公司编码（服务识别号）
         String departmentCode="D"+ RandomUtils.nextInt(10)+RandomUtils.nextInt(10)+String.valueOf(System.currentTimeMillis()).substring(5,12)+ UtilHelper.chars.charAt((int)(Math.random() * 52));
         map.put("departmentName", departmentName);
         map.put("companyId", companyId);
         map.put("departmentCode", departmentCode);
-        return sysDepartmentBusinessService.addSysDepartment(map);
+        try {
+            int count=sysDepartmentBusinessService.addSysDepartment(map);
+            if(count>0){
+                return R.ok(200,"新增成功！");
+            }else{
+                return R.error(500,"新增失败，请联系管理员！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("新增部门信息失败！"+e.getMessage());
+            return R.error(500,"服务器异常，请联系管理员！");
+        }
     }
 
     @Override
-    public int updateSysDepartmentInfo(String departmentId, String departmentName, String companyId) {
+    public Map<String, Object> updateSysDepartmentInfo(String departmentId, String departmentName, String companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("departmentId", departmentId);
         map.put("departmentName", departmentName);
         map.put("companyId", companyId);
         map.put("status", 2);
-        return sysDepartmentBusinessService.updateSysDepartmentInfo(map);
+        try {
+            int count=sysDepartmentBusinessService.updateSysDepartmentInfo(map);
+            if(count>0){
+                return R.ok(200,"更新成功！");
+            }else{
+                return R.error(500,"更新失败，请联系管理员！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("更新部门信息出错："+e.getMessage());
+            return R.error(500,"更新部门信息失败，服务器异常，请联系管理员！");
+        }
     }
 
     @Override
-    public int deleteSysDepartment(String departmentId) {
+    public Map<String, Object> deleteSysDepartment(String departmentId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("departmentId", departmentId);
-        return sysDepartmentBusinessService.deleteSysDepartment(map);
+        try {
+            int count=sysDepartmentBusinessService.deleteSysDepartment(map);
+            if(count>0){
+                return R.ok(200,"删除成功！");
+            }else{
+                return R.error(500,"删除失败，请联系管理员！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("删除部门信息出错："+e.getMessage());
+            return R.error(500,"删除部门信息失败，服务器异常，请联系管理员！");
+        }
     }
 }

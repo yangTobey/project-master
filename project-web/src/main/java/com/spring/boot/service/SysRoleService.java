@@ -22,7 +22,7 @@ public interface SysRoleService {
      * @param remark     备注信息
      * @return
      */
-    int addSysRole(String roleName, String remark);
+    Map<String, Object> addSysRole(String roleName, String remark);
 
     /**
      * 更新角色信息
@@ -32,7 +32,7 @@ public interface SysRoleService {
      * @param remark       备注信息
      * @return
      */
-    int updateSysRole(String roleId, String roleName, String remark);
+    Map<String, Object> updateSysRole(String roleId, String roleName, String remark);
 
     /**
      * 删除角色信息（只更新角色状态，不作删除处理）
@@ -40,5 +40,5 @@ public interface SysRoleService {
      * @param roleId 角色id
      * @return
      */
-    int deleteSysRole(String roleId);
+    Map<String, Object> deleteSysRole(String roleId);
 }

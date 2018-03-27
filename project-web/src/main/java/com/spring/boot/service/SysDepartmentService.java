@@ -18,7 +18,7 @@ public interface SysDepartmentService {
      * @param companyId
      * @return
      */
-    int addSysDepartment(String departmentName,String companyId);
+    Map<String, Object> addSysDepartment(String departmentName,String companyId);
 
     /**
      * 更新部门信息
@@ -26,12 +26,12 @@ public interface SysDepartmentService {
      * @param companyId
      * @return
      */
-    int updateSysDepartmentInfo(String departmentId,String departmentName,String companyId);
+    Map<String, Object> updateSysDepartmentInfo(String departmentId,String departmentName,String companyId);
     /**
      * 删除
      * @param departmentId
      * @return
      */
-    int deleteSysDepartment(String departmentId);
+    Map<String, Object> deleteSysDepartment(String departmentId);
 
 }
