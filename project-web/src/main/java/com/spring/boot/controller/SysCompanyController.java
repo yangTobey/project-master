@@ -5,10 +5,7 @@ import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -17,6 +14,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/sysCompany")
+@CrossOrigin
 public class SysCompanyController {
     private static final Logger logger = Logger.getLogger(SysCompanyController.class);
     @Autowired

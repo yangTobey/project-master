@@ -15,7 +15,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,9 +156,11 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         }
     }
 
+
     @Override
-    public Map<String,Object> addSysQualityManage(long companyId, int year, int month, int qualityCheck, int qualityCheckPass, int qualityCheckFail, int securityEvent, int qualityCheckUnmodified) {
-        map = new HashMap<String, Object>();
+    @Transactional(rollbackFor=Exception.class)
+    public Map<String,Object> addSysQualityManage(long companyId, int year, int month, int qualityCheck, int qualityCheckPass, int qualityCheckFail, int securityEvent, int qualityCheckUnmodified,String fileInfo) {
+        /*map = new HashMap<String, Object>();
         map.put("companyId", companyId);
         map.put("year", year);
         map.put("month", month);
@@ -165,10 +169,39 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         map.put("qualityCheckFail", qualityCheckFail);
         map.put("securityEvent", securityEvent);
         map.put("qualityCheckUnmodified", qualityCheckUnmodified);
-        map.put("createTime", UtilHelper.getNowTimeStr());
+        map.put("createTime", UtilHelper.getNowTimeStr());*/
+        SysQualityManage sysQualityManage=new SysQualityManage();
+        sysQualityManage.setCompanyId(companyId);
+        sysQualityManage.setYear(year);
+        sysQualityManage.setMonth(month);
+        sysQualityManage.setQualityCheck(qualityCheck);
+        sysQualityManage.setQualityCheckPass(qualityCheckPass);
+        sysQualityManage.setQualityCheckFail(qualityCheckFail);
+        sysQualityManage.setSecurityEvent(securityEvent);
+        sysQualityManage.setQualityCheckUnmodified(qualityCheckUnmodified);
+        sysQualityManage.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
         try {
-            int count=sysQualityManageBusinessService.addSysQualityManage(map);
+            int count=sysQualityManageBusinessService.addSysQualityManage(sysQualityManage);
             if(count>0){
+                System.out.println("新增id为："+sysQualityManage.getQualityId());
+                if(!UtilHelper.isEmpty(fileInfo)){
+                    String[] fileInfoArray;
+                    //去掉最后那个逗号，在进行获取数据
+                    fileInfoArray = fileInfo.substring(0, fileInfo.length() - 1).split(";");
+                    SysQualityManageFile sysQualityManageFile=null;
+                    String[] fileData;
+                    for(String fileUrl:fileInfoArray){
+                        //sysQualityManageFile=new SysQualityManageFile();
+                        //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
+                        fileData = fileUrl.substring(0, fileUrl.length()).split(",");
+                        sysQualityManageFile.setQualityId(sysQualityManage.getQualityId());
+                        sysQualityManageFile.setFileName(fileData[0].substring(fileData[0].lastIndexOf("/")+1, fileData[0].lastIndexOf(".")));
+                        sysQualityManageFile.setFileSize(Double.valueOf(fileData[1]));
+                        sysQualityManageFile.setFileUrl(fileData[0]);
+                        sysQualityManageFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
+                        sysQualityManageBusinessService.addSysQualityManageFile(sysQualityManageFile);
+                    }
+                }
                 return R.ok(200,"新增数据成功！");
             }else{
                 return R.error(500,"获取数据失败，服务器异常！");
@@ -176,7 +209,8 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         }catch (Exception e){
             e.printStackTrace();
             logger.info("新增品质管理数据失败："+e.getMessage());
-            return R.error(500,"新增品质管理数据失败，服务器异常，请联系系统管理员！");
+            throw new RuntimeException();
+            //return R.error(500,"新增品质管理数据失败，服务器异常，请联系系统管理员！");
         }
     }
 

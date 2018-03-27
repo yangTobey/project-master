@@ -1,6 +1,7 @@
 package com.spring.boot.controller;
 
 import com.spring.boot.service.SysUserService;
+import com.spring.boot.util.R;
 import com.spring.boot.util.ShiroUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by Administrator on 2018/2/6.
@@ -28,7 +31,8 @@ public class SysLoginController {
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(String userName,String password){
+    @ResponseBody
+    public R login(@RequestParam(value = "userName", required = false)String userName,@RequestParam(value = "password", required = false) String password){
         try{
             Subject subject = ShiroUtils.getSubject();
             //sha256加密
@@ -43,18 +47,18 @@ public class SysLoginController {
             }
         }catch (UnknownAccountException e) {
             e.printStackTrace();
-           return "views/login/login";
+           //return "views/login/login";
         }catch (IncorrectCredentialsException e) {
             e.printStackTrace();
             //return R.error(e.getMessage());
         }catch (LockedAccountException e) {
             e.printStackTrace();
-            return "views/login/login";
+            //return "views/login/login";
         }catch (AuthenticationException e) {
             e.printStackTrace();
-            return "views/login/login";
+            //return "views/login/login";
         }
-        return "views/login/login";
+        return R.ok(200,"成功！");
     }
 
     /**

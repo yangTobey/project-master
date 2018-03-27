@@ -6,10 +6,8 @@ import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -79,9 +77,28 @@ public class SysQualityManageController {
     public R addSysQualityManage(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
             , @RequestParam(value = "month", required = false) String month, @RequestParam(value = "qualityCheck", required = false) String qualityCheck
             , @RequestParam(value = "qualityCheckPass", required = false) String qualityCheckPass, @RequestParam(value = "qualityCheckFail", required = false) String qualityCheckFail
-            , @RequestParam(value = "securityEvent", required = false) String securityEvent, @RequestParam(value = "qualityCheckUnmodified", required = false) String qualityCheckUnmodified) {
+            , @RequestParam(value = "securityEvent", required = false) String securityEvent, @RequestParam(value = "qualityCheckUnmodified", required = false) String qualityCheckUnmodified
+            , @RequestParam(value = "fileInfo", required = false) String fileInfo) {
         Map<String, Object> map =sysQualityManageService.addSysQualityManage(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(qualityCheck), Integer.valueOf(qualityCheckPass)
-                , Integer.valueOf(qualityCheckFail), Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified));
+                , Integer.valueOf(qualityCheckFail), Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified),fileInfo);
+
+        if (!UtilHelper.isNumer(companyId)) {
+            return R.error(400, "公司id格式不正确！");
+        } else if (!UtilHelper.isNumer(year)) {
+            return R.error(400, "年份格式不正确！");
+        } else if (!UtilHelper.isNumer(month)) {
+            return R.error(400, "月份格式不正确！");
+        } else if (!UtilHelper.isNumer(qualityCheck)) {
+            return R.error(400, "月品质检查项格式不正确！");
+        }else if (!UtilHelper.isNumer(qualityCheckPass)) {
+            return R.error(400, "月品质检查合格项格式不正确！");
+        }else if (!UtilHelper.isNumer(qualityCheckFail)) {
+            return R.error(400, "月品质检查不合格项格式不正确！");
+        }else if (!UtilHelper.isNumer(securityEvent)) {
+            return R.error(400, "月安全事故数量项格式不正确！");
+        }else if (!UtilHelper.isNumer(qualityCheckUnmodified)) {
+            return R.error(400, "月品质检查未整改项格式不正确！");
+        }
         return R.ok(map);
     }
 
@@ -110,6 +127,20 @@ public class SysQualityManageController {
             return R.error(400, "质量管理编号格式不正确，请联系系统管理员！");
         } else if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司编号格式不正确，请联系系统管理员！");
+        }else if (!UtilHelper.isNumer(year)) {
+            return R.error(400, "年份格式不正确！");
+        } else if (!UtilHelper.isNumer(month)) {
+            return R.error(400, "月份格式不正确！");
+        } else if (!UtilHelper.isNumer(qualityCheck)) {
+            return R.error(400, "月品质检查项格式不正确！");
+        }else if (!UtilHelper.isNumer(qualityCheckPass)) {
+            return R.error(400, "月品质检查合格项格式不正确！");
+        }else if (!UtilHelper.isNumer(qualityCheckFail)) {
+            return R.error(400, "月品质检查不合格项格式不正确！");
+        }else if (!UtilHelper.isNumer(securityEvent)) {
+            return R.error(400, "月安全事故数量项格式不正确！");
+        }else if (!UtilHelper.isNumer(qualityCheckUnmodified)) {
+            return R.error(400, "月品质检查未整改项格式不正确！");
         }
         Map<String, Object> map =sysQualityManageService.updateSysQualityManage(Long.valueOf(qualityId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(qualityCheck), Integer.valueOf(qualityCheckPass)
                 , Integer.valueOf(qualityCheckFail), Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified));

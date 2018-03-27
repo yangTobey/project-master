@@ -50,8 +50,8 @@ public class SysQualityManageBusinessServiceImpl implements SysQualityManageBusi
 
 
     @Override
-    public int addSysQualityManage(Map<String, Object> map) {
-        return sysQualityManageDao.addSysQualityManage(map);
+    public int addSysQualityManage(SysQualityManage sysQualityManage) {
+        return sysQualityManageDao.addSysQualityManage(sysQualityManage);
     }
 
     @Override
@@ -72,5 +72,10 @@ public class SysQualityManageBusinessServiceImpl implements SysQualityManageBusi
     @Override
     public List<SysQualityManageFile> findSysQualityManageFileById(Long qualityId) {
         return sysQualityManageDao.findSysQualityManageFileById(qualityId);
+    }
+
+    @Override
+    public int addSysQualityManageFile(SysQualityManageFile sysQualityManageFile) {
+        return sysQualityManageDao.addSysQualityManageFile(sysQualityManageFile);
     }
 }

@@ -30,7 +30,7 @@ public interface SysQualityManageService {
      * @param qualityCheckUnmodified
      * @return
      */
-    Map<String,Object> addSysQualityManage(long companyId, int year, int month,int qualityCheck,int qualityCheckPass,int qualityCheckFail,int securityEvent,int qualityCheckUnmodified);
+    Map<String,Object> addSysQualityManage(long companyId, int year, int month,int qualityCheck,int qualityCheckPass,int qualityCheckFail,int securityEvent,int qualityCheckUnmodified,String fileInfo);
 
     /**
      * 更新信息

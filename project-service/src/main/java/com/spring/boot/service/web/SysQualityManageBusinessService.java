@@ -44,10 +44,16 @@ public interface SysQualityManageBusinessService {
 
     /**
      * 新增质量管理信息
-     * @param map
+     * @param sysQualityManage
      * @return
      */
-    int addSysQualityManage(Map<String, Object> map);
+    int addSysQualityManage(SysQualityManage sysQualityManage);
+    /**
+     * 新增质量管理附件文档信息
+     * @param sysQualityManageFile
+     * @return
+     */
+    int addSysQualityManageFile(SysQualityManageFile sysQualityManageFile);
 
     /**
      * 更新信息

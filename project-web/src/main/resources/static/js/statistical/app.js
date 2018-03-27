@@ -18,6 +18,43 @@
 })();
 
 (function(){
+    $.ajax({
+        async: true,
+        url:  'http://192.168.130.41:8080/login/login',
+        type: 'GET',
+        data: {
+            userName: 'zhang',
+            password: '321'
+        },
+        dataType: 'json',
+        success: function (data) {
+            alert(data);
+            alert(11);
+            $.ajax({
+                async: true,
+                url:  'http://192.168.130.41:8080/sysBasicData/sysBasicDataAnalysisData',
+                type: 'GET',
+                data: {
+                    companyId: '1',
+                    year: '321',
+                    month:'10'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    alert(data);
+                },
+                error: function (data) {
+                    console.log(data);
+                    alert("网络异常！");
+                }
+            });
+        },
+        error: function (data) {
+            alert(11);
+            alert("网络异常！");
+        }
+    });
+
 	var charts = [];
 	(function(){
 		$('.pie-chart').each(function(){
