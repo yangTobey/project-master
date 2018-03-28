@@ -78,4 +78,9 @@ public class SysQualityManageBusinessServiceImpl implements SysQualityManageBusi
     public int addSysQualityManageFile(SysQualityManageFile sysQualityManageFile) {
         return sysQualityManageDao.addSysQualityManageFile(sysQualityManageFile);
     }
+
+    @Override
+    public int deleteSysQualityManageFileByQualityId(Long qualityId) {
+        return sysQualityManageDao.deleteSysQualityManageFileByQualityId(qualityId);
+    }
 }

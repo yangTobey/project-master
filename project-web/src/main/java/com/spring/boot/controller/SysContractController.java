@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by Administrator on 2018/2/6.
  */
 @Controller
-@RequestMapping("/contract")
+@RequestMapping("/sysContract")
 public class SysContractController {
 
     @Autowired
@@ -119,7 +119,7 @@ public class SysContractController {
     @RequestMapping(value = "/sysContractDataList", method = RequestMethod.GET)
     @ResponseBody
     public R sysContractDataList(@RequestParam(value = "contractName", required = false)String contractName,@RequestParam(value = "contractCode", required = false) String contractCode
-            ,@RequestParam(value = "statusCode", required = false) String statusCode,  @RequestParam(value = "contractEndTime", required = false)String contractEndTime
+            ,@RequestParam(value = "statusCode", required = false) String statusCode,  @RequestParam(value = "contractStartTime", required = false)String contractStartTime,@RequestParam(value = "contractEndTime", required = false)String contractEndTime
             ,@RequestParam(value = "contractTypeId", required = false)String contractTypeId ,@RequestParam(value = "firstPartyCompany", required = false) String firstPartyCompany
             ,@RequestParam(value = "secondPartyCompany", required = false) String secondPartyCompany,@RequestParam(value = "limit", required = false) String limit
             ,@RequestParam(value = "offset", required = false) String offset,@RequestParam(value = "companyId", required = false) String companyId) {
@@ -144,7 +144,7 @@ public class SysContractController {
         }else if (!UtilHelper.isNumer(offset)) {
             return R.error(400, "分页控制，页码offset只能为数字！");
         }
-        Map<String, Object> map=sysContractService.sysContractDataList(contractName,contractCode,Integer.valueOf(statusCode), contractEndTime,
+        Map<String, Object> map=sysContractService.sysContractDataList(contractName,contractCode,Integer.valueOf(statusCode),contractStartTime, contractEndTime,
                 contractTypeId,firstPartyCompany,secondPartyCompany,Integer.valueOf(limit),Integer.valueOf(offset),Long.valueOf(companyId));
 
         return R.ok(map);
@@ -227,11 +227,11 @@ public class SysContractController {
      */
     @RequestMapping(value = "/deleteSysContract", method = RequestMethod.GET)
     @ResponseBody
-    public R  deleteSysContract(@RequestParam(value = "contractTypeId", required = false)String contractTypeId) {
-        if (!UtilHelper.isNumer(contractTypeId)) {
+    public R  deleteSysContract(@RequestParam(value = "contractId", required = false)String contractId) {
+        if (!UtilHelper.isNumer(contractId)) {
             return R.error(400, "合同id格式不正确！");
         }
-        Map<String, Object> map=sysContractService.deleteSysContract(Long.valueOf(contractTypeId));
+        Map<String, Object> map=sysContractService.deleteSysContract(Long.valueOf(contractId));
 
         return R.ok(map);
     }

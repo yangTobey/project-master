@@ -21,17 +21,22 @@
 		<result column="contractWorking" property="contractWorking" />
 		<result column="contractexpired" property="contractexpired" />
 		<result column="total" property="total" />
+		<result column="contractType_name" property="contractTypeName" />
+		<result column="fileNum" property="fileNum" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
 		 contract.contract_id,contract.contract_name,contract.contract_code,contract.contract_money,contract.contract_startTime,contract.contract_endTime,contract.contract_type_id,
-		 contract.first_party_company,contract.second_party_company,contract.person_liable_name,contract.status_code,contract.company_id,contract.status_code,company.company_name
+		 contract.first_party_company,contract.second_party_company,contract.person_liable_name,contract.status_code,contract.company_id,contract.status_code,contract.create_time,company.company_name,type.contractType_name
 	</sql>
 	<!--根据查询条件，查询合同列表数据-->
 	<select id="sysContractDataList" resultMap="sysContract" >
 		SELECT
 		<include refid="Base_Column_List"/>
+		,COUNT(file.file_id) as fileNum
 		from sys_contract as contract LEFT JOIN sys_company as company on contract.company_id=company.company_id
+		LEFT JOIN sys_contract_type as type on contract.contract_type_id=type.contractType_id
+		LEFT JOIN sys_contract_file as file on file.contract_id=contract.contract_id
 		where 1=1
 		<if test="status_code != null and status_code!=''">
 			/*status_code状态（1：未执行，2：在执行，3：即将过期，4：已经过期，5：已经删除）*/
@@ -57,6 +62,30 @@
 		<if test="companyId != 0">
 			and contract.company_id=#{companyId}
 		</if>
+		<if test="contractStartTime != null and contractStartTime != null">
+			and contract.contract_startTime <![CDATA[ >= ]]>#{contractStartTime}
+		</if>
+		<if test="contractEndTime != null and contractEndTime != null">
+			and contract.contract_endTime <![CDATA[ <= ]]>#{contractEndTime}
+		</if>
+		<if test="contractTypeId != 0">
+			and contract.contract_type_id=#{contractTypeId}
+		</if>
+		<if test="contractName != null and contractName != null">
+			and contract.contract_name  like concat('%', #{contractName}, '%')
+		</if>
+		<if test="contractCode != null and contractCode != null">
+			and contract.contract_code  like concat('%', #{contractCode}, '%')
+		</if>
+		<if test="firstPartyCompany != null and firstPartyCompany != null">
+			and contract.first_party_company  like concat('%', #{firstPartyCompany}, '%')
+		</if>
+		<if test="secondPartyCompany != null and secondPartyCompany != null">
+			and contract.second_party_company  like concat('%', #{secondPartyCompany}, '%')
+		</if>
+
+		GROUP BY contract.contract_id
+		ORDER BY contract.create_time DESC
 		<if test="offset != null and limit != null">
 			limit #{offset},#{limit}
 		</if>
@@ -125,6 +154,27 @@
 		</if>
 		<if test="companyId != 0">
 			and contract.company_id=#{companyId}
+		</if>
+		<if test="contractStartTime != null and contractStartTime != null">
+			and contract.contract_startTime <![CDATA[ >= ]]>#{contractStartTime}
+		</if>
+		<if test="contractEndTime != null and contractEndTime != null">
+			and contract.contract_endTime <![CDATA[ <= ]]>#{contractEndTime}
+		</if>
+		<if test="contractTypeId != 0">
+			and contract.contract_type_id=#{contractTypeId}
+		</if>
+		<if test="contractName != null and contractName != null">
+			and contract.contract_name  like concat('%', #{contractName}, '%')
+		</if>
+		<if test="contractCode != null and contractCode != null">
+			and contract.contract_code  like concat('%', #{contractCode}, '%')
+		</if>
+		<if test="firstPartyCompany != null and firstPartyCompany != null">
+			and contract.first_party_company  like concat('%', #{firstPartyCompany}, '%')
+		</if>
+		<if test="secondPartyCompany != null and secondPartyCompany != null">
+			and contract.second_party_company  like concat('%', #{secondPartyCompany}, '%')
 		</if>
 
 	</select>

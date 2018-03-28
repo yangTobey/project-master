@@ -32,7 +32,7 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public Map<String, Object> getSysDepartmentInfo(String limit,String offset) {
+    public Map<String, Object> getSysDepartmentInfo(Integer limit,Integer offset) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("limit",limit);
@@ -49,7 +49,7 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
     }
 
     @Override
-    public Map<String, Object> addSysDepartment(String departmentName, String companyId) {
+    public Map<String, Object> addSysDepartment(String departmentName, Long companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         //公司编码（服务识别号）
         String departmentCode="D"+ RandomUtils.nextInt(10)+RandomUtils.nextInt(10)+String.valueOf(System.currentTimeMillis()).substring(5,12)+ UtilHelper.chars.charAt((int)(Math.random() * 52));
@@ -71,7 +71,7 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
     }
 
     @Override
-    public Map<String, Object> updateSysDepartmentInfo(String departmentId, String departmentName, String companyId) {
+    public Map<String, Object> updateSysDepartmentInfo(Long departmentId, String departmentName, Long companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("departmentId", departmentId);
         map.put("departmentName", departmentName);
@@ -92,7 +92,7 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
     }
 
     @Override
-    public Map<String, Object> deleteSysDepartment(String departmentId) {
+    public Map<String, Object> deleteSysDepartment(Long departmentId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("departmentId", departmentId);
         try {

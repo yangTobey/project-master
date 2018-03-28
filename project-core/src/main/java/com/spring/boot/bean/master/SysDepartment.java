@@ -10,7 +10,7 @@ public class SysDepartment {
     private String departmentName;
     private String departmentCode;
     private String companyId;
-    private int status;
+    private int statusCode;
 
     public long getDepartmentId() {
         return departmentId;
@@ -44,11 +44,11 @@ public class SysDepartment {
         this.companyId = companyId;
     }
 
-    public int getStatus() {
-        return status;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 }

@@ -36,7 +36,7 @@ public class Application extends SpringBootServletInitializer {
         SpringApplication.run(Application.class, args);
     }
 
-    /*private CorsConfiguration buildConfig() {
+    private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         // 1 设置访问源地址
         corsConfiguration.addAllowedOrigin("*");
@@ -51,16 +51,16 @@ public class Application extends SpringBootServletInitializer {
     }
 
 
-    *//**
+    /**
      * 跨域过滤器
      *
      * @return
-     *//*
+     */
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         // 4 对接口配置跨域设置
-        source.registerCorsConfiguration("*//**", buildConfig());
+        source.registerCorsConfiguration("/**", buildConfig());
         return new CorsFilter(source);
-    }*/
+    }
 }

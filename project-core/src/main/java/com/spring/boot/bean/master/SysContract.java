@@ -30,6 +30,10 @@ public class SysContract {
     //正在执行或者过期合同总数
     private Integer total;
     private String companyName;
+    //合同类型名称
+    private String contractTypeName;
+    //附件文档数量
+    private Integer fileNum;
 
     public Long getContractId() {
         return contractId;
@@ -173,5 +177,21 @@ public class SysContract {
 
     public void setTotal(Integer total) {
         this.total = total;
+    }
+
+    public String getContractTypeName() {
+        return contractTypeName;
+    }
+
+    public void setContractTypeName(String contractTypeName) {
+        this.contractTypeName = contractTypeName;
+    }
+
+    public Integer getFileNum() {
+        return fileNum;
+    }
+
+    public void setFileNum(Integer fileNum) {
+        this.fileNum = fileNum;
     }
 }

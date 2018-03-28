@@ -155,5 +155,9 @@
 	    and quality_id = #{qualityId}
 	    and status_code!=2
     </select>
+    <!--根据品质id删除文档附件信息（用于更新时操作）-->
+    <delete id="deleteSysQualityManageFileByQualityId" >
+        DELETE FROM sys_quality_manage_file WHERE quality_id = #{qualityId}
+    </delete>
 
 </mapper>

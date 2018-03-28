@@ -65,7 +65,7 @@ public class SysContractServiceImpl implements SysContractService {
             if(count>0){
                 return R.ok(200,"新增成功！");
             }else{
-                return R.error(200,"新增失败！");
+                return R.error(500,"新增失败！");
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -83,13 +83,10 @@ public class SysContractServiceImpl implements SysContractService {
         map.put("status", 2);
         int count=sysContractBusinessService.updateSysContractType(map);
         if(count>0){
-            resultMap.put("code", 200);
-            resultMap.put("msg", "更新成功！");
+            return R.ok(200,"更新成功！");
         }else{
-            resultMap.put("code", 200);
-            resultMap.put("msg", "更新失败！");
+            return R.error(500,"更新失败！");
         }
-        return resultMap;
     }
 
     @Override
@@ -99,23 +96,22 @@ public class SysContractServiceImpl implements SysContractService {
         map.put("contractTypeId", contractTypeId);
         int count=sysContractBusinessService.deleteSysContractType(map);
         if(count>0){
-            resultMap.put("code", 200);
-            resultMap.put("msg", "删除成功！");
+            return R.ok(200,"删除成功！");
         }else{
-            resultMap.put("code", 200);
-            resultMap.put("msg", "删除失败！");
+            return R.error(500,"删除失败！");
         }
-        return resultMap;
     }
 
     @Override
-    public Map<String, Object> sysContractDataList(String contractName, String contractCode,Integer statusCode, String contractEndTime, String contractTypeId, String firstPartyCompany
+    public Map<String, Object> sysContractDataList(String contractName, String contractCode,Integer statusCode,String contractStartTime, String contractEndTime, String contractTypeId, String firstPartyCompany
             , String secondPartyCompany, Integer limit, Integer offset, Long companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         map.put("contractName", contractName);
         map.put("contractCode", contractCode);
         map.put("companyId", companyId);
+        map.put("statusCode", statusCode);
+        map.put("contractStartTime", contractStartTime);
         map.put("contractEndTime", contractEndTime);
         map.put("contractTypeId", contractTypeId);
         map.put("firstPartyCompany", firstPartyCompany);
@@ -127,13 +123,10 @@ public class SysContractServiceImpl implements SysContractService {
         List<SysContract> list = sysContractBusinessService.sysContractDataList(map);
 
         map = new HashMap<String, Object>();
-        resultMap.put("code", 200);
-        resultMap.put("msg", "获取成功！");
 
         map.put("total", count);
         map.put("list", list);
-        resultMap.put("data", map);
-        return resultMap;
+        return R.ok().putData(200,map,"获取成功！");
     }
 
     @Override
@@ -152,23 +145,21 @@ public class SysContractServiceImpl implements SysContractService {
         map.put("createTime", Timestamp.valueOf(UtilHelper.getNowTimeStr()));
         SysContract sysContract = sysContractBusinessService.findSysContractByContractCode(contractCode);
         if (sysContract != null) {
-            resultMap.put("code", 200);
-            resultMap.put("msg", "添加合同失败，系统已存在相同编号的合同，请重新添加或者联系系统管理员！");
+            return R.error(500,"添加合同失败，系统已存在相同编号的合同，请重新添加或者联系系统管理员！！");
         } else {
             try {
                 int count = sysContractBusinessService.addSysContract(map);
                 if (count > 0) {
-                    resultMap.put("code", 200);
-                    resultMap.put("msg", "添加合同成功！");
+                    return R.ok(200,"添加合同成功！！");
+                }else {
+                    return R.error(500,"添加合同失败，请联系系统管理员！！");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                resultMap.put("code", 500);
-                resultMap.put("msg", "服务器异常，请联系管理员！");
+                logger.info("添加合同失败："+e.getMessage());
+                return R.error(500,"服务器异常，请联系系统管理员！！");
             }
-
         }
-        return resultMap;
     }
 
     @Override
@@ -186,21 +177,25 @@ public class SysContractServiceImpl implements SysContractService {
         map.put("secondPartyCompany", secondPartyCompany);
         map.put("personLiableName", personLiableName);
         map.put("createTime", Timestamp.valueOf(UtilHelper.getNowTimeStr()));
+
         try {
-            int count = sysContractBusinessService.updateSysContract(map);
-            if (count > 0) {
-                resultMap.put("code", 200);
-                resultMap.put("msg", "更新合同信息成功！");
-            }else {
-                resultMap.put("code", 200);
-                resultMap.put("msg", "获取即将过期合同失败，请联系系统管理员！！");
+            SysContract sysContract = sysContractBusinessService.findSysContractByContractCode(contractCode);
+            if (sysContract != null) {
+                return R.error(500,"更新合同失败，系统已存在相同编号的合同，请重新添加或者联系系统管理员！！");
+            }else{
+                int count = sysContractBusinessService.updateSysContract(map);
+                if (count > 0) {
+                    return R.ok(200,"更新合同信息成功！！！");
+                }else {
+                    return R.error(500,"更新合同失败，请联系系统管理员！！");
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("code", 500);
-            resultMap.put("msg", "服务器异常，请联系管理员！");
+            logger.info("更新合同失败："+e.getMessage());
+            return R.error(500,"服务器异常，请联系系统管理员！！");
         }
-        return resultMap;
     }
 
     @Override
@@ -211,18 +206,15 @@ public class SysContractServiceImpl implements SysContractService {
         try {
             int count=sysContractBusinessService.deleteSysContract(map);
             if(count>0){
-                resultMap.put("code", 200);
-                resultMap.put("msg", "删除合同成功！！");
+                return R.ok(200,"删除合同成功！！");
             }else {
-                resultMap.put("code", 200);
-                resultMap.put("msg", "删除合同失败，请联系系统管理员！！");
+                return R.error(500,"删除合同失败，请联系系统管理员！！");
             }
         }catch (Exception e){
             e.printStackTrace();
-            resultMap.put("code", 500);
-            resultMap.put("msg", "服务器异常，请联系管理员！");
+            logger.info("删除合同失败："+e.getMessage());
+            return R.error(500,"服务器异常，请联系管理员！");
         }
-        return resultMap;
     }
 
     @Override
@@ -260,14 +252,11 @@ public class SysContractServiceImpl implements SysContractService {
             map.put("contractWorking", contractWorking);
             map.put("contractNumber", contractNumber);
             map.put("contractexpired", contractexpired);
-            resultMap.put("code", 200);
-            resultMap.put("data", map);
-            resultMap.put("msg", "获取数据成功！！");
+            return R.ok().putData(200,map,"获取数据成功！！");
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("code", 500);
-            resultMap.put("msg", "服务器异常！！");
+            logger.info("获取合同档案统计数据失败："+e.getMessage());
+            return R.error(500,"服务器异常！！");
         }
-        return resultMap;
     }
 }

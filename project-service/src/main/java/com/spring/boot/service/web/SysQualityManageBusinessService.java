@@ -78,4 +78,11 @@ public interface SysQualityManageBusinessService {
      * @return
      */
     List<SysQualityManageFile> findSysQualityManageFileById(Long qualityId);
+
+    /**
+     * 根据品质id删除文档附件信息（用于更新时操作）
+     * @param qualityId
+     * @return
+     */
+    int deleteSysQualityManageFileByQualityId(Long qualityId);
 }

@@ -118,10 +118,10 @@ public class SysQualityManageController {
      */
     @RequestMapping(value = "/updateSysQualityManage", method = RequestMethod.GET)
     public R updateSysQualityManage(@RequestParam(value = "qualityId", required = false) String qualityId, @RequestParam(value = "companyId", required = false) String companyId
-            , @RequestParam(value = "year", required = false) String year, @RequestParam(value = "month", required = false) String month, @RequestParam(value = "qualityCheck"
-            , required = false) String qualityCheck, @RequestParam(value = "qualityCheckPass", required = false) String qualityCheckPass, @RequestParam(value = "qualityCheckFail"
-            , required = false) String qualityCheckFail, @RequestParam(value = "securityEvent", required = false) String securityEvent
-            , @RequestParam(value = "qualityCheckUnmodified", required = false) String qualityCheckUnmodified) {
+            , @RequestParam(value = "year", required = false) String year, @RequestParam(value = "month", required = false) String month
+            , @RequestParam(value = "qualityCheck", required = false) String qualityCheck, @RequestParam(value = "qualityCheckPass", required = false) String qualityCheckPass
+            , @RequestParam(value = "qualityCheckFail", required = false) String qualityCheckFail, @RequestParam(value = "securityEvent", required = false) String securityEvent
+            , @RequestParam(value = "qualityCheckUnmodified", required = false) String qualityCheckUnmodified, @RequestParam(value = "fileInfo", required = false) String fileInfo) {
         logger.info("信息更新操作！");
         if (!UtilHelper.isNumer(qualityId)) {
             return R.error(400, "质量管理编号格式不正确，请联系系统管理员！");
@@ -143,7 +143,7 @@ public class SysQualityManageController {
             return R.error(400, "月品质检查未整改项格式不正确！");
         }
         Map<String, Object> map =sysQualityManageService.updateSysQualityManage(Long.valueOf(qualityId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(qualityCheck), Integer.valueOf(qualityCheckPass)
-                , Integer.valueOf(qualityCheckFail), Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified));
+                , Integer.valueOf(qualityCheckFail), Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified),fileInfo);
         return R.ok(map);
 
     }

@@ -37,11 +37,11 @@
 		where contractType_id = #{contractTypeId}
 	</update>
 	<insert id="save" parameterType="map">
-		INSERT INTO sys_contract_type (contractType_name, contractType_code )
+		INSERT INTO sys_contract_type (contractType_name, contractType_code)
               VALUES   (#{contractTypeName},#{contractTypeCode} )
 	</insert>
 	<update id="delete" parameterType="map">
-		update sys_contract_type set status = 2
+		update sys_contract_type set status_code = 2
 		where contractType_id = #{contractTypeId}
 	</update>
 

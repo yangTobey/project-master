@@ -41,7 +41,7 @@ public interface SysContractService {
      * @param contractName
      * @return
              */
-    Map<String, Object> sysContractDataList(String contractName, String contractCode,Integer statusCode,  String contractEndTime,
+    Map<String, Object> sysContractDataList(String contractName, String contractCode,Integer statusCode,String contractStartTime,  String contractEndTime,
                                        String contractTypeId, String firstPartyCompany, String secondPartyCompany, Integer limit,Integer offset,Long companyId);
     /**
      * 添加合同
