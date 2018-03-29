@@ -10,7 +10,7 @@ public class SysContract {
     private Long contractId;
     private String contractName;
     private String contractCode;
-    private Integer contractMoney;
+    private Double contractMoney;
     private Timestamp contractStartTime;
     private Timestamp contractEndTime;
     private Integer contractTypeId;
@@ -59,11 +59,11 @@ public class SysContract {
         this.contractCode = contractCode;
     }
 
-    public Integer getContractMoney() {
+    public Double getContractMoney() {
         return contractMoney;
     }
 
-    public void setContractMoney(Integer contractMoney) {
+    public void setContractMoney(Double contractMoney) {
         this.contractMoney = contractMoney;
     }
 

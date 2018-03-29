@@ -9,6 +9,11 @@ import java.util.Map;
  */
 public interface SysUserService {
     /**
+     * 查找系统用户列表
+     * @return
+     */
+    Map<String, Object> sysUserList(Integer limit, Integer offset);
+    /**
      * 根据用户id查找用户信息
      *
      * @param userId
@@ -31,7 +36,13 @@ public interface SysUserService {
      * @param newPassword
      * @return
      */
-    Map<String, Object> updatePassword(long userId, String password, String newPassword);
+    Map<String, Object> updatePassword(Long userId, String password, String newPassword);
+    /***
+     * 重置密码
+     * @param userId
+     * @return
+     */
+    Map<String, Object> resetSysUserPassword(Long userId);
 
     /**
      * 新增用户信息
@@ -43,7 +54,7 @@ public interface SysUserService {
      * @param departmentId 部门id
      * @return
      */
-    Map<String, Object> addUser(String userAccount, String password, String companyId, String roleId, String departmentId);
+    Map<String, Object> addUser(String userAccount, String password, Long companyId, Long roleId, Long departmentId);
 
     /**
      * 更新用户信息
@@ -54,7 +65,7 @@ public interface SysUserService {
      * @param departmentId 部门id
      * @return
      */
-    Map<String, Object> updateUserInfo(String userId, String companyId, String roleId, String departmentId);
+    Map<String, Object> updateUserInfo(Long userId, Long companyId, Long roleId, Long departmentId);
 
     /**
      * 删除用户信息（只更新用户账号状态，不作删除处理）
@@ -62,5 +73,5 @@ public interface SysUserService {
      * @param userId 用户id
      * @return
      */
-    Map<String, Object>  deleteUser(String userId);
+    Map<String, Object>  deleteUser(String userId,String type);
 }

@@ -1,9 +1,11 @@
 package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.SysUser;
+import com.spring.boot.bean.master.SysUserRole;
 import com.spring.boot.dao.web.master.SysUserDao;
 import com.spring.boot.service.SysUserService;
 import com.spring.boot.service.web.SysUserBusinessService;
+import com.spring.boot.service.web.SysUserRoleBusinessService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.ShiroUtils;
 import org.apache.log4j.Logger;
@@ -12,6 +14,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +27,28 @@ public class SysUserServiceImpl implements SysUserService {
     private static final Logger logger = Logger.getLogger(SysUserServiceImpl.class);
     @Autowired
     private SysUserBusinessService sysUserBusinessService;
+    @Autowired
+    private SysUserRoleBusinessService sysUserRoleBusinessService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+
+    @Override
+    public Map<String, Object> sysUserList(Integer limit, Integer offset) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> map = map = new HashMap<String, Object>();
+        try {
+            map.put("limit", limit);
+            map.put("offset", offset);
+            resultMap.put("total", sysUserBusinessService.sysUserTotal());
+            resultMap.put("list", sysUserBusinessService.sysUserList(map));
+            return R.ok().putData(200,resultMap,"获取成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取用户列表出错："+e.getMessage());
+            return R.error(500,"服务器异常，请联系管理员！");
+        }
+    }
 
     @Override
     public SysUser findByUserId(String userId) {
@@ -54,7 +76,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public Map<String, Object> updatePassword(long userId, String password, String newPassword) {
+    public Map<String, Object> updatePassword(Long userId, String password, String newPassword) {
         Map<String, Object> map = new HashMap<String, Object>();
         //根据用户提交的密码，利用md5加密得到加密后的原密码
         password = new SimpleHash("md5", password, ByteSource.Util.bytes(ShiroUtils.getUserEntity().getAccount()), 2).toHex();
@@ -72,24 +94,60 @@ public class SysUserServiceImpl implements SysUserService {
             }
         }catch (Exception e){
             e.printStackTrace();
-            logger.info("更新部门信息出错："+e.getMessage());
-            return R.error(500,"更新信息失败，服务器异常，请联系管理员！");
+            logger.info("更新密码信息出错："+e.getMessage());
+            return R.error(500,"更新密码信息失败，服务器异常，请联系管理员！");
         }
     }
 
     @Override
-    public Map<String, Object>  addUser(String userAccount, String password, String companyId, String roleId, String departmentId) {
+    public Map<String, Object> resetSysUserPassword(Long userId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            //新密码，利用md5加密得到加密后的新密码,重置密码后默认为111
+            String newPassword = new SimpleHash("md5", "111", ByteSource.Util.bytes(ShiroUtils.getUserEntity().getAccount()), 2).toHex();
+            map.put("userId", userId);
+            map.put("newPassword", newPassword);
+            int count=sysUserBusinessService.resetSysUserPassword(map);
+            if(count>0){
+                return R.ok(200,"重置密码成功！");
+            }else{
+                return R.error(500,"重置密码失败，请联系管理员！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("重置密码信息出错："+e.getMessage());
+            return R.error(500,"重置密码信息失败，服务器异常，请联系管理员！");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, Object>  addUser(String userAccount, String password, Long companyId, Long roleId, Long departmentId) {
         Map<String, Object> map = new HashMap<String, Object>();
         //根据用户提交的密码，利用md5加密得到加密后的原密码
         password = new SimpleHash("md5", password, ByteSource.Util.bytes(userAccount), 2).toHex();
-        map.put("userAccount", userAccount);
+        map.put("account", userAccount);
         map.put("password", password);
         map.put("companyId", companyId);
-        map.put("roleId", roleId);
         map.put("departmentId", departmentId);
+        SysUser sysUser=new SysUser();
+        sysUser.setAccount(userAccount);
+        sysUser.setPassword(password);
+        sysUser.setCompanyId(companyId);
+        sysUser.setDepartmentId(departmentId);
         try {
-            int count=sysUserBusinessService.addUser(map);
+            Map<String, Object> userMap = new HashMap<String, Object>();
+            userMap.put("account", userAccount);
+            SysUser user = sysUserBusinessService.findByUserAccount(userMap);
+            if(user!=null){
+                return R.error(400, "该账号已存在，不能再次添加！！");
+            }
+            int count=sysUserBusinessService.addUser(sysUser);
             if(count>0){
+                SysUserRole sysUserRole=new SysUserRole();
+                sysUserRole.setRoleId(roleId);
+                sysUserRole.setUserId(sysUser.getUserId());
+                sysUserRoleBusinessService.addUserRole(sysUserRole);
                 return R.ok(200,"新增成功！");
             }else{
                 return R.error(500,"新增失败，请联系管理员！");
@@ -97,12 +155,14 @@ public class SysUserServiceImpl implements SysUserService {
         }catch (Exception e){
             e.printStackTrace();
             logger.info("新增用户信息出错："+e.getMessage());
-            return R.error(500,"新增用户信息失败，服务器异常，请联系管理员！");
+            throw new RuntimeException();
+            //return R.error(500,"新增用户信息失败，服务器异常，请联系管理员！");
         }
     }
 
     @Override
-    public Map<String, Object>  updateUserInfo(String userId, String companyId, String roleId, String departmentId) {
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, Object>  updateUserInfo(Long userId, Long companyId, Long roleId, Long departmentId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userId", userId);
         map.put("companyId", companyId);
@@ -111,6 +171,11 @@ public class SysUserServiceImpl implements SysUserService {
         try {
             int count=sysUserBusinessService.updateUserInfo(map);
             if(count>0){
+                sysUserRoleBusinessService.deleteUserRoleByUserId(userId);
+                SysUserRole sysUserRole=new SysUserRole();
+                sysUserRole.setRoleId(roleId);
+                sysUserRole.setUserId(userId);
+                sysUserRoleBusinessService.addUserRole(sysUserRole);
                 return R.ok(200,"更新成功！");
             }else{
                 return R.error(500,"更新失败，请联系管理员！");
@@ -118,25 +183,34 @@ public class SysUserServiceImpl implements SysUserService {
         }catch (Exception e){
             e.printStackTrace();
             logger.info("更新用户信息出错："+e.getMessage());
-            return R.error(500,"更新部门信息失败，服务器异常，请联系管理员！");
+            throw new RuntimeException();
+            //return R.error(500,"更新部门信息失败，服务器异常，请联系管理员！");
         }
     }
 
     @Override
-    public Map<String, Object>  deleteUser(String userId) {
+    public Map<String, Object>  deleteUser(String userId,String type) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userId", userId);
+        if("delete".equals(type)){
+            //status_code为3表示删除
+            map.put("statusCode", 3);
+        }else{
+            //status_code为2表示停用
+            map.put("statusCode", 2);
+        }
+
         try {
             int count=sysUserBusinessService.deleteUser(map);
             if(count>0){
-                return R.ok(200,"删除成功！");
+                return R.ok(200,"操作成功！");
             }else{
-                return R.error(500,"删除失败，请联系管理员！");
+                return R.error(500,"操作失败，请联系管理员！");
             }
         }catch (Exception e){
             e.printStackTrace();
-            logger.info("删除信息出错："+e.getMessage());
-            return R.error(500,"删除信息失败，服务器异常，请联系管理员！");
+            logger.info("操作信息出错："+e.getMessage());
+            return R.error(500,"操作信息失败，服务器异常，请联系管理员！");
         }
     }
 }

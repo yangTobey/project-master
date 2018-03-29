@@ -10,6 +10,14 @@ import java.util.Map;
  */
 public interface SysUserBusinessService {
     /**
+     * 查找系统用户列表
+     */
+    List<SysUser> sysUserList(Map<String, Object> map);
+    /**
+     * 查找系统用户列表总数
+     */
+    int sysUserTotal();
+    /**
      * 根据用户id查找用户信息
      *
      * @param map
@@ -32,14 +40,20 @@ public interface SysUserBusinessService {
      * @return
      */
     int updatePassword(Map<String, Object> map);
+    /***
+     * 重置密码
+     * @param map
+     * @return
+     */
+    int resetSysUserPassword(Map<String, Object> map);
 
     /**
      * 新增用户信息
      *
-     * @param map
+     * @param sysUser)
      * @return
      */
-    int addUser(Map<String, Object> map);
+    int addUser(SysUser sysUser);
 
     /**
      * 更新用户信息

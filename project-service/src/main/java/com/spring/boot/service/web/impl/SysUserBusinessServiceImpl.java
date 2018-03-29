@@ -23,6 +23,16 @@ public class SysUserBusinessServiceImpl implements SysUserBusinessService {
     private StringRedisTemplate redisTemplate;
 
     @Override
+    public List<SysUser> sysUserList(Map<String, Object> map) {
+        return sysUserDao.sysUserList(map);
+    }
+
+    @Override
+    public int sysUserTotal() {
+        return sysUserDao.sysUserTotal();
+    }
+
+    @Override
     public SysUser findByUserId(Map<String, Object> map) {
         return sysUserDao.findByUserId(map);
     }
@@ -38,8 +48,13 @@ public class SysUserBusinessServiceImpl implements SysUserBusinessService {
     }
 
     @Override
-    public int addUser(Map<String, Object> map) {
-        return sysUserDao.addUser(map);
+    public int resetSysUserPassword(Map<String, Object> map) {
+        return sysUserDao.resetSysUserPassword(map);
+    }
+
+    @Override
+    public int addUser(SysUser sysUser) {
+        return sysUserDao.addUser(sysUser);
     }
 
     @Override

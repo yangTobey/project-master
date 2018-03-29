@@ -6,23 +6,27 @@ package com.spring.boot.bean.master;
  */
 public class SysUser {
 
-    private long userId;
+    private Long userId;
     private String userName;
     private String password;
     private String account;
-    private int status;
-    private int gender;
-    private int userType;
+    private Integer statusCode;
+    private Integer gender;
+    private Integer userType;
     private String phone;
-    private long companyId;
-    private long roleId;
-    private long departmentId;
+    private Long companyId;
+    private Long roleId;
+    private Long departmentId;
 
-    public long getUserId() {
+    private String companyName;
+    private String departmentName;
+    private String roleName;
+
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -50,27 +54,27 @@ public class SysUser {
         this.account = account;
     }
 
-    public int getStatus() {
-        return status;
+    public Integer getStatusCode() {
+        return statusCode;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 
-    public int getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
-    public int getUserType() {
+    public Integer getUserType() {
         return userType;
     }
 
-    public void setUserType(int userType) {
+    public void setUserType(Integer userType) {
         this.userType = userType;
     }
 
@@ -82,27 +86,51 @@ public class SysUser {
         this.phone = phone;
     }
 
-    public long getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(long companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
-    public long getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(long roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 
-    public long getDepartmentId() {
+    public Long getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(long departmentId) {
+    public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 }

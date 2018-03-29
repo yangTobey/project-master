@@ -159,7 +159,7 @@ public class SysContractController {
             ,@RequestParam(value = "contractMoney", required = false) String contractMoney, @RequestParam(value = "contractStartTime", required = false)String contractStartTime
             , @RequestParam(value = "contractEndTime", required = false)String contractEndTime,@RequestParam(value = "contractTypeId", required = false)String contractTypeId
             ,@RequestParam(value = "firstPartyCompany", required = false) String firstPartyCompany,@RequestParam(value = "secondPartyCompany", required = false) String secondPartyCompany
-            , @RequestParam(value = "personLiableName", required = false)String personLiableName) {
+            , @RequestParam(value = "personLiableName", required = false)String personLiableName, @RequestParam(value = "fileInfo", required = false) String fileInfo) {
         if(UtilHelper.isEmpty(contractName)){
             return R.error(400, "合同名称不能为空！");
         }else if(UtilHelper.isEmpty(contractCode)){
@@ -180,7 +180,7 @@ public class SysContractController {
             return R.error(400, "合同负责人不能为空！");
         }
         Map<String, Object> map=sysContractService.addSysContract(contractName,contractCode,contractMoney,contractStartTime, contractEndTime,
-                contractTypeId,firstPartyCompany,secondPartyCompany,personLiableName);
+                Integer.valueOf(contractTypeId),firstPartyCompany,secondPartyCompany,personLiableName,fileInfo);
 
         return R.ok(map);
     }
@@ -194,7 +194,8 @@ public class SysContractController {
             ,@RequestParam(value = "contractCode", required = false) String contractCode,@RequestParam(value = "contractMoney", required = false) String contractMoney
             , @RequestParam(value = "contractStartTime", required = false)String contractStartTime, @RequestParam(value = "contractEndTime", required = false)String contractEndTime
             ,@RequestParam(value = "contractTypeId", required = false)String contractTypeId,@RequestParam(value = "firstPartyCompany", required = false) String firstPartyCompany
-            ,@RequestParam(value = "secondPartyCompany", required = false) String secondPartyCompany, @RequestParam(value = "personLiableName", required = false)String personLiableName) {
+            ,@RequestParam(value = "secondPartyCompany", required = false) String secondPartyCompany, @RequestParam(value = "personLiableName", required = false)String personLiableName
+            , @RequestParam(value = "fileInfo", required = false) String fileInfo) {
         if (!UtilHelper.isNumer(contracId)) {
             return R.error(400, "合同id格式不正确！");
         }else if(UtilHelper.isEmpty(contractName)){
@@ -217,7 +218,7 @@ public class SysContractController {
             return R.error(400, "合同负责人不能为空！");
         }
         Map<String, Object> map=sysContractService.updateSysContract(Long.valueOf(contracId),contractName,contractCode,contractMoney,contractStartTime, contractEndTime,
-                contractTypeId,firstPartyCompany,secondPartyCompany,personLiableName);
+                contractTypeId,firstPartyCompany,secondPartyCompany,personLiableName,fileInfo);
 
         return R.ok(map);
     }
@@ -241,6 +242,8 @@ public class SysContractController {
      * @param companyId
      * @return
      */
+    @RequestMapping(value = "/getSysContractExpireDataTotal", method = RequestMethod.GET)
+    @ResponseBody
     public R getSysContractExpireDataTotal(@RequestParam(value = "companyId", required = false) String companyId){
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不正确！");

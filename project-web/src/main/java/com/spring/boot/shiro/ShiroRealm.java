@@ -7,7 +7,7 @@ import com.spring.boot.bean.master.SysUserRole;
 import com.spring.boot.service.SysUserService;
 import com.spring.boot.service.web.SysMenuBusinessService;
 import com.spring.boot.service.web.SysMenuRoleService;
-import com.spring.boot.service.web.SysUserRoleService;
+import com.spring.boot.service.web.SysUserRoleBusinessService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -35,7 +35,7 @@ public class ShiroRealm extends AuthorizingRealm {
     @Autowired
     private SysUserService sysUserService;
     @Autowired
-    private SysUserRoleService sysUserRoleService;
+    private SysUserRoleBusinessService sysUserRoleBusinessService;
     @Autowired
     private SysMenuBusinessService sysMenuBusinessService;
     @Autowired
@@ -55,7 +55,7 @@ public class ShiroRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
         //获得所有的权限
-        List<SysUserRole> permissionList = sysUserRoleService.findRoleByUserId(user.getUserId());
+        List<SysUserRole> permissionList = sysUserRoleBusinessService.findRoleByUserId(user.getUserId());
         //赋予角色
         //for(Role userRole:user.getRoles()){
         //  info.addRole(userRole.getName());
@@ -129,7 +129,7 @@ public class ShiroRealm extends AuthorizingRealm {
             }
 
             //账号锁定
-            if (user.getStatus() == 0) {
+            if (user.getStatusCode() == 0) {
                 System.out.println("GG");
                 throw new LockedAccountException("账号已被锁定,请联系管理员");
             }

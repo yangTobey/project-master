@@ -38,22 +38,22 @@
 		LEFT JOIN sys_contract_type as type on contract.contract_type_id=type.contractType_id
 		LEFT JOIN sys_contract_file as file on file.contract_id=contract.contract_id
 		where 1=1
-		<if test="status_code != null and status_code!=''">
+		<if test="statusCode != null and statusCode!=''">
 			/*status_code状态（1：未执行，2：在执行，3：即将过期，4：已经过期，5：已经删除）*/
 			<choose>
-				<when test="status_code==1">
+				<when test="statusCode==1">
 					and contract.status_code=1
 				</when>
-				<when test="status_code==2">
+				<when test="statusCode==2">
 					and contract.status_code=2
 				</when>
-				<when test="status_code==3">
+				<when test="statusCode==3">
 					and contract.status_code=3
 				</when>
-				<when test="status_code==4">
+				<when test="statusCode==4">
 					and contract.status_code=4
 				</when>
-				<when test="status_code==0">
+				<when test="statusCode==0">
 					and contract.status_code!=5
 				</when>
 			</choose>
@@ -62,25 +62,25 @@
 		<if test="companyId != 0">
 			and contract.company_id=#{companyId}
 		</if>
-		<if test="contractStartTime != null and contractStartTime != null">
+		<if test="contractStartTime != null and contractStartTime !=''">
 			and contract.contract_startTime <![CDATA[ >= ]]>#{contractStartTime}
 		</if>
-		<if test="contractEndTime != null and contractEndTime != null">
+		<if test="contractEndTime != null and contractEndTime !=''">
 			and contract.contract_endTime <![CDATA[ <= ]]>#{contractEndTime}
 		</if>
-		<if test="contractTypeId != 0">
+		<if test="contractTypeId != 0 and contractTypeId !='' and contractTypeId != null">
 			and contract.contract_type_id=#{contractTypeId}
 		</if>
-		<if test="contractName != null and contractName != null">
+		<if test="contractName != null and contractName !=''">
 			and contract.contract_name  like concat('%', #{contractName}, '%')
 		</if>
-		<if test="contractCode != null and contractCode != null">
+		<if test="contractCode != null and contractCode !=''">
 			and contract.contract_code  like concat('%', #{contractCode}, '%')
 		</if>
-		<if test="firstPartyCompany != null and firstPartyCompany != null">
+		<if test="firstPartyCompany != null and firstPartyCompany !=''">
 			and contract.first_party_company  like concat('%', #{firstPartyCompany}, '%')
 		</if>
-		<if test="secondPartyCompany != null and secondPartyCompany != null">
+		<if test="secondPartyCompany != null and secondPartyCompany !=''">
 			and contract.second_party_company  like concat('%', #{secondPartyCompany}, '%')
 		</if>
 
@@ -131,22 +131,22 @@
 		SELECT count(contract.contract_id)
 		from sys_contract as contract
 		where 1=1
-		<if test="status_code != null and status_code!=''">
+		<if test="statusCode != null and statusCode!=''">
 			/*status_code状态（1：未执行，2：在执行，3：即将过期，4：已经过期，5：已经删除）*/
 			<choose>
-				<when test="status_code==1">
+				<when test="statusCode==1">
 					and contract.status_code=1
 				</when>
-				<when test="status_code==2">
+				<when test="statusCode==2">
 					and contract.status_code=2
 				</when>
-				<when test="status_code==3">
+				<when test="statusCode==3">
 					and contract.status_code=3
 				</when>
-				<when test="status_code==4">
+				<when test="statusCode==4">
 					and contract.status_code=4
 				</when>
-				<when test="status_code==0">
+				<when test="statusCode==0">
 					and contract.status_code!=5
 				</when>
 			</choose>
@@ -155,25 +155,25 @@
 		<if test="companyId != 0">
 			and contract.company_id=#{companyId}
 		</if>
-		<if test="contractStartTime != null and contractStartTime != null">
+		<if test="contractStartTime != null and contractStartTime!=''">
 			and contract.contract_startTime <![CDATA[ >= ]]>#{contractStartTime}
 		</if>
-		<if test="contractEndTime != null and contractEndTime != null">
+		<if test="contractEndTime != null and contractEndTime !=''">
 			and contract.contract_endTime <![CDATA[ <= ]]>#{contractEndTime}
 		</if>
-		<if test="contractTypeId != 0">
+		<if test="contractTypeId != 0 and contractTypeId !='' and contractTypeId != null">
 			and contract.contract_type_id=#{contractTypeId}
 		</if>
-		<if test="contractName != null and contractName != null">
+		<if test="contractName != null and contractName !=''">
 			and contract.contract_name  like concat('%', #{contractName}, '%')
 		</if>
-		<if test="contractCode != null and contractCode != null">
+		<if test="contractCode != null and contractCode !=''">
 			and contract.contract_code  like concat('%', #{contractCode}, '%')
 		</if>
-		<if test="firstPartyCompany != null and firstPartyCompany != null">
+		<if test="firstPartyCompany != null and firstPartyCompany !=''">
 			and contract.first_party_company  like concat('%', #{firstPartyCompany}, '%')
 		</if>
-		<if test="secondPartyCompany != null and secondPartyCompany != null">
+		<if test="secondPartyCompany != null and secondPartyCompany !=''">
 			and contract.second_party_company  like concat('%', #{secondPartyCompany}, '%')
 		</if>
 
@@ -189,7 +189,7 @@
 		person_liable_name = #{personLiableName}
 		where contract_id = #{contractId}
 	</update>
-	<insert id="save" parameterType="map">
+	<insert id="save" parameterType="com.spring.boot.bean.master.SysContract" useGeneratedKeys="true" keyProperty="contractId">
 		INSERT INTO sys_contract  (contract_name, contract_code,contract_money,contract_startTime,contract_endTime,contract_type_id,first_party_company,second_party_company,person_liable_name,
 		 create_time)
               VALUES   (#{contractName},#{contractCode},#{contractMoney},#{contractStartTime},#{contractEndTime},#{contractTypeId},#{firstPartyCompany},#{secondPartyCompany},#{personLiableName},#{createTime} )
@@ -198,5 +198,14 @@
 		update sys_contract  set status_code = 5
 		where contract_id = #{contractId}
 	</update>
+	<!--添加附件文档-->
+	<insert id="addSysContractFile" parameterType="com.spring.boot.bean.master.SysContractFile" useGeneratedKeys="true" keyProperty="fileId">
+		INSERT INTO sys_contract_file (file_name, file_size, file_url, upload_time,contract_id)
+		VALUES   (#{fileName},#{fileSize},#{fileUrl},#{uploadTime},#{contractId})
+	</insert>
+	<!--根据id删除文档附件信息（用于更新时操作）-->
+	<delete id="deleteSysContractFileByContractId" >
+		DELETE FROM sys_contract_file WHERE contract_id = #{contractId}
+	</delete>
 
 </mapper>

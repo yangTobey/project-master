@@ -2,51 +2,83 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.spring.boot.dao.web.master.SysUserDao">
 	<resultMap id="sysUser" type="com.spring.boot.bean.master.SysUser">
-		<result column="id" property="userId" />
+		<result column="user_id" property="userId" />
 		<result column="user_name" property="userName" />
 		<result column="user_password" property="password" />
 		<result column="user_account" property="account" />
-		<result column="status" property="status" />
+		<result column="status_code" property="statusCode" />
 		<result column="phone" property="phone" />
 		<result column="gender" property="gender" />
 		<result column="user_type" property="userType" />
+		<result column="company_id" property="companyId" />
+		<result column="role_id" property="roleId" />
+		<result column="department_id" property="departmentId" />
+		<result column="company_name" property="companyName" />
+		<result column="department_name" property="departmentName" />
+		<result column="role_name" property="roleName" />
 
 	</resultMap>
 
 	<!--<parameterMap id="sysUser" type="com.spring.boot.bean.sysUser"/>-->
 
 	<sql id="Base_Column_List">
-		id, user_name, user_password, user_account,user_type,gender,phone,status,company_id,role_id,department_id
+		user.user_id, user.user_name, user.user_password, user.user_account,user.user_type,user.gender,user.phone,user.status_code,user.company_id,user.department_id
+		,userRole.role_id,department.department_name,company.company_name,role.role_name
 	</sql>
+	<!--查找用户列表-->
+	<select id="sysUserList" resultMap="sysUser" parameterType="map">
+		select
+		/*group_concat(role.role_name) as roleName,*/
+		<include refid="Base_Column_List"/>
+		FROM sys_user as user
+		LEFT JOIN sys_user_role as userRole on user.user_id=userRole.user_id
+		LEFT JOIN sys_role as role on userRole.role_id=role.role_id
+		LEFT JOIN sys_department as department on department.department_id=user.department_id
+		LEFT JOIN sys_company as company on company.company_id=user.company_id
+		where user.status_code!=3 and user.status_code!=2
+		<if test="offset != null and limit != null">
+			limit #{offset},#{limit}
+		</if>
+	</select>
+	<!--用户列表总数-->
+	<select id="sysUserTotal" resultType="int"  parameterType="map">
+		select count(user_id)
+		from sys_user
+		where status_code!=2
+	</select>
 
 	<select id="findByUserId" resultMap="sysUser" parameterType="map">
 		select
-		<include refid="Base_Column_List" />
+		*
 		from sys_user
-		where id = #{userId}
+		where user_id = #{userId}
 	</select>
 
-	<select id="findByUserAccount" resultMap="sysUser" parameterType="map">
+	<select id="findByUserAccount" resultMap="sysUser" parameterType="map" >
 		select
-		<include refid="Base_Column_List" />
-		from sys_user
+		* from sys_user
 		where user_account = #{account}
 	</select>
 	<update id="updatePassword" parameterType="map">
 		update sys_user set `user_password` = #{newPassword}
-		where id = #{userId} and user_password = #{password}
+		where user_id = #{userId} and user_password = #{password}
 	</update>
-	<insert id="addUser" parameterType="map">
-		INSERT INTO sys_user (user_account, user_password, company_id, role_id,department_id)
-		VALUES   (#{userAccount},#{password},#{companyId},#{roleId},#{departmentId})
+	<update id="resetSysUserPassword" parameterType="map">
+		update sys_user set `user_password` =#{newPassword}
+		where user_id = #{userId}
+	</update>
+	<insert id="addUser" parameterType="com.spring.boot.bean.master.SysUser" useGeneratedKeys="true" keyProperty="userId">
+		INSERT INTO sys_user (user_account, user_password, company_id,department_id)
+		VALUES   (#{account},#{password},#{companyId},#{departmentId})
 	</insert>
+
 	<update id="updateUserInfo" parameterType="map">
-		update sys_user set company_id = #{companyId},role_id = #{roleId},department_id = #{departmentId}
-		where id = #{userId}
+		update sys_user set company_id = #{companyId},department_id = #{departmentId}
+		where user_id = #{userId}
 	</update>
 	<update id="deleteUser" parameterType="map">
-		update sys_user set `status` = 3
-		where id = #{userId}
+		update sys_user set status_code = #{statusCode}
+		where user_id = #{userId}
 	</update>
 	<!-- 查询用户的所有菜单ID -->
 	<select id="queryUserAllMenuId" resultType="long">

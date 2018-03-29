@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.web.master.SysUserRoleDao">
+
+	<!--添加用户角色信息，后期可能会有一个用户对应多个角色，作一对多操作-->
+	<insert id="addUserRole" parameterType="com.spring.boot.bean.master.SysUserRole" useGeneratedKeys="true" keyProperty="userId">
+		INSERT INTO sys_user_role (user_id, role_id)
+		VALUES   (#{userId},#{roleId})
+	</insert>
+	<!--根据品质id删除文档附件信息（用于更新时操作）-->
+	<delete id="deleteUserRoleByUserId" >
+		DELETE FROM sys_user_role WHERE user_id = #{userId}
+	</delete>
+
+
+
+</mapper>

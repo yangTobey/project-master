@@ -36,7 +36,7 @@ public class SysCompanyServiceImpl implements SysCompanyService {
     Map<String, Object> map = null;
 
     @Override
-    public Map<String, Object> getSysCompanyList(int limit, int offset) {
+    public Map<String, Object> getSysCompanyList(Integer limit, Integer offset) {
         resultMap = new HashMap<String, Object>();
         map = new HashMap<String, Object>();
         map.put("limit", limit);

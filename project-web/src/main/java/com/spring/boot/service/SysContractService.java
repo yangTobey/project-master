@@ -49,14 +49,14 @@ public interface SysContractService {
      * @return
      */
     Map<String, Object> addSysContract(String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime,
-                                       String contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName);
+                                       Integer contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName,String fileInfo);
     /**
      * 更新合同
      * @param contractName
      * @return
      */
     Map<String, Object> updateSysContract(Long contractId,String contractName,String contractCode,String contractMoney,String contractStartTime, String contractEndTime,
-                       String contractTypeId,String firstPartyCompany,String secondPartyCompany,String personLiableName);
+                       String contractTypeId,String firstPartyCompany,String secondPartyCompany,String personLiableName,String fileInfo);
     /**
      * 删除合同
      * @param contractId

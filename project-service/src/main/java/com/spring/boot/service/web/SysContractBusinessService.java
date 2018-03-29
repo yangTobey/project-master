@@ -1,7 +1,9 @@
 package com.spring.boot.service.web;
 
 import com.spring.boot.bean.master.SysContract;
+import com.spring.boot.bean.master.SysContractFile;
 import com.spring.boot.bean.master.SysContractType;
+import com.spring.boot.bean.master.SysQualityManageFile;
 
 import java.util.List;
 import java.util.Map;
@@ -45,10 +47,16 @@ public interface SysContractBusinessService {
 
     /**
      * 新增合同
-     * @param map
+     * @param sysContract
      * @return
      */
-    int addSysContract(Map<String, Object> map);
+    int addSysContract(SysContract sysContract);
+    /**
+     * 新增附件文档信息
+     * @param sysContractFile
+     * @return
+     */
+    int addSysContractFile(SysContractFile sysContractFile);
     /**
      * 更新合同
      * @param map
@@ -87,4 +95,10 @@ public interface SysContractBusinessService {
      * @return
      */
     List<SysContract> sysContractAnalysisData(Long companyId);
+    /**
+     * 根据id删除文档附件信息（用于更新时操作）
+     * @param contractId
+     * @return
+     */
+    int deleteSysContractFileByContractId(Long contractId);
 }

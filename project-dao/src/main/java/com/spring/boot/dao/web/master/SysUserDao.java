@@ -9,6 +9,14 @@ import java.util.Map;
  * Created by Administrator on 2018/1/25.
  */
 public interface SysUserDao {
+    /**
+     * 查找系统用户列表
+     */
+    List<SysUser> sysUserList(Map<String, Object> map);
+    /**
+     * 查找系统用户列表总数
+     */
+    int sysUserTotal();
 
     SysUser findByUserId(Map<String, Object> map);
 
@@ -25,13 +33,19 @@ public interface SysUserDao {
      * @return
      */
     int updatePassword(Map<String, Object> map);
-    /**
-     * 新增用户信息
-     *
+    /***
+     * 重置密码
      * @param map
      * @return
      */
-    int addUser(Map<String, Object> map);
+    int resetSysUserPassword(Map<String, Object> map);
+    /**
+     * 新增用户信息
+     *
+     * @param sysUser)
+     * @return
+     */
+    int addUser(SysUser sysUser);
 
     /**
      * 更新用户信息
