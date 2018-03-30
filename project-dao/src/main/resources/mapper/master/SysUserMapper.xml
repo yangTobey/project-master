@@ -84,7 +84,21 @@
 	<select id="queryUserAllMenuId" resultType="long">
 		select distinct rm.menu_id from sys_user_role ur
 		LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
-		where ur.user_id = #{userId}
+		LEFT JOIN sys_menu as menu on rm.menu_id=menu.menu_id
+		where 1=1 and menu.type=1 and ur.user_id = #{userId}
+	</select>
+
+	<select id="sysUserInfo" resultMap="sysUser" parameterType="map">
+		SELECT
+		us.user_id,
+		us.user_name,
+		us.user_account,
+		us.company_id,
+		company.company_name
+		FROM
+			sys_user AS us
+		LEFT JOIN sys_company AS company ON us.company_id = company.company_id
+		where user_id = #{userId}
 	</select>
 
 </mapper>

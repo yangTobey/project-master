@@ -34,6 +34,17 @@ public class SysMenuController {
         Map<String, Object> map = sysMenuService.getSysMenu(ShiroUtils.getUserEntity().getUserId());
         return R.ok().put(200, map,"获取成功！");
     }
+
+    /**
+     * 获取系统菜单和功能按钮
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getSysModule", method = RequestMethod.GET)
+    public R getSysModule() {
+        Map<String, Object> map = sysMenuService.getSysModule();
+        return R.ok().put(200, map,"获取成功！");
+    }
     /**
      * 查询公司信息
      *

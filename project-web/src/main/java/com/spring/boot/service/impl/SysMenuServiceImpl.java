@@ -8,6 +8,8 @@ import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.service.web.SysMenuBusinessService;
 import com.spring.boot.service.web.SysUserBusinessService;
 import com.spring.boot.util.Constant;
+import com.spring.boot.util.R;
+import com.spring.boot.util.ShiroUtils;
 import com.spring.boot.util.UtilHelper;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,23 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     @Override
     public Map<String, Object> getSysMenu(long userId) {
+        //用户菜单列表
+        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId);
+        List<SysMenu> menuList = getAllMenuList(menuIdList);
+        resultMap = new HashMap<String, Object>();
+        resultMap.put("data", menuList);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> getSysModule() {
+        if(ShiroUtils.getUserEntity()==null){
+            return R.error(500,"请登录系统再进行操作功能！");
+        }
+        if(ShiroUtils.getUserEntity().getUserId()==null){
+            return R.error(500,"请登录系统再进行操作功能！");
+        }
+        Long userId=ShiroUtils.getUserEntity().getUserId();
         //用户菜单列表
         List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId);
         List<SysMenu> menuList = getAllMenuList(menuIdList);

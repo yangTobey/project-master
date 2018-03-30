@@ -1,10 +1,12 @@
 package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.SysUser;
+import com.spring.boot.bean.master.SysUserCompany;
 import com.spring.boot.bean.master.SysUserRole;
 import com.spring.boot.dao.web.master.SysUserDao;
 import com.spring.boot.service.SysUserService;
 import com.spring.boot.service.web.SysUserBusinessService;
+import com.spring.boot.service.web.SysUserCompanyBusinessService;
 import com.spring.boot.service.web.SysUserRoleBusinessService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.ShiroUtils;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +32,8 @@ public class SysUserServiceImpl implements SysUserService {
     private SysUserBusinessService sysUserBusinessService;
     @Autowired
     private SysUserRoleBusinessService sysUserRoleBusinessService;
+    @Autowired
+    private SysUserCompanyBusinessService sysUserCompanyBusinessService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -66,6 +71,25 @@ public class SysUserServiceImpl implements SysUserService {
             System.out.println("set-admin-value:"+operations.get("admin"));
         }*/
         return sysUserBusinessService.findByUserId(map);
+    }
+
+    @Override
+    public Map<String, Object> sysUserInfo() {
+        try {
+            if(ShiroUtils.getUserEntity()==null){
+                return R.error(500,"请登录系统再进行操作功能！");
+            }
+            if(ShiroUtils.getUserEntity().getUserId()==null){
+                return R.error(500,"请登录系统再进行操作功能！");
+            }
+            Long userId=ShiroUtils.getUserEntity().getUserId();
+            SysUser sysUser=sysUserBusinessService.sysUserInfo(userId);
+            return R.ok().putData(200,sysUser,"获取成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取用户信息出错："+e.getMessage());
+            return R.error(500,"获取用户信息失败，服务器异常，请联系管理员！");
+        }
     }
 
     @Override
@@ -211,6 +235,28 @@ public class SysUserServiceImpl implements SysUserService {
             e.printStackTrace();
             logger.info("操作信息出错："+e.getMessage());
             return R.error(500,"操作信息失败，服务器异常，请联系管理员！");
+        }
+    }
+
+    @Override
+    public Map<String, Object> sysUserCompany() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+
+            if(ShiroUtils.getUserEntity()==null){
+                return R.error(500,"请登录系统再进行操作功能！");
+            }
+            if(ShiroUtils.getUserEntity().getUserId()==null){
+                return R.error(500,"请登录系统再进行操作功能！");
+            }
+            Long userId=ShiroUtils.getUserEntity().getUserId();
+            List<SysUserCompany> list=sysUserCompanyBusinessService.sysUserCompany(userId);
+            resultMap.put("list", list);
+            return R.ok().putData(200,resultMap,"获取成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取用户权限小区信息出错："+e.getMessage());
+            return R.error(500,"获取用户权限小区信息失败，服务器异常，请联系管理员！");
         }
     }
 }

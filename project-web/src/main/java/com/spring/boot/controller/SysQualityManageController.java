@@ -164,7 +164,7 @@ public class SysQualityManageController {
     }
 
     /**
-     * 根据公司id获取信息
+     * 根据id获取信息
      *
      * @param qualityId
      * @return

@@ -37,7 +37,7 @@
         and status_code!=2
     </select>
     <select id="findMenuByParentId" resultMap="sysMenu" >
-        select * from sys_menu where parent_id = #{parentId} and is_use=1
+        select * from sys_menu where 1=1 and parent_id = #{parentId} and is_use=1 and type=1
     </select>
     <select id="getSysCompanyListTotal" resultType="int"  parameterType="map">
         select count(company_id)

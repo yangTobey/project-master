@@ -20,6 +20,12 @@ public interface SysUserService {
      * @return
      */
     SysUser findByUserId(String userId);
+    /**
+     * 获取登录用户的个人信息
+     *
+     * @return
+     */
+    Map<String, Object> sysUserInfo();
 
     /**
      * 根据用户账号查找用户信息你
@@ -74,4 +80,10 @@ public interface SysUserService {
      * @return
      */
     Map<String, Object>  deleteUser(String userId,String type);
+    /**
+     * 获取用户权限下可以操作的公司
+     *
+     * @return
+     */
+    Map<String, Object>  sysUserCompany();
 }

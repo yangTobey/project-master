@@ -13,6 +13,11 @@ public interface SysMenuService {
      */
     Map<String,Object> getSysMenu(long userId);
     /**
+     * 获取系统菜单和功能按钮
+     * @return
+     */
+    Map<String,Object> getSysModule();
+    /**
      * 获取公司列表数据
      * @return
      */

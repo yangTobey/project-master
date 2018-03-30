@@ -1,6 +1,7 @@
 package com.spring.boot.dao.web.master;
 
 import com.spring.boot.bean.master.SysUser;
+import com.spring.boot.bean.master.SysUserCompany;
 
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,19 @@ public interface SysUserDao {
      * 查找系统用户列表总数
      */
     int sysUserTotal();
-
+    /**
+     * 根据用户id查找用户信息
+     *
+     * @param map
+     * @return
+     */
     SysUser findByUserId(Map<String, Object> map);
+    /**
+     * 获取登录用户的个人信息
+     *
+     * @return
+     */
+    SysUser sysUserInfo(Long userId);
 
     /**
      * 根据用户账号查找用户信息你
@@ -66,4 +78,14 @@ public interface SysUserDao {
      * 查询用户的所有菜单ID
      */
     List<Long> queryUserAllMenuId(Long userId);
+    /**
+     * 获取用户权限下可以操作的公司
+     *
+     * @return
+     */
+    List<SysUserCompany>  sysUserCompany(Long userId);
+    /**
+     * 查询用户的所有菜单和功能按钮ID
+     */
+    List<Long> queryUserAllModuleId(Long userId);
 }

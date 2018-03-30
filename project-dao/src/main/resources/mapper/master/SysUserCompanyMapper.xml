@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.web.master.SysUserCompanyDao">
+
+	<!-- 获取用户权限下可以操作的公司-->
+	<select id="sysUserCompany" resultType="com.spring.boot.bean.master.SysUserCompany">
+		SELECT
+			userCompany.user_id as userId,userCompany.company_id as companyId,company.company_name as companyName
+			FROM
+			sys_user_company AS userCompany
+			LEFT JOIN sys_company AS company ON userCompany.company_id = company.company_id
+			WHERE userCompany.user_id = #{userId}
+	</select>
+
+</mapper>

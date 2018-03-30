@@ -1,6 +1,7 @@
 package com.spring.boot.service.web.impl;
 
 import com.spring.boot.bean.master.SysUser;
+import com.spring.boot.bean.master.SysUserCompany;
 import com.spring.boot.dao.web.master.SysUserDao;
 import com.spring.boot.service.web.SysUserBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,11 @@ public class SysUserBusinessServiceImpl implements SysUserBusinessService {
     }
 
     @Override
+    public SysUser sysUserInfo(Long userId) {
+        return sysUserDao.sysUserInfo(userId);
+    }
+
+    @Override
     public SysUser findByUserAccount(Map<String, Object> map) {
         return sysUserDao.findByUserAccount(map);
     }
@@ -70,5 +76,10 @@ public class SysUserBusinessServiceImpl implements SysUserBusinessService {
     @Override
     public List<Long> queryUserAllMenuId(Long userId) {
         return sysUserDao.queryUserAllMenuId(userId);
+    }
+
+    @Override
+    public List<Long> queryUserAllModuleId(Long userId) {
+        return null;
     }
 }

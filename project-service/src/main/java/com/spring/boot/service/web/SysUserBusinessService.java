@@ -1,6 +1,7 @@
 package com.spring.boot.service.web;
 
 import com.spring.boot.bean.master.SysUser;
+import com.spring.boot.bean.master.SysUserCompany;
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,12 @@ public interface SysUserBusinessService {
      * @return
      */
     SysUser findByUserId(Map<String, Object> map);
+    /**
+     * 获取登录用户的个人信息
+     *
+     * @return
+     */
+    SysUser sysUserInfo(Long userId);
 
     /**
      * 根据用户账号查找用户信息你
@@ -74,5 +81,11 @@ public interface SysUserBusinessService {
      * 查询用户的所有菜单ID
      */
     List<Long> queryUserAllMenuId(Long userId);
+
+    /**
+     * 查询用户的所有菜单和功能按钮ID
+     */
+    List<Long> queryUserAllModuleId(Long userId);
+
 
 }
