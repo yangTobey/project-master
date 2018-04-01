@@ -46,16 +46,16 @@ public class SysLoginController {
                 System.out.println("登录成功，请进行对应操作！！");
             }
         }catch (UnknownAccountException e) {
-            e.printStackTrace();
+            return R.error(e.getMessage());
            //return "views/login/login";
         }catch (IncorrectCredentialsException e) {
-            e.printStackTrace();
+            return R.error(e.getMessage());
             //return R.error(e.getMessage());
         }catch (LockedAccountException e) {
-            e.printStackTrace();
+            return R.error(e.getMessage());
             //return "views/login/login";
         }catch (AuthenticationException e) {
-            e.printStackTrace();
+            return R.error(e.getMessage());
             //return "views/login/login";
         }
         return R.ok(200,"成功！");
