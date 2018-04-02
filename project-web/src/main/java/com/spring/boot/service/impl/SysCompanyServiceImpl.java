@@ -19,6 +19,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -125,5 +126,18 @@ public class SysCompanyServiceImpl implements SysCompanyService {
         SysCompany sysCompany = sysCompanyBusinessService.findSysCompanyByCompanyId(map);
         resultMap.put("data", sysCompanyBusinessService.findSysCompanyByCompanyId(map));
         return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> getAllSysCompany() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            List<SysCompany> sysCompanyList = sysCompanyBusinessService.getAllSysCompany();
+            resultMap.put("list", sysCompanyList);
+            return R.ok().putData(200,resultMap,"获取成功！");
+        }catch (Exception e){
+            logger.info("获取全部公司信息出错："+e.getMessage());
+            return R.error(500,"删除信息失败，服务器异常，请联系管理员！");
+        }
     }
 }

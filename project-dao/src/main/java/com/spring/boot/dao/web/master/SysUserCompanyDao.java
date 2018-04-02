@@ -2,6 +2,7 @@ package com.spring.boot.dao.web.master;
 
 import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.bean.master.SysUserCompany;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -29,5 +30,11 @@ public interface SysUserCompanyDao {
      * @return
      */
     int deleteSysUserCompany(Long userId);
+    /**
+     * 根据用户id和公司id，获取用户权限下公司信息
+     *
+     * @return
+     */
+    SysUserCompany  sysUserCompanyAuthority(@Param("userId")Long userId,@Param("companyId")Long companyId);
 
 }

@@ -31,5 +31,11 @@ public interface SysUserCompanyBusinessService {
      * @return
      */
     int deleteSysUserCompany(Long userId);
+    /**
+     * 根据用户id和公司id，获取用户权限下公司信息
+     *
+     * @return
+     */
+    SysUserCompany  sysUserCompanyAuthority(Long userId,Long companyId);
 
 }

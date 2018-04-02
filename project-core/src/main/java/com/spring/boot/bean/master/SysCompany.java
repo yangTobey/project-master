@@ -13,6 +13,8 @@ public class SysCompany {
     private String companyAddress;
     private int statusCode;
 
+    private Boolean authority;
+
     public long getCompanyId() {
         return companyId;
     }
@@ -69,5 +71,11 @@ public class SysCompany {
         this.statusCode = statusCode;
     }
 
+    public Boolean getAuthority() {
+        return authority;
+    }
 
+    public void setAuthority(Boolean authority) {
+        this.authority = authority;
+    }
 }

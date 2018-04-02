@@ -185,7 +185,6 @@ public class SysUserController {
         return R.ok(map);
 
     }
-
     /**
      * 获取用户权限下可以操作的公司
      *
@@ -195,6 +194,15 @@ public class SysUserController {
     public R sysUserCompany() {
         Map<String, Object> map = sysUserService.sysUserCompany();
         return R.ok(map);
-
+    }
+    /**
+     * 获取全部公司中，哪些已有权限和没有权限的具体信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/sysUserCompanyAuthority", method = RequestMethod.GET)
+    public R sysUserCompanyAuthority() {
+        Map<String, Object> map = sysUserService.sysUserCompanyAuthority();
+        return R.ok(map);
     }
 }

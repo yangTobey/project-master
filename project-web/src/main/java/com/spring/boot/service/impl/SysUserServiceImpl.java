@@ -1,10 +1,12 @@
 package com.spring.boot.service.impl;
 
+import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.bean.master.SysUserCompany;
 import com.spring.boot.bean.master.SysUserRole;
 import com.spring.boot.dao.web.master.SysUserDao;
 import com.spring.boot.service.SysUserService;
+import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.service.web.SysUserBusinessService;
 import com.spring.boot.service.web.SysUserCompanyBusinessService;
 import com.spring.boot.service.web.SysUserRoleBusinessService;
@@ -34,6 +36,8 @@ public class SysUserServiceImpl implements SysUserService {
     private SysUserRoleBusinessService sysUserRoleBusinessService;
     @Autowired
     private SysUserCompanyBusinessService sysUserCompanyBusinessService;
+    @Autowired
+    private SysCompanyBusinessService sysCompanyBusinessService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -247,7 +251,6 @@ public class SysUserServiceImpl implements SysUserService {
             //status_code为2表示停用
             map.put("statusCode", 2);
         }
-
         try {
             int count=sysUserBusinessService.deleteUser(map);
             if(count>0){
@@ -266,7 +269,6 @@ public class SysUserServiceImpl implements SysUserService {
     public Map<String, Object> sysUserCompany() {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
-
             if(ShiroUtils.getUserEntity()==null){
                 return R.error(500,"请登录系统再进行操作功能！");
             }
@@ -279,8 +281,39 @@ public class SysUserServiceImpl implements SysUserService {
             return R.ok().putData(200,resultMap,"获取成功！");
         }catch (Exception e){
             e.printStackTrace();
-            logger.info("获取用户权限小区信息出错："+e.getMessage());
-            return R.error(500,"获取用户权限小区信息失败，服务器异常，请联系管理员！");
+            logger.info("获取用户权限公司信息出错："+e.getMessage());
+            return R.error(500,"获取用户权限公司信息失败，服务器异常，请联系管理员！");
+        }
+    }
+
+    @Override
+    public Map<String, Object> sysUserCompanyAuthority() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            if(ShiroUtils.getUserEntity()==null){
+                return R.error(500,"请登录系统再进行操作功能！");
+            }
+            if(ShiroUtils.getUserEntity().getUserId()==null){
+                return R.error(500,"请登录系统再进行操作功能！");
+            }
+            Long userId=ShiroUtils.getUserEntity().getUserId();
+            List<SysCompany> sysCompanyList = sysCompanyBusinessService.getAllSysCompany();
+            if(null!=sysCompanyList){
+                for (SysCompany sysCompany:sysCompanyList){
+                    SysUserCompany sysUserCompany=sysUserCompanyBusinessService.sysUserCompanyAuthority(userId,sysCompany.getCompanyId());
+                    if(null!=sysUserCompany){
+                        sysCompany.setAuthority(true);
+                    }else {
+                        sysCompany.setAuthority(false);
+                    }
+                }
+            }
+            resultMap.put("list", sysCompanyList);
+            return R.ok().putData(200,resultMap,"获取成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取用户权限具体信息出错："+e.getMessage());
+            return R.error(500,"获取用户权限公司具体信息失败，服务器异常，请联系管理员！");
         }
     }
 }

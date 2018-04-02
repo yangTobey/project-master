@@ -11,6 +11,13 @@
 			LEFT JOIN sys_company AS company ON userCompany.company_id = company.company_id
 			WHERE userCompany.user_id = #{userId}
 	</select>
+	<select id="sysUserCompanyAuthority" resultType="com.spring.boot.bean.master.SysUserCompany">
+		SELECT
+		user_id as userId,company_id as companyId
+		FROM
+		sys_user_company
+		WHERE 1=1 and user_id = #{userId} and company_id=#{companyId}
+	</select>
 	<insert id="saveSysUserCompany" parameterType="com.spring.boot.bean.master.SysUserCompany" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO sys_user_company (user_id, company_id)
 		VALUES   (#{userId},#{companyId})

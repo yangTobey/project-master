@@ -86,4 +86,10 @@ public interface SysUserService {
      * @return
      */
     Map<String, Object>  sysUserCompany();
+    /**
+     * 获取全部公司中，哪些已有权限和没有权限的具体信息
+     *
+     * @return
+     */
+    Map<String, Object>  sysUserCompanyAuthority();
 }

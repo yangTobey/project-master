@@ -42,4 +42,9 @@ public interface SysCompanyService {
      * @return
      */
     Map<String,Object> findSysCompanyByCompanyId(long companyId);
+    /**
+     * 获取全部公司列表数据
+     * @return
+     */
+    Map<String,Object> getAllSysCompany();
 }

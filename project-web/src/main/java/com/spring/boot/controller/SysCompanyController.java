@@ -107,4 +107,15 @@ public class SysCompanyController {
         Map<String, Object> map = sysCompanyService.findSysCompanyByCompanyId(Long.valueOf(companyId));
         return R.ok().put(200, map,"获取成功！");
     }
+
+    /**
+     * 获取全部公司信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getAllSysCompany", method = RequestMethod.GET)
+    public R getAllSysCompany(){
+        Map<String, Object> map = sysCompanyService.getAllSysCompany();
+        return R.ok().put(200, map,"获取成功！");
+    }
 }

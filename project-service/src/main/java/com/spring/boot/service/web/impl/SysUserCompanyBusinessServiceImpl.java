@@ -35,4 +35,9 @@ public class SysUserCompanyBusinessServiceImpl implements SysUserCompanyBusiness
     public int deleteSysUserCompany(Long userId) {
         return sysUserCompanyDao.deleteSysUserCompany(userId);
     }
+
+    @Override
+    public SysUserCompany sysUserCompanyAuthority(Long userId,Long companyId) {
+        return sysUserCompanyDao.sysUserCompanyAuthority(userId,companyId);
+    }
 }

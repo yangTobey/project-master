@@ -4,6 +4,7 @@ import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.dao.BaseDao;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,4 +54,9 @@ public interface SysCompanyDao extends BaseDao<SysCompany> {
      * @return
      */
     SysCompany findSysCompanyByCompanyId(Map<String, Object> map);
+    /**
+     * 获取全部公司列表数据
+     * @return
+     */
+    List<SysCompany> getAllSysCompany();
 }

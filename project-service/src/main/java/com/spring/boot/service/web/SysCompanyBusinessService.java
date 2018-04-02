@@ -59,4 +59,9 @@ public interface SysCompanyBusinessService {
      * @return
      */
     SysCompany findSysCompanyByCompanyId(Map<String, Object> map);
+    /**
+     * 获取全部公司列表数据
+     * @return
+     */
+    List<SysCompany> getAllSysCompany();
 }

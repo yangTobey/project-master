@@ -39,6 +39,13 @@
             limit #{offset},#{limit}
         </if>
     </select>
+    <!--获取全部公司信息-->
+    <select id="getAllSysCompany" resultMap="sysCompany" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_company
+        where status_code!=2
+    </select>
     <!--根据公司id查找子公司总数-->
     <select id="querySubsidiaryCount" resultType="int" parameterType="map">
         SELECT COUNT(company_id) FROM sys_company WHERE 1=1

@@ -55,4 +55,9 @@ public class SysCompanyBusinessServiceImpl implements SysCompanyBusinessService 
     public SysCompany findSysCompanyByCompanyId(Map<String, Object> map) {
         return sysCompanyDao.findSysCompanyByCompanyId(map);
     }
+
+    @Override
+    public List<SysCompany> getAllSysCompany() {
+        return sysCompanyDao.getAllSysCompany();
+    }
 }
