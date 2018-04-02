@@ -84,12 +84,14 @@ public class SysUserController {
      * @param companyId    公司id
      * @param roleId       角色id
      * @param departmentId 部门id
+     * @param permsCompanyId 权限公司id
      * @return
      */
     @RequestMapping(value = "/addSysUser", method = RequestMethod.GET)
     public R addUser(@RequestParam(value = "userAccount", required = false) String userAccount, @RequestParam(value = "password", required = false) String password
             , @RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "roleId", required = false) String roleId
-            , @RequestParam(value = "departmentId", required = false) String departmentId) {
+            , @RequestParam(value = "departmentId", required = false) String departmentId, @RequestParam(value = "userName", required = false) String userName
+            , @RequestParam(value = "permsCompanyId", required = false) String permsCompanyId) {
         if (UtilHelper.isEmpty(userAccount)) {
             return R.error(400, "登录账号不能为空！");
         } else if (UtilHelper.isEmpty(password)) {
@@ -101,7 +103,7 @@ public class SysUserController {
         } else if (!UtilHelper.isNumer(departmentId)) {
             return R.error(400, "部门id格式不正确！");
         }
-        Map<String, Object> map = sysUserService.addUser(userAccount, password, Long.valueOf(companyId), Long.valueOf(roleId), Long.valueOf(departmentId));
+        Map<String, Object> map = sysUserService.addUser(userAccount, password, Long.valueOf(companyId), Long.valueOf(roleId), Long.valueOf(departmentId),userName,permsCompanyId);
         return R.ok(map);
 
     }
@@ -136,7 +138,8 @@ public class SysUserController {
      */
     @RequestMapping(value = "/updateSysUserInfo", method = RequestMethod.GET)
     public R updateUserInfo(@RequestParam(value = "userId", required = false) String userId, @RequestParam(value = "companyId", required = false) String companyId
-            , @RequestParam(value = "roleId", required = false) String roleId, @RequestParam(value = "departmentId", required = false) String departmentId) {
+            , @RequestParam(value = "roleId", required = false) String roleId, @RequestParam(value = "departmentId", required = false) String departmentId
+            , @RequestParam(value = "userName", required = false) String userName, @RequestParam(value = "permsCompanyId", required = false) String permsCompanyId) {
         if (!UtilHelper.isNumer(userId)) {
             return R.error(400, "用户编号不能为空，请联系系统管理员！");
         } else if (!UtilHelper.isNumer(companyId)) {
@@ -146,7 +149,7 @@ public class SysUserController {
         } else if (!UtilHelper.isNumer(departmentId)) {
             return R.error(400, "部门id格式不正确！");
         }
-        Map<String, Object> map = sysUserService.updateUserInfo(Long.valueOf(userId), Long.valueOf(companyId), Long.valueOf(roleId), Long.valueOf(departmentId));
+        Map<String, Object> map = sysUserService.updateUserInfo(Long.valueOf(userId), Long.valueOf(companyId), Long.valueOf(roleId), Long.valueOf(departmentId),userName,permsCompanyId);
         return R.ok(map);
 
     }

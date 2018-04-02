@@ -146,7 +146,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object>  addUser(String userAccount, String password, Long companyId, Long roleId, Long departmentId) {
+    public Map<String, Object>  addUser(String userAccount, String password, Long companyId, Long roleId, Long departmentId,String userName,String permsCompanyId ) {
         Map<String, Object> map = new HashMap<String, Object>();
         //根据用户提交的密码，利用md5加密得到加密后的原密码
         password = new SimpleHash("md5", password, ByteSource.Util.bytes(userAccount), 2).toHex();
@@ -157,6 +157,7 @@ public class SysUserServiceImpl implements SysUserService {
         SysUser sysUser=new SysUser();
         sysUser.setAccount(userAccount);
         sysUser.setPassword(password);
+        sysUser.setUserName(userName);
         sysUser.setCompanyId(companyId);
         sysUser.setDepartmentId(departmentId);
         try {
@@ -172,6 +173,17 @@ public class SysUserServiceImpl implements SysUserService {
                 sysUserRole.setRoleId(roleId);
                 sysUserRole.setUserId(sysUser.getUserId());
                 sysUserRoleBusinessService.addUserRole(sysUserRole);
+
+                String[] permsCompanyIdArray;
+                //去掉最后那个逗号，在进行获取数据
+                permsCompanyIdArray = permsCompanyId.substring(0, permsCompanyId.length() - 1).split(",");
+                SysUserCompany sysUserCompany=null;
+                for(String id:permsCompanyIdArray){
+                    sysUserCompany=new SysUserCompany();
+                    sysUserCompany.setCompanyId(Long.valueOf(id));
+                    sysUserCompany.setUserId(sysUser.getUserId());
+                    sysUserCompanyBusinessService.saveSysUserCompany(sysUserCompany);
+                }
                 return R.ok(200,"新增成功！");
             }else{
                 return R.error(500,"新增失败，请联系管理员！");
@@ -186,7 +198,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object>  updateUserInfo(Long userId, Long companyId, Long roleId, Long departmentId) {
+    public Map<String, Object>  updateUserInfo(Long userId, Long companyId, Long roleId, Long departmentId,String userName,String permsCompanyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userId", userId);
         map.put("companyId", companyId);
@@ -200,6 +212,18 @@ public class SysUserServiceImpl implements SysUserService {
                 sysUserRole.setRoleId(roleId);
                 sysUserRole.setUserId(userId);
                 sysUserRoleBusinessService.addUserRole(sysUserRole);
+
+                sysUserCompanyBusinessService.deleteSysUserCompany(userId);
+                String[] permsCompanyIdArray;
+                //去掉最后那个逗号，在进行获取数据
+                permsCompanyIdArray = permsCompanyId.substring(0, permsCompanyId.length() - 1).split(",");
+                SysUserCompany sysUserCompany=null;
+                for(String id:permsCompanyIdArray){
+                    sysUserCompany=new SysUserCompany();
+                    sysUserCompany.setCompanyId(Long.valueOf(id));
+                    sysUserCompany.setUserId(userId);
+                    sysUserCompanyBusinessService.saveSysUserCompany(sysUserCompany);
+                }
                 return R.ok(200,"更新成功！");
             }else{
                 return R.error(500,"更新失败，请联系管理员！");

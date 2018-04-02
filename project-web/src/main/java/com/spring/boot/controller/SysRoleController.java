@@ -46,11 +46,12 @@ public class SysRoleController {
      * @return
      */
     @RequestMapping(value = "/addSysRole", method = RequestMethod.GET)
-    public R addSysRole(String roleName, String remark) {
+    public R addSysRole(@RequestParam(value = "roleName", required = false)String roleName,@RequestParam(value = "moduleId", required = false) String moduleId
+            ,@RequestParam(value = "remark", required = false)String remark) {
         if(UtilHelper.isEmpty(roleName)){
             return R.error(400, "角色名称不能为空，请联系系统管理员！");
         }
-        Map<String, Object> map= sysRoleService.addSysRole(roleName, remark);
+        Map<String, Object> map= sysRoleService.addSysRole(roleName,moduleId, remark);
         return R.ok(map);
 
     }

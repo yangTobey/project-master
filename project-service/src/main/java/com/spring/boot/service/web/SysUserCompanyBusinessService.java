@@ -18,4 +18,18 @@ public interface SysUserCompanyBusinessService {
      */
     List<SysUserCompany>  sysUserCompany(Long userId);
 
+    /**
+     * 新增信息
+     * @param sysUserCompany
+     * @return
+     */
+    int saveSysUserCompany(SysUserCompany sysUserCompany);
+    /**
+     * 根据id删除信息
+     *
+     * @param userId
+     * @return
+     */
+    int deleteSysUserCompany(Long userId);
+
 }

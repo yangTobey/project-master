@@ -11,5 +11,13 @@
 			LEFT JOIN sys_company AS company ON userCompany.company_id = company.company_id
 			WHERE userCompany.user_id = #{userId}
 	</select>
+	<insert id="saveSysUserCompany" parameterType="com.spring.boot.bean.master.SysUserCompany" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO sys_user_company (user_id, company_id)
+		VALUES   (#{userId},#{companyId})
+	</insert>
+	<!--根据品质id删除文档附件信息（用于更新时操作）-->
+	<delete id="deleteSysUserCompany" >
+		DELETE FROM sys_user_company WHERE user_id = #{userId}
+	</delete>
 
 </mapper>

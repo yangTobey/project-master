@@ -22,5 +22,7 @@ public class Test {
         System.out.println(bigd);
         System.out.println(bigd.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue()*100);
         System.out.println(System.currentTimeMillis());
+        String aa="2.3111";
+        System.out.println(Double.valueOf(aa));
     }
 }

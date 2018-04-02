@@ -49,7 +49,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public Map<String, Object> addSysRole(String roleName, String remark) {
+    public Map<String, Object> addSysRole(String roleName,String moduleId, String remark) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("roleName", roleName);
         map.put("remark", remark);
@@ -61,6 +61,9 @@ public class SysRoleServiceImpl implements SysRoleService {
         try {
             int count=sysRoleBusinessService.addSysRole(sysRole);
             if(count>0){
+                String[] moduleIdArray;
+                //去掉最后那个逗号，在进行获取数据
+                moduleIdArray = moduleId.substring(0, moduleId.length() - 1).split(",");
                 return R.ok(200,"新增成功！");
             }else{
                 return R.error(500,"新增失败，请联系管理员！");

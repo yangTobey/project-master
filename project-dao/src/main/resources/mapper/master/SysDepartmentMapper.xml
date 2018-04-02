@@ -36,7 +36,7 @@
 	</insert>
 	<!-- 删除部门信息，只更新部门状态 -->
 	<update id="delete" parameterType="map">
-		update sys_department set status_code =2
+		update sys_department set status_code =3
 		where department_id = #{departmentId}
 	</update>
 

@@ -89,29 +89,29 @@
             and quality.company_id=#{companyId}
         </if>
         and quality.year = #{year}
-        and quality.month = #{month}
-        and quality.status_code!=2
-    </select>
-    <select id="getSysQualityManageListTotal" resultType="int"  parameterType="map">
-        select count(quality_id)
-        from sys_quality_manage
-        where 1=1
-        <if test="companyId != 0">
-            and company_id=#{companyId}
-        </if>
-        and year = #{year}
-        and status_code!=2
-    </select>
-    <update id="updateSysQualityManage" parameterType="map">
-		update sys_quality_manage set company_id = #{companyId},year = #{year},month = #{month},quality_check = #{qualityCheck},quality_check_pass = #{qualityCheckPass}
-		,quality_check_fail = #{qualityCheckFail},security_event = #{securityEvent},quality_check_unmodified = #{qualityCheckUnmodified},create_time = #{createTime}
-		where quality_id = #{qualityId}
-	</update>
-    <insert id="addSysQualityManage" parameterType="com.spring.boot.bean.master.SysQualityManage" useGeneratedKeys="true" keyProperty="qualityId">
-		INSERT INTO sys_quality_manage (company_id, year, month, quality_check,quality_check_pass,quality_check_fail,security_event,quality_check_unmodified,create_time)
-              VALUES   (#{companyId},#{year},#{month},#{qualityCheck},#{qualityCheckPass},#{qualityCheckFail},#{securityEvent},#{qualityCheckUnmodified},#{createTime})
-	</insert>
-    <!--添加附件文档-->
+    <!-- /*and quality.month = #{month}*/-->
+     and quality.status_code!=2
+ </select>
+ <select id="getSysQualityManageListTotal" resultType="int"  parameterType="map">
+     select count(quality_id)
+     from sys_quality_manage
+     where 1=1
+     <if test="companyId != 0">
+         and company_id=#{companyId}
+     </if>
+     and year = #{year}
+     and status_code!=2
+ </select>
+ <update id="updateSysQualityManage" parameterType="map">
+     update sys_quality_manage set company_id = #{companyId},year = #{year},month = #{month},quality_check = #{qualityCheck},quality_check_pass = #{qualityCheckPass}
+     ,quality_check_fail = #{qualityCheckFail},security_event = #{securityEvent},quality_check_unmodified = #{qualityCheckUnmodified},create_time = #{createTime}
+     where quality_id = #{qualityId}
+ </update>
+ <insert id="addSysQualityManage" parameterType="com.spring.boot.bean.master.SysQualityManage" useGeneratedKeys="true" keyProperty="qualityId">
+     INSERT INTO sys_quality_manage (company_id, year, month, quality_check,quality_check_pass,quality_check_fail,security_event,quality_check_unmodified,create_time)
+           VALUES   (#{companyId},#{year},#{month},#{qualityCheck},#{qualityCheckPass},#{qualityCheckFail},#{securityEvent},#{qualityCheckUnmodified},#{createTime})
+ </insert>
+ <!--添加附件文档-->
     <insert id="addSysQualityManageFile" parameterType="com.spring.boot.bean.master.SysQualityManageFile" useGeneratedKeys="true" keyProperty="fileId">
         INSERT INTO sys_quality_manage_file (quality_id, file_name, file_url, file_size,upload_time)
         VALUES   (#{qualityId},#{fileName},#{fileUrl},#{fileSize},#{uploadTime})

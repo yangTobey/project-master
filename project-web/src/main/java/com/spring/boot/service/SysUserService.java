@@ -60,7 +60,7 @@ public interface SysUserService {
      * @param departmentId 部门id
      * @return
      */
-    Map<String, Object> addUser(String userAccount, String password, Long companyId, Long roleId, Long departmentId);
+    Map<String, Object> addUser(String userAccount, String password, Long companyId, Long roleId, Long departmentId,String userName,String permsCompanyId);
 
     /**
      * 更新用户信息
@@ -71,7 +71,7 @@ public interface SysUserService {
      * @param departmentId 部门id
      * @return
      */
-    Map<String, Object> updateUserInfo(Long userId, Long companyId, Long roleId, Long departmentId);
+    Map<String, Object> updateUserInfo(Long userId, Long companyId, Long roleId, Long departmentId,String userName,String permsCompanyId);
 
     /**
      * 删除用户信息（只更新用户账号状态，不作删除处理）

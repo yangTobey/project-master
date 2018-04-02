@@ -68,12 +68,12 @@
 		where user_id = #{userId}
 	</update>
 	<insert id="addUser" parameterType="com.spring.boot.bean.master.SysUser" useGeneratedKeys="true" keyProperty="userId">
-		INSERT INTO sys_user (user_account, user_password, company_id,department_id)
-		VALUES   (#{account},#{password},#{companyId},#{departmentId})
+		INSERT INTO sys_user (user_account, user_password, company_id,department_id,user_name)
+		VALUES   (#{account},#{password},#{companyId},#{departmentId},#{userName})
 	</insert>
 
 	<update id="updateUserInfo" parameterType="map">
-		update sys_user set company_id = #{companyId},department_id = #{departmentId}
+		update sys_user set company_id = #{companyId},department_id = #{departmentId},user_name = #{userName}
 		where user_id = #{userId}
 	</update>
 	<update id="deleteUser" parameterType="map">

@@ -22,7 +22,7 @@ public interface SysRoleService {
      * @param remark     备注信息
      * @return
      */
-    Map<String, Object> addSysRole(String roleName, String remark);
+    Map<String, Object> addSysRole(String roleName,String moduleId, String remark);
 
     /**
      * 更新角色信息
