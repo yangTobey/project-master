@@ -20,7 +20,7 @@
 (function(){
     $.ajax({
         async: true,
-        url:  'http://192.168.130.41:8080/login/login',
+        url:  'http://localhost:8080/login/login',
         type: 'GET',
         data: {
             userName: 'zhang',
@@ -28,20 +28,18 @@
         },
         dataType: 'json',
         success: function (data) {
-            alert(data);
-            alert(11);
             $.ajax({
                 async: true,
-                url:  'http://192.168.130.41:8080/sysBasicData/sysBasicDataAnalysisData',
+                url: 'http://localhost:8080/sysUser/sysUserInfo',
                 type: 'GET',
                 data: {
-                    companyId: '1',
+                    id: '1',
                     year: '321',
                     month:'10'
                 },
                 dataType: 'json',
                 success: function (data) {
-                    alert(data);
+                    console.log(data);
                 },
                 error: function (data) {
                     console.log(data);
@@ -49,9 +47,10 @@
                 }
             });
         },
-        error: function (data) {
-            alert(11);
-            alert("网络异常！");
+        error: function (v1, v2, v3) {
+            console.log(v1);
+            console.log(v2);
+            console.log(v3);
         }
     });
 

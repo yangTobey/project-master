@@ -70,7 +70,10 @@ public class ShiroConfiguration {
     @Bean(name = "ehCacheManager")
     @DependsOn("lifecycleBeanPostProcessor")
     public EhCacheManager ehCacheManager() {
-        return new EhCacheManager();
+        EhCacheManager em = new EhCacheManager();
+        //配置shiro缓存
+        em.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
+        return em;
     }
 
     /**
@@ -93,11 +96,11 @@ public class ShiroConfiguration {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
 
-        Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
+       /* Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
         LogoutFilter logoutFilter = new LogoutFilter();
         logoutFilter.setRedirectUrl("/views/login/login");
         filters.put("logout", null);
-        shiroFilterFactoryBean.setFilters(filters);
+        shiroFilterFactoryBean.setFilters(filters);*/
 
         /*定义shiro过滤链  Map结构
          * Map中key(xml中是指value值)的第一个'/'代表的路径是相对于HttpServletRequest.getContextPath()的值来的
@@ -127,6 +130,7 @@ public class ShiroConfiguration {
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         //shiroFilterFactoryBean.setLoginUrl("/views/login/login");
         shiroFilterFactoryBean.setSuccessUrl("/views/main/index");
+        //用户访问未对其授权的资源时,所显示的连接
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         return shiroFilterFactoryBean;
     }

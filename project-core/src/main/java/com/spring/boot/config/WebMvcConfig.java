@@ -18,6 +18,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
 
     public static String LOGIN_USER = "loginUser";
+
+    /**
+     * 系统启动后访问首页设置
+     * @param registry
+     */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("views/main/index");
@@ -43,6 +48,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("*//**").allowedOrigins("*")
                 .allowedMethods("GET", "HEAD", "POST","PUT", "DELETE", "OPTIONS")
+                .allowCredentials(false).maxAge(3600);
+    }*/
+    /*@Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("*//**")
+                .allowedOrigins("http://192.168.130.41")
+                .allowedMethods("GET", "POST")
                 .allowCredentials(false).maxAge(3600);
     }*/
 }

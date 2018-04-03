@@ -16,13 +16,16 @@ public interface SysUserCompanyDao {
      *
      * @return
      */
-    List<SysUserCompany>  sysUserCompany(Long userId);
+    List<SysUserCompany> sysUserCompany(Long userId);
+
     /**
      * 新增信息
+     *
      * @param sysUserCompany
      * @return
      */
     int saveSysUserCompany(SysUserCompany sysUserCompany);
+
     /**
      * 根据id删除信息
      *
@@ -30,11 +33,12 @@ public interface SysUserCompanyDao {
      * @return
      */
     int deleteSysUserCompany(Long userId);
+
     /**
      * 根据用户id和公司id，获取用户权限下公司信息
      *
      * @return
      */
-    SysUserCompany  sysUserCompanyAuthority(@Param("userId")Long userId,@Param("companyId")Long companyId);
+    SysUserCompany sysUserCompanyAuthority(@Param("userId") Long userId, @Param("companyId") Long companyId);
 
 }

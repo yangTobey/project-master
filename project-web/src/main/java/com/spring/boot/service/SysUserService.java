@@ -10,9 +10,11 @@ import java.util.Map;
 public interface SysUserService {
     /**
      * 查找系统用户列表
+     *
      * @return
      */
     Map<String, Object> sysUserList(Integer limit, Integer offset);
+
     /**
      * 根据用户id查找用户信息
      *
@@ -20,6 +22,7 @@ public interface SysUserService {
      * @return
      */
     SysUser findByUserId(String userId);
+
     /**
      * 获取登录用户的个人信息
      *
@@ -43,6 +46,7 @@ public interface SysUserService {
      * @return
      */
     Map<String, Object> updatePassword(Long userId, String password, String newPassword);
+
     /***
      * 重置密码
      * @param userId
@@ -60,7 +64,7 @@ public interface SysUserService {
      * @param departmentId 部门id
      * @return
      */
-    Map<String, Object> addUser(String userAccount, String password, Long companyId, Long roleId, Long departmentId,String userName,String permsCompanyId);
+    Map<String, Object> addUser(String userAccount, String password, Long companyId, Long roleId, Long departmentId, String userName, String permsCompanyId);
 
     /**
      * 更新用户信息
@@ -71,7 +75,7 @@ public interface SysUserService {
      * @param departmentId 部门id
      * @return
      */
-    Map<String, Object> updateUserInfo(Long userId, Long companyId, Long roleId, Long departmentId,String userName,String permsCompanyId);
+    Map<String, Object> updateUserInfo(Long userId, Long companyId, Long roleId, Long departmentId, String userName, String permsCompanyId);
 
     /**
      * 删除用户信息（只更新用户账号状态，不作删除处理）
@@ -79,17 +83,19 @@ public interface SysUserService {
      * @param userId 用户id
      * @return
      */
-    Map<String, Object>  deleteUser(String userId,String type);
+    Map<String, Object> deleteUser(String userId, String type);
+
     /**
      * 获取用户权限下可以操作的公司
      *
      * @return
      */
-    Map<String, Object>  sysUserCompany();
+    Map<String, Object> sysUserCompany();
+
     /**
      * 获取全部公司中，哪些已有权限和没有权限的具体信息
      *
      * @return
      */
-    Map<String, Object>  sysUserCompanyAuthority();
+    Map<String, Object> sysUserCompanyAuthority();
 }

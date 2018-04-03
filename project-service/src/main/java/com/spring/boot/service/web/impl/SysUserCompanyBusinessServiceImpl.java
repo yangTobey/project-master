@@ -37,7 +37,7 @@ public class SysUserCompanyBusinessServiceImpl implements SysUserCompanyBusiness
     }
 
     @Override
-    public SysUserCompany sysUserCompanyAuthority(Long userId,Long companyId) {
-        return sysUserCompanyDao.sysUserCompanyAuthority(userId,companyId);
+    public SysUserCompany sysUserCompanyAuthority(Long userId, Long companyId) {
+        return sysUserCompanyDao.sysUserCompanyAuthority(userId, companyId);
     }
 }

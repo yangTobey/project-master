@@ -38,6 +38,7 @@ public class SysUserController {
      */
     @RequestMapping(value = "/sysUserInfo", method = RequestMethod.GET)
     public R sysUserInfo(@RequestParam(value = "id", required = false) String id) {
+        System.out.println(id);
         Map<String, Object> map = sysUserService.sysUserInfo();
         return R.ok(map);
     }
@@ -79,20 +80,20 @@ public class SysUserController {
     /**
      * 添加用户
      *
-     * @param userAccount  账号
-     * @param password     密码
-     * @param companyId    公司id
-     * @param roleId       角色id
-     * @param departmentId 部门id
+     * @param account    账号
+     * @param password       密码
+     * @param companyId      公司id
+     * @param roleId         角色id
+     * @param departmentId   部门id
      * @param permsCompanyId 权限公司id
      * @return
      */
     @RequestMapping(value = "/addSysUser", method = RequestMethod.GET)
-    public R addUser(@RequestParam(value = "userAccount", required = false) String userAccount, @RequestParam(value = "password", required = false) String password
+    public R addUser(@RequestParam(value = "account", required = false) String account, @RequestParam(value = "password", required = false) String password
             , @RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "roleId", required = false) String roleId
             , @RequestParam(value = "departmentId", required = false) String departmentId, @RequestParam(value = "userName", required = false) String userName
             , @RequestParam(value = "permsCompanyId", required = false) String permsCompanyId) {
-        if (UtilHelper.isEmpty(userAccount)) {
+        if (UtilHelper.isEmpty(account)) {
             return R.error(400, "登录账号不能为空！");
         } else if (UtilHelper.isEmpty(password)) {
             return R.error(400, "登录密码不能为空！");
@@ -103,7 +104,7 @@ public class SysUserController {
         } else if (!UtilHelper.isNumer(departmentId)) {
             return R.error(400, "部门id格式不正确！");
         }
-        Map<String, Object> map = sysUserService.addUser(userAccount, password, Long.valueOf(companyId), Long.valueOf(roleId), Long.valueOf(departmentId),userName,permsCompanyId);
+        Map<String, Object> map = sysUserService.addUser(account, password, Long.valueOf(companyId), Long.valueOf(roleId), Long.valueOf(departmentId), userName, permsCompanyId);
         return R.ok(map);
 
     }
@@ -149,7 +150,7 @@ public class SysUserController {
         } else if (!UtilHelper.isNumer(departmentId)) {
             return R.error(400, "部门id格式不正确！");
         }
-        Map<String, Object> map = sysUserService.updateUserInfo(Long.valueOf(userId), Long.valueOf(companyId), Long.valueOf(roleId), Long.valueOf(departmentId),userName,permsCompanyId);
+        Map<String, Object> map = sysUserService.updateUserInfo(Long.valueOf(userId), Long.valueOf(companyId), Long.valueOf(roleId), Long.valueOf(departmentId), userName, permsCompanyId);
         return R.ok(map);
 
     }
@@ -185,6 +186,7 @@ public class SysUserController {
         return R.ok(map);
 
     }
+
     /**
      * 获取用户权限下可以操作的公司
      *
@@ -195,6 +197,7 @@ public class SysUserController {
         Map<String, Object> map = sysUserService.sysUserCompany();
         return R.ok(map);
     }
+
     /**
      * 获取全部公司中，哪些已有权限和没有权限的具体信息
      *

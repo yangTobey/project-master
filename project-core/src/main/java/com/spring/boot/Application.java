@@ -19,7 +19,6 @@ import org.springframework.web.filter.CorsFilter;
  */
 @SpringBootApplication  // Spring Boot 应用的标识
 @MapperScan("com.spring.boot.dao.*")  // mapper 接口类扫描包配置
-@ComponentScan
 @EnableTransactionManagement
 public class Application extends SpringBootServletInitializer {
 
@@ -45,7 +44,7 @@ public class Application extends SpringBootServletInitializer {
         // 3 设置访问源请求方法
         corsConfiguration.addAllowedMethod("*");
         //corsConfiguration.addExposedHeader("x-auth-token");
-        //corsConfiguration.addExposedHeader("x-total-count");
+        corsConfiguration.addExposedHeader("x-total-count");
         //corsConfiguration.addExposedHeader("*");
         return corsConfiguration;
     }
