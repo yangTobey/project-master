@@ -97,5 +97,5 @@ public interface SysUserService {
      *
      * @return
      */
-    Map<String, Object> sysUserCompanyAuthority();
+    Map<String, Object> sysUserCompanyAuthority(Long userId);
 }

@@ -27,4 +27,12 @@
 		DELETE FROM sys_user_company WHERE user_id = #{userId}
 	</delete>
 
+	<select id="sysUserCompanyInfo" resultType="Long">
+		select company_id from sys_user_company WHERE 1=1 and user_id = #{userId}
+	</select>
+
+	<!--<select id="sysUserCompanyInfo" resultType="com.spring.boot.bean.master.SysUserCompany">
+		select group_concat(company_id)as companyInfo from sys_user_company WHERE 1=1 and user_id = #{userId} group by user_id
+	</select>-->
+
 </mapper>

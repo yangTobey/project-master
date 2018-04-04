@@ -8,6 +8,7 @@ public class SysUserCompany {
     private Long userId;
     private Long CompanyId;
     private String companyName;
+    private String companyInfo;
 
 
     public Long getId() {
@@ -40,5 +41,13 @@ public class SysUserCompany {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getCompanyInfo() {
+        return companyInfo;
+    }
+
+    public void setCompanyInfo(String companyInfo) {
+        this.companyInfo = companyInfo;
     }
 }

@@ -1,12 +1,10 @@
 package com.spring.boot.shiro;
 
-import com.spring.boot.bean.master.SysMenu;
-import com.spring.boot.bean.master.SysMenuRole;
-import com.spring.boot.bean.master.SysUser;
-import com.spring.boot.bean.master.SysUserRole;
+import com.spring.boot.bean.master.*;
 import com.spring.boot.service.SysUserService;
 import com.spring.boot.service.web.SysMenuBusinessService;
 import com.spring.boot.service.web.SysMenuRoleService;
+import com.spring.boot.service.web.SysUserCompanyBusinessService;
 import com.spring.boot.service.web.SysUserRoleBusinessService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -40,6 +38,9 @@ public class ShiroRealm extends AuthorizingRealm {
     private SysMenuBusinessService sysMenuBusinessService;
     @Autowired
     private SysMenuRoleService menuRoleService;
+
+    @Autowired
+    private SysUserCompanyBusinessService sysUserCompanyBusinessService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
@@ -113,6 +114,11 @@ public class ShiroRealm extends AuthorizingRealm {
         if (user != null) {
             Session session = SecurityUtils.getSubject().getSession();
             session.setAttribute("user", user);
+            /************************获取登录用户权限下可以操作的公司列表公司id******************/
+            List<Long> sysUserCompanyIds=sysUserCompanyBusinessService.sysUserCompanyInfo(user.getUserId());
+            if(null!=sysUserCompanyIds){
+                session.setAttribute("sysUserCompany", sysUserCompanyIds);
+            }
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(username), getName());
             return info;
         } else {

@@ -172,17 +172,19 @@ public class SysUserController {
     }
 
     /**
-     * 停用用户
+     * 停用、启用用户
      *
      * @param userId
      * @return
      */
     @RequestMapping(value = "/closeSysUserAccount", method = RequestMethod.GET)
-    public R closeSysUserAccount(@RequestParam(value = "userId", required = false) String userId) {
+    public R closeSysUserAccount(@RequestParam(value = "userId", required = false) String userId,@RequestParam(value = "type", required = false) String type) {
         if (!UtilHelper.isNumer(userId)) {
             return R.error(400, "用户编号不能为空，请联系系统管理员！");
+        }else if (UtilHelper.isEmpty(type)) {
+            return R.error(400, "操作类型参数不能为空！");
         }
-        Map<String, Object> map = sysUserService.deleteUser(userId, "close");
+        Map<String, Object> map = sysUserService.deleteUser(userId, type);
         return R.ok(map);
 
     }
@@ -204,8 +206,11 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "/sysUserCompanyAuthority", method = RequestMethod.GET)
-    public R sysUserCompanyAuthority() {
-        Map<String, Object> map = sysUserService.sysUserCompanyAuthority();
+    public R sysUserCompanyAuthority(@RequestParam(value = "userId", required = false) String userId) {
+        if (!UtilHelper.isNumer(userId)) {
+            return R.error(400, "用户编号不能为空，请联系系统管理员！");
+        }
+        Map<String, Object> map = sysUserService.sysUserCompanyAuthority(Long.valueOf(userId));
         return R.ok(map);
     }
 }

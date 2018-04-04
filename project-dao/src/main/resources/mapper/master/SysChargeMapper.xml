@@ -12,13 +12,12 @@
         <result column="status_code" property="statusCode"/>
     </resultMap>
 
-
     <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
 
     <sql id="Base_Column_List">
 		charge_id, charge_money, charge_money_now, charge_debt,charge_debt_return,create_time,company_id,status_code
 	</sql>
-    <select id="queryList" resultMap="sysCompany" parameterType="map">
+    <select id="queryList" resultMap="sysChargeDetails" parameterType="map">
         select
         <include refid="Base_Column_List"/>
         from sys_company
@@ -27,19 +26,33 @@
             limit #{offset},#{limit}
         </if>
     </select>
+    <!--//也可以封装成map传值-->
+    <select id="sysChargeDetails" resultMap="sysChargeDetails" parameterType="map">
+        SELECT SUM(charge_money) AS charge_money,SUM(charge_money_now) AS charge_money_now,SUM(charge_debt) AS charge_debt,SUM(charge_debt_return) AS charge_debt_return from sys_charge_details where 1=1
+        <if test="list != null and list.size>0">
+            AND company_id IN
+            <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <select id="findSysChargeDetailsById" resultMap="sysChargeDetails" >
+        select
+        <include refid="Base_Column_List"/>
+        from sys_charge_details
+        where status_code!=2
+        and   charge_id = #{chargeId}
+    </select>
+    <!--更新信息-->
     <update id="update" parameterType="map">
-		update sys_charge_details set charge_money = #{chargeMoney},charge_money_now = #{chargeMoneyNow},charge_debt = #{chargeDebt},charge_debt_return = #{chargeDebtReturn}
-		,company_id = #{companyId}
-		where charge_id = #{chargeId}
+		update sys_charge_details set charge_money=#{chargeMoney},charge_money_now=#{chargeMoneyNow},charge_debt=#{chargeDebt},charge_debt_return=#{chargeDebtReturn},company_id=#{companyId}
+		where charge_id=#{chargeId}
 	</update>
+    <!--新增信息-->
     <insert id="addSysCharge" parameterType="com.spring.boot.bean.master.SysChargeDetails">
 		INSERT INTO sys_charge_details (charge_money, charge_money_now, charge_debt, charge_debt_return,company_id,create_time)
               VALUES   (#{chargeMoney},#{chargeMoneyNow},#{chargeDebt},#{chargeDebtReturn},#{companyId},#{createTime})
 	</insert>
-    <update id="delete" parameterType="map">
-		update sys_company set status_code = 2
-		where company_id = #{companyId}
-	</update>
 
 
 </mapper>

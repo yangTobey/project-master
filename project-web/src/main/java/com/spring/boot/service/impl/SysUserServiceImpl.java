@@ -255,9 +255,12 @@ public class SysUserServiceImpl implements SysUserService {
         if ("delete".equals(type)) {
             //status_code为3表示删除
             map.put("statusCode", 3);
-        } else {
+        } else if("close".equals(type)){
             //status_code为2表示停用
             map.put("statusCode", 2);
+        }else{
+            //status_code为2表示停用
+            map.put("statusCode", 1);
         }
         try {
             int count = sysUserBusinessService.deleteUser(map);
@@ -295,16 +298,16 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public Map<String, Object> sysUserCompanyAuthority() {
+    public Map<String, Object> sysUserCompanyAuthority(Long userId) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
-            if (ShiroUtils.getUserEntity() == null) {
+            /*if (ShiroUtils.getUserEntity() == null) {
                 return R.error(500, "请登录系统再进行操作功能！");
             }
             if (ShiroUtils.getUserEntity().getUserId() == null) {
                 return R.error(500, "请登录系统再进行操作功能！");
             }
-            Long userId = ShiroUtils.getUserEntity().getUserId();
+            Long userId = ShiroUtils.getUserEntity().getUserId();*/
             List<SysCompany> sysCompanyList = sysCompanyBusinessService.getAllSysCompany();
             if (null != sysCompanyList) {
                 for (SysCompany sysCompany : sysCompanyList) {

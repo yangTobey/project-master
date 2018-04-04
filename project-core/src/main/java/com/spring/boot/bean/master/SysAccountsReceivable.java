@@ -7,6 +7,7 @@ import java.sql.Timestamp;
  */
 public class SysAccountsReceivable {
     private Long accountsId;
+    private Long companyId;
     private Integer year;
     private Integer month;
     private Double receivableAccountsOwner;
@@ -212,5 +213,13 @@ public class SysAccountsReceivable {
 
     public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 }

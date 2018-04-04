@@ -40,5 +40,11 @@ public interface SysUserCompanyDao {
      * @return
      */
     SysUserCompany sysUserCompanyAuthority(@Param("userId") Long userId, @Param("companyId") Long companyId);
+    /**
+     * 根据用户id，获取用户权限下公司信息
+     *
+     * @return
+     */
+    List<Long>  sysUserCompanyInfo(Long userId);
 
 }

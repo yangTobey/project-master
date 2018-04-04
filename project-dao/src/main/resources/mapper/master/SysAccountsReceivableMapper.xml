@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.web.master.SysAccountsReceivableDao">
+    <resultMap id="sysAccountsReceivable" type="com.spring.boot.bean.master.SysAccountsReceivable">
+        <result column="accounts_id" property="accountsId"/>
+        <result column="company_id" property="companyId"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="receivable_accounts_owner" property="receivableAccountsOwner"/>
+        <result column="complete_accounts_owner" property="completeAccountsOwner"/>
+        <result column="complete_coupon" property="complete_coupon"/>
+        <result column="receivable_coupon" property="receivableCoupon"/>
+        <result column="complete_vacancy" property="completeVacancy"/>
+        <result column="receivable_vacancy" property="receivableVacancy"/>
+        <result column="complete_subsidy" property="completeSubsidy"/>
+        <result column="receivable_subsidy" property="receivableSubsidy"/>
+        <result column="complete_sales" property="completeSales"/>
+        <result column="receivable_sales" property="receivableSales"/>
+        <result column="receivable_open" property="receivableOpen"/>
+        <result column="complete_open" property="completeOpen"/>
+        <result column="complete_property_subsidy" property="completePropertySubsidy"/>
+        <result column="receivable_property_subsidy" property="receivablePropertySubsidy"/>
+        <result column="complete_house_other" property="completeHouseOther"/>
+        <result column="receivable_house_other" property="receivableHouseOther"/>
+        <result column="complete_house" property="completeHouse"/>
+        <result column="receivable_house" property="receivableHouse"/>
+        <result column="create_time" property="createTime"/>
+        <result column="status_code" property="statusCode"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		company_id, company_name, company_code, parent_id,company_phone,company_address,status_code
+	</sql>
+    <select id="queryList" resultMap="sysAccountsReceivable" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_company
+        where status_code!=2
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+    <select id="getSysCompanyListTotal" resultType="int"  parameterType="map">
+        select count(company_id)
+        from sys_company
+        where status_code!=2
+    </select>
+    <update id="updateSysAccountsReceivable" parameterType="com.spring.boot.bean.master.SysAccountsReceivable">
+		update sys_company set year = #{year},month = #{month},receivable_accounts_owner = #{receivableAccountsOwner},complete_accounts_owner = #{completeAccountsOwner},complete_coupon = #{completeCoupon},receivable_coupon = #{receivableCoupon}
+		,complete_vacancy = #{completeVacancy},receivable_vacancy = #{receivableVacancy},complete_subsidy = #{completeSubsidy},receivable_subsidy = #{receivableSubsidy},complete_sales = #{completeSales}
+		,receivable_sales = #{receivableSales},receivable_open = #{receivableOpen},complete_open = #{completeOpen},complete_property_subsidy = #{completePropertySubsidy},receivable_property_subsidy = #{receivablePropertySubsidy}
+		,complete_house_other = #{completeHouseOther},receivable_house_other = #{receivableHouseOther},complete_house = #{completeHouse},receivable_house = #{receivableHouse},company_id = #{companyId}
+		where accounts_id = #{accountsId}
+	</update>
+    <insert id="addSysAccountsReceivable" parameterType="com.spring.boot.bean.master.SysAccountsReceivable">
+		INSERT INTO sys_accounts_receivable (year, month, receivable_accounts_owner, complete_accounts_owner,complete_coupon,receivable_coupon,complete_vacancy,receivable_vacancy,complete_subsidy,receivable_subsidy
+		,complete_sales,receivable_sales,receivable_open,complete_open,complete_property_subsidy,receivable_property_subsidy,complete_house_other,receivable_house_other,complete_house,receivable_house,company_id)
+              VALUES   (#{year},#{month},#{receivableAccountsOwner},#{completeAccountsOwner},#{completeCoupon},#{receivableCoupon},#{completeVacancy},#{receivableVacancy},#{completeSubsidy},#{receivableSubsidy}
+              ,#{completeSales},#{receivableSales},#{receivableOpen},#{completeOpen},#{completePropertySubsidy},#{receivablePropertySubsidy},#{completeHouseOther},#{receivableHouseOther},#{completeHouse}
+              ,#{receivableHouse},#{companyId})
+	</insert>
+    <update id="delete" parameterType="map">
+		update sys_company set status_code = 2
+		where company_id = #{companyId}
+	</update>
+    <!--根据公司id查找公司信息-->
+    <select id="findSysCompanyByCompanyId" resultMap="sysAccountsReceivable" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_company
+        where 1=1 and company_id = #{companyId} and status_code!=2
+    </select>
+
+</mapper>

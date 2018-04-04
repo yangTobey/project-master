@@ -15,6 +15,10 @@ public class SysChargeDetails {
     private Timestamp createTime;
     private Long companyId;
     private Integer statusCode;
+    //当期收缴率
+    private Double chargeMoneyScale;
+    //清欠收缴率
+    private Double chargeDebtScale;
 
     public Long getChargeId() {
         return chargeId;
@@ -78,5 +82,21 @@ public class SysChargeDetails {
 
     public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public Double getChargeMoneyScale() {
+        return chargeMoneyScale;
+    }
+
+    public void setChargeMoneyScale(Double chargeMoneyScale) {
+        this.chargeMoneyScale = chargeMoneyScale;
+    }
+
+    public Double getChargeDebtScale() {
+        return chargeDebtScale;
+    }
+
+    public void setChargeDebtScale(Double chargeDebtScale) {
+        this.chargeDebtScale = chargeDebtScale;
     }
 }

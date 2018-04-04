@@ -38,4 +38,11 @@ public interface SysUserCompanyBusinessService {
      */
     SysUserCompany  sysUserCompanyAuthority(Long userId,Long companyId);
 
+    /**
+     * 根据用户id，获取用户权限下公司信息
+     *
+     * @return
+     */
+    List<Long>  sysUserCompanyInfo(Long userId);
+
 }
