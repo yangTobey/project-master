@@ -13,6 +13,11 @@ public interface SysDepartmentService {
      */
     Map<String,Object> getSysDepartmentInfo(Integer limit,Integer offset);
     /**
+     * 获取系统全部部门
+     * @return
+     */
+    Map<String,Object> getAllSysDepartment();
+    /**
      * 添加部门
      * @param departmentName
      * @param companyId

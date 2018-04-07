@@ -39,4 +39,10 @@ public interface SysRoleDao extends BaseDao<SysRole>{
      * @return
      *//*
     int deleteSysRole(Map<String, Object> map);*/
+    /**
+     * 获取角色列表数据条数
+     *
+     * @return
+     */
+    int getSysRoleListTotal();
 }

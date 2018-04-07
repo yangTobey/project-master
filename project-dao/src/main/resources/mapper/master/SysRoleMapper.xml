@@ -29,6 +29,14 @@
 		<include refid="Base_Column_List" />
 		from sys_role
 		where `status`!=2
+		<if test="offset != null and limit != null">
+			limit #{offset},#{limit}
+		</if>
+	</select>
+	<select id="getSysRoleListTotal" resultType="int"  parameterType="map">
+		select count(role_id)
+		from sys_role
+		where status_code!=2
 	</select>
 	<update id="updatePassword" parameterType="map">
 		update sys_role set `user_password` = #{newPassword}

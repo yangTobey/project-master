@@ -13,7 +13,12 @@ public interface SysRoleService {
      * 获取角色列表数据
      * @return
      */
-    Map<String,Object> getSysRoleList();
+    Map<String,Object> getSysRoleList(Integer limit,Integer offset);
+    /**
+     * 获取系统全部角色数据
+     * @return
+     */
+    Map<String,Object> getAllSysRole();
 
     /**
      * 新增角色信息

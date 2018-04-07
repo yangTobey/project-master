@@ -49,6 +49,22 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
     }
 
     @Override
+    public Map<String, Object> getAllSysDepartment() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("limit",null);
+        map.put("offset",null);
+        try {
+            resultMap.put("list", sysDepartmentBusinessService.getSysDepartmentInfo(map));
+            return R.ok().putData(200,resultMap,"获取成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取部门信息失败！"+e.getMessage());
+            return R.error(500,"服务器异常，请联系管理员！");
+        }
+    }
+
+    @Override
     public Map<String, Object> addSysDepartment(String departmentName, Long companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         //公司编码（服务识别号）

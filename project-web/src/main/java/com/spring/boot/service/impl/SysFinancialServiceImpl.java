@@ -119,6 +119,35 @@ public class SysFinancialServiceImpl implements SysFinancialService {
     }
 
     @Override
+    public Map<String, Object> sysAccountsReceivableAnalysis(Long companyId) {
+        List<Long> sysUserCompanyIds = null;
+        try {
+            if (companyId == 0) {
+                //获取用户权限下可操作的小区信息
+                sysUserCompanyIds = SysUtil.getSysUserCompany();
+            } else {
+                sysUserCompanyIds = new ArrayList<Long>();
+                sysUserCompanyIds.add(companyId);
+            }
+            //也可以封装成map传值
+            SysChargeDetails sysChargeDetails = sysChargeBusinessService.sysChargeDetails(sysUserCompanyIds);
+            if (null != sysChargeDetails) {
+                if (null != sysChargeDetails.getChargeMoneyNow() && null != sysChargeDetails.getChargeMoney()) {
+                    sysChargeDetails.setChargeMoneyScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysChargeDetails.getChargeMoneyNow(), sysChargeDetails.getChargeMoney())));
+                }
+                if (null != sysChargeDetails.getChargeDebtReturn() && null != sysChargeDetails.getChargeDebt()) {
+                    sysChargeDetails.setChargeDebtScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysChargeDetails.getChargeDebtReturn(), sysChargeDetails.getChargeDebt())));
+                }
+            }
+            return R.ok().putData(200, sysChargeDetails, "获取成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("收费情况报表统计详细信息失败！" + e.getMessage());
+            return R.error(500, "服务器异常，请联系管理员！");
+        }
+    }
+
+    @Override
     public Map<String, Object> addSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
         try {
             int count = sysAccountsReceivableBusinessService.addSysAccountsReceivable(sysAccountsReceivable);
@@ -137,7 +166,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
     @Override
     public Map<String, Object> updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
         try {
-            int count = sysAccountsReceivableBusinessService.addSysAccountsReceivable(sysAccountsReceivable);
+            int count = sysAccountsReceivableBusinessService.updateSysAccountsReceivable(sysAccountsReceivable);
             if (count > 0) {
                 return R.ok(200, "更新成功！");
             } else {

@@ -40,6 +40,18 @@
             limit #{offset},#{limit}
         </if>
     </select>
+    <!--//也可以封装成map传值-->
+    <select id="sysAccountsReceivableAnalysis" resultMap="sysAccountsReceivable" parameterType="map">
+        SELECT SUM(receivable_accounts_owner) AS receivable_accounts_owner,SUM(complete_accounts_owner) AS complete_accounts_owner,SUM(complete_house) AS complete_house
+        ,SUM(receivable_house) AS receivable_house
+        from sys_accounts_receivable where 1=1
+        <if test="list != null and list.size>0">
+            AND company_id IN
+            <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
     <select id="getSysCompanyListTotal" resultType="int"  parameterType="map">
         select count(company_id)
         from sys_company

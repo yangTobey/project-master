@@ -43,6 +43,17 @@ public class SysContractController {
 
         return R.ok(map);
     }
+    /**
+     * 获取系统全部合同类型
+     * @return
+     */
+    @RequestMapping(value = "/sysAllContractType", method = RequestMethod.GET)
+    @ResponseBody
+    public R sysAllContractType(){
+        Map<String, Object> map=sysContractService.sysAllContractType();
+
+        return R.ok(map);
+    }
 
     /**
      * 添加合同分类

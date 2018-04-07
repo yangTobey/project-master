@@ -25,8 +25,13 @@ public class SysRoleBusinessServiceImpl implements SysRoleBusinessService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public List<SysRole> getSysRoleList() {
-        return sysRoleDao.queryList();
+    public List<SysRole> getSysRoleList(Map<String, Object> map) {
+        return sysRoleDao.queryList(map);
+    }
+
+    @Override
+    public int getSysRoleListTotal() {
+        return sysRoleDao.getSysRoleListTotal();
     }
 
     @Override

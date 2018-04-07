@@ -145,7 +145,7 @@ public class SysFinancialController {
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不正确！");
         }
-        Map<String, Object> map = sysFinancialService.sysChargeDetails(Long.valueOf(companyId));
+        Map<String, Object> map = sysFinancialService.sysAccountsReceivableAnalysis(Long.valueOf(companyId));
         return R.ok(map);
     }
     /**

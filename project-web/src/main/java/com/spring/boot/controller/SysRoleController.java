@@ -33,8 +33,19 @@ public class SysRoleController {
     }
 
     @RequestMapping(value = "/getSysRoleList", method = RequestMethod.GET)
-    public R getSysRoleList() {
-        Map<String, Object> map=sysRoleService.getSysRoleList();
+    public R getSysRoleList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
+        if (!UtilHelper.isNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字！");
+        } else if (!UtilHelper.isNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字！");
+        }
+        Map<String, Object> map=sysRoleService.getSysRoleList(Integer.valueOf(limit), Integer.valueOf(offset));
+        return R.ok(map);
+
+    }
+    @RequestMapping(value = "/getAllSysRole", method = RequestMethod.GET)
+    public R getAllSysRole() {
+        Map<String, Object> map=sysRoleService.getAllSysRole();
         return R.ok(map);
 
     }

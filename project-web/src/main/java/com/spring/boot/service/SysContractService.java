@@ -17,6 +17,11 @@ public interface SysContractService {
      */
     Map<String, Object> sysContractTypeList(Integer limit, Integer offset);
     /**
+     * 获取系统全部合同类型
+     * @return
+     */
+    Map<String, Object> sysAllContractType();
+    /**
      * 添加合同分类
      * @param contractTypeName
      * @return

@@ -56,6 +56,23 @@ public class SysContractServiceImpl implements SysContractService {
     }
 
     @Override
+    public Map<String, Object> sysAllContractType() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        map.put("limit", null);
+        map.put("offset", null);
+        try {
+            List<SysContractType> list = sysContractBusinessService.sysContractTypeList(map);
+            resultMap.put("list", list);
+            return R.ok().putData(200, resultMap, "获取成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("获取合同分类列表失败：" + e.getMessage());
+            return R.error(500, "获取合同分类列表失败,服务器异常，请联系管理员！");
+        }
+    }
+
+    @Override
     public Map<String, Object> addSysContractType(String contractTypeName) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();

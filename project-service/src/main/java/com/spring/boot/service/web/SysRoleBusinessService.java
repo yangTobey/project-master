@@ -15,7 +15,13 @@ public interface SysRoleBusinessService {
      * 获取角色列表数据
      * @return
      */
-    List<SysRole> getSysRoleList();
+    List<SysRole> getSysRoleList(Map<String, Object> map);
+    /**
+     * 获取角色列表数据条数
+     *
+     * @return
+     */
+    int getSysRoleListTotal();
     /**
      * 新增角色信息
      *

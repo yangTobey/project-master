@@ -34,12 +34,30 @@ public class SysRoleServiceImpl implements SysRoleService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public Map<String, Object> getSysRoleList() {
+    public Map<String, Object> getSysRoleList(Integer limit,Integer offset) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
+        map.put("limit", limit);
+        map.put("offset", offset);
         try {
-            resultMap.put("total",sysRoleBusinessService.getSysRoleList().size());
-            resultMap.put("list",sysRoleBusinessService.getSysRoleList());
+            resultMap.put("total",sysRoleBusinessService.getSysRoleListTotal());
+            resultMap.put("list",sysRoleBusinessService.getSysRoleList(map));
+            return R.ok().putData(200,resultMap,"获取成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取部门信息失败！"+e.getMessage());
+            return R.error(500,"服务器异常，请联系管理员！");
+        }
+    }
+
+    @Override
+    public Map<String, Object> getAllSysRole() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        map.put("limit", null);
+        map.put("offset", null);
+        try {
+            resultMap.put("list",sysRoleBusinessService.getSysRoleList(map));
             return R.ok().putData(200,resultMap,"获取成功！");
         }catch (Exception e){
             e.printStackTrace();

@@ -34,7 +34,12 @@ public interface SysFinancialService {
      * @return
      */
     Map<String, Object> updateSysCharge(Long chargeId,Long companyId, Double chargeMoney, Double chargeMoneyNow, Double chargeDebt, Double chargeDebtReturn);
-
+    /**
+     * 月度应收账款报表统计详细信息
+     *
+     * @return
+     */
+    Map<String, Object> sysAccountsReceivableAnalysis(Long companyId);
     /**
      * 新增月度应收账款报表统计详细信息
      *

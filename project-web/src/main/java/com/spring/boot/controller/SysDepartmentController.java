@@ -40,6 +40,16 @@ public class SysDepartmentController {
         Map<String, Object> map=sysDepartmentService.getSysDepartmentInfo(Integer.valueOf(limit),Integer.valueOf(offset));
         return R.ok(map);
     }
+    /**
+     * 获取系统全部部门
+     * @return
+     */
+    @RequestMapping(value = "/getAllSysDepartment", method = RequestMethod.GET)
+    @ResponseBody
+    public R getAllSysDepartment(){
+        Map<String, Object> map=sysDepartmentService.getAllSysDepartment();
+        return R.ok(map);
+    }
 
     /**
      * 添加部门
