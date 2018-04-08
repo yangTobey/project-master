@@ -172,7 +172,7 @@ public class SysQualityManageController {
     @RequestMapping(value = "/findSysQualityManageById", method = RequestMethod.GET)
     public R findSysQualityManageById(@RequestParam(value = "qualityId", required = false) String qualityId) {
         if (!UtilHelper.isNumer(qualityId)) {
-            return R.error(400, "公司编号格式不正确，请联系系统管理员！");
+            return R.error(400, "主键ID格式不正确，请联系系统管理员！");
         }
         Map<String, Object> map = sysQualityManageService.findSysQualityManageById(Long.valueOf(qualityId));
         return R.ok(map);
@@ -186,7 +186,7 @@ public class SysQualityManageController {
     @RequestMapping(value = "/findSysQualityManageFileById", method = RequestMethod.GET)
     public R findSysQualityManageFileById(@RequestParam(value = "qualityId", required = false) String qualityId) {
         if (!UtilHelper.isNumer(qualityId)) {
-            return R.error(400, "公司编号格式不正确，请联系系统管理员！");
+            return R.error(400, "主键ID格式不正确，请联系系统管理员！");
         }
         Map<String, Object> map = sysQualityManageService.findSysQualityManageFileById(Long.valueOf(qualityId));
         return R.ok(map);

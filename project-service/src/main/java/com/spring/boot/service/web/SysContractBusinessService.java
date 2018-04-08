@@ -96,6 +96,11 @@ public interface SysContractBusinessService {
      */
     List<SysContract> sysContractAnalysisData(Long companyId);
     /**
+     * 根据id获取附件文档信息
+     * @return
+     */
+    List<SysContractFile> findSysContractFileById(Long contractId);
+    /**
      * 根据id删除文档附件信息（用于更新时操作）
      * @param contractId
      * @return

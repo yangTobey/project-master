@@ -249,6 +249,21 @@ public class SysContractController {
 
         return R.ok(map);
     }
+    /**
+     * 根据公司id获取附件文档信息
+     *
+     * @param contractId
+     * @return
+     */
+    @RequestMapping(value = "/findSysContractFileById", method = RequestMethod.GET)
+    @ResponseBody
+    public R findSysContractFileById(@RequestParam(value = "contractId", required = false) String contractId) {
+        if (!UtilHelper.isNumer(contractId)) {
+            return R.error(400, "主键id格式不正确，请联系系统管理员！");
+        }
+        Map<String, Object> map = sysContractService.findSysContractFileById(Long.valueOf(contractId));
+        return R.ok(map);
+    }
 
     /**
      * 根据公司id查询即将过期的合同

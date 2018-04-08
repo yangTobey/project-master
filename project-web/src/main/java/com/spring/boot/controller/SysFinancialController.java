@@ -1,7 +1,6 @@
 package com.spring.boot.controller;
 
 import com.spring.boot.bean.master.SysAccountsReceivable;
-import com.spring.boot.service.SysCompanyService;
 import com.spring.boot.service.SysFinancialService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;

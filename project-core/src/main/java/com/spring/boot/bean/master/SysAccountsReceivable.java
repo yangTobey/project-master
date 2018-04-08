@@ -31,6 +31,21 @@ public class SysAccountsReceivable {
     private Timestamp createTime;
     private Integer statusCode;
 
+    //礼券减免收缴率
+    private Double couponScale;
+    //空置收缴率
+    private Double vacancyScale;
+    //%3补贴收缴率
+    private Double subsidyScale;
+    //销售配合收缴率
+    private Double salesScale;
+    //开办费收缴率
+    private Double openScale;
+    //物业补贴收缴率
+    private Double propertySubsidyScale;
+    //其他地产收缴率
+    private Double houseOtherScale;
+
     public Long getAccountsId() {
         return accountsId;
     }
@@ -221,5 +236,61 @@ public class SysAccountsReceivable {
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
+    }
+
+    public Double getCouponScale() {
+        return couponScale;
+    }
+
+    public void setCouponScale(Double couponScale) {
+        this.couponScale = couponScale;
+    }
+
+    public Double getVacancyScale() {
+        return vacancyScale;
+    }
+
+    public void setVacancyScale(Double vacancyScale) {
+        this.vacancyScale = vacancyScale;
+    }
+
+    public Double getSubsidyScale() {
+        return subsidyScale;
+    }
+
+    public void setSubsidyScale(Double subsidyScale) {
+        this.subsidyScale = subsidyScale;
+    }
+
+    public Double getSalesScale() {
+        return salesScale;
+    }
+
+    public void setSalesScale(Double salesScale) {
+        this.salesScale = salesScale;
+    }
+
+    public Double getOpenScale() {
+        return openScale;
+    }
+
+    public void setOpenScale(Double openScale) {
+        this.openScale = openScale;
+    }
+
+    public Double getPropertySubsidyScale() {
+        return propertySubsidyScale;
+    }
+
+    public void setPropertySubsidyScale(Double propertySubsidyScale) {
+        this.propertySubsidyScale = propertySubsidyScale;
+    }
+
+    public Double getHouseOtherScale() {
+        return houseOtherScale;
+    }
+
+    public void setHouseOtherScale(Double houseOtherScale) {
+        this.houseOtherScale = houseOtherScale;
     }
 }

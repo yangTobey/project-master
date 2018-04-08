@@ -56,6 +56,11 @@ public interface SysContractDao extends BaseDao<SysContract>{
      * @return
      */
     List<SysContract> sysContractAnalysisData(@Param("companyId") Long companyId);
+    /**
+     * 根据id获取附件文档信息
+     * @return
+     */
+    List<SysContractFile> findSysContractFileById(Long contractId);
 
     /**
      * 根据id删除文档附件信息（用于更新时操作）

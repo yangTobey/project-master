@@ -8,7 +8,7 @@
         <result column="month" property="month"/>
         <result column="receivable_accounts_owner" property="receivableAccountsOwner"/>
         <result column="complete_accounts_owner" property="completeAccountsOwner"/>
-        <result column="complete_coupon" property="complete_coupon"/>
+        <result column="complete_coupon" property="completeCoupon"/>
         <result column="receivable_coupon" property="receivableCoupon"/>
         <result column="complete_vacancy" property="completeVacancy"/>
         <result column="receivable_vacancy" property="receivableVacancy"/>
@@ -29,7 +29,9 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-		company_id, company_name, company_code, parent_id,company_phone,company_address,status_code
+		accounts_id, company_id, year, month,receivable_accounts_owner,complete_accounts_owner,complete_coupon,receivable_coupon,complete_vacancy,receivable_vacancy
+		,complete_subsidy,receivable_subsidy,complete_sales,receivable_sales,receivable_open,complete_open,complete_property_subsidy,receivable_property_subsidy
+		,complete_house_other,receivable_house_other,complete_house,receivable_house,create_time,status_code
 	</sql>
     <select id="queryList" resultMap="sysAccountsReceivable" parameterType="map">
         select
@@ -43,14 +45,34 @@
     <!--//也可以封装成map传值-->
     <select id="sysAccountsReceivableAnalysis" resultMap="sysAccountsReceivable" parameterType="map">
         SELECT SUM(receivable_accounts_owner) AS receivable_accounts_owner,SUM(complete_accounts_owner) AS complete_accounts_owner,SUM(complete_house) AS complete_house
-        ,SUM(receivable_house) AS receivable_house
+        ,SUM(receivable_house) AS receivable_house,SUM(complete_coupon) AS complete_coupon,SUM(receivable_coupon) AS receivable_coupon,SUM(complete_vacancy) AS complete_vacancy
+        ,SUM(receivable_vacancy) AS receivable_vacancy,SUM(complete_subsidy) AS complete_subsidy,SUM(receivable_subsidy) AS receivable_subsidy,SUM(complete_sales) AS complete_sales
+        ,SUM(receivable_sales) AS receivable_sales,SUM(receivable_open) AS receivable_open,SUM(complete_open) AS complete_open,SUM(complete_property_subsidy) AS complete_property_subsidy
+        ,SUM(receivable_property_subsidy) AS receivable_property_subsidy,SUM(complete_house_other) AS complete_house_other,SUM(receivable_house_other) AS receivable_house_other
         from sys_accounts_receivable where 1=1
+        and year = #{year}
+        and month = #{month}
+        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+            AND company_id IN
+            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <!--//也可以封装成map传值-->
+    <select id="sysAccountsReceivableAnalysisForMonth" resultMap="sysAccountsReceivable" parameterType="map">
+        SELECT receivable_accounts_owner,complete_accounts_owner,month
+        from sys_accounts_receivable where 1=1 and status_code!=2
         <if test="list != null and list.size>0">
             AND company_id IN
             <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
                 #{item}
             </foreach>
         </if>
+    </select>
+    <!--//也可以封装成map传值-->
+    <select id="sysAccountsReceivableMonths" resultType="String" parameterType="map">
+       select group_concat(distinct month ORDER BY month asc)as monthInfo from sys_accounts_receivable WHERE 1=1 and status_code!=2 and `year`= #{year}
     </select>
     <select id="getSysCompanyListTotal" resultType="int"  parameterType="map">
         select count(company_id)

@@ -218,10 +218,12 @@ public class UtilHelper {
      * @param numberTwo
      * @return
      */
-    public static String DecimalFormatNumber(int numberOne,int numberTwo){
+    public static String DecimalFormatNumber(Integer numberOne,Integer numberTwo){
         DecimalFormat df=new DecimalFormat("0.0000");
-        if(numberTwo==0){
+        if(numberTwo==null||numberTwo==0){
             return "0";
+        }else if(numberOne==null){
+            numberOne=0;
         }
         return df.format((float)numberOne/numberTwo);
     }
@@ -233,8 +235,10 @@ public class UtilHelper {
      */
     public static String DecimalFormatDoubleNumber(Double numberOne,Double numberTwo){
         DecimalFormat df=new DecimalFormat("0.0000");
-        if(numberTwo==0){
+        if(numberTwo==null||numberTwo==0){
             return "0";
+        }else if(numberOne==null){
+            numberOne=0.00;
         }
         return df.format((Double) numberOne/numberTwo);
     }

@@ -69,6 +69,11 @@ public interface SysContractService {
      */
     Map<String, Object> deleteSysContract(Long contractId);
     /**
+     * 根据id获取附件文档信息
+     * @return
+     */
+    Map<String,Object> findSysContractFileById(long contractId);
+    /**
      * 获取即将过期的合同
      * @param companyId
      * @return

@@ -314,6 +314,24 @@ public class SysContractServiceImpl implements SysContractService {
     }
 
     @Override
+    public Map<String, Object> findSysContractFileById(long contractId) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            List<SysContractFile> fileList = sysContractBusinessService.findSysContractFileById(contractId);
+            if (fileList != null) {
+                resultMap.put("list", fileList);
+                return R.ok().putData(200, resultMap, "根据id查找品质管理数据成功！");
+            } else {
+                return R.error(500, "不存在文件！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("获取品质管理文件失败：" + e.getMessage());
+            return R.error(500, "获取品质管理文件失败，服务器异常，请联系系统管理员！");
+        }
+    }
+
+    @Override
     public Map<String, Object> sysContractAnalysisData(Long companyId) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {

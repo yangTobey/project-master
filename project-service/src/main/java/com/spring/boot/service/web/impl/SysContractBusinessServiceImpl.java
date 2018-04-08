@@ -91,6 +91,11 @@ public class SysContractBusinessServiceImpl implements SysContractBusinessServic
     }
 
     @Override
+    public List<SysContractFile> findSysContractFileById(Long contractId) {
+        return sysContractDao.findSysContractFileById(contractId);
+    }
+
+    @Override
     public int deleteSysContractFileByContractId(Long contractId) {
         return sysContractDao.deleteSysContractFileByContractId(contractId);
     }

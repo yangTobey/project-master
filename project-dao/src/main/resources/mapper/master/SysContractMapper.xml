@@ -102,6 +102,18 @@
 		</if>
 		GROUP BY contract.status_code
 	</select>
+	<!--根据id查找文档信息-->
+	<select id="findSysContractFileById" resultType="com.spring.boot.bean.master.SysContractFile" >
+		SELECT
+		file_id AS fileId,
+		contract_id AS contractId,
+		file_name AS fileName,
+		file_size AS fileSize,
+		file_url AS fileUrl FROM
+		sys_contract_file where 1=1
+		and contract_id = #{contractId}
+		and status_code!=2
+	</select>
 	<!--查询即将到期合同列表数据（结束时间-当前时间<=31天）-->
 	<!--<select id="sysContractExpireDataList" resultMap="sysContract" >
 		SELECT
