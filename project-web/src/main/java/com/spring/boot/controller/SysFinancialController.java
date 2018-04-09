@@ -155,7 +155,17 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/addSysAccountsReceivable", method = RequestMethod.GET)
     public R addSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
-
+        Double receivableHouse=sysAccountsReceivable.getReceivableCoupon()+sysAccountsReceivable.getReceivableVacancy()+sysAccountsReceivable.getReceivableSubsidy()
+                +sysAccountsReceivable.getReceivableSales()+sysAccountsReceivable.getReceivableOpen()+sysAccountsReceivable.getReceivablePropertySubsidy()
+                +sysAccountsReceivable.getReceivableHouseOther();
+        Double completeHouse=sysAccountsReceivable.getCompleteCoupon()+sysAccountsReceivable.getCompleteVacancy()+sysAccountsReceivable.getCompleteSubsidy()
+                +sysAccountsReceivable.getCompleteSales()+sysAccountsReceivable.getCompleteOpen()+sysAccountsReceivable.getCompletePropertySubsidy()
+                +sysAccountsReceivable.getCompleteHouseOther();
+        if(sysAccountsReceivable.getReceivableHouse()!=receivableHouse){
+            return R.error(400, "地产 已 收款总数不对，请联系管理员进行处理！");
+        }else if(sysAccountsReceivable.getCompleteHouse()!=completeHouse){
+            return R.error(400, "地产 应 收款总数不对，请联系管理员进行处理！");
+        }
         Map<String, Object> map = sysFinancialService.addSysAccountsReceivable(sysAccountsReceivable);
         return R.ok(map);
     }
@@ -167,8 +177,32 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/updateSysAccountsReceivable", method = RequestMethod.GET)
     public R updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
-
-        Map<String, Object> map = sysFinancialService.addSysAccountsReceivable(sysAccountsReceivable);
+        Double receivableHouse=sysAccountsReceivable.getReceivableCoupon()+sysAccountsReceivable.getReceivableVacancy()+sysAccountsReceivable.getReceivableSubsidy()
+                +sysAccountsReceivable.getReceivableSales()+sysAccountsReceivable.getReceivableOpen()+sysAccountsReceivable.getReceivablePropertySubsidy()
+                +sysAccountsReceivable.getReceivableHouseOther();
+        Double completeHouse=sysAccountsReceivable.getCompleteCoupon()+sysAccountsReceivable.getCompleteVacancy()+sysAccountsReceivable.getCompleteSubsidy()
+                +sysAccountsReceivable.getCompleteSales()+sysAccountsReceivable.getCompleteOpen()+sysAccountsReceivable.getCompletePropertySubsidy()
+                +sysAccountsReceivable.getCompleteHouseOther();
+        if(sysAccountsReceivable.getReceivableHouse()!=receivableHouse){
+            return R.error(400, "地产 已 收款总数不对，请联系管理员进行处理！");
+        }else if(sysAccountsReceivable.getCompleteHouse()!=completeHouse){
+            return R.error(400, "地产 应 收款总数不对，请联系管理员进行处理！");
+        }
+        Map<String, Object> map = sysFinancialService.updateSysAccountsReceivable(sysAccountsReceivable);
+        return R.ok(map);
+    }
+    /**
+     * 预算报表分析
+     *
+     * @param companyId 公司id
+     * @return
+     */
+    @RequestMapping(value = "/sysBudgetDetailsAnalysis", method = RequestMethod.GET)
+    public R sysBudgetDetailsAnalysis(@RequestParam(value = "companyId", required = false) String companyId) {
+        if (!UtilHelper.isNumer(companyId)) {
+            return R.error(400, "公司id格式不正确！");
+        }
+        Map<String, Object> map = sysFinancialService.sysBudgetDetailsAnalysis(Long.valueOf(companyId));
         return R.ok(map);
     }
 }

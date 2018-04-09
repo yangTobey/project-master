@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.spring.boot.dao.web.master.SysAccountsReceivableDao">
-    <resultMap id="sysAccountsReceivable" type="com.spring.boot.bean.master.SysAccountsReceivable">
-        <result column="accounts_id" property="accountsId"/>
+<mapper namespace="com.spring.boot.dao.web.master.SysBudgetDetailsDao">
+    <resultMap id="sysAccountsReceivable" type="com.spring.boot.bean.master.SysBudgetDetails">
+        <result column="budget_id" property="budgetId"/>
         <result column="company_id" property="companyId"/>
         <result column="year" property="year"/>
         <result column="month" property="month"/>
-        <result column="receivable_accounts_owner" property="receivableAccountsOwner"/>
-        <result column="complete_accounts_owner" property="completeAccountsOwner"/>
-        <result column="complete_coupon" property="completeCoupon"/>
-        <result column="receivable_coupon" property="receivableCoupon"/>
-        <result column="complete_vacancy" property="completeVacancy"/>
-        <result column="receivable_vacancy" property="receivableVacancy"/>
-        <result column="complete_subsidy" property="completeSubsidy"/>
-        <result column="receivable_subsidy" property="receivableSubsidy"/>
-        <result column="complete_sales" property="completeSales"/>
-        <result column="receivable_sales" property="receivableSales"/>
-        <result column="receivable_open" property="receivableOpen"/>
-        <result column="complete_open" property="completeOpen"/>
-        <result column="complete_property_subsidy" property="completePropertySubsidy"/>
-        <result column="receivable_property_subsidy" property="receivablePropertySubsidy"/>
-        <result column="complete_house_other" property="completeHouseOther"/>
-        <result column="receivable_house_other" property="receivableHouseOther"/>
-        <result column="complete_house" property="completeHouse"/>
-        <result column="receivable_house" property="receivableHouse"/>
+        <result column="budget_income" property="budgetIncome"/>
+        <result column="real_income" property="realIncome"/>
+        <result column="budget_profits" property="budgetProfits"/>
+        <result column="real_profits" property="realProfits"/>
+        <result column="budget_expenses" property="budgetExpenses"/>
+        <result column="personnel_cost" property="personnelCost"/>
+        <result column="administrative_cost" property="administrativeCost"/>
+        <result column="material_cost" property="materialCost"/>
+        <result column="energy_cost" property="energyCost"/>
+        <result column="equipment_cost" property="equipmentCost"/>
+        <result column="cleaning_cost" property="cleaningCost"/>
+        <result column="afforest_cost" property="afforestCost"/>
+        <result column="order_maintenance_cost" property="orderMaintenanceCost"/>
+        <result column="community_activities_cost" property="communityActivitiesCost"/>
+        <result column="other_cost" property="otherCost"/>
+        <result column="real_expenses_total" property="realExpensesTotal"/>
         <result column="create_time" property="createTime"/>
         <result column="status_code" property="statusCode"/>
     </resultMap>
@@ -38,13 +36,14 @@
         where 1=1 and status_code!=2 and year = #{year} and month = #{month}
     </select>
     <!--//也可以封装成map传值-->
-    <select id="sysAccountsReceivableAnalysis" resultMap="sysAccountsReceivable" parameterType="map">
-        SELECT SUM(receivable_accounts_owner) AS receivable_accounts_owner,SUM(complete_accounts_owner) AS complete_accounts_owner,SUM(complete_house) AS complete_house
-        ,SUM(receivable_house) AS receivable_house,SUM(complete_coupon) AS complete_coupon,SUM(receivable_coupon) AS receivable_coupon,SUM(complete_vacancy) AS complete_vacancy
-        ,SUM(receivable_vacancy) AS receivable_vacancy,SUM(complete_subsidy) AS complete_subsidy,SUM(receivable_subsidy) AS receivable_subsidy,SUM(complete_sales) AS complete_sales
-        ,SUM(receivable_sales) AS receivable_sales,SUM(receivable_open) AS receivable_open,SUM(complete_open) AS complete_open,SUM(complete_property_subsidy) AS complete_property_subsidy
-        ,SUM(receivable_property_subsidy) AS receivable_property_subsidy,SUM(complete_house_other) AS complete_house_other,SUM(receivable_house_other) AS receivable_house_other
-        from sys_accounts_receivable where 1=1
+    <select id="sysBudgetDetailsAnalysis" resultMap="sysAccountsReceivable" parameterType="map">
+        SELECT
+        SUM(budget_income) AS budget_income,SUM(real_income) AS real_income, SUM(budget_profits) AS budget_profits,
+        SUM(real_profits) AS real_profits,SUM(budget_expenses) AS budget_expenses,SUM(real_expenses_total) AS real_expenses_total,
+        SUM(personnel_cost) AS personnel_cost,SUM(administrative_cost) AS administrative_cost,SUM(material_cost) AS material_cost,
+        SUM(energy_cost) AS energy_cost,SUM(equipment_cost) AS equipment_cost,SUM(cleaning_cost) AS cleaning_cost,SUM(afforest_cost) AS afforest_cost,
+        SUM(order_maintenance_cost) AS order_maintenance_cost,SUM(community_activities_cost) AS community_activities_cost,SUM(other_cost) AS other_cost
+        FROM sys_budget_details where 1=1
         and year = #{year}
         and month = #{month}
         <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
@@ -55,9 +54,9 @@
         </if>
     </select>
     <!--//也可以封装成map传值-->
-    <select id="sysAccountsReceivableAnalysisForMonth" resultMap="sysAccountsReceivable" >
-        SELECT SUM(receivable_accounts_owner) as receivable_accounts_owner,SUM(complete_accounts_owner) as complete_accounts_owner,month
-        from sys_accounts_receivable where 1=1 and status_code!=2
+    <select id="sysBudgetDetailsIncomeForMonth" resultMap="sysAccountsReceivable" >
+        SELECT SUM(budget_income) as budget_income,SUM(real_income) as real_income,SUM(budget_expenses) as budget_expenses,SUM(real_expenses_total) as real_expenses_total,SUM(real_profits) as real_profits,month
+        from sys_budget_details where 1=1 and status_code!=2
         <if test="list != null and list.size>0">
             AND company_id IN
             <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
@@ -66,6 +65,19 @@
         </if>
         and year = #{year}
         GROUP BY `month` ORDER BY `month` asc
+    </select>
+    <!--//也可以封装成map传值,根据年份和月份，获取当前年上一年12月份对应的实际利润信息-->
+    <select id="sysBudgetRealProfitsByMonth" resultMap="sysAccountsReceivable" >
+        SELECT SUM(real_profits) as real_profits,month
+        from sys_budget_details where 1=1 and status_code!=2
+        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+            AND company_id IN
+            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        and year = #{year}
+        and month = #{month}
     </select>
     <!--//也可以封装成map传值-->
     <select id="sysAccountsReceivableMonths" resultType="String" parameterType="map">

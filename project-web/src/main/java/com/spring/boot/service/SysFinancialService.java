@@ -53,5 +53,12 @@ public interface SysFinancialService {
      */
     Map<String, Object> updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable);
 
+    /**
+     * 预算报表分析
+     * @param companyId 公司id
+     * @return
+     */
+    Map<String, Object> sysBudgetDetailsAnalysis(Long companyId);
+
 
 }

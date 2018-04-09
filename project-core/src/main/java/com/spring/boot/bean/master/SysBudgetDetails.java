@@ -1,12 +1,14 @@
 package com.spring.boot.bean.master;
 
 import java.sql.Timestamp;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/3/2.
  */
 public class SysBudgetDetails {
     private Long budgetId;
+    private Long companyId;
     private Integer year;
     private Integer month;
     private Double budgetIncome;
@@ -28,12 +30,34 @@ public class SysBudgetDetails {
     private Timestamp createTime;
     private Integer statusCode;
 
+    private Map<Integer,Object> budgetIncomeMap;
+    private Map<Integer,Object> realIncomeMap;
+
+    //实际支出
+    Map<Integer, Object> realExpensesTotalMap ;
+    //预算支出
+    Map<Integer, Object> budgetExpensesMap ;
+    //实际利润
+    Map<Integer, Object> realProfitsMap;
+
+    //实际利润环比
+    Map<Integer, Object> realProfitsScaleMap ;
+    private String monthsInfo;
+
     public Long getBudgetId() {
         return budgetId;
     }
 
     public void setBudgetId(Long budgetId) {
         this.budgetId = budgetId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public Integer getYear() {
@@ -194,5 +218,61 @@ public class SysBudgetDetails {
 
     public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public Map<Integer, Object> getBudgetIncomeMap() {
+        return budgetIncomeMap;
+    }
+
+    public void setBudgetIncomeMap(Map<Integer, Object> budgetIncomeMap) {
+        this.budgetIncomeMap = budgetIncomeMap;
+    }
+
+    public Map<Integer, Object> getRealIncomeMap() {
+        return realIncomeMap;
+    }
+
+    public void setRealIncomeMap(Map<Integer, Object> realIncomeMap) {
+        this.realIncomeMap = realIncomeMap;
+    }
+
+    public String getMonthsInfo() {
+        return monthsInfo;
+    }
+
+    public void setMonthsInfo(String monthsInfo) {
+        this.monthsInfo = monthsInfo;
+    }
+
+    public Map<Integer, Object> getRealExpensesTotalMap() {
+        return realExpensesTotalMap;
+    }
+
+    public void setRealExpensesTotalMap(Map<Integer, Object> realExpensesTotalMap) {
+        this.realExpensesTotalMap = realExpensesTotalMap;
+    }
+
+    public Map<Integer, Object> getBudgetExpensesMap() {
+        return budgetExpensesMap;
+    }
+
+    public void setBudgetExpensesMap(Map<Integer, Object> budgetExpensesMap) {
+        this.budgetExpensesMap = budgetExpensesMap;
+    }
+
+    public Map<Integer, Object> getRealProfitsMap() {
+        return realProfitsMap;
+    }
+
+    public void setRealProfitsMap(Map<Integer, Object> realProfitsMap) {
+        this.realProfitsMap = realProfitsMap;
+    }
+
+    public Map<Integer, Object> getRealProfitsScaleMap() {
+        return realProfitsScaleMap;
+    }
+
+    public void setRealProfitsScaleMap(Map<Integer, Object> realProfitsScaleMap) {
+        this.realProfitsScaleMap = realProfitsScaleMap;
     }
 }

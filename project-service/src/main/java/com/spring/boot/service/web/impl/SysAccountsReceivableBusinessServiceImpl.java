@@ -24,8 +24,13 @@ public class SysAccountsReceivableBusinessServiceImpl implements SysAccountsRece
     }
 
     @Override
-    public List<SysAccountsReceivable> sysAccountsReceivableAnalysisForMonth(List<Long> sysUserCompanyIds) {
-        return sysAccountsReceivableDao.sysAccountsReceivableAnalysisForMonth(sysUserCompanyIds);
+    public SysAccountsReceivable findRecordByYearAndMonth(Integer year, Integer month) {
+        return sysAccountsReceivableDao.findRecordByYearAndMonth(year,month);
+    }
+
+    @Override
+    public List<SysAccountsReceivable> sysAccountsReceivableAnalysisForMonth(Map<String, Object> map) {
+        return sysAccountsReceivableDao.sysAccountsReceivableAnalysisForMonth(map);
     }
 
     @Override
