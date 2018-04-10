@@ -24,8 +24,8 @@ public class SysAccountsReceivableBusinessServiceImpl implements SysAccountsRece
     }
 
     @Override
-    public SysAccountsReceivable findRecordByYearAndMonth(Integer year, Integer month) {
-        return sysAccountsReceivableDao.findRecordByYearAndMonth(year,month);
+    public SysAccountsReceivable findRecordByYearAndMonth(Integer year, Integer month,Long companyId) {
+        return sysAccountsReceivableDao.findRecordByYearAndMonth(year,month,companyId);
     }
 
     @Override
@@ -44,7 +44,22 @@ public class SysAccountsReceivableBusinessServiceImpl implements SysAccountsRece
     }
 
     @Override
+    public List<SysAccountsReceivable> sysAccountsReceivableList(Map<String, Object> map) {
+        return sysAccountsReceivableDao.sysAccountsReceivableList(map);
+    }
+
+    @Override
+    public int sysAccountsReceivableListTotal(Map<String, Object> map) {
+        return sysAccountsReceivableDao.sysAccountsReceivableListTotal(map);
+    }
+
+    @Override
     public int updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
         return sysAccountsReceivableDao.updateSysAccountsReceivable(sysAccountsReceivable);
+    }
+
+    @Override
+    public int deleteSysAccountsReceivable(Long budgetId) {
+        return sysAccountsReceivableDao.deleteSysAccountsReceivable(budgetId);
     }
 }

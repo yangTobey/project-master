@@ -35,7 +35,7 @@
 	</sql>
     <select id="findRecordByYearAndMonth" resultMap="sysAccountsReceivable" >
         select accounts_id from sys_accounts_receivable
-        where 1=1 and status_code!=2 and year = #{year} and month = #{month}
+        where 1=1 and status_code!=2 and year = #{year} and month = #{month} and company_id=#{companyId}
     </select>
     <!--//也可以封装成map传值-->
     <select id="sysAccountsReceivableAnalysis" resultMap="sysAccountsReceivable" parameterType="map">
@@ -67,6 +67,37 @@
         and year = #{year}
         GROUP BY `month` ORDER BY `month` asc
     </select>
+
+    <select id="sysAccountsReceivableList" resultMap="sysAccountsReceivable" parameterType="map">
+        SELECT
+        accountsRe.accounts_id,accountsRe.company_id,year,month,receivable_accounts_owner,complete_accounts_owner,
+        complete_house,receivable_house,accountsRe.create_time,accountsRe.status_code, company.company_name AS companyName
+        FROM
+        sys_accounts_receivable AS accountsRe LEFT
+        JOIN sys_company AS company ON accountsRe.company_id = company.company_id
+        WHERE
+        1 = 1
+        AND accountsRe.status_code != 2
+        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+            AND accountsRe.company_id IN
+            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        and accountsRe.year = #{year} ORDER BY accountsRe.create_time desc
+    </select>
+    <select id="sysAccountsReceivableListTotal" resultType="int" parameterType="map">
+        SELECT count(accounts_id)
+        from sys_accounts_receivable as accountsRe where 1=1 and accountsRe.status_code!=2
+        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+            AND accountsRe.company_id IN
+            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        and accountsRe.year = #{year}
+    </select>
+
     <!--//也可以封装成map传值-->
     <select id="sysAccountsReceivableMonths" resultType="String" parameterType="map">
        select group_concat(distinct month ORDER BY month asc)as monthInfo from sys_accounts_receivable WHERE 1=1 and status_code!=2 and `year`= #{year}
@@ -85,5 +116,10 @@
               ,#{completeSales},#{receivableSales},#{receivableOpen},#{completeOpen},#{completePropertySubsidy},#{receivablePropertySubsidy},#{completeHouseOther},#{receivableHouseOther},#{completeHouse}
               ,#{receivableHouse},#{companyId})
 	</insert>
+
+    <update id="deleteSysAccountsReceivable" >
+        update sys_accounts_receivable set status_code=2
+        where accounts_id = #{accountsId}
+    </update>
 
 </mapper>

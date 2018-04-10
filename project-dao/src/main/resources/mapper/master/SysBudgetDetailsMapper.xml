@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.spring.boot.dao.web.master.SysBudgetDetailsDao">
-    <resultMap id="sysAccountsReceivable" type="com.spring.boot.bean.master.SysBudgetDetails">
+    <resultMap id="sysBudgetDetails" type="com.spring.boot.bean.master.SysBudgetDetails">
         <result column="budget_id" property="budgetId"/>
         <result column="company_id" property="companyId"/>
         <result column="year" property="year"/>
@@ -24,20 +24,59 @@
         <result column="real_expenses_total" property="realExpensesTotal"/>
         <result column="create_time" property="createTime"/>
         <result column="status_code" property="statusCode"/>
+        <result column="companyName" property="companyName"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-		accounts_id, company_id, year, month,receivable_accounts_owner,complete_accounts_owner,complete_coupon,receivable_coupon,complete_vacancy,receivable_vacancy
-		,complete_subsidy,receivable_subsidy,complete_sales,receivable_sales,receivable_open,complete_open,complete_property_subsidy,receivable_property_subsidy
-		,complete_house_other,receivable_house_other,complete_house,receivable_house,create_time,status_code
+		budget_id, company_id, year, month,budget_income,real_income,budget_profits,real_profits,budget_expenses,real_expenses_total,personnel_cost,
+        administrative_cost,material_cost,energy_cost,equipment_cost,cleaning_cost,afforest_cost,order_maintenance_cost,
+        community_activities_cost,other_cost,create_time,status_code
 	</sql>
-    <select id="findRecordByYearAndMonth" resultMap="sysAccountsReceivable" >
-        select accounts_id from sys_accounts_receivable
-        where 1=1 and status_code!=2 and year = #{year} and month = #{month}
+    <select id="sysBudgetDetailsList" resultMap="sysBudgetDetails" parameterType="map">
+        select
+        budget.budget_id,budget.year,budget.month,budget.budget_income,budget.real_income,budget.budget_profits,budget.real_profits,budget.budget_expenses,budget.real_expenses_total
+        ,budget.create_time,budget.status_code,company.company_name as companyName
+        from sys_budget_details as budget left JOIN sys_company as company on budget.company_id=company.company_id
+        where 1=1 and budget.status_code!=2 and budget.year = #{year}
+        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+            AND budget.company_id IN
+            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="findSysBudgetDetailsById" resultMap="sysBudgetDetails" parameterType="map">
+        select
+        budget.*,company.company_name as companyName
+        from sys_budget_details as budget left JOIN sys_company as company on budget.company_id=company.company_id
+        where 1=1 and budget.status_code!=2 and  budget_id = #{budgetId}
+
+    </select>
+
+    <!--//列表条数-->
+    <select id="sysBudgetDetailsListTotal" resultType="int" parameterType="map">
+        select count(budget_id)
+        from sys_budget_details
+        where 1=1 and status_code!=2 and year = #{year}
+        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+            AND company_id IN
+            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findRecordByYearAndMonth" resultMap="sysBudgetDetails" >
+        select budget_id from sys_budget_details
+        where 1=1 and status_code!=2 and year = #{year} and month = #{month} and company_id=#{companyId}
     </select>
     <!--//也可以封装成map传值-->
-    <select id="sysBudgetDetailsAnalysis" resultMap="sysAccountsReceivable" parameterType="map">
-        SELECT
+    <select id="sysBudgetDetailsAnalysis" resultMap="sysBudgetDetails" parameterType="map">
+        SELECT budget_id,company_id, year, month,
         SUM(budget_income) AS budget_income,SUM(real_income) AS real_income, SUM(budget_profits) AS budget_profits,
         SUM(real_profits) AS real_profits,SUM(budget_expenses) AS budget_expenses,SUM(real_expenses_total) AS real_expenses_total,
         SUM(personnel_cost) AS personnel_cost,SUM(administrative_cost) AS administrative_cost,SUM(material_cost) AS material_cost,
@@ -53,8 +92,20 @@
             </foreach>
         </if>
     </select>
+    <!--（当区域选择一个小区时，调用）-->
+   <!-- <select id="sysBudgetAnalysisByCompanyId" resultMap="sysAccountsReceivable" parameterType="map">
+        SELECT
+        accounts_id,budget_income,real_income,budget_profits,real_profits,budget_expenses,real_expenses_total,personnel_cost,
+        administrative_cost,material_cost,energy_cost,equipment_cost,cleaning_cost,afforest_cost,order_maintenance_cost,
+        community_activities_cost,other_cost
+        FROM
+        sys_budget_details
+        WHERE 1 = 1 AND YEAR = #{year} AND MONTH = #{month}
+        and company_id=#{companyId}
+    </select>-->
+
     <!--//也可以封装成map传值-->
-    <select id="sysBudgetDetailsIncomeForMonth" resultMap="sysAccountsReceivable" >
+    <select id="sysBudgetDetailsIncomeForMonth" resultMap="sysBudgetDetails" >
         SELECT SUM(budget_income) as budget_income,SUM(real_income) as real_income,SUM(budget_expenses) as budget_expenses,SUM(real_expenses_total) as real_expenses_total,SUM(real_profits) as real_profits,month
         from sys_budget_details where 1=1 and status_code!=2
         <if test="list != null and list.size>0">
@@ -67,7 +118,7 @@
         GROUP BY `month` ORDER BY `month` asc
     </select>
     <!--//也可以封装成map传值,根据年份和月份，获取当前年上一年12月份对应的实际利润信息-->
-    <select id="sysBudgetRealProfitsByMonth" resultMap="sysAccountsReceivable" >
+    <select id="sysBudgetRealProfitsByMonth" resultMap="sysBudgetDetails" >
         SELECT SUM(real_profits) as real_profits,month
         from sys_budget_details where 1=1 and status_code!=2
         <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
@@ -83,19 +134,23 @@
     <select id="sysAccountsReceivableMonths" resultType="String" parameterType="map">
        select group_concat(distinct month ORDER BY month asc)as monthInfo from sys_accounts_receivable WHERE 1=1 and status_code!=2 and `year`= #{year}
     </select>
-    <update id="updateSysAccountsReceivable" parameterType="com.spring.boot.bean.master.SysAccountsReceivable">
-		update sys_accounts_receivable set year = #{year},month = #{month},receivable_accounts_owner = #{receivableAccountsOwner},complete_accounts_owner = #{completeAccountsOwner},complete_coupon = #{completeCoupon},receivable_coupon = #{receivableCoupon}
-		,complete_vacancy = #{completeVacancy},receivable_vacancy = #{receivableVacancy},complete_subsidy = #{completeSubsidy},receivable_subsidy = #{receivableSubsidy},complete_sales = #{completeSales}
-		,receivable_sales = #{receivableSales},receivable_open = #{receivableOpen},complete_open = #{completeOpen},complete_property_subsidy = #{completePropertySubsidy},receivable_property_subsidy = #{receivablePropertySubsidy}
-		,complete_house_other = #{completeHouseOther},receivable_house_other = #{receivableHouseOther},complete_house = #{completeHouse},receivable_house = #{receivableHouse},company_id = #{companyId}
-		where accounts_id = #{accountsId}
+    <update id="updateSysBudgetDetails" parameterType="com.spring.boot.bean.master.SysBudgetDetails">
+		update sys_budget_details set year = #{year},month = #{month},budget_income = #{budgetIncome},real_income = #{realIncome},budget_profits = #{budgetProfits},real_profits = #{realProfits}
+		,budget_expenses = #{budgetExpenses},personnel_cost = #{personnelCost},administrative_cost = #{administrativeCost},material_cost = #{materialCost},energy_cost = #{energyCost}
+		,equipment_cost = #{equipmentCost},cleaning_cost = #{cleaningCost},afforest_cost = #{afforestCost},order_maintenance_cost = #{orderMaintenanceCost},community_activities_cost = #{communityActivitiesCost}
+		,other_cost = #{otherCost},real_expenses_total = #{realExpensesTotal},create_time = #{createTime},company_id = #{companyId}
+		where budget_id = #{budgetId}
 	</update>
-    <insert id="addSysAccountsReceivable" parameterType="com.spring.boot.bean.master.SysAccountsReceivable">
-		INSERT INTO sys_accounts_receivable (year, month, receivable_accounts_owner, complete_accounts_owner,complete_coupon,receivable_coupon,complete_vacancy,receivable_vacancy,complete_subsidy,receivable_subsidy
-		,complete_sales,receivable_sales,receivable_open,complete_open,complete_property_subsidy,receivable_property_subsidy,complete_house_other,receivable_house_other,complete_house,receivable_house,company_id)
-              VALUES   (#{year},#{month},#{receivableAccountsOwner},#{completeAccountsOwner},#{completeCoupon},#{receivableCoupon},#{completeVacancy},#{receivableVacancy},#{completeSubsidy},#{receivableSubsidy}
-              ,#{completeSales},#{receivableSales},#{receivableOpen},#{completeOpen},#{completePropertySubsidy},#{receivablePropertySubsidy},#{completeHouseOther},#{receivableHouseOther},#{completeHouse}
-              ,#{receivableHouse},#{companyId})
+    <insert id="addSysBudgetDetails" parameterType="com.spring.boot.bean.master.SysBudgetDetails">
+		INSERT INTO sys_budget_details (year, month, budget_income, real_income,budget_profits,real_profits,budget_expenses,personnel_cost,administrative_cost,material_cost
+		,energy_cost,equipment_cost,cleaning_cost,afforest_cost,order_maintenance_cost,community_activities_cost,other_cost,real_expenses_total,create_time,company_id)
+         VALUES (#{year},#{month},#{budgetIncome},#{realIncome},#{budgetProfits},#{realProfits},#{budgetExpenses},#{personnelCost},#{administrativeCost},#{materialCost}
+         ,#{energyCost},#{equipmentCost},#{cleaningCost},#{afforestCost},#{orderMaintenanceCost},#{communityActivitiesCost},#{otherCost},#{realExpensesTotal},#{createTime},#{companyId})
 	</insert>
+
+    <update id="deleteSysBudgetDetails" >
+        update sys_budget_details set status_code=2
+        where budget_id = #{budgetId}
+    </update>
 
 </mapper>

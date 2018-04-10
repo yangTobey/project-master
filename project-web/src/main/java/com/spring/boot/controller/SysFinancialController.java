@@ -1,6 +1,7 @@
 package com.spring.boot.controller;
 
 import com.spring.boot.bean.master.SysAccountsReceivable;
+import com.spring.boot.bean.master.SysBudgetDetails;
 import com.spring.boot.service.SysFinancialService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
@@ -133,6 +134,8 @@ public class SysFinancialController {
                 , Double.valueOf(chargeDebt), Double.valueOf(chargeDebtReturn));
         return R.ok(map);
     }
+    /*****************************************************应收账款模块**********************************************************/
+
     /**
      * 月度应收账款报表统计详细信息
      *
@@ -147,6 +150,31 @@ public class SysFinancialController {
         Map<String, Object> map = sysFinancialService.sysAccountsReceivableAnalysis(Long.valueOf(companyId));
         return R.ok(map);
     }
+
+    /**
+     * 应收账款列表
+     * @param companyId 公司id
+     * @param year 年份
+     * @param limit 每页数据条数限制
+     * @param offset
+     * @return
+     */
+    @RequestMapping(value = "/sysAccountsReceivableList", method = RequestMethod.GET)
+    public R sysAccountsReceivableList(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
+            , @RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
+        if (!UtilHelper.isNumer(companyId)) {
+            return R.error(400, "公司id格式不正确！");
+        } else if (!UtilHelper.isNumer(year)) {
+            return R.error(400, "年份格式不正确！");
+        } else if (!UtilHelper.isNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字！");
+        } else if (!UtilHelper.isNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字！");
+        }
+        Map<String, Object> map = sysFinancialService.sysAccountsReceivableList(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(limit), Integer.valueOf(offset));
+        return R.ok(map);
+    }
+
     /**
      * 新增月度应收账款报表统计详细信息
      *
@@ -155,20 +183,21 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/addSysAccountsReceivable", method = RequestMethod.GET)
     public R addSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
-        Double receivableHouse=sysAccountsReceivable.getReceivableCoupon()+sysAccountsReceivable.getReceivableVacancy()+sysAccountsReceivable.getReceivableSubsidy()
-                +sysAccountsReceivable.getReceivableSales()+sysAccountsReceivable.getReceivableOpen()+sysAccountsReceivable.getReceivablePropertySubsidy()
-                +sysAccountsReceivable.getReceivableHouseOther();
-        Double completeHouse=sysAccountsReceivable.getCompleteCoupon()+sysAccountsReceivable.getCompleteVacancy()+sysAccountsReceivable.getCompleteSubsidy()
-                +sysAccountsReceivable.getCompleteSales()+sysAccountsReceivable.getCompleteOpen()+sysAccountsReceivable.getCompletePropertySubsidy()
-                +sysAccountsReceivable.getCompleteHouseOther();
-        if(sysAccountsReceivable.getReceivableHouse()!=receivableHouse){
+        Double receivableHouse = sysAccountsReceivable.getReceivableCoupon() + sysAccountsReceivable.getReceivableVacancy() + sysAccountsReceivable.getReceivableSubsidy()
+                + sysAccountsReceivable.getReceivableSales() + sysAccountsReceivable.getReceivableOpen() + sysAccountsReceivable.getReceivablePropertySubsidy()
+                + sysAccountsReceivable.getReceivableHouseOther();
+        Double completeHouse = sysAccountsReceivable.getCompleteCoupon() + sysAccountsReceivable.getCompleteVacancy() + sysAccountsReceivable.getCompleteSubsidy()
+                + sysAccountsReceivable.getCompleteSales() + sysAccountsReceivable.getCompleteOpen() + sysAccountsReceivable.getCompletePropertySubsidy()
+                + sysAccountsReceivable.getCompleteHouseOther();
+        if (!receivableHouse.equals(sysAccountsReceivable.getReceivableHouse())) {
             return R.error(400, "地产 已 收款总数不对，请联系管理员进行处理！");
-        }else if(sysAccountsReceivable.getCompleteHouse()!=completeHouse){
+        } else if (!completeHouse.equals(sysAccountsReceivable.getCompleteHouse())) {
             return R.error(400, "地产 应 收款总数不对，请联系管理员进行处理！");
         }
         Map<String, Object> map = sysFinancialService.addSysAccountsReceivable(sysAccountsReceivable);
         return R.ok(map);
     }
+
     /**
      * 更新月度应收账款报表统计详细信息
      *
@@ -177,20 +206,37 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/updateSysAccountsReceivable", method = RequestMethod.GET)
     public R updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
-        Double receivableHouse=sysAccountsReceivable.getReceivableCoupon()+sysAccountsReceivable.getReceivableVacancy()+sysAccountsReceivable.getReceivableSubsidy()
-                +sysAccountsReceivable.getReceivableSales()+sysAccountsReceivable.getReceivableOpen()+sysAccountsReceivable.getReceivablePropertySubsidy()
-                +sysAccountsReceivable.getReceivableHouseOther();
-        Double completeHouse=sysAccountsReceivable.getCompleteCoupon()+sysAccountsReceivable.getCompleteVacancy()+sysAccountsReceivable.getCompleteSubsidy()
-                +sysAccountsReceivable.getCompleteSales()+sysAccountsReceivable.getCompleteOpen()+sysAccountsReceivable.getCompletePropertySubsidy()
-                +sysAccountsReceivable.getCompleteHouseOther();
-        if(sysAccountsReceivable.getReceivableHouse()!=receivableHouse){
+        Double receivableHouse = sysAccountsReceivable.getReceivableCoupon() + sysAccountsReceivable.getReceivableVacancy() + sysAccountsReceivable.getReceivableSubsidy()
+                + sysAccountsReceivable.getReceivableSales() + sysAccountsReceivable.getReceivableOpen() + sysAccountsReceivable.getReceivablePropertySubsidy()
+                + sysAccountsReceivable.getReceivableHouseOther();
+        Double completeHouse = sysAccountsReceivable.getCompleteCoupon() + sysAccountsReceivable.getCompleteVacancy() + sysAccountsReceivable.getCompleteSubsidy()
+                + sysAccountsReceivable.getCompleteSales() + sysAccountsReceivable.getCompleteOpen() + sysAccountsReceivable.getCompletePropertySubsidy()
+                + sysAccountsReceivable.getCompleteHouseOther();
+        if (!receivableHouse.equals(sysAccountsReceivable.getReceivableHouse())) {
             return R.error(400, "地产 已 收款总数不对，请联系管理员进行处理！");
-        }else if(sysAccountsReceivable.getCompleteHouse()!=completeHouse){
+        } else if (!completeHouse.equals(sysAccountsReceivable.getCompleteHouse())) {
             return R.error(400, "地产 应 收款总数不对，请联系管理员进行处理！");
         }
         Map<String, Object> map = sysFinancialService.updateSysAccountsReceivable(sysAccountsReceivable);
         return R.ok(map);
     }
+
+    /**
+     * 删除月度应收账款报表统计详细信息
+     *
+     * @param accountsId 主键id
+     * @return
+     */
+    @RequestMapping(value = "/deleteSysAccountsReceivable", method = RequestMethod.GET)
+    public R deleteSysAccountsReceivable(@RequestParam(value = "accountsId", required = false) String accountsId) {
+        if (!UtilHelper.isNumer(accountsId)) {
+            return R.error(400, "主键id格式不正确，请联系系统管理员进行处理！");
+        }
+        Map<String, Object> map = sysFinancialService.deleteSysAccountsReceivable(Long.valueOf(accountsId));
+        return R.ok(map);
+    }
+
+    /*****************************************************预算执行模块**********************************************************/
     /**
      * 预算报表分析
      *
@@ -203,6 +249,96 @@ public class SysFinancialController {
             return R.error(400, "公司id格式不正确！");
         }
         Map<String, Object> map = sysFinancialService.sysBudgetDetailsAnalysis(Long.valueOf(companyId));
+        return R.ok(map);
+    }
+
+    /**
+     * 预算执行列表信息
+     *
+     * @param companyId 公司id
+     * @return
+     */
+    @RequestMapping(value = "/sysBudgetDetailsList", method = RequestMethod.GET)
+    public R sysBudgetDetailsList(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
+            , @RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
+        if (!UtilHelper.isNumer(companyId)) {
+            return R.error(400, "公司id格式不正确！");
+        } else if (!UtilHelper.isNumer(year)) {
+            return R.error(400, "年份格式不正确！");
+        } else if (!UtilHelper.isNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字！");
+        } else if (!UtilHelper.isNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字！");
+        }
+        Map<String, Object> map = sysFinancialService.sysBudgetDetailsList(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(limit), Integer.valueOf(offset));
+        return R.ok(map);
+    }
+
+    /**
+     * 根据主键id查找数据
+     *
+     * @param budgetId 主键id
+     * @return
+     */
+    @RequestMapping(value = "/findSysBudgetDetailsById", method = RequestMethod.GET)
+    public R findSysBudgetDetailsById(@RequestParam(value = "budgetId", required = false) String budgetId) {
+        if (!UtilHelper.isNumer(budgetId)) {
+            return R.error(400, "主键id格式不正确！");
+        }
+        Map<String, Object> map = sysFinancialService.findSysBudgetDetailsById(Long.valueOf(budgetId));
+        return R.ok(map);
+    }
+
+    /**
+     * 新增执行预算信息
+     *
+     * @param sysBudgetDetails 实体信息
+     * @return
+     */
+    @RequestMapping(value = "/addSysBudgetDetails", method = RequestMethod.GET)
+    public R addSysBudgetDetails(SysBudgetDetails sysBudgetDetails) {
+        Double realExpensesTotal = sysBudgetDetails.getPersonnelCost() + sysBudgetDetails.getAdministrativeCost() + sysBudgetDetails.getMaterialCost()
+                + sysBudgetDetails.getEnergyCost() + sysBudgetDetails.getEquipmentCost() + sysBudgetDetails.getCleaningCost()
+                + sysBudgetDetails.getAfforestCost() + sysBudgetDetails.getOrderMaintenanceCost() + sysBudgetDetails.getCommunityActivitiesCost() + sysBudgetDetails.getOtherCost();
+        if (!realExpensesTotal.equals(sysBudgetDetails.getRealExpensesTotal())) {
+            return R.error(400, "实际总支出与详细数据合计总数不对，请联系管理员进行处理！");
+        }
+        Map<String, Object> map = sysFinancialService.addSysBudgetDetails(sysBudgetDetails);
+        return R.ok(map);
+    }
+
+    /**
+     * 更新执行预算信息
+     *
+     * @param sysBudgetDetails 实体信息
+     * @return
+     */
+    @RequestMapping(value = "/updateSysBudgetDetails", method = RequestMethod.GET)
+    public R updateSysBudgetDetails(SysBudgetDetails sysBudgetDetails) {
+        Double realExpensesTotal = sysBudgetDetails.getPersonnelCost() + sysBudgetDetails.getAdministrativeCost() + sysBudgetDetails.getMaterialCost()
+                + sysBudgetDetails.getEnergyCost() + sysBudgetDetails.getEquipmentCost() + sysBudgetDetails.getCleaningCost()
+                + sysBudgetDetails.getAfforestCost() + sysBudgetDetails.getOrderMaintenanceCost() + sysBudgetDetails.getCommunityActivitiesCost() + sysBudgetDetails.getOtherCost();
+        if (!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getBudgetId()))) {
+            return R.error(400, "主键id格式不正确，请联系系统管理员进行处理！");
+        } else if (!realExpensesTotal.equals(sysBudgetDetails.getRealExpensesTotal())) {
+            return R.error(400, "实际总支出与详细数据合计总数不对，请联系管理员进行处理！");
+        }
+        Map<String, Object> map = sysFinancialService.updateSysBudgetDetails(sysBudgetDetails);
+        return R.ok(map);
+    }
+
+    /**
+     * 更新执行预算信息
+     *
+     * @param budgetId 主键id
+     * @return
+     */
+    @RequestMapping(value = "/deleteSysBudgetDetails", method = RequestMethod.GET)
+    public R deleteSysBudgetDetails(@RequestParam(value = "budgetId", required = false) String budgetId) {
+        if (!UtilHelper.isNumer(budgetId)) {
+            return R.error(400, "主键id格式不正确，请联系系统管理员进行处理！");
+        }
+        Map<String, Object> map = sysFinancialService.deleteSysBudgetDetails(Long.valueOf(budgetId));
         return R.ok(map);
     }
 }

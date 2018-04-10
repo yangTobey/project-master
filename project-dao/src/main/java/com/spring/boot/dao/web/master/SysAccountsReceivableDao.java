@@ -24,7 +24,7 @@ public interface SysAccountsReceivableDao {
      *
      * @return
      */
-    SysAccountsReceivable findRecordByYearAndMonth(@Param("year")Integer year,@Param("month") Integer month);
+    SysAccountsReceivable findRecordByYearAndMonth(@Param("year")Integer year,@Param("month") Integer month,@Param("companyId")Long companyId);
     /**
      * 月度应收账款报表统计详细信息(柱状图)
      *
@@ -38,6 +38,18 @@ public interface SysAccountsReceivableDao {
      */
     String sysAccountsReceivableMonths(Map<String, Object> map);
     /**
+     * 月度应收账款列表
+     * @param map
+     * @return
+     */
+    List<SysAccountsReceivable> sysAccountsReceivableList(Map<String, Object> map);
+    /**
+     * 新增月度应收账款列表总条数
+     * @param map
+     * @return
+     */
+    int sysAccountsReceivableListTotal(Map<String, Object> map);
+    /**
      * 新增月度应收账款报表统计详细信息
      *
      * @return
@@ -49,4 +61,10 @@ public interface SysAccountsReceivableDao {
      * @return
      */
     int updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable);
+    /**
+     * 删除月度应收账款报表统计详细信息
+     *
+     * @return
+     */
+    int deleteSysAccountsReceivable(Long budgetId);
 }

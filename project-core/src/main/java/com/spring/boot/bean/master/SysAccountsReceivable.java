@@ -1,6 +1,9 @@
 package com.spring.boot.bean.master;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2018/3/2.
@@ -28,8 +31,9 @@ public class SysAccountsReceivable {
     private Double receivableHouseOther;
     private Double completeHouse;
     private Double receivableHouse;
-    private Timestamp createTime;
+    private Date createTime;
     private Integer statusCode;
+    private String companyName;
 
     //礼券减免收缴率
     private Double couponScale;
@@ -214,11 +218,12 @@ public class SysAccountsReceivable {
         this.receivableHouse = receivableHouse;
     }
 
-    public Timestamp getCreateTime() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
@@ -292,5 +297,13 @@ public class SysAccountsReceivable {
 
     public void setHouseOtherScale(Double houseOtherScale) {
         this.houseOtherScale = houseOtherScale;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

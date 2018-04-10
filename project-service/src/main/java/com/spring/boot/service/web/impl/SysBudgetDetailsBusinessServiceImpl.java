@@ -26,8 +26,13 @@ public class SysBudgetDetailsBusinessServiceImpl implements SysBudgetDetailsBusi
     }
 
     @Override
-    public SysAccountsReceivable findRecordByYearAndMonth(Integer year, Integer month) {
-        return sysBudgetDetailsDao.findRecordByYearAndMonth(year,month);
+    public SysBudgetDetails sysBudgetAnalysisByCompanyId(Map<String, Object> map) {
+        return sysBudgetDetailsDao.sysBudgetAnalysisByCompanyId(map);
+    }
+
+    @Override
+    public SysBudgetDetails findRecordByYearAndMonth(Integer year, Integer month,Long companyId) {
+        return sysBudgetDetailsDao.findRecordByYearAndMonth(year,month,companyId);
     }
 
     @Override
@@ -36,8 +41,23 @@ public class SysBudgetDetailsBusinessServiceImpl implements SysBudgetDetailsBusi
     }
 
     @Override
+    public List<SysBudgetDetails> sysBudgetDetailsList(Map<String, Object> map) {
+        return sysBudgetDetailsDao.sysBudgetDetailsList(map);
+    }
+
+    @Override
+    public int sysBudgetDetailsListTotal(Map<String, Object> map) {
+        return sysBudgetDetailsDao.sysBudgetDetailsListTotal(map);
+    }
+
+    @Override
     public SysBudgetDetails sysBudgetRealProfitsByMonth(Integer year, Integer month,List<Long> sysUserCompanyIds) {
         return sysBudgetDetailsDao.sysBudgetRealProfitsByMonth(year,month,sysUserCompanyIds);
+    }
+
+    @Override
+    public SysBudgetDetails findSysBudgetDetailsById(Map<String, Object> map) {
+        return sysBudgetDetailsDao.findSysBudgetDetailsById(map);
     }
 
     @Override
@@ -46,13 +66,18 @@ public class SysBudgetDetailsBusinessServiceImpl implements SysBudgetDetailsBusi
     }
 
     @Override
-    public int addSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
-        return 0;
+    public int addSysBudgetDetails(SysBudgetDetails sysBudgetDetails) {
+        return sysBudgetDetailsDao.addSysBudgetDetails(sysBudgetDetails);
     }
 
     @Override
-    public int updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
-        return 0;
+    public int updateSysBudgetDetails(SysBudgetDetails sysBudgetDetails) {
+        return sysBudgetDetailsDao.updateSysBudgetDetails(sysBudgetDetails);
+    }
+
+    @Override
+    public int deleteSysBudgetDetails(Long budgetId) {
+        return sysBudgetDetailsDao.deleteSysBudgetDetails(budgetId);
     }
 }
 

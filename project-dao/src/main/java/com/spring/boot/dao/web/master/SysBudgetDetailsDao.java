@@ -12,23 +12,47 @@ import java.util.Map;
  */
 public interface SysBudgetDetailsDao {
     /**
-     * 报表统计详细信息
+     * 报表统计详细信息(当区域为全国时，调用该接口)
      *
      * @return
      */
     SysBudgetDetails sysBudgetDetailsAnalysis(Map<String, Object> map);
     /**
+     * 预算报表统计详细信息（当区域选择一个小区时，调用该接口）
+     *
+     * @return
+     */
+    SysBudgetDetails sysBudgetAnalysisByCompanyId(Map<String, Object> map);
+    /**
      * 根据年份和月份查询数据库记录
      *
      * @return
      */
-    SysAccountsReceivable findRecordByYearAndMonth(@Param("year") Integer year, @Param("month") Integer month);
+    SysBudgetDetails findRecordByYearAndMonth(@Param("year") Integer year, @Param("month") Integer month,@Param("companyId") Long companyId);
     /**
      * 月度应收账款报表统计详细信息(柱状图)
      *
      * @return
      */
     List<SysBudgetDetails> sysBudgetDetailsIncomeForMonth(Map<String, Object> map);
+    /**
+     * 根据id查找信息
+     * @param map
+     * @return
+     */
+    SysBudgetDetails findSysBudgetDetailsById(Map<String, Object> map);
+    /**
+     * 预算执行列表
+     *
+     * @return
+     */
+    List<SysBudgetDetails> sysBudgetDetailsList(Map<String, Object> map);
+    /**
+     * 预算执行列表总条数
+     *
+     * @return
+     */
+    int sysBudgetDetailsListTotal(Map<String, Object> map);
     /**
      * 根据年份和月份，获取当前年上一年12月份对应的实际利润信息
      *
@@ -42,15 +66,21 @@ public interface SysBudgetDetailsDao {
      */
     String sysAccountsReceivableMonths(Map<String, Object> map);
     /**
-     * 新增月度应收账款报表统计详细信息
-     *
+     * 新增执行预算信息
+     * @param sysBudgetDetails 实体信息
      * @return
      */
-    int addSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable);
+    int addSysBudgetDetails(SysBudgetDetails sysBudgetDetails);
     /**
-     * 新增月度应收账款报表统计详细信息
-     *
+     * 更新执行预算信息
+     * @param sysBudgetDetails 实体信息
      * @return
      */
-    int updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable);
+    int updateSysBudgetDetails(SysBudgetDetails sysBudgetDetails);
+    /**
+     * 删除执行预算信息
+     * @param budgetId 主键id
+     * @return
+     */
+    int deleteSysBudgetDetails(Long budgetId);
 }

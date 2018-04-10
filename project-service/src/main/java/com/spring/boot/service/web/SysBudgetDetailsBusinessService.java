@@ -11,17 +11,23 @@ import java.util.Map;
  */
 public interface SysBudgetDetailsBusinessService {
     /**
-     * 预算报表统计详细信息
+     * 预算报表统计详细信息(当区域为全国时，调用该接口)
      *
      * @return
      */
     SysBudgetDetails sysBudgetDetailsAnalysis(Map<String, Object> map);
     /**
+     * 预算报表统计详细信息（当区域选择一个小区时，调用该接口）
+     *
+     * @return
+     */
+    SysBudgetDetails sysBudgetAnalysisByCompanyId(Map<String, Object> map);
+    /**
      * 根据年份和月份查询数据库记录
      *
      * @return
      */
-    SysAccountsReceivable findRecordByYearAndMonth(Integer year, Integer month);
+    SysBudgetDetails findRecordByYearAndMonth(Integer year, Integer month,Long companyId);
     /**
      * 预算报表统计详细信息(柱状图)
      *
@@ -29,11 +35,30 @@ public interface SysBudgetDetailsBusinessService {
      */
     List<SysBudgetDetails> sysBudgetDetailsIncomeForMonth(Map<String, Object> map);
     /**
+     * 预算执行列表
+     *
+     * @return
+     */
+    List<SysBudgetDetails> sysBudgetDetailsList(Map<String, Object> map);
+    /**
+     * 预算执行列表总条数
+     *
+     * @return
+     */
+    int sysBudgetDetailsListTotal(Map<String, Object> map);
+    /**
      * 根据年份和月份，获取当前年上一年12月份对应的实际利润信息
      *
      * @return
      */
     SysBudgetDetails sysBudgetRealProfitsByMonth(Integer year, Integer month,List<Long> sysUserCompanyIds);
+
+    /**
+     * 根据id查找信息
+     * @param map
+     * @return
+     */
+    SysBudgetDetails findSysBudgetDetailsById(Map<String, Object> map);
     /**
      * 获取数据所有月份
      *
@@ -41,17 +66,23 @@ public interface SysBudgetDetailsBusinessService {
      */
     String sysAccountsReceivableMonths(Map<String, Object> map);
     /**
-     * 新增月度应收账款报表统计详细信息
-     *
+     * 新增执行预算信息
+     *@param sysBudgetDetails 实体信息
      * @return
      */
-    int addSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable);
+    int addSysBudgetDetails(SysBudgetDetails sysBudgetDetails);
     /**
-     * 更新月度应收账款报表统计详细信息
-     *
+     * 更新执行预算信息
+     * @param sysBudgetDetails 实体信息
      * @return
      */
-    int updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable);
+    int updateSysBudgetDetails(SysBudgetDetails sysBudgetDetails);
+    /**
+     * 删除执行预算信息
+     * @param budgetId 主键id
+     * @return
+     */
+    int deleteSysBudgetDetails(Long budgetId);
 
 
 }
