@@ -174,6 +174,20 @@ public class SysFinancialController {
         Map<String, Object> map = sysFinancialService.sysAccountsReceivableList(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(limit), Integer.valueOf(offset));
         return R.ok(map);
     }
+    /**
+     * 根据主键id查找数据
+     *
+     * @param accountsId 主键id
+     * @return
+     */
+    @RequestMapping(value = "/findSysAccountsReceivableById", method = RequestMethod.GET)
+    public R findSysAccountsReceivableById(@RequestParam(value = "accountsId", required = false) String accountsId) {
+        if (!UtilHelper.isNumer(accountsId)) {
+            return R.error(400, "主键id格式不正确！");
+        }
+        Map<String, Object> map = sysFinancialService.findSysAccountsReceivableById(Long.valueOf(accountsId));
+        return R.ok(map);
+    }
 
     /**
      * 新增月度应收账款报表统计详细信息

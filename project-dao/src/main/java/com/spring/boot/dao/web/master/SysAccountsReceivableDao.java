@@ -38,6 +38,12 @@ public interface SysAccountsReceivableDao {
      */
     String sysAccountsReceivableMonths(Map<String, Object> map);
     /**
+     * 根据主键id查找信息
+     * @param map
+     * @return
+     */
+    SysAccountsReceivable findSysAccountsReceivableById(Map<String, Object> map);
+    /**
      * 月度应收账款列表
      * @param map
      * @return

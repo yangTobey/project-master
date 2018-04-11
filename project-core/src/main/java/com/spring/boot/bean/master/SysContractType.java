@@ -5,16 +5,16 @@ package com.spring.boot.bean.master;
  */
 public class SysContractType {
 
-    private long contractTypeId;
+    private Long contractTypeId;
     private String contractTypeName;
     private String contractTypeCode;
-    private int statusCode;
+    private Integer statusCode;
 
-    public long getContractTypeId() {
+    public Long getContractTypeId() {
         return contractTypeId;
     }
 
-    public void setContractTypeId(long contractTypeId) {
+    public void setContractTypeId(Long contractTypeId) {
         this.contractTypeId = contractTypeId;
     }
 
@@ -34,11 +34,11 @@ public class SysContractType {
         this.contractTypeCode = contractTypeCode;
     }
 
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
 }

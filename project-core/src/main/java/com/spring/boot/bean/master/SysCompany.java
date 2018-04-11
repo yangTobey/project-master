@@ -5,21 +5,21 @@ package com.spring.boot.bean.master;
  */
 public class SysCompany {
 
-    private long companyId;
+    private Long  companyId;
     private String companyName;
     private String companyCode;
-    private long parentId;
+    private Long  parentId;
     private String companyPhone;
     private String companyAddress;
-    private int statusCode;
+    private Integer statusCode;
 
     private Boolean authority;
 
-    public long getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(long companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
@@ -39,11 +39,11 @@ public class SysCompany {
         this.companyCode = companyCode;
     }
 
-    public long getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(long parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
@@ -63,11 +63,11 @@ public class SysCompany {
         this.companyAddress = companyAddress;
     }
 
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
 

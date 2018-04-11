@@ -34,6 +34,11 @@ public class SysAccountsReceivableBusinessServiceImpl implements SysAccountsRece
     }
 
     @Override
+    public SysAccountsReceivable findSysAccountsReceivableById(Map<String, Object> map) {
+        return sysAccountsReceivableDao.findSysAccountsReceivableById(map);
+    }
+
+    @Override
     public String sysAccountsReceivableMonths(Map<String, Object> map) {
         return sysAccountsReceivableDao.sysAccountsReceivableMonths(map);
     }

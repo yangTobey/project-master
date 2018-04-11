@@ -54,7 +54,6 @@
         budget.*,company.company_name as companyName
         from sys_budget_details as budget left JOIN sys_company as company on budget.company_id=company.company_id
         where 1=1 and budget.status_code!=2 and  budget_id = #{budgetId}
-
     </select>
 
     <!--//列表条数-->

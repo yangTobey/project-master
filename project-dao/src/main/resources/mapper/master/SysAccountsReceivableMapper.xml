@@ -26,6 +26,7 @@
         <result column="receivable_house" property="receivableHouse"/>
         <result column="create_time" property="createTime"/>
         <result column="status_code" property="statusCode"/>
+        <result column="companyName" property="companyName"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -33,17 +34,23 @@
 		,complete_subsidy,receivable_subsidy,complete_sales,receivable_sales,receivable_open,complete_open,complete_property_subsidy,receivable_property_subsidy
 		,complete_house_other,receivable_house_other,complete_house,receivable_house,create_time,status_code
 	</sql>
-    <select id="findRecordByYearAndMonth" resultMap="sysAccountsReceivable" >
+    <!--更新年份、月份、公司id查找系统信息，用于判断系统是否存在相同数据-->
+    <select id="findRecordByYearAndMonth" resultMap="sysAccountsReceivable">
         select accounts_id from sys_accounts_receivable
         where 1=1 and status_code!=2 and year = #{year} and month = #{month} and company_id=#{companyId}
     </select>
     <!--//也可以封装成map传值-->
     <select id="sysAccountsReceivableAnalysis" resultMap="sysAccountsReceivable" parameterType="map">
-        SELECT SUM(receivable_accounts_owner) AS receivable_accounts_owner,SUM(complete_accounts_owner) AS complete_accounts_owner,SUM(complete_house) AS complete_house
-        ,SUM(receivable_house) AS receivable_house,SUM(complete_coupon) AS complete_coupon,SUM(receivable_coupon) AS receivable_coupon,SUM(complete_vacancy) AS complete_vacancy
-        ,SUM(receivable_vacancy) AS receivable_vacancy,SUM(complete_subsidy) AS complete_subsidy,SUM(receivable_subsidy) AS receivable_subsidy,SUM(complete_sales) AS complete_sales
-        ,SUM(receivable_sales) AS receivable_sales,SUM(receivable_open) AS receivable_open,SUM(complete_open) AS complete_open,SUM(complete_property_subsidy) AS complete_property_subsidy
-        ,SUM(receivable_property_subsidy) AS receivable_property_subsidy,SUM(complete_house_other) AS complete_house_other,SUM(receivable_house_other) AS receivable_house_other
+        SELECT SUM(receivable_accounts_owner) AS receivable_accounts_owner,SUM(complete_accounts_owner) AS
+        complete_accounts_owner,SUM(complete_house) AS complete_house
+        ,SUM(receivable_house) AS receivable_house,SUM(complete_coupon) AS complete_coupon,SUM(receivable_coupon) AS
+        receivable_coupon,SUM(complete_vacancy) AS complete_vacancy
+        ,SUM(receivable_vacancy) AS receivable_vacancy,SUM(complete_subsidy) AS complete_subsidy,SUM(receivable_subsidy)
+        AS receivable_subsidy,SUM(complete_sales) AS complete_sales
+        ,SUM(receivable_sales) AS receivable_sales,SUM(receivable_open) AS receivable_open,SUM(complete_open) AS
+        complete_open,SUM(complete_property_subsidy) AS complete_property_subsidy
+        ,SUM(receivable_property_subsidy) AS receivable_property_subsidy,SUM(complete_house_other) AS
+        complete_house_other,SUM(receivable_house_other) AS receivable_house_other
         from sys_accounts_receivable where 1=1
         and year = #{year}
         and month = #{month}
@@ -55,29 +62,29 @@
         </if>
     </select>
     <!--//也可以封装成map传值-->
-    <select id="sysAccountsReceivableAnalysisForMonth" resultMap="sysAccountsReceivable" >
-        SELECT SUM(receivable_accounts_owner) as receivable_accounts_owner,SUM(complete_accounts_owner) as complete_accounts_owner,month
+    <select id="sysAccountsReceivableAnalysisForMonth" resultMap="sysAccountsReceivable">
+        SELECT SUM(receivable_accounts_owner) as receivable_accounts_owner,SUM(complete_accounts_owner) as
+        complete_accounts_owner,month
         from sys_accounts_receivable where 1=1 and status_code!=2
-        <if test="list != null and list.size>0">
+        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
             AND company_id IN
-            <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
                 #{item}
             </foreach>
         </if>
         and year = #{year}
         GROUP BY `month` ORDER BY `month` asc
     </select>
-
+    <!--应收账款列表信息-->
     <select id="sysAccountsReceivableList" resultMap="sysAccountsReceivable" parameterType="map">
         SELECT
         accountsRe.accounts_id,accountsRe.company_id,year,month,receivable_accounts_owner,complete_accounts_owner,
-        complete_house,receivable_house,accountsRe.create_time,accountsRe.status_code, company.company_name AS companyName
+        complete_house,receivable_house,accountsRe.create_time,accountsRe.status_code, company.company_name AS
+        companyName
         FROM
-        sys_accounts_receivable AS accountsRe LEFT
-        JOIN sys_company AS company ON accountsRe.company_id = company.company_id
-        WHERE
-        1 = 1
-        AND accountsRe.status_code != 2
+        sys_accounts_receivable AS accountsRe LEFT JOIN sys_company AS company ON accountsRe.company_id =
+        company.company_id
+        WHERE 1 = 1 AND accountsRe.status_code != 2
         <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
             AND accountsRe.company_id IN
             <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
@@ -86,6 +93,7 @@
         </if>
         and accountsRe.year = #{year} ORDER BY accountsRe.create_time desc
     </select>
+    <!--应收账款列表信息总条数-->
     <select id="sysAccountsReceivableListTotal" resultType="int" parameterType="map">
         SELECT count(accounts_id)
         from sys_accounts_receivable as accountsRe where 1=1 and accountsRe.status_code!=2
@@ -97,11 +105,17 @@
         </if>
         and accountsRe.year = #{year}
     </select>
-
+    <select id="findSysAccountsReceivableById" resultMap="sysAccountsReceivable" parameterType="map">
+        select
+        accounts.*,company.company_name as companyName
+        from sys_accounts_receivable as accounts left JOIN sys_company as company on accounts.company_id=company.company_id
+        where 1=1 and accounts.status_code!=2 and  accounts_id = #{accountsId}
+    </select>
     <!--//也可以封装成map传值-->
     <select id="sysAccountsReceivableMonths" resultType="String" parameterType="map">
        select group_concat(distinct month ORDER BY month asc)as monthInfo from sys_accounts_receivable WHERE 1=1 and status_code!=2 and `year`= #{year}
     </select>
+    <!--更新应收账款信息-->
     <update id="updateSysAccountsReceivable" parameterType="com.spring.boot.bean.master.SysAccountsReceivable">
 		update sys_accounts_receivable set year = #{year},month = #{month},receivable_accounts_owner = #{receivableAccountsOwner},complete_accounts_owner = #{completeAccountsOwner},complete_coupon = #{completeCoupon},receivable_coupon = #{receivableCoupon}
 		,complete_vacancy = #{completeVacancy},receivable_vacancy = #{receivableVacancy},complete_subsidy = #{completeSubsidy},receivable_subsidy = #{receivableSubsidy},complete_sales = #{completeSales}
@@ -109,6 +123,7 @@
 		,complete_house_other = #{completeHouseOther},receivable_house_other = #{receivableHouseOther},complete_house = #{completeHouse},receivable_house = #{receivableHouse},company_id = #{companyId}
 		where accounts_id = #{accountsId}
 	</update>
+    <!--添加应收账款信息-->
     <insert id="addSysAccountsReceivable" parameterType="com.spring.boot.bean.master.SysAccountsReceivable">
 		INSERT INTO sys_accounts_receivable (year, month, receivable_accounts_owner, complete_accounts_owner,complete_coupon,receivable_coupon,complete_vacancy,receivable_vacancy,complete_subsidy,receivable_subsidy
 		,complete_sales,receivable_sales,receivable_open,complete_open,complete_property_subsidy,receivable_property_subsidy,complete_house_other,receivable_house_other,complete_house,receivable_house,company_id)
@@ -116,8 +131,8 @@
               ,#{completeSales},#{receivableSales},#{receivableOpen},#{completeOpen},#{completePropertySubsidy},#{receivablePropertySubsidy},#{completeHouseOther},#{receivableHouseOther},#{completeHouse}
               ,#{receivableHouse},#{companyId})
 	</insert>
-
-    <update id="deleteSysAccountsReceivable" >
+    <!--删除应收账款信息，只更新状态，不作实际删除操作-->
+    <update id="deleteSysAccountsReceivable">
         update sys_accounts_receivable set status_code=2
         where accounts_id = #{accountsId}
     </update>

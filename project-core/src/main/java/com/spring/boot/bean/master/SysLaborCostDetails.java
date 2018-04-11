@@ -4,76 +4,76 @@ package com.spring.boot.bean.master;
  * Created by Administrator on 2018/3/12.
  */
 public class SysLaborCostDetails {
-    private long detailsId;
-    private int employeeTotal;
-    private int headcountTotal;
-    private int entryTotal;
-    private int demissionTotal;
-    private int laborCostTotal;
-    private long laborCostId;
-    private int departmentType;
+    private Long detailsId;
+    private Integer employeeTotal;
+    private Integer headcountTotal;
+    private Integer entryTotal;
+    private Integer demissionTotal;
+    private Integer laborCostTotal;
+    private Long laborCostId;
+    private Integer departmentType;
 
-    public long getDetailsId() {
+    public Long getDetailsId() {
         return detailsId;
     }
 
-    public void setDetailsId(long detailsId) {
+    public void setDetailsId(Long detailsId) {
         this.detailsId = detailsId;
     }
 
-    public int getEmployeeTotal() {
+    public Integer getEmployeeTotal() {
         return employeeTotal;
     }
 
-    public void setEmployeeTotal(int employeeTotal) {
+    public void setEmployeeTotal(Integer employeeTotal) {
         this.employeeTotal = employeeTotal;
     }
 
-    public int getHeadcountTotal() {
+    public Integer getHeadcountTotal() {
         return headcountTotal;
     }
 
-    public void setHeadcountTotal(int headcountTotal) {
+    public void setHeadcountTotal(Integer headcountTotal) {
         this.headcountTotal = headcountTotal;
     }
 
-    public int getEntryTotal() {
+    public Integer getEntryTotal() {
         return entryTotal;
     }
 
-    public void setEntryTotal(int entryTotal) {
+    public void setEntryTotal(Integer entryTotal) {
         this.entryTotal = entryTotal;
     }
 
-    public int getDemissionTotal() {
+    public Integer getDemissionTotal() {
         return demissionTotal;
     }
 
-    public void setDemissionTotal(int demissionTotal) {
+    public void setDemissionTotal(Integer demissionTotal) {
         this.demissionTotal = demissionTotal;
     }
 
-    public int getLaborCostTotal() {
+    public Integer getLaborCostTotal() {
         return laborCostTotal;
     }
 
-    public void setLaborCostTotal(int laborCostTotal) {
+    public void setLaborCostTotal(Integer laborCostTotal) {
         this.laborCostTotal = laborCostTotal;
     }
 
-    public long getLaborCostId() {
+    public Long getLaborCostId() {
         return laborCostId;
     }
 
-    public void setLaborCostId(long laborCostId) {
+    public void setLaborCostId(Long laborCostId) {
         this.laborCostId = laborCostId;
     }
 
-    public int getDepartmentType() {
+    public Integer getDepartmentType() {
         return departmentType;
     }
 
-    public void setDepartmentType(int departmentType) {
+    public void setDepartmentType(Integer departmentType) {
         this.departmentType = departmentType;
     }
 }

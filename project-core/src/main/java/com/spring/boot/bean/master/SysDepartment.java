@@ -6,17 +6,17 @@ package com.spring.boot.bean.master;
  */
 public class SysDepartment {
 
-    private long departmentId;
+    private Long departmentId;
     private String departmentName;
     private String departmentCode;
     private String companyId;
-    private int statusCode;
+    private Integer statusCode;
 
-    public long getDepartmentId() {
+    public Long getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(long departmentId) {
+    public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -44,11 +44,11 @@ public class SysDepartment {
         this.companyId = companyId;
     }
 
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
 }

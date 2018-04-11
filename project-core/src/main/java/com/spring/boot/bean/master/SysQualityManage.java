@@ -1,6 +1,9 @@
 package com.spring.boot.bean.master;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2018/3/20.
@@ -16,7 +19,7 @@ public class SysQualityManage {
     private Integer securityEvent;
     private Integer qualityCheckUnmodified;
     private Integer statusCode;
-    private Timestamp createTime;
+    private Date createTime;
 
     private String companyName;
 
@@ -101,12 +104,12 @@ public class SysQualityManage {
     public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
-
-    public Timestamp getCreateTime() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

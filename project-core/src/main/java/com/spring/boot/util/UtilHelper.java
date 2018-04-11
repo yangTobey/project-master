@@ -195,7 +195,7 @@ public class UtilHelper {
         }
     }
     /**
-     * 利用正则表达式判断字符串是否是两位小数数字
+     * 利用正则表达式判断字符串是否是两位小数(正整数、一位小数、两位小数)数字
      * @param str
      * @return
      */
@@ -203,7 +203,7 @@ public class UtilHelper {
         if (UtilHelper.isEmpty(str)) {
             return false;
         }else{
-            Pattern pattern = Pattern.compile("^[0-9]+(.[0-9]{2})?$");
+            Pattern pattern = Pattern.compile("^[0-9]+(.[0-9]{0,2})?$");
             Matcher isNum = pattern.matcher(str);
             if( !isNum.matches() ){
                 return false;

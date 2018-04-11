@@ -3,13 +3,11 @@ package com.spring.boot.service.impl;
 import com.spring.boot.bean.master.SysAccountsReceivable;
 import com.spring.boot.bean.master.SysBudgetDetails;
 import com.spring.boot.bean.master.SysChargeDetails;
-import com.spring.boot.bean.master.SysQualityManage;
 import com.spring.boot.bean.master.entity.SysReceivableAccountsOwnerEntity;
 import com.spring.boot.service.SysFinancialService;
 import com.spring.boot.service.web.SysAccountsReceivableBusinessService;
 import com.spring.boot.service.web.SysBudgetDetailsBusinessService;
 import com.spring.boot.service.web.SysChargeBusinessService;
-import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.SysUtil;
 import com.spring.boot.util.UtilHelper;
@@ -37,9 +35,6 @@ public class SysFinancialServiceImpl implements SysFinancialService {
     @Autowired
     private SysBudgetDetailsBusinessService sysBudgetDetailsBusinessService;
 
-    @Autowired
-    private StringRedisTemplate redisTemplate;
-
     @Override
     public Map<String, Object> sysChargeDetails(Long companyId) {
         List<Long> sysUserCompanyIds = null;
@@ -54,6 +49,10 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             //也可以封装成map传值
             SysChargeDetails sysChargeDetails = sysChargeBusinessService.sysChargeDetails(sysUserCompanyIds);
             if (null != sysChargeDetails) {
+                //查找全国时，将主键id设置为null
+                if (companyId == 0) {
+                    sysChargeDetails.setChargeId(null);
+                }
                 if (null != sysChargeDetails.getChargeMoneyNow() && null != sysChargeDetails.getChargeMoney()) {
                     sysChargeDetails.setChargeMoneyScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysChargeDetails.getChargeMoneyNow(), sysChargeDetails.getChargeMoney())));
                 }
@@ -72,7 +71,10 @@ public class SysFinancialServiceImpl implements SysFinancialService {
     @Override
     public Map<String, Object> findSysChargeDetailsById(Long chargeId) {
         SysChargeDetails sysChargeDetails = sysChargeBusinessService.findSysChargeDetailsById(chargeId);
-        return R.ok().putData(200, sysChargeDetails, "获取成功！");
+        if(null!=sysChargeDetails){
+            return R.ok().putData(200, sysChargeDetails, "获取成功！");
+        }
+        return R.error(500, "获取失败，不存在该记录！");
     }
 
     @Override
@@ -177,79 +179,9 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                     Double completeAccountsOwner = getNum(sysAccountsReceivableForMonth.getCompleteAccountsOwner());
                     Integer month = sysAccountsReceivableForMonth.getMonth();
                     //sysReceivableAccountsOwnerEntity.setMonth(month);
-                    switch (month) {
-                        case 1:
-                            receivableMap.put(1, receivableAccountsOwner);
-                            completeMap.put(1, completeAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setCompleteAccountsJan(completeAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setReceivableAccountsJan(receivableAccountsOwner);
-                            break;
-                        case 2:
-                            receivableMap.put(2, receivableAccountsOwner);
-                            completeMap.put(2, completeAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setReceivableAccountsFeb(receivableAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setCompleteAccountsFeb(completeAccountsOwner);
-                            break;
-                        case 3:
-                            receivableMap.put(3, receivableAccountsOwner);
-                            completeMap.put(3, completeAccountsOwner);
-                            // sysReceivableAccountsOwnerEntity.setReceivableAccountsMar(receivableAccountsOwner);
-                            // sysReceivableAccountsOwnerEntity.setCompleteAccountsMar(completeAccountsOwner);
-                            break;
-                        case 4:
-                            receivableMap.put(4, receivableAccountsOwner);
-                            completeMap.put(4, completeAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setReceivableAccountsApr(receivableAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setCompleteAccountsApr(completeAccountsOwner);
-                            break;
-                        case 5:
-                            receivableMap.put(5, receivableAccountsOwner);
-                            completeMap.put(5, completeAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setReceivableAccountsMay(receivableAccountsOwner);
-                            // sysReceivableAccountsOwnerEntity.setCompleteAccountsMay(completeAccountsOwner);
-                            break;
-                        case 6:
-                            receivableMap.put(6, receivableAccountsOwner);
-                            completeMap.put(6, completeAccountsOwner);
-                            // sysReceivableAccountsOwnerEntity.setReceivableAccountsJune(receivableAccountsOwner);
-                            // sysReceivableAccountsOwnerEntity.setCompleteAccountsJune(completeAccountsOwner);
-                            break;
-                        case 7:
-                            receivableMap.put(7, receivableAccountsOwner);
-                            completeMap.put(7, completeAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setReceivableAccountsJuly(receivableAccountsOwner);
-                            // sysReceivableAccountsOwnerEntity.setCompleteAccountsJuly(completeAccountsOwner);
-                            break;
-                        case 8:
-                            receivableMap.put(8, receivableAccountsOwner);
-                            completeMap.put(8, completeAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setReceivableAccountsAug(receivableAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setCompleteAccountsAug(completeAccountsOwner);
-                            break;
-                        case 9:
-                            receivableMap.put(9, receivableAccountsOwner);
-                            completeMap.put(9, completeAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setReceivableAccountsSept(receivableAccountsOwner);
-                            // sysReceivableAccountsOwnerEntity.setCompleteAccountsSept(completeAccountsOwner);
-                            break;
-                        case 10:
-                            receivableMap.put(10, receivableAccountsOwner);
-                            completeMap.put(10, completeAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setReceivableAccountsOct(receivableAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setCompleteAccountsOct(completeAccountsOwner);
-                            break;
-                        case 11:
-                            receivableMap.put(11, receivableAccountsOwner);
-                            completeMap.put(11, completeAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setReceivableAccountsNov(receivableAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setCompleteAccountsNov(completeAccountsOwner);
-                            break;
-                        case 12:
-                            receivableMap.put(12, receivableAccountsOwner);
-                            completeMap.put(12, completeAccountsOwner);
-                            // sysReceivableAccountsOwnerEntity.setReceivableAccountsDec(receivableAccountsOwner);
-                            //sysReceivableAccountsOwnerEntity.setCompleteAccountsDec(completeAccountsOwner);
-                            break;
+                    if(null!=month){
+                        receivableMap.put(month, receivableAccountsOwner);
+                        completeMap.put(month, completeAccountsOwner);
                     }
                 }
             }
@@ -293,8 +225,26 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         }
     }
 
+    @Override
+    public Map<String, Object> findSysAccountsReceivableById(Long accountsId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("accountsId", accountsId);
+        try {
+            SysAccountsReceivable sysAccountsReceivable = sysAccountsReceivableBusinessService.findSysAccountsReceivableById(map);
+            if(null!=sysAccountsReceivable){
+                return R.ok().putData(200, sysAccountsReceivable, "根据id查找品质管理数据成功！");
+            }else{
+                return R.error(500, "获取数据失败，请联系系统管理员！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("根据id查找数据失败：" + e.getMessage());
+            return R.error(500, "根据id数据失败，服务器异常，请联系系统管理员！");
+        }
+    }
+
     /**
-     * 讲空置过滤，把值为空的赋值为0，不为空的原路返回
+     * 将空置过滤，把值为空的赋值为0，不为空的原路返回
      *
      * @param num
      * @return
@@ -333,7 +283,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             SysAccountsReceivable sysArDetails = sysAccountsReceivableBusinessService.findRecordByYearAndMonth(sysAccountsReceivable.getYear(), sysAccountsReceivable.getMonth(),sysAccountsReceivable.getCompanyId());
             if (null != sysArDetails) {
                 //如果系统已存在年份和月份的数据，不给予更新操作
-                if (sysArDetails.getAccountsId() != sysAccountsReceivable.getAccountsId()) {
+                if (!sysArDetails.getAccountsId().equals( sysAccountsReceivable.getAccountsId())) {
                     return R.error(500, "更新失败，系统已存在" + sysAccountsReceivable.getYear() + "年" + sysAccountsReceivable.getMonth() + "月的数据，不能重复添加！！");
                 }
             }
@@ -504,7 +454,6 @@ public class SysFinancialServiceImpl implements SysFinancialService {
 
     @Override
     public Map<String, Object> findSysBudgetDetailsById(Long budgetId) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("budgetId", budgetId);
         try {

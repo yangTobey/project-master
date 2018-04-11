@@ -1,6 +1,9 @@
 package com.spring.boot.bean.master;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2018/3/2.
@@ -17,7 +20,7 @@ public class SysContract {
     private String firstPartyCompany;
     private String secondPartyCompany;
     private String personLiableName;
-    private Timestamp createTime;
+    private Date createTime;
     private Integer statusCode;
     private Long companyId;
 
@@ -115,11 +118,12 @@ public class SysContract {
         this.personLiableName = personLiableName;
     }
 
-    public Timestamp getCreateTime() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

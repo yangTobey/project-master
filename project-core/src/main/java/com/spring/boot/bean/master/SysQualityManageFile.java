@@ -1,6 +1,9 @@
 package com.spring.boot.bean.master;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2018/3/20.
@@ -13,7 +16,7 @@ public class SysQualityManageFile {
     private String fileUrl;
     private Double fileSize;
     private Integer statusCode;
-    private Timestamp uploadTime;
+    private Date uploadTime;
 
     public Long getFileId() {
         return fileId;
@@ -70,12 +73,12 @@ public class SysQualityManageFile {
     public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
-
-    public Timestamp getUploadTime() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    public Date getUploadTime() {
         return uploadTime;
     }
 
-    public void setUploadTime(Timestamp uploadTime) {
+    public void setUploadTime(Date uploadTime) {
         this.uploadTime = uploadTime;
     }
 }

@@ -80,7 +80,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
                                String eBusinessLaborCost, String eBusinessHeadcountTotal, String eBusinessEmployeeTotal, String eBusinessEntryTotal, String eBusinessDemissionTotal,
                                String saleLaborCost, String saleHeadcountTotal, String saleEmployeeTotal, String saleEntryTotal, String saleDemissionTotal) {
         SysLaborCost sysLaborCost = new SysLaborCost();
-        sysLaborCost.setCompanyId(Integer.valueOf(companyId));
+        sysLaborCost.setCompanyId(Long.valueOf(companyId));
         sysLaborCost.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
         sysLaborCost.setYear(Integer.valueOf(year));
         sysLaborCost.setMonth(Integer.valueOf(month));

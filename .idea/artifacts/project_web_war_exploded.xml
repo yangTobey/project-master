@@ -10,6 +10,12 @@
           <element id="archive" name="project-core-1.0-SNAPSHOT.jar">
             <element id="module-output" name="project-core" />
           </element>
+          <element id="library" level="project" name="Maven: net.sourceforge.nekohtml:nekohtml:1.9.22" />
+          <element id="library" level="project" name="Maven: xerces:xercesImpl:2.11.0" />
+          <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.4.01" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-devtools:1.3.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:1.3.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:1.3.0.RELEASE" />
           <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />
           <element id="archive" name="project-service-1.0-SNAPSHOT.jar">
             <element id="module-output" name="project-service" />
@@ -24,8 +30,6 @@
           <element id="library" level="project" name="Maven: org.apache.commons:commons-pool2:2.4.2" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-web:1.5.8.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:1.3.0.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:1.3.0.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:1.3.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:4.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.16" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-validator:5.2.2.Final" />

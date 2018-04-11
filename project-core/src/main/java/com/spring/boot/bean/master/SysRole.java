@@ -1,24 +1,27 @@
 package com.spring.boot.bean.master;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2018/2/5.
  */
 public class SysRole {
 
-    private long roleId;
+    private Long roleId;
     private String roleName;
     private String remark;
-    private Timestamp createTime;
-    private long createUserId;
-    private int status;
+    private Date createTime;
+    private Long createUserId;
+    private Integer status;
 
-    public long getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(long roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 
@@ -37,28 +40,28 @@ public class SysRole {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-
-    public Timestamp getCreateTime() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public long getCreateUserId() {
+    public Long getCreateUserId() {
         return createUserId;
     }
 
-    public void setCreateUserId(long createUserId) {
+    public void setCreateUserId(Long createUserId) {
         this.createUserId = createUserId;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 }

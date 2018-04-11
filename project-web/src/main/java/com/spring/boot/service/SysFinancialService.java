@@ -2,8 +2,6 @@ package com.spring.boot.service;
 
 import com.spring.boot.bean.master.SysAccountsReceivable;
 import com.spring.boot.bean.master.SysBudgetDetails;
-import com.spring.boot.bean.master.SysUser;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
@@ -41,6 +39,12 @@ public interface SysFinancialService {
      * @return
      */
     Map<String, Object> sysAccountsReceivableAnalysis(Long companyId);
+    /**
+     * 根据主键id查找数据
+     * @param accountsId 主键id
+     * @return
+     */
+    Map<String, Object> findSysAccountsReceivableById(Long accountsId);
 
     /**
      * 应收账款列表信息

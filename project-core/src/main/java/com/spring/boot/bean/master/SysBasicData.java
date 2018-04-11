@@ -1,6 +1,9 @@
 package com.spring.boot.bean.master;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * 基础数据实体类
@@ -8,157 +11,157 @@ import java.sql.Timestamp;
  */
 public class SysBasicData {
 
-    private long basicId;
-    private long companyId;
-    private int year;
-    private int month;
-    private double constructionArea;
-    private double chargeArea;
-    private int cityNumber;
-    private int projectNumber;
-    private int houseNumber;
-    private int acceptHouseNumber;
-    private int forSaleHouseNumber;
-    private int decorateHouseNumber;
-    private int parkingSpace;
-    private int forSaleParkingSpace;
-    private int salesDistribution;
-    private int statusCode;
-    private Timestamp createTime;
+    private Long basicId;
+    private Long companyId;
+    private Integer year;
+    private Integer month;
+    private Double constructionArea;
+    private Double chargeArea;
+    private Integer cityNumber;
+    private Integer projectNumber;
+    private Integer houseNumber;
+    private Integer acceptHouseNumber;
+    private Integer forSaleHouseNumber;
+    private Integer decorateHouseNumber;
+    private Integer parkingSpace;
+    private Integer forSaleParkingSpace;
+    private Integer salesDistribution;
+    private Integer statusCode;
+    private Date createTime;
 
-    public long getBasicId() {
+    public Long getBasicId() {
         return basicId;
     }
 
-    public void setBasicId(long basicId) {
+    public void setBasicId(Long basicId) {
         this.basicId = basicId;
     }
 
-    public long getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(long companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public int getMonth() {
+    public Integer getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(Integer month) {
         this.month = month;
     }
 
-    public double getConstructionArea() {
+    public Double getConstructionArea() {
         return constructionArea;
     }
 
-    public void setConstructionArea(double constructionArea) {
+    public void setConstructionArea(Double constructionArea) {
         this.constructionArea = constructionArea;
     }
 
-    public double getChargeArea() {
+    public Double getChargeArea() {
         return chargeArea;
     }
 
-    public void setChargeArea(double chargeArea) {
+    public void setChargeArea(Double chargeArea) {
         this.chargeArea = chargeArea;
     }
 
-    public int getCityNumber() {
+    public Integer getCityNumber() {
         return cityNumber;
     }
 
-    public void setCityNumber(int cityNumber) {
+    public void setCityNumber(Integer cityNumber) {
         this.cityNumber = cityNumber;
     }
 
-    public int getProjectNumber() {
+    public Integer getProjectNumber() {
         return projectNumber;
     }
 
-    public void setProjectNumber(int projectNumber) {
+    public void setProjectNumber(Integer projectNumber) {
         this.projectNumber = projectNumber;
     }
 
-    public int getHouseNumber() {
+    public Integer getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public void setHouseNumber(Integer houseNumber) {
         this.houseNumber = houseNumber;
     }
 
-    public int getAcceptHouseNumber() {
+    public Integer getAcceptHouseNumber() {
         return acceptHouseNumber;
     }
 
-    public void setAcceptHouseNumber(int acceptHouseNumber) {
+    public void setAcceptHouseNumber(Integer acceptHouseNumber) {
         this.acceptHouseNumber = acceptHouseNumber;
     }
 
-    public int getForSaleHouseNumber() {
+    public Integer getForSaleHouseNumber() {
         return forSaleHouseNumber;
     }
 
-    public void setForSaleHouseNumber(int forSaleHouseNumber) {
+    public void setForSaleHouseNumber(Integer forSaleHouseNumber) {
         this.forSaleHouseNumber = forSaleHouseNumber;
     }
 
-    public int getDecorateHouseNumber() {
+    public Integer getDecorateHouseNumber() {
         return decorateHouseNumber;
     }
 
-    public void setDecorateHouseNumber(int decorateHouseNumber) {
+    public void setDecorateHouseNumber(Integer decorateHouseNumber) {
         this.decorateHouseNumber = decorateHouseNumber;
     }
 
-    public int getParkingSpace() {
+    public Integer getParkingSpace() {
         return parkingSpace;
     }
 
-    public void setParkingSpace(int parkingSpace) {
+    public void setParkingSpace(Integer parkingSpace) {
         this.parkingSpace = parkingSpace;
     }
 
-    public int getForSaleParkingSpace() {
+    public Integer getForSaleParkingSpace() {
         return forSaleParkingSpace;
     }
 
-    public void setForSaleParkingSpace(int forSaleParkingSpace) {
+    public void setForSaleParkingSpace(Integer forSaleParkingSpace) {
         this.forSaleParkingSpace = forSaleParkingSpace;
     }
 
-    public int getSalesDistribution() {
+    public Integer getSalesDistribution() {
         return salesDistribution;
     }
 
-    public void setSalesDistribution(int salesDistribution) {
+    public void setSalesDistribution(Integer salesDistribution) {
         this.salesDistribution = salesDistribution;
     }
 
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
-
-    public Timestamp getCreateTime() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 }

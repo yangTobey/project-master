@@ -1,63 +1,66 @@
 package com.spring.boot.bean.master;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2018/3/12.
  */
 public class SysLaborCost {
-    private long laborCostId;
-    private int year;
-    private int month;
-    private long companyId;
-    private Timestamp createTime;
-    private int statusCode;
+    private Long laborCostId;
+    private Integer year;
+    private Integer month;
+    private Long companyId;
+    private Date createTime;
+    private Integer statusCode;
 
-    public long getLaborCostId() {
+    public Long getLaborCostId() {
         return laborCostId;
     }
 
-    public void setLaborCostId(long laborCostId) {
+    public void setLaborCostId(Long laborCostId) {
         this.laborCostId = laborCostId;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public int getMonth() {
+    public Integer getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(Integer month) {
         this.month = month;
     }
 
-    public long getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(long companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
-
-    public Timestamp getCreateTime() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
 }

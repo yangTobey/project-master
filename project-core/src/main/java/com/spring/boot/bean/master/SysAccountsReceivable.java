@@ -2,7 +2,6 @@ package com.spring.boot.bean.master;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**

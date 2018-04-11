@@ -1,8 +1,6 @@
 package com.spring.boot.service.web;
 
 import com.spring.boot.bean.master.SysAccountsReceivable;
-import com.spring.boot.bean.master.SysChargeDetails;
-import com.spring.boot.bean.master.entity.SysReceivableAccountsOwnerEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -38,6 +36,12 @@ public interface SysAccountsReceivableBusinessService {
      * @return
      */
     List<SysAccountsReceivable> sysAccountsReceivableList(Map<String, Object> map);
+    /**
+     * 根据主键id查找信息
+     * @param map
+     * @return
+     */
+    SysAccountsReceivable findSysAccountsReceivableById(Map<String, Object> map);
     /**
      * 新增月度应收账款列表总条数
      * @param map

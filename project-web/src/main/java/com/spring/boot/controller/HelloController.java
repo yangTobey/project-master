@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Created by Administrator on 2018/2/1.
  */
 @Controller
-@RequestMapping("/index")
+@RequestMapping("/hello")
 public class HelloController {
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String hello(){
