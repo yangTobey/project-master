@@ -4,6 +4,7 @@ import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysDepartment;
 import com.spring.boot.bean.master.SysLaborCost;
 import com.spring.boot.bean.master.SysLaborCostDetails;
+import com.spring.boot.bean.master.entity.SysLaborCostDepartmentEntity;
 import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
 import com.spring.boot.dao.web.master.SysCompanyDao;
 import com.spring.boot.dao.web.master.SysLaborCostDao;
@@ -29,7 +30,7 @@ public class SysLaborCostBusinessServiceImpl implements SysLaborCostBusinessServ
     }
 
     @Override
-    public List<SysLaborCostDetailsEntity> getSysLaborCostDepartmentTotal(Map<String, Object> map) {
+    public List<SysLaborCostDepartmentEntity> getSysLaborCostDepartmentTotal(Map<String, Object> map) {
         return sysLaborCostDao.getSysLaborCostDepartmentTotal(map);
     }
 
@@ -39,8 +40,18 @@ public class SysLaborCostBusinessServiceImpl implements SysLaborCostBusinessServ
     }
 
     @Override
-    public SysLaborCost findSysLaborCostByLaborCostId(long laborCostId) {
+    public int getSysLaborCostListTotal(Map<String, Object> map) {
+        return sysLaborCostDao.getSysLaborCostListTotal(map);
+    }
+
+    @Override
+    public SysLaborCost findSysLaborCostByLaborCostId(Long laborCostId) {
         return sysLaborCostDao.findSysLaborCostByLaborCostId(laborCostId);
+    }
+
+    @Override
+    public List<SysLaborCostDetails> findSysLaborCostDetailsByLaborCostId(Long laborCostId) {
+        return sysLaborCostDao.findSysLaborCostDetailsByLaborCostId(laborCostId);
     }
 
     @Override

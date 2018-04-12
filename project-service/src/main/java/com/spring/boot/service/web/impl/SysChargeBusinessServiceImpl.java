@@ -23,13 +23,18 @@ public class SysChargeBusinessServiceImpl implements SysChargeBusinessService {
     private SysChargeDao sysChargeDao;
 
     @Override
-    public SysChargeDetails sysChargeDetails(List<Long> sysUserCompanyIds) {
-        return sysChargeDao.sysChargeDetails(sysUserCompanyIds);
+    public SysChargeDetails sysChargeDetails(Map<String, Object> map) {
+        return sysChargeDao.sysChargeDetails(map);
     }
 
     @Override
     public SysChargeDetails findSysChargeDetailsById(Long chargeId) {
         return sysChargeDao.findSysChargeDetailsById(chargeId);
+    }
+
+    @Override
+    public SysChargeDetails findSysChargeDetailsByWeekOfYear(Integer year, Integer weekOfYear,Long companyId) {
+        return sysChargeDao.findSysChargeDetailsByWeekOfYear(year,weekOfYear,companyId);
     }
 
     @Override

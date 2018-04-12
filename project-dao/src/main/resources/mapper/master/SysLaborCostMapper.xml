@@ -25,12 +25,14 @@
         <result column="labor_cost_total" property="laborCostTotal"/>
         <result column="department_type" property="departmentType"/>
     </resultMap>
-    <resultMap id="sysLaborCostDepartment" type="com.spring.boot.bean.master.entity.SysLaborCostDepartmentEntity">
+    <resultMap id="sysLaborCostDetails" type="com.spring.boot.bean.master.SysLaborCostDetails">
+        <result column="details_id" property="detailsId"/>
         <result column="employee_total" property="employeeTotal"/>
         <result column="headcount_total" property="headcountTotal"/>
         <result column="entry_total" property="entryTotal"/>
         <result column="demission_total" property="demissionTotal"/>
         <result column="labor_cost_total" property="laborCostTotal"/>
+        <result column="labor_cost_id" property="laborCostId"/>
         <result column="department_type" property="departmentType"/>
     </resultMap>
 
@@ -75,8 +77,11 @@
         LEFT JOIN sys_labor_cost_details AS details ON laborCost.labor_cost_id = details.labor_cost_id
         LEFT JOIN sys_company as company on company.company_id=laborCost.company_id
         where 1=1
-        <if test="companyId != 0">
-            and laborCost.company_id=#{companyId}
+        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+            AND laborCost.company_id IN
+            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
         </if>
         and laborCost.year=#{year}
         and laborCost.month=#{month}
@@ -84,37 +89,69 @@
         GROUP BY laborCost.labor_cost_id) as sum
     </select>
     <!--根据 物业、电商、销配部门类型获取当月人工总成本-->
-    <select id="getSysLaborCostDepartmentTotal" resultMap="sysLaborCostDepartment" parameterType="map">
+    <select id="getSysLaborCostDepartmentTotal" resultMap="sysLaborCostDetails" parameterType="map">
         select
         <include refid="SysLaborCost_Department_Total"/>
         FROM sys_labor_cost AS laborCost
         right JOIN sys_labor_cost_details AS details ON laborCost.labor_cost_id = details.labor_cost_id
         where 1=1
-        <if test="companyId != 0">
-            and laborCost.company_id=#{companyId}
+        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+            AND laborCost.company_id IN
+            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
         </if>
         and laborCost.year=#{year}
         and laborCost.month=#{month}
         GROUP BY details.department_type
     </select>
+    <!--查找列表数据-->
     <select id="getSysLaborCostList" resultMap="sysLaborCostDetails" parameterType="map">
         select
         <include refid="Base_Column_List_Details"/>
         from sys_labor_cost as laborCost LEFT JOIN sys_labor_cost_details as details on laborCost.labor_cost_id=details.labor_cost_id
         LEFT JOIN sys_company as company on company.company_id=laborCost.company_id
         where 1=1
-        <if test="companyId != 0">
-            and laborCost.company_id=#{companyId}
+        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+            AND laborCost.company_id IN
+            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
         </if>
         and laborCost.year=#{year}
         and laborCost.status_code!=2
         GROUP BY  laborCost.labor_cost_id
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+    <!--查找列表总数-->
+    <select id="getSysLaborCostListTotal" resultType="int" parameterType="map">
+        select count(labor_cost_id) from (select
+        <include refid="Base_Column_List_Details"/>
+        from sys_labor_cost as laborCost LEFT JOIN sys_labor_cost_details as details on laborCost.labor_cost_id=details.labor_cost_id
+        LEFT JOIN sys_company as company on company.company_id=laborCost.company_id
+        where 1=1
+        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+            AND laborCost.company_id IN
+            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        and laborCost.year=#{year}
+        and laborCost.status_code!=2
+        GROUP BY  laborCost.labor_cost_id) as a
     </select>
     <!--根据人员成本id查找对应的信息-->
     <select id="findSysLaborCostByLaborCostId" resultMap="sysLaborCost" parameterType="Long">
         select
         <include refid="Base_Column_List_SysLaborCost"/>
         from sys_labor_cost
+        where labor_cost_id = #{laborCostId}
+    </select>
+    <!--根据人员成本id查找对应部门详细信息-->
+    <select id="findSysLaborCostDetailsByLaborCostId" resultMap="sysLaborCostDetails" parameterType="Long">
+        select * from sys_labor_cost_details
         where labor_cost_id = #{laborCostId}
     </select>
     <!--更新人员成本信息-->
@@ -125,7 +162,7 @@
     <!--更新人员成本详细信息-->
     <update id="updateSysLaborCostDetails" parameterType="com.spring.boot.bean.master.SysLaborCostDetails">
         update sys_labor_cost_details set employee_total = #{employeeTotal},headcount_total = #{headcountTotal},entry_total = #{entryTotal},demission_total = #{demissionTotal},
-        labor_cost_total = #{laborCostTotal},department_type = #{departmentType}
+        labor_cost_total = #{laborCostTotal}
         where labor_cost_id = #{laborCostId}
     </update>
 

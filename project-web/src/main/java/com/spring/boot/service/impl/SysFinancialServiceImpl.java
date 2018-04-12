@@ -46,8 +46,12 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 sysUserCompanyIds = new ArrayList<Long>();
                 sysUserCompanyIds.add(companyId);
             }
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("year", UtilHelper.getYear());
+            map.put("weekOfYear", UtilHelper.getWeekOfYear());
+            map.put("sysUserCompanyIds", sysUserCompanyIds);
             //也可以封装成map传值
-            SysChargeDetails sysChargeDetails = sysChargeBusinessService.sysChargeDetails(sysUserCompanyIds);
+            SysChargeDetails sysChargeDetails = sysChargeBusinessService.sysChargeDetails(map);
             if (null != sysChargeDetails) {
                 //查找全国时，将主键id设置为null
                 if (companyId == 0) {
@@ -79,14 +83,21 @@ public class SysFinancialServiceImpl implements SysFinancialService {
 
     @Override
     public Map<String, Object> addSysCharge(Long companyId, Double chargeMoney, Double chargeMoneyNow, Double chargeDebt, Double chargeDebtReturn) {
-        SysChargeDetails sysChargeDetails = new SysChargeDetails();
-        sysChargeDetails.setChargeDebt(chargeDebt);
-        sysChargeDetails.setChargeDebtReturn(chargeDebtReturn);
-        sysChargeDetails.setChargeMoney(chargeMoney);
-        sysChargeDetails.setChargeMoneyNow(chargeMoneyNow);
-        sysChargeDetails.setCompanyId(companyId);
-        sysChargeDetails.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
         try {
+            SysChargeDetails sysChargeDetails=sysChargeBusinessService.findSysChargeDetailsByWeekOfYear(UtilHelper.getYear(),UtilHelper.getWeekOfYear(),companyId);
+            if(null!=sysChargeDetails){
+                return R.error(500, "本周数据已经添加，不能再次添加，如有疑问，请联系系统管理员！");
+            }else {
+                sysChargeDetails = new SysChargeDetails();
+                sysChargeDetails.setChargeDebt(chargeDebt);
+                sysChargeDetails.setChargeDebtReturn(chargeDebtReturn);
+                sysChargeDetails.setChargeMoney(chargeMoney);
+                sysChargeDetails.setChargeMoneyNow(chargeMoneyNow);
+                sysChargeDetails.setCompanyId(companyId);
+                sysChargeDetails.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
+                sysChargeDetails.setYear(UtilHelper.getYear());
+                sysChargeDetails.setWeekOfYear(UtilHelper.getWeekOfYear());
+            }
             int count = sysChargeBusinessService.addSysCharge(sysChargeDetails);
             if (count > 0) {
                 return R.ok(200, "新增成功！");
@@ -144,6 +155,10 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             //也可以封装成map传值
             SysAccountsReceivable sysAccountsReceivable = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(map);
             if (null != sysAccountsReceivable) {
+                //选择全国时，需要讲主键设置为空，避免前端错误操作
+                if (companyId == 0) {
+                    sysAccountsReceivable.setAccountsId(null);
+                }
                 sysAccountsReceivable.setCouponScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompleteCoupon(), sysAccountsReceivable.getReceivableCoupon())));
                 sysAccountsReceivable.setVacancyScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompleteVacancy(), sysAccountsReceivable.getReceivableVacancy())));
                 sysAccountsReceivable.setSubsidyScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompleteSubsidy(), sysAccountsReceivable.getReceivableSubsidy())));

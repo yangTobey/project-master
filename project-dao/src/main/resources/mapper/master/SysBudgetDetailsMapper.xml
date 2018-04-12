@@ -118,7 +118,7 @@
     </select>
     <!--//也可以封装成map传值,根据年份和月份，获取当前年上一年12月份对应的实际利润信息-->
     <select id="sysBudgetRealProfitsByMonth" resultMap="sysBudgetDetails" >
-        SELECT SUM(real_profits) as real_profits,month
+        SELECT SUM(real_profits) as real_profits,SUM(real_expenses_total) as real_expenses_total,SUM(personnel_cost) as personnel_cost,month
         from sys_budget_details where 1=1 and status_code!=2
         <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
             AND company_id IN

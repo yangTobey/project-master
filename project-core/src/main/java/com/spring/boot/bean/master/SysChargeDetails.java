@@ -18,6 +18,8 @@ public class SysChargeDetails {
     private Date createTime;
     private Long companyId;
     private Integer statusCode;
+    private Integer weekOfYear;
+    private Integer year;
     //当期收缴率
     private Double chargeMoneyScale;
     //清欠收缴率
@@ -101,5 +103,21 @@ public class SysChargeDetails {
 
     public void setChargeDebtScale(Double chargeDebtScale) {
         this.chargeDebtScale = chargeDebtScale;
+    }
+
+    public Integer getWeekOfYear() {
+        return weekOfYear;
+    }
+
+    public void setWeekOfYear(Integer weekOfYear) {
+        this.weekOfYear = weekOfYear;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
     }
 }

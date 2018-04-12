@@ -8,69 +8,67 @@ import java.sql.Timestamp;
 public class SysLaborCostDepartmentEntity {
 
 
-    private long laborCostDetailsId;
-    private int employeeTotal;
-    private int headcountTotal;
-    private int entryTotal;
-    private int demissionTotal;
-    private int laborCostTotal;
-    private int departmentType;
+    private Long laborCostDetailsId;
+    private Integer employeeTotal;
+    private Integer headcountTotal;
+    private Integer entryTotal;
+    private Integer demissionTotal;
+    private Double laborCostTotal;
+    private Integer departmentType;
 
-
-
-    public long getLaborCostDetailsId() {
+    public Long getLaborCostDetailsId() {
         return laborCostDetailsId;
     }
 
-    public void setLaborCostDetailsId(long laborCostDetailsId) {
+    public void setLaborCostDetailsId(Long laborCostDetailsId) {
         this.laborCostDetailsId = laborCostDetailsId;
     }
 
-    public int getEmployeeTotal() {
+    public Integer getEmployeeTotal() {
         return employeeTotal;
     }
 
-    public void setEmployeeTotal(int employeeTotal) {
+    public void setEmployeeTotal(Integer employeeTotal) {
         this.employeeTotal = employeeTotal;
     }
 
-    public int getHeadcountTotal() {
+    public Integer getHeadcountTotal() {
         return headcountTotal;
     }
 
-    public void setHeadcountTotal(int headcountTotal) {
+    public void setHeadcountTotal(Integer headcountTotal) {
         this.headcountTotal = headcountTotal;
     }
 
-    public int getEntryTotal() {
+    public Integer getEntryTotal() {
         return entryTotal;
     }
 
-    public void setEntryTotal(int entryTotal) {
+    public void setEntryTotal(Integer entryTotal) {
         this.entryTotal = entryTotal;
     }
 
-    public int getDemissionTotal() {
+    public Integer getDemissionTotal() {
         return demissionTotal;
     }
 
-    public void setDemissionTotal(int demissionTotal) {
+    public void setDemissionTotal(Integer demissionTotal) {
         this.demissionTotal = demissionTotal;
     }
 
-    public int getLaborCostTotal() {
+    public Double getLaborCostTotal() {
         return laborCostTotal;
     }
 
-    public void setLaborCostTotal(int laborCostTotal) {
+    public void setLaborCostTotal(Double laborCostTotal) {
         this.laborCostTotal = laborCostTotal;
     }
 
-    public int getDepartmentType() {
+    public Integer getDepartmentType() {
         return departmentType;
     }
 
-    public void setDepartmentType(int departmentType) {
+    public void setDepartmentType(Integer departmentType) {
         this.departmentType = departmentType;
     }
 }

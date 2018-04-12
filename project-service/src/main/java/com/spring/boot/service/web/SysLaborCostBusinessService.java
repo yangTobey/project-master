@@ -4,6 +4,7 @@ import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysDepartment;
 import com.spring.boot.bean.master.SysLaborCost;
 import com.spring.boot.bean.master.SysLaborCostDetails;
+import com.spring.boot.bean.master.entity.SysLaborCostDepartmentEntity;
 import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface SysLaborCostBusinessService {
      * 根据 物业、电商、销配部门类型获取当月人工总成本
      * @return
      */
-    List<SysLaborCostDetailsEntity>  getSysLaborCostDepartmentTotal(Map<String, Object> map);
+    List<SysLaborCostDepartmentEntity>  getSysLaborCostDepartmentTotal(Map<String, Object> map);
     /**
      * 获取人员成本列表数据
      * @return
@@ -31,10 +32,21 @@ public interface SysLaborCostBusinessService {
     List<SysLaborCostDetailsEntity> getSysLaborCostList(Map<String, Object> map);
 
     /**
+     * 获取人员成本列表数据总条数
+     * @return
+     */
+    int getSysLaborCostListTotal(Map<String, Object> map);
+
+    /**
      * 根据人员成本id查找对应的信息
      * @return
      */
-    SysLaborCost findSysLaborCostByLaborCostId(long laborCostId);
+    SysLaborCost findSysLaborCostByLaborCostId(Long laborCostId);
+    /**
+     * 根据人员成本id查找对应部门详细信息
+     * @return
+     */
+    List<SysLaborCostDetails> findSysLaborCostDetailsByLaborCostId(Long laborCostId);
     /**
      * 新增人员成本
      * @param sysLaborCost

@@ -3,6 +3,7 @@ package com.spring.boot.dao.web.master;
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysLaborCost;
 import com.spring.boot.bean.master.SysLaborCostDetails;
+import com.spring.boot.bean.master.entity.SysLaborCostDepartmentEntity;
 import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
 import com.spring.boot.dao.BaseDao;
 import org.apache.ibatis.annotations.Param;
@@ -23,13 +24,18 @@ public interface SysLaborCostDao extends BaseDao<SysLaborCost> {
      * 根据 物业、电商、销配部门类型获取当月人工总成本
      * @return
      */
-    List<SysLaborCostDetailsEntity>  getSysLaborCostDepartmentTotal(Map<String, Object> map);
+    List<SysLaborCostDepartmentEntity>  getSysLaborCostDepartmentTotal(Map<String, Object> map);
 
     /**
      * 获取人工成本列表信息
      * @return
      */
     List<SysLaborCostDetailsEntity> getSysLaborCostList(Map<String, Object> map);
+    /**
+     * 获取人员成本列表数据总条数
+     * @return
+     */
+    int getSysLaborCostListTotal(Map<String, Object> map);
 
     /**
      * 新增人员成本
@@ -43,6 +49,11 @@ public interface SysLaborCostDao extends BaseDao<SysLaborCost> {
      * @return
      */
     SysLaborCost findSysLaborCostByLaborCostId(Long laborCostId);
+    /**
+     * 根据人员成本id查找对应部门详细信息
+     * @return
+     */
+    List<SysLaborCostDetails> findSysLaborCostDetailsByLaborCostId(Long laborCostId);
     /**
      * 新增人员成本详情信息
      *

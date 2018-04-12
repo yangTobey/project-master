@@ -12,13 +12,13 @@ public interface SysLaborCostService {
      * @param companyId 公司id
      * @return
      */
-    Map<String,Object> getSysLaborCostInfo(String companyId);
+    Map<String,Object> getSysLaborCostAnalysis(Long companyId);
     /**
      * 查询人员成本信息（根据操作类型查询信息，数据分析图表数据或者列表数据）
      * @param companyId 公司id
      * @return
      */
-    Map<String,Object> getSysLaborCostList(String companyId,int year);
+    Map<String,Object> getSysLaborCostList(Integer limit,Integer offset,Long companyId,Integer year);
 
 
     /**
@@ -43,7 +43,7 @@ public interface SysLaborCostService {
      * @param saleDemissionTotal
      * @return
      */
-    int addSysLaborCost(String companyId, String year, String month,String propertyLaborCost,String propertyHeadcountTotal,String propertyEmployeeTotal,String propertyEntryTotal,String propertyDemissionTotal,
+    Map<String,Object> addSysLaborCost(String companyId, String year, String month,String propertyLaborCost,String propertyHeadcountTotal,String propertyEmployeeTotal,String propertyEntryTotal,String propertyDemissionTotal,
                      String eBusinessLaborCost,String eBusinessHeadcountTotal,String eBusinessEmployeeTotal,String eBusinessEntryTotal,String eBusinessDemissionTotal,
                      String saleLaborCost,String saleHeadcountTotal,String saleEmployeeTotal,String saleEntryTotal,String saleDemissionTotal);
 
@@ -70,7 +70,7 @@ public interface SysLaborCostService {
      * @param saleDemissionTotal
      * @return
      */
-    int updateSysLaborCostInfo(String laborCostId,String companyId, String year, String month,String propertyLaborCost,String propertyHeadcountTotal,String propertyEmployeeTotal,String propertyEntryTotal,String propertyDemissionTotal,
+    Map<String,Object> updateSysLaborCostInfo(String laborCostId,String companyId, String year, String month,String propertyLaborCost,String propertyHeadcountTotal,String propertyEmployeeTotal,String propertyEntryTotal,String propertyDemissionTotal,
                                String eBusinessLaborCost,String eBusinessHeadcountTotal,String eBusinessEmployeeTotal,String eBusinessEntryTotal,String eBusinessDemissionTotal,
                                String saleLaborCost,String saleHeadcountTotal,String saleEmployeeTotal,String saleEntryTotal,String saleDemissionTotal);
     /**
@@ -78,5 +78,11 @@ public interface SysLaborCostService {
      * @param laborCostId 人员成本主表id
      * @return
      */
-    int deleteSysLaborCostInfo(String laborCostId);
+    Map<String,Object> deleteSysLaborCostInfo(Long laborCostId);
+    /**
+     * 根据人员成本id查找详细信息
+     * @param laborCostId 人员成本主表id
+     * @return
+     */
+    Map<String,Object> findSysLaborCostById(Long laborCostId);
 }

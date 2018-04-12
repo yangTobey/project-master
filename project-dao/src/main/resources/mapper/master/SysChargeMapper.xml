@@ -10,6 +10,8 @@
         <result column="create_time" property="createTime"/>
         <result column="company_id" property="companyId"/>
         <result column="status_code" property="statusCode"/>
+        <result column="year" property="year"/>
+        <result column="week_of_year" property="weekOfYear"/>
     </resultMap>
 
     <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
@@ -28,20 +30,27 @@
     </select>
     <!--//也可以封装成map传值-->
     <select id="sysChargeDetails" resultMap="sysChargeDetails" parameterType="map">
-        SELECT SUM(charge_money) AS charge_money,SUM(charge_money_now) AS charge_money_now,SUM(charge_debt) AS charge_debt,SUM(charge_debt_return) AS charge_debt_return from sys_charge_details where 1=1
-        <if test="list != null and list.size>0">
+        SELECT charge_id,SUM(charge_money) AS charge_money,SUM(charge_money_now) AS charge_money_now,SUM(charge_debt) AS charge_debt,SUM(charge_debt_return) AS charge_debt_return from sys_charge_details where 1=1
+        and status_code!=2 and week_of_year = #{weekOfYear} and year=#{year}
+        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
             AND company_id IN
-            <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
                 #{item}
             </foreach>
         </if>
     </select>
+    <!--根据主键id查找信息-->
     <select id="findSysChargeDetailsById" resultMap="sysChargeDetails" >
         select
         <include refid="Base_Column_List"/>
         from sys_charge_details
         where status_code!=2
         and   charge_id = #{chargeId}
+    </select>
+    <!--根据年份跟周数查找信息-->
+    <select id="findSysChargeDetailsByWeekOfYear" resultMap="sysChargeDetails" >
+        select charge_id from sys_charge_details
+        where status_code!=2 and week_of_year = #{weekOfYear} and year=#{year} and company_id=#{companyId}
     </select>
     <!--更新信息-->
     <update id="update" parameterType="map">
@@ -50,8 +59,8 @@
 	</update>
     <!--新增信息-->
     <insert id="addSysCharge" parameterType="com.spring.boot.bean.master.SysChargeDetails">
-		INSERT INTO sys_charge_details (charge_money, charge_money_now, charge_debt, charge_debt_return,company_id,create_time)
-              VALUES   (#{chargeMoney},#{chargeMoneyNow},#{chargeDebt},#{chargeDebtReturn},#{companyId},#{createTime})
+		INSERT INTO sys_charge_details (charge_money, charge_money_now, charge_debt, charge_debt_return,company_id,create_time,week_of_year,year)
+              VALUES   (#{chargeMoney},#{chargeMoneyNow},#{chargeDebt},#{chargeDebtReturn},#{companyId},#{createTime},#{weekOfYear},#{year})
 	</insert>
 
 

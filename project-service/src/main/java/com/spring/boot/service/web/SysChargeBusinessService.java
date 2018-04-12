@@ -15,13 +15,20 @@ public interface SysChargeBusinessService {
      *
      * @return
      */
-    SysChargeDetails sysChargeDetails(List<Long> sysUserCompanyIds);
+    SysChargeDetails sysChargeDetails(Map<String, Object> map);
     /**
      * 根据主键id查找信息
      *
      * @return
      */
     SysChargeDetails findSysChargeDetailsById(Long chargeId);
+
+    /**
+     * 根据年份跟周数查找信息
+     *
+     * @return
+     */
+    SysChargeDetails findSysChargeDetailsByWeekOfYear(Integer year,Integer weekOfYear,Long companyId);
 
     /**
      * 新增系统收费详细信息

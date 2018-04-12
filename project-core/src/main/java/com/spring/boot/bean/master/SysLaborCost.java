@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/12.
@@ -15,6 +16,8 @@ public class SysLaborCost {
     private Long companyId;
     private Date createTime;
     private Integer statusCode;
+
+    List<SysLaborCostDetails> list;
 
     public Long getLaborCostId() {
         return laborCostId;
@@ -62,5 +65,13 @@ public class SysLaborCost {
 
     public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public List<SysLaborCostDetails> getList() {
+        return list;
+    }
+
+    public void setList(List<SysLaborCostDetails> list) {
+        this.list = list;
     }
 }

@@ -1,5 +1,7 @@
 package com.spring.boot;
 
+import com.spring.boot.util.UtilHelper;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
@@ -24,5 +26,8 @@ public class Test {
         System.out.println(System.currentTimeMillis());
         String aa="2.3111";
         System.out.println(Double.valueOf(aa));
+
+
+        System.out.println(UtilHelper.getWeekOfYear());
     }
 }

@@ -41,7 +41,7 @@
     </select>
     <!--//也可以封装成map传值-->
     <select id="sysAccountsReceivableAnalysis" resultMap="sysAccountsReceivable" parameterType="map">
-        SELECT SUM(receivable_accounts_owner) AS receivable_accounts_owner,SUM(complete_accounts_owner) AS
+        SELECT accounts_id,SUM(receivable_accounts_owner) AS receivable_accounts_owner,SUM(complete_accounts_owner) AS
         complete_accounts_owner,SUM(complete_house) AS complete_house
         ,SUM(receivable_house) AS receivable_house,SUM(complete_coupon) AS complete_coupon,SUM(receivable_coupon) AS
         receivable_coupon,SUM(complete_vacancy) AS complete_vacancy

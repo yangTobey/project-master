@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -27,10 +28,13 @@ public class SysLaborCostController {
      * @param companyId 公司id
      * @return
      */
-    @RequestMapping(value = "/getSysLaborCostInfo", method = RequestMethod.GET)
-    public R getSysLaborCostInfo(String companyId) {
-        Map<String, Object> map = sysLaborCostService.getSysLaborCostInfo(companyId);
-        return R.ok().put(200, map,"获取成功！");
+    @RequestMapping(value = "/getSysLaborCostAnalysis", method = RequestMethod.GET)
+    public R getSysLaborCostAnalysis(@RequestParam(value = "companyId", required = false)String companyId) {
+        if(!UtilHelper.isNumer(companyId)){
+            return R.error(400,"公司id格式不合理！");
+        }
+        Map<String, Object> map = sysLaborCostService.getSysLaborCostAnalysis(Long.valueOf(companyId));
+        return R.ok(map);
     }
     /**
      * 查询人员成本信息（列表数据）
@@ -39,18 +43,20 @@ public class SysLaborCostController {
      * @return
      */
     @RequestMapping(value = "/getSysLaborCostList", method = RequestMethod.GET)
-    public R getSysLaborCostList(String companyId,String year) {
-        if(!UtilHelper.isNumer(year)){
-            return R.error(101,"年份格式不合理！");
-        }else{
-            Map<String, Object> map = sysLaborCostService.getSysLaborCostList(companyId,Integer.valueOf(year));
-            return R.ok().put(200, map,"获取成功！");
+    public R getSysLaborCostList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset,
+                                 @RequestParam(value = "companyId", required = false)String companyId, @RequestParam(value = "year", required = false)String year) {
+        if (!UtilHelper.isNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字！");
+        } else if (!UtilHelper.isNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字！");
+        }else if(!UtilHelper.isNumer(year)){
+            return R.error(400,"年份格式不合理！");
+        }else if(!UtilHelper.isNumer(companyId)){
+            return R.error(400,"公司id格式不合理！");
         }
-
+        Map<String, Object> map = sysLaborCostService.getSysLaborCostList(Integer.valueOf(limit),Integer.valueOf(offset),Long.valueOf(companyId),Integer.valueOf(year));
+        return R.ok(map);
     }
-
-
-
     /**
      * 新增人员成本信息
      *
@@ -75,16 +81,14 @@ public class SysLaborCostController {
      * @return
      */
     @RequestMapping(value = "/addSysLaborCost", method = RequestMethod.GET)
-    public String addSysLaborCost(String companyId, String year, String month, String propertyLaborCost, String propertyHeadcountTotal, String propertyEmployeeTotal, String propertyEntryTotal, String propertyDemissionTotal,
+    public R addSysLaborCost(String companyId, String year, String month, String propertyLaborCost, String propertyHeadcountTotal, String propertyEmployeeTotal, String propertyEntryTotal, String propertyDemissionTotal,
                                   String eBusinessLaborCost, String eBusinessHeadcountTotal, String eBusinessEmployeeTotal, String eBusinessEntryTotal, String eBusinessDemissionTotal,
                                   String saleLaborCost, String saleHeadcountTotal, String saleEmployeeTotal, String saleEntryTotal, String saleDemissionTotal) {
-        int count = sysLaborCostService.addSysLaborCost(companyId, year, month, propertyLaborCost, propertyHeadcountTotal, propertyEmployeeTotal, propertyEntryTotal, propertyDemissionTotal,
+        Map<String,Object> map = sysLaborCostService.addSysLaborCost(companyId, year, month, propertyLaborCost, propertyHeadcountTotal, propertyEmployeeTotal, propertyEntryTotal, propertyDemissionTotal,
                 eBusinessLaborCost, eBusinessHeadcountTotal, eBusinessEmployeeTotal, eBusinessEntryTotal, eBusinessDemissionTotal,
                 saleLaborCost, saleHeadcountTotal, saleEmployeeTotal, saleEntryTotal, saleDemissionTotal);
-        if (count > 0) {
-            System.out.println("新增成功！");
-        }
-        return "success";
+
+        return R.ok(map);
     }
 
     /**
@@ -112,19 +116,31 @@ public class SysLaborCostController {
      * @return
      */
     @RequestMapping(value = "/updateSysLaborCost", method = RequestMethod.GET)
-    public String updateSysLaborCost(String laborCostId, String companyId, String year, String month, String propertyLaborCost, String propertyHeadcountTotal, String propertyEmployeeTotal, String propertyEntryTotal, String propertyDemissionTotal,
+    public R updateSysLaborCost(String laborCostId, String companyId, String year, String month, String propertyLaborCost, String propertyHeadcountTotal, String propertyEmployeeTotal, String propertyEntryTotal, String propertyDemissionTotal,
                                      String eBusinessLaborCost, String eBusinessHeadcountTotal, String eBusinessEmployeeTotal, String eBusinessEntryTotal, String eBusinessDemissionTotal,
                                      String saleLaborCost, String saleHeadcountTotal, String saleEmployeeTotal, String saleEntryTotal, String saleDemissionTotal) {
         if (UtilHelper.isEmpty(laborCostId)) {
-            return "人员成本id不能为空，请联系系统管理员进行修改！";
+            return R.error(400, "人员成本id不能为空，请联系系统管理员进行修改！");
         }
-        int count = sysLaborCostService.updateSysLaborCostInfo(laborCostId, companyId, year, month, propertyLaborCost, propertyHeadcountTotal, propertyEmployeeTotal, propertyEntryTotal, propertyDemissionTotal,
+        Map<String,Object> map = sysLaborCostService.updateSysLaborCostInfo(laborCostId, companyId, year, month, propertyLaborCost, propertyHeadcountTotal, propertyEmployeeTotal, propertyEntryTotal, propertyDemissionTotal,
                 eBusinessLaborCost, eBusinessHeadcountTotal, eBusinessEmployeeTotal, eBusinessEntryTotal, eBusinessDemissionTotal,
                 saleLaborCost, saleHeadcountTotal, saleEmployeeTotal, saleEntryTotal, saleDemissionTotal);
-        if (count > 0) {
-            System.out.println("更新成功！");
+        return R.ok(map);
+
+    }
+    /**
+     * 根据人员成本id查找详细信息
+     *
+     * @param laborCostId
+     * @return
+     */
+    @RequestMapping(value = "/findSysLaborCostById", method = RequestMethod.GET)
+    public R findSysLaborCostById(String laborCostId) {
+        if (UtilHelper.isEmpty(laborCostId)) {
+            return R.error(400, "人员成本id编号不能为空，请联系系统管理员！");
         }
-        return "success";
+        Map<String,Object> map = sysLaborCostService.findSysLaborCostById(Long.valueOf(laborCostId));
+        return R.ok(map);
 
     }
 
@@ -137,13 +153,10 @@ public class SysLaborCostController {
     @RequestMapping(value = "/deleteSysLaborCost", method = RequestMethod.GET)
     public R deleteSysLaborCost(String laborCostId) {
         if (UtilHelper.isEmpty(laborCostId)) {
-            return R.error(201, "人员成本id编号不能为空，请联系系统管理员！");
+            return R.error(400, "人员成本id编号不能为空，请联系系统管理员！");
         }
-        int count = sysLaborCostService.deleteSysLaborCostInfo(laborCostId);
-        if (count > 0) {
-            return R.ok(200, "人员成本id编号不能为空，请联系系统管理员！");
-        }
-        return R.error(201, "系统异常，请联系系统管理员！");
+        Map<String,Object> map = sysLaborCostService.deleteSysLaborCostInfo(Long.valueOf(laborCostId));
+        return R.ok(map);
 
     }
 

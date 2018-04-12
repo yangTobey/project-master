@@ -3,6 +3,7 @@ package com.spring.boot.dao.web.master;
 import com.spring.boot.bean.master.SysChargeDetails;
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.dao.BaseDao;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,13 @@ public interface SysChargeDao extends BaseDao<SysChargeDetails> {
      *
      * @return
      */
-    SysChargeDetails sysChargeDetails(List<Long> sysUserCompanyIds);
+    SysChargeDetails sysChargeDetails(Map<String, Object> map);
+    /**
+     * 根据年份跟周数查找信息
+     *
+     * @return
+     */
+    SysChargeDetails findSysChargeDetailsByWeekOfYear(@Param("year")Integer year,@Param("weekOfYear") Integer weekOfYear,@Param("companyId")Long companyId);
     /**
      * 根据主键id查找信息
      *

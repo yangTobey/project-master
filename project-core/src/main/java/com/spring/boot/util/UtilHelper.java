@@ -66,6 +66,13 @@ public class UtilHelper {
     public static int getYear(){
         return calendar.get(Calendar.YEAR);
     }
+    /**
+     * 获取当前日期是当年第几周
+     * @return
+     */
+    public static int getWeekOfYear(){
+        return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
 
     /**
      * 获取当前月份
