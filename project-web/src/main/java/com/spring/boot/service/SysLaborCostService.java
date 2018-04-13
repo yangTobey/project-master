@@ -43,9 +43,9 @@ public interface SysLaborCostService {
      * @param saleDemissionTotal
      * @return
      */
-    Map<String,Object> addSysLaborCost(String companyId, String year, String month,String propertyLaborCost,String propertyHeadcountTotal,String propertyEmployeeTotal,String propertyEntryTotal,String propertyDemissionTotal,
-                     String eBusinessLaborCost,String eBusinessHeadcountTotal,String eBusinessEmployeeTotal,String eBusinessEntryTotal,String eBusinessDemissionTotal,
-                     String saleLaborCost,String saleHeadcountTotal,String saleEmployeeTotal,String saleEntryTotal,String saleDemissionTotal);
+    Map<String,Object> addSysLaborCost(Long companyId, Integer year, Integer month,Double propertyLaborCost,Integer propertyHeadcountTotal,Integer propertyEmployeeTotal,Integer propertyEntryTotal,Integer propertyDemissionTotal,
+                                       Double eBusinessLaborCost,Integer eBusinessHeadcountTotal,Integer eBusinessEmployeeTotal,Integer eBusinessEntryTotal,Integer eBusinessDemissionTotal,
+                                       Double saleLaborCost,Integer saleHeadcountTotal,Integer saleEmployeeTotal,Integer saleEntryTotal,Integer saleDemissionTotal);
 
     /**
      * 更新人员成本信息
@@ -70,9 +70,9 @@ public interface SysLaborCostService {
      * @param saleDemissionTotal
      * @return
      */
-    Map<String,Object> updateSysLaborCostInfo(String laborCostId,String companyId, String year, String month,String propertyLaborCost,String propertyHeadcountTotal,String propertyEmployeeTotal,String propertyEntryTotal,String propertyDemissionTotal,
-                               String eBusinessLaborCost,String eBusinessHeadcountTotal,String eBusinessEmployeeTotal,String eBusinessEntryTotal,String eBusinessDemissionTotal,
-                               String saleLaborCost,String saleHeadcountTotal,String saleEmployeeTotal,String saleEntryTotal,String saleDemissionTotal);
+    Map<String,Object> updateSysLaborCostInfo(Long laborCostId,Long companyId, Integer year, Integer month,Double propertyLaborCost,Integer propertyHeadcountTotal,Integer propertyEmployeeTotal,Integer propertyEntryTotal,Integer propertyDemissionTotal,
+                                              Double eBusinessLaborCost,Integer eBusinessHeadcountTotal,Integer eBusinessEmployeeTotal,Integer eBusinessEntryTotal,Integer eBusinessDemissionTotal,
+                                              Double saleLaborCost,Integer saleHeadcountTotal,Integer saleEmployeeTotal,Integer saleEntryTotal,Integer saleDemissionTotal);
     /**
      * 删除人员成本信息
      * @param laborCostId 人员成本主表id

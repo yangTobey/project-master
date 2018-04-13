@@ -5,24 +5,23 @@ import com.spring.boot.bean.master.SysLaborCost;
 import com.spring.boot.bean.master.SysLaborCostDetails;
 import com.spring.boot.bean.master.entity.SysLaborCostDepartmentEntity;
 import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
-import com.spring.boot.service.SysCompanyService;
 import com.spring.boot.service.SysLaborCostService;
 import com.spring.boot.service.web.SysBudgetDetailsBusinessService;
-import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.service.web.SysLaborCostBusinessService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.SysUtil;
 import com.spring.boot.util.UtilHelper;
-import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/1/25.
@@ -45,7 +44,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
         int month = UtilHelper.getMonth();
         int year = UtilHelper.getYear();
         SysLaborCostDetailsEntity sysLaborCostDetails = null;
-        List<SysLaborCostDepartmentEntity> sysLaborCostDepartmentList = null;
+        List<SysLaborCostDetails> sysLaborCostDepartmentList = null;
         List<Long> sysUserCompanyIds = null;
         if (companyId == 0) {
             //获取用户权限下可操作的小区信息
@@ -60,11 +59,13 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
         try {
             sysLaborCostDetails = sysLaborCostBusinessService.getSysLaborCostTotal(map);
             if (null != sysLaborCostDetails) {
+
                 Double laborCostTotal = sysLaborCostDetails.getLaborCostTotal();
+                sysLaborCostDetails.setAverageLaborCost(UtilHelper.DecimalFormatForDouble(UtilHelper.DecimalFormatDoubleNumber(laborCostTotal,sysLaborCostDetails.getEmployeeTotal())));
                 //(成本构成)获取和计算物业常态、电商、销配每月的人工成本支出占公司人工成本支出的百分比
                 sysLaborCostDepartmentList = sysLaborCostBusinessService.getSysLaborCostDepartmentTotal(map);
                 if (null != sysLaborCostDepartmentList) {
-                    for (SysLaborCostDepartmentEntity sysLaborCostDepartment : sysLaborCostDepartmentList) {
+                    for (SysLaborCostDetails sysLaborCostDepartment : sysLaborCostDepartmentList) {
                         if (sysLaborCostDepartment.getDepartmentType() == 1) {
                             sysLaborCostDetails.setPropertyLaborCostScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysLaborCostDepartment.getLaborCostTotal(), laborCostTotal)));
                         } else if (sysLaborCostDepartment.getDepartmentType() == 2) {
@@ -160,52 +161,57 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addSysLaborCost(String companyId, String year, String month, String propertyLaborCost, String propertyHeadcountTotal, String propertyEmployeeTotal, String propertyEntryTotal, String propertyDemissionTotal,
-                                               String eBusinessLaborCost, String eBusinessHeadcountTotal, String eBusinessEmployeeTotal, String eBusinessEntryTotal, String eBusinessDemissionTotal,
-                                               String saleLaborCost, String saleHeadcountTotal, String saleEmployeeTotal, String saleEntryTotal, String saleDemissionTotal) {
-        SysLaborCost sysLaborCost = new SysLaborCost();
-        sysLaborCost.setCompanyId(Long.valueOf(companyId));
-        sysLaborCost.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-        sysLaborCost.setYear(Integer.valueOf(year));
-        sysLaborCost.setMonth(Integer.valueOf(month));
+    public Map<String, Object> addSysLaborCost(Long companyId, Integer year, Integer month, Double propertyLaborCost, Integer propertyHeadcountTotal, Integer propertyEmployeeTotal, Integer propertyEntryTotal, Integer propertyDemissionTotal,
+                                               Double eBusinessLaborCost, Integer eBusinessHeadcountTotal, Integer eBusinessEmployeeTotal, Integer eBusinessEntryTotal, Integer eBusinessDemissionTotal,
+                                               Double saleLaborCost, Integer saleHeadcountTotal, Integer saleEmployeeTotal, Integer saleEntryTotal, Integer saleDemissionTotal) {
         try {
+            SysLaborCost sysLaborCost = sysLaborCostBusinessService.findRecordByYearAndMonthAndCompanyId(companyId, year, month);
+            if (null != sysLaborCost) {
+                return R.error(500, "新增失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+            } else {
+                sysLaborCost = new SysLaborCost();
+            }
+            sysLaborCost.setCompanyId(companyId);
+            sysLaborCost.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
+            sysLaborCost.setYear(year);
+            sysLaborCost.setMonth(month);
             int count = sysLaborCostBusinessService.addSysLaborCost(sysLaborCost);
-            if(count>0){
+            if (count > 0) {
                 long laborCostId = sysLaborCost.getLaborCostId();
                 SysLaborCostDetails propertySysLaborCostDetails = new SysLaborCostDetails();
-                propertySysLaborCostDetails.setDemissionTotal(Integer.valueOf(propertyDemissionTotal));
+                propertySysLaborCostDetails.setDemissionTotal(propertyDemissionTotal);
                 propertySysLaborCostDetails.setDepartmentType(1);
-                propertySysLaborCostDetails.setEmployeeTotal(Integer.valueOf(propertyEmployeeTotal));
-                propertySysLaborCostDetails.setEntryTotal(Integer.valueOf(propertyEntryTotal));
-                propertySysLaborCostDetails.setHeadcountTotal(Integer.valueOf(propertyHeadcountTotal));
+                propertySysLaborCostDetails.setEmployeeTotal(propertyEmployeeTotal);
+                propertySysLaborCostDetails.setEntryTotal(propertyEntryTotal);
+                propertySysLaborCostDetails.setHeadcountTotal(propertyHeadcountTotal);
                 propertySysLaborCostDetails.setLaborCostId(laborCostId);
-                propertySysLaborCostDetails.setLaborCostTotal(Integer.valueOf(propertyLaborCost));
+                propertySysLaborCostDetails.setLaborCostTotal(propertyLaborCost);
                 int propertyCount = sysLaborCostBusinessService.addSysLaborCostDetails(propertySysLaborCostDetails);
 
                 SysLaborCostDetails eBusinessSysLaborCostDetails = new SysLaborCostDetails();
-                eBusinessSysLaborCostDetails.setDemissionTotal(Integer.valueOf(eBusinessDemissionTotal));
+                eBusinessSysLaborCostDetails.setDemissionTotal(eBusinessDemissionTotal);
                 eBusinessSysLaborCostDetails.setDepartmentType(2);
-                eBusinessSysLaborCostDetails.setEmployeeTotal(Integer.valueOf(eBusinessEmployeeTotal));
-                eBusinessSysLaborCostDetails.setEntryTotal(Integer.valueOf(eBusinessEntryTotal));
-                eBusinessSysLaborCostDetails.setHeadcountTotal(Integer.valueOf(eBusinessHeadcountTotal));
+                eBusinessSysLaborCostDetails.setEmployeeTotal(eBusinessEmployeeTotal);
+                eBusinessSysLaborCostDetails.setEntryTotal(eBusinessEntryTotal);
+                eBusinessSysLaborCostDetails.setHeadcountTotal(eBusinessHeadcountTotal);
                 eBusinessSysLaborCostDetails.setLaborCostId(laborCostId);
-                eBusinessSysLaborCostDetails.setLaborCostTotal(Integer.valueOf(eBusinessLaborCost));
+                eBusinessSysLaborCostDetails.setLaborCostTotal(eBusinessLaborCost);
                 int eBusinessCount = sysLaborCostBusinessService.addSysLaborCostDetails(eBusinessSysLaborCostDetails);
 
                 SysLaborCostDetails saleSysLaborCostDetails = new SysLaborCostDetails();
-                saleSysLaborCostDetails.setDemissionTotal(Integer.valueOf(saleDemissionTotal));
-                saleSysLaborCostDetails.setDepartmentType(2);
-                saleSysLaborCostDetails.setEmployeeTotal(Integer.valueOf(saleEmployeeTotal));
-                saleSysLaborCostDetails.setEntryTotal(Integer.valueOf(saleEntryTotal));
-                saleSysLaborCostDetails.setHeadcountTotal(Integer.valueOf(saleHeadcountTotal));
+                saleSysLaborCostDetails.setDemissionTotal(saleDemissionTotal);
+                saleSysLaborCostDetails.setDepartmentType(3);
+                saleSysLaborCostDetails.setEmployeeTotal(saleEmployeeTotal);
+                saleSysLaborCostDetails.setEntryTotal(saleEntryTotal);
+                saleSysLaborCostDetails.setHeadcountTotal(saleHeadcountTotal);
                 saleSysLaborCostDetails.setLaborCostId(laborCostId);
-                saleSysLaborCostDetails.setLaborCostTotal(Integer.valueOf(saleLaborCost));
+                saleSysLaborCostDetails.setLaborCostTotal(saleLaborCost);
                 sysLaborCostBusinessService.addSysLaborCostDetails(saleSysLaborCostDetails);
                 return R.ok(200, "添加人员成本信息！！");
-            }else {
+            } else {
                 return R.error(500, "添加人员成本信息失败，请联系系统管理员！！");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             logger.info("新增人员成本信息信息出错：" + e.getMessage());
             //return R.error(500, "删除信息失败，服务器异常，请联系管理员！");
@@ -215,53 +221,60 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> updateSysLaborCostInfo(String laborCostId, String companyId, String year, String month, String propertyLaborCost, String propertyHeadcountTotal, String propertyEmployeeTotal, String propertyEntryTotal, String propertyDemissionTotal,
-                                                      String eBusinessLaborCost, String eBusinessHeadcountTotal, String eBusinessEmployeeTotal, String eBusinessEntryTotal, String eBusinessDemissionTotal,
-                                                      String saleLaborCost, String saleHeadcountTotal, String saleEmployeeTotal, String saleEntryTotal, String saleDemissionTotal) {
+    public Map<String, Object> updateSysLaborCostInfo(Long laborCostId, Long companyId, Integer year, Integer month, Double propertyLaborCost, Integer propertyHeadcountTotal, Integer propertyEmployeeTotal,
+                                                      Integer propertyEntryTotal, Integer propertyDemissionTotal,Double eBusinessLaborCost, Integer eBusinessHeadcountTotal, Integer eBusinessEmployeeTotal,
+                                                      Integer eBusinessEntryTotal, Integer eBusinessDemissionTotal,Double saleLaborCost, Integer saleHeadcountTotal, Integer saleEmployeeTotal,
+                                                      Integer saleEntryTotal, Integer saleDemissionTotal) {
         try {
-            SysLaborCost sysLaborCost = sysLaborCostBusinessService.findSysLaborCostByLaborCostId(Long.valueOf(laborCostId));
-            if (sysLaborCost != null) {
-                sysLaborCost.setMonth(Integer.valueOf(month));
-                sysLaborCost.setYear(Integer.valueOf(year));
-                sysLaborCost.setCompanyId(Long.valueOf(companyId));
-                sysLaborCostBusinessService.updateSysLaborCostInfo(sysLaborCost);
+            SysLaborCost sysLaborCost = sysLaborCostBusinessService.findRecordByYearAndMonthAndCompanyId(companyId, year, month);
+            if (null != sysLaborCost) {
+                if (!laborCostId.equals(sysLaborCost.getLaborCostId())) {
+                    return R.error(500, "新增失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+                }
+            } else {
+                sysLaborCost = sysLaborCostBusinessService.findSysLaborCostByLaborCostId(Long.valueOf(laborCostId));
+                if (sysLaborCost != null) {
+                    sysLaborCost.setMonth(month);
+                    sysLaborCost.setYear(year);
+                    sysLaborCost.setCompanyId(companyId);
+                    sysLaborCostBusinessService.updateSysLaborCostInfo(sysLaborCost);
 
-                long laborCostIdUpdate = Long.valueOf(laborCostId);
-                SysLaborCostDetails propertySysLaborCostDetails = new SysLaborCostDetails();
-                propertySysLaborCostDetails.setDemissionTotal(Integer.valueOf(propertyDemissionTotal));
-                //propertySysLaborCostDetails.setDepartmentType(1);
-                propertySysLaborCostDetails.setEmployeeTotal(Integer.valueOf(propertyEmployeeTotal));
-                propertySysLaborCostDetails.setEntryTotal(Integer.valueOf(propertyEntryTotal));
-                propertySysLaborCostDetails.setHeadcountTotal(Integer.valueOf(propertyHeadcountTotal));
-                propertySysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
-                propertySysLaborCostDetails.setLaborCostTotal(Integer.valueOf(propertyLaborCost));
-                int propertyCount = sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(propertySysLaborCostDetails);
+                    long laborCostIdUpdate = Long.valueOf(laborCostId);
+                    SysLaborCostDetails propertySysLaborCostDetails = new SysLaborCostDetails();
+                    propertySysLaborCostDetails.setDemissionTotal(propertyDemissionTotal);
+                    propertySysLaborCostDetails.setEmployeeTotal(propertyEmployeeTotal);
+                    propertySysLaborCostDetails.setEntryTotal(propertyEntryTotal);
+                    propertySysLaborCostDetails.setDepartmentType(1);
+                    propertySysLaborCostDetails.setHeadcountTotal(propertyHeadcountTotal);
+                    propertySysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
+                    propertySysLaborCostDetails.setLaborCostTotal(propertyLaborCost);
+                    int propertyCount = sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(propertySysLaborCostDetails);
 
-                SysLaborCostDetails eBusinessSysLaborCostDetails = new SysLaborCostDetails();
-                eBusinessSysLaborCostDetails.setDemissionTotal(Integer.valueOf(eBusinessDemissionTotal));
-                //eBusinessSysLaborCostDetails.setDepartmentType(2);
-                eBusinessSysLaborCostDetails.setEmployeeTotal(Integer.valueOf(eBusinessEmployeeTotal));
-                eBusinessSysLaborCostDetails.setEntryTotal(Integer.valueOf(eBusinessEntryTotal));
-                eBusinessSysLaborCostDetails.setHeadcountTotal(Integer.valueOf(eBusinessHeadcountTotal));
-                eBusinessSysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
-                eBusinessSysLaborCostDetails.setLaborCostTotal(Integer.valueOf(eBusinessLaborCost));
-                int eBusinessCount = sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(eBusinessSysLaborCostDetails);
+                    SysLaborCostDetails eBusinessSysLaborCostDetails = new SysLaborCostDetails();
+                    eBusinessSysLaborCostDetails.setDemissionTotal(eBusinessDemissionTotal);
+                    eBusinessSysLaborCostDetails.setEmployeeTotal(eBusinessEmployeeTotal);
+                    eBusinessSysLaborCostDetails.setEntryTotal(eBusinessEntryTotal);
+                    eBusinessSysLaborCostDetails.setDepartmentType(2);
+                    eBusinessSysLaborCostDetails.setHeadcountTotal(eBusinessHeadcountTotal);
+                    eBusinessSysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
+                    eBusinessSysLaborCostDetails.setLaborCostTotal(eBusinessLaborCost);
+                    int eBusinessCount = sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(eBusinessSysLaborCostDetails);
 
-                SysLaborCostDetails saleSysLaborCostDetails = new SysLaborCostDetails();
-                saleSysLaborCostDetails.setDemissionTotal(Integer.valueOf(saleDemissionTotal));
-                //saleSysLaborCostDetails.setDepartmentType(3);
-                saleSysLaborCostDetails.setEmployeeTotal(Integer.valueOf(saleEmployeeTotal));
-                saleSysLaborCostDetails.setEntryTotal(Integer.valueOf(saleEntryTotal));
-                saleSysLaborCostDetails.setHeadcountTotal(Integer.valueOf(saleHeadcountTotal));
-                saleSysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
-                saleSysLaborCostDetails.setLaborCostTotal(Integer.valueOf(saleLaborCost));
-                sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(saleSysLaborCostDetails);
-                return R.ok(200, "更新人员成本信息！！");
-
-            }else{
-                return R.error(500, "更新失败，系统不存在该记录信息，请联系系统管理员进行处理！！");
+                    SysLaborCostDetails saleSysLaborCostDetails = new SysLaborCostDetails();
+                    saleSysLaborCostDetails.setDemissionTotal(saleDemissionTotal);
+                    saleSysLaborCostDetails.setEmployeeTotal(saleEmployeeTotal);
+                    saleSysLaborCostDetails.setEntryTotal(saleEntryTotal);
+                    saleSysLaborCostDetails.setDepartmentType(3);
+                    saleSysLaborCostDetails.setHeadcountTotal(saleHeadcountTotal);
+                    saleSysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
+                    saleSysLaborCostDetails.setLaborCostTotal(saleLaborCost);
+                    sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(saleSysLaborCostDetails);
+                } else {
+                    return R.error(500, "更新失败，系统不存在该记录信息，请联系系统管理员进行处理！！");
+                }
             }
-        }catch (Exception e){
+            return R.ok(200, "更新人员成本信息！！");
+        } catch (Exception e) {
             e.printStackTrace();
             logger.info("更新人员成本信息出错：" + e.getMessage());
             //return R.error(500, "删除信息失败，服务器异常，请联系管理员！");
@@ -273,16 +286,16 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
     public Map<String, Object> findSysLaborCostById(Long laborCostId) {
         try {
             SysLaborCost sysLaborCost = sysLaborCostBusinessService.findSysLaborCostByLaborCostId(laborCostId);
-            if(null!=sysLaborCost){
-                List<SysLaborCostDetails> list=sysLaborCostBusinessService.findSysLaborCostDetailsByLaborCostId(laborCostId);
-                if(null!=list){
+            if (null != sysLaborCost) {
+                List<SysLaborCostDetails> list = sysLaborCostBusinessService.findSysLaborCostDetailsByLaborCostId(laborCostId);
+                if (null != list) {
                     sysLaborCost.setList(list);
                 }
                 return R.ok().putData(200, sysLaborCost, "获取成功！");
-            }else{
+            } else {
                 return R.error(500, "获取信息失败，请联系管理员！");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             logger.info("获取信息出错：" + e.getMessage());
             return R.error(500, "获取信息失败，服务器异常，请联系管理员！");

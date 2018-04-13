@@ -250,6 +250,21 @@ public class UtilHelper {
         return df.format((Double) numberOne/numberTwo);
     }
     /**
+     * 两个数（小数）相除，保留四位小数返回（因需要计算百分比，需要保留四位小数,如：90.98%，小数为：0.9098）
+     * @param numberOne
+     * @param numberTwo
+     * @return
+     */
+    public static String DecimalFormatDoubleNumber(Double numberOne,Integer numberTwo){
+        DecimalFormat df=new DecimalFormat("0.0000");
+        if(numberTwo==null||numberTwo==0){
+            return "0";
+        }else if(numberOne==null){
+            numberOne=0.00;
+        }
+        return df.format((Double) numberOne/numberTwo);
+    }
+    /**
      * 乘以100后保留2位小数返回
      * @param number
      * @return
@@ -260,6 +275,18 @@ public class UtilHelper {
             return 0.00;
         }
         return Double.valueOf(twoDouble.format(Double.valueOf(number)*100));
+    }
+    /**
+     * 保留2位小数返回
+     * @param number
+     * @return
+     */
+    public static Double DecimalFormatForDouble(String number){
+        DecimalFormat twoDouble=new DecimalFormat("0.00");
+        if("0".equals(number)){
+            return 0.00;
+        }
+        return Double.valueOf(twoDouble.format(Double.valueOf(number)));
     }
 
     /**

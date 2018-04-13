@@ -24,7 +24,7 @@ public interface SysLaborCostBusinessService {
      * 根据 物业、电商、销配部门类型获取当月人工总成本
      * @return
      */
-    List<SysLaborCostDepartmentEntity>  getSysLaborCostDepartmentTotal(Map<String, Object> map);
+    List<SysLaborCostDetails>  getSysLaborCostDepartmentTotal(Map<String, Object> map);
     /**
      * 获取人员成本列表数据
      * @return
@@ -47,6 +47,15 @@ public interface SysLaborCostBusinessService {
      * @return
      */
     List<SysLaborCostDetails> findSysLaborCostDetailsByLaborCostId(Long laborCostId);
+
+    /**
+     * 根据年份、月份、公司id查找系统记录
+     * @param companyId
+     * @param year
+     * @param month
+     * @return
+     */
+    SysLaborCost findRecordByYearAndMonthAndCompanyId(Long companyId,Integer year,Integer month);
     /**
      * 新增人员成本
      * @param sysLaborCost

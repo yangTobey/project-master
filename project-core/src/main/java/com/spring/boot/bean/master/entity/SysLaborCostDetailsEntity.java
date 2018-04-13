@@ -12,11 +12,11 @@ import java.util.zip.DeflaterOutputStream;
 public class SysLaborCostDetailsEntity {
 
     private Long  laborCostId;
-    private String year;
-    private String month;
+    private Integer year;
+    private Integer month;
     private Long companyId;
     private Date createTime;
-    private int statusCode;
+    private Integer statusCode;
 
     private Long laborCostDetailsId;
     private Integer employeeTotal;
@@ -25,7 +25,9 @@ public class SysLaborCostDetailsEntity {
     private Integer demissionTotal;
     private Double laborCostTotal;
     private Integer departmentType;
+    private String companyName;
 
+    private Double averageLaborCost;
     //人工支出占比
     private Double sysLaborCostScale;
     //上月人工支出占比
@@ -50,19 +52,19 @@ public class SysLaborCostDetailsEntity {
         this.laborCostId = laborCostId;
     }
 
-    public String getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public String getMonth() {
+    public Integer getMonth() {
         return month;
     }
 
-    public void setMonth(String month) {
+    public void setMonth(Integer month) {
         this.month = month;
     }
 
@@ -82,11 +84,11 @@ public class SysLaborCostDetailsEntity {
         this.createTime = createTime;
     }
 
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
 
@@ -200,5 +202,21 @@ public class SysLaborCostDetailsEntity {
 
     public void setSaleLaborCostScale(Double saleLaborCostScale) {
         this.saleLaborCostScale = saleLaborCostScale;
+    }
+
+    public Double getAverageLaborCost() {
+        return averageLaborCost;
+    }
+
+    public void setAverageLaborCost(Double averageLaborCost) {
+        this.averageLaborCost = averageLaborCost;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

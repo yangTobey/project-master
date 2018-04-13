@@ -90,4 +90,12 @@ public class IndexController {
     public String sysRoleIndex(){
         return "views/otherManage/RoleManage";
     }
+    /**
+     * 人员成本
+     * @return
+     */
+    @RequestMapping(value = "/sysLaborCostIndex", method = RequestMethod.GET)
+    public String sysLaborCostIndex(){
+        return "views/personer/PersonnelCost";
+    }
 }

@@ -30,7 +30,7 @@ public class SysLaborCostBusinessServiceImpl implements SysLaborCostBusinessServ
     }
 
     @Override
-    public List<SysLaborCostDepartmentEntity> getSysLaborCostDepartmentTotal(Map<String, Object> map) {
+    public List<SysLaborCostDetails> getSysLaborCostDepartmentTotal(Map<String, Object> map) {
         return sysLaborCostDao.getSysLaborCostDepartmentTotal(map);
     }
 
@@ -52,6 +52,11 @@ public class SysLaborCostBusinessServiceImpl implements SysLaborCostBusinessServ
     @Override
     public List<SysLaborCostDetails> findSysLaborCostDetailsByLaborCostId(Long laborCostId) {
         return sysLaborCostDao.findSysLaborCostDetailsByLaborCostId(laborCostId);
+    }
+
+    @Override
+    public SysLaborCost findRecordByYearAndMonthAndCompanyId(Long companyId,Integer year,Integer month) {
+        return sysLaborCostDao.findRecordByYearAndMonthAndCompanyId(companyId,year,month);
     }
 
     @Override

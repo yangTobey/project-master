@@ -16,6 +16,7 @@ public class SysLaborCost {
     private Long companyId;
     private Date createTime;
     private Integer statusCode;
+    private String companyName;
 
     List<SysLaborCostDetails> list;
 
@@ -73,5 +74,13 @@ public class SysLaborCost {
 
     public void setList(List<SysLaborCostDetails> list) {
         this.list = list;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

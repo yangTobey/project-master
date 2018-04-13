@@ -9,7 +9,7 @@ public class SysLaborCostDetails {
     private Integer headcountTotal;
     private Integer entryTotal;
     private Integer demissionTotal;
-    private Integer laborCostTotal;
+    private Double laborCostTotal;
     private Long laborCostId;
     private Integer departmentType;
 
@@ -53,11 +53,11 @@ public class SysLaborCostDetails {
         this.demissionTotal = demissionTotal;
     }
 
-    public Integer getLaborCostTotal() {
+    public Double getLaborCostTotal() {
         return laborCostTotal;
     }
 
-    public void setLaborCostTotal(Integer laborCostTotal) {
+    public void setLaborCostTotal(Double laborCostTotal) {
         this.laborCostTotal = laborCostTotal;
     }
 

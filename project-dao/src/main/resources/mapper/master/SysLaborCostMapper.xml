@@ -8,9 +8,10 @@
         <result column="company_id" property="companyId"/>
         <result column="create_time" property="createTime"/>
         <result column="status_code" property="statusCode"/>
+        <result column="companyName" property="companyName"/>
     </resultMap>
 
-    <resultMap id="sysLaborCostDetails" type="com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity">
+    <resultMap id="sysLaborCostDetailsEntity" type="com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity">
         <result column="labor_cost_id" property="laborCostId"/>
         <result column="year" property="year"/>
         <result column="month" property="month"/>
@@ -24,6 +25,7 @@
         <result column="demission_total" property="demissionTotal"/>
         <result column="labor_cost_total" property="laborCostTotal"/>
         <result column="department_type" property="departmentType"/>
+        <result column="companyName" property="companyName"/>
     </resultMap>
     <resultMap id="sysLaborCostDetails" type="com.spring.boot.bean.master.SysLaborCostDetails">
         <result column="details_id" property="detailsId"/>
@@ -65,7 +67,7 @@
         labor_cost_id, year, month, company_id,create_time,status_code
     </sql>
     <!--获取 全国分公司 物业、电商、销配当月在职总人数、编制总人数、入职总人数、离职总人数、人工总成本-->
-    <select id="getSysLaborCostTotal" resultMap="sysLaborCostDetails" parameterType="map">
+    <select id="getSysLaborCostTotal" resultMap="sysLaborCostDetailsEntity" parameterType="map">
         SELECT SUM(sum.demission_total) as demission_total,SUM(sum.headcount_total)as headcount_total,SUM(sum.employee_total) as employee_total,
         SUM(sum.entry_total) AS entry_total,SUM(sum.labor_cost_total) AS labor_cost_total
         from (SELECT
@@ -106,7 +108,7 @@
         GROUP BY details.department_type
     </select>
     <!--查找列表数据-->
-    <select id="getSysLaborCostList" resultMap="sysLaborCostDetails" parameterType="map">
+    <select id="getSysLaborCostList" resultMap="sysLaborCostDetailsEntity" parameterType="map">
         select
         <include refid="Base_Column_List_Details"/>
         from sys_labor_cost as laborCost LEFT JOIN sys_labor_cost_details as details on laborCost.labor_cost_id=details.labor_cost_id
@@ -145,9 +147,14 @@
     <!--根据人员成本id查找对应的信息-->
     <select id="findSysLaborCostByLaborCostId" resultMap="sysLaborCost" parameterType="Long">
         select
-        <include refid="Base_Column_List_SysLaborCost"/>
-        from sys_labor_cost
+        laborCost.*,company.company_name as companyName
+        from sys_labor_cost as laborCost left join sys_company as company on laborCost.company_id=company.company_id
         where labor_cost_id = #{laborCostId}
+    </select>
+    <!--根据年份、月份、公司id查找系统记录-->
+    <select id="findRecordByYearAndMonthAndCompanyId" resultMap="sysLaborCost" >
+        select labor_cost_id from sys_labor_cost
+        where  company_id=#{companyId} and year=#{year} and month=#{month}
     </select>
     <!--根据人员成本id查找对应部门详细信息-->
     <select id="findSysLaborCostDetailsByLaborCostId" resultMap="sysLaborCostDetails" parameterType="Long">
@@ -155,20 +162,20 @@
         where labor_cost_id = #{laborCostId}
     </select>
     <!--更新人员成本信息-->
-    <update id="updateSysLaborCost" parameterType="com.spring.boot.bean.master.SysLaborCost">
+    <update id="updateSysLaborCostInfo" parameterType="com.spring.boot.bean.master.SysLaborCost">
 		update sys_labor_cost set year = #{year},month = #{month},company_id = #{companyId}
 		where labor_cost_id = #{laborCostId}
 	</update>
     <!--更新人员成本详细信息-->
-    <update id="updateSysLaborCostDetails" parameterType="com.spring.boot.bean.master.SysLaborCostDetails">
+    <update id="updateSysLaborCostDetailsInfo" parameterType="com.spring.boot.bean.master.SysLaborCostDetails">
         update sys_labor_cost_details set employee_total = #{employeeTotal},headcount_total = #{headcountTotal},entry_total = #{entryTotal},demission_total = #{demissionTotal},
         labor_cost_total = #{laborCostTotal}
-        where labor_cost_id = #{laborCostId}
+        where labor_cost_id = #{laborCostId} and department_type=#{departmentType}
     </update>
 
     <insert id="addSysLaborCost"  useGeneratedKeys="true" keyProperty="laborCostId">
 		INSERT INTO sys_labor_cost (year, month, company_id, create_time )
-              VALUES   (#{laborCostId},#{year},#{month},#{companyId},#{createTime})
+              VALUES   (#{year},#{month},#{companyId},#{createTime})
 	</insert>
     <insert id="addSysLaborCostDetails" parameterType="map">
         INSERT INTO sys_labor_cost_details (employee_total, headcount_total, entry_total, demission_total,labor_cost_total,department_type,labor_cost_id )

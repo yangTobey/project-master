@@ -24,7 +24,7 @@ public interface SysLaborCostDao extends BaseDao<SysLaborCost> {
      * 根据 物业、电商、销配部门类型获取当月人工总成本
      * @return
      */
-    List<SysLaborCostDepartmentEntity>  getSysLaborCostDepartmentTotal(Map<String, Object> map);
+    List<SysLaborCostDetails>  getSysLaborCostDepartmentTotal(Map<String, Object> map);
 
     /**
      * 获取人工成本列表信息
@@ -39,7 +39,6 @@ public interface SysLaborCostDao extends BaseDao<SysLaborCost> {
 
     /**
      * 新增人员成本
-     *
      * @param sysLaborCost
      * @return
      */
@@ -54,6 +53,15 @@ public interface SysLaborCostDao extends BaseDao<SysLaborCost> {
      * @return
      */
     List<SysLaborCostDetails> findSysLaborCostDetailsByLaborCostId(Long laborCostId);
+
+    /**
+     * 根据年份、月份、公司id查找系统记录
+     * @param companyId 公司id
+     * @param year
+     * @param month
+     * @return
+     */
+    SysLaborCost findRecordByYearAndMonthAndCompanyId(@Param("companyId") Long companyId,@Param("year") Integer year,@Param("month") Integer month);
     /**
      * 新增人员成本详情信息
      *
