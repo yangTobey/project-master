@@ -10,7 +10,7 @@ public class SysEnergy {
     private Integer monthConsumptionElectricity;
     private Integer monthConsumptionWater;
     private Date createTime;
-    private Integer companyId;
+    private Long companyId;
     private Integer year;
     private Integer month;
 
@@ -46,11 +46,11 @@ public class SysEnergy {
         this.createTime = createTime;
     }
 
-    public Integer getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 

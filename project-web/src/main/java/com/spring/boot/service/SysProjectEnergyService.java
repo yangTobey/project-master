@@ -24,7 +24,7 @@ public interface SysProjectEnergyService {
 
     /**
      * 更新信息
-     * @param details
+     * @param detailsId
      * @param companyId
      * @param year
      * @param month
@@ -35,7 +35,7 @@ public interface SysProjectEnergyService {
      * @param fileInfo
      * @return
      */
-    Map<String,Object> updateSysProjectEnergy(Long details,Long companyId,Integer year,Integer month,Integer projectUnfinishedTotal,Integer projectFinishedTotal,Integer monthConsumptionElectricity,Integer monthConsumptionWater,String fileInfo);
+    Map<String,Object> updateSysProjectEnergy(Long detailsId,Long companyId,Integer year,Integer month,Integer projectUnfinishedTotal,Integer projectFinishedTotal,Integer monthConsumptionElectricity,Integer monthConsumptionWater,String fileInfo);
 
     /**
      * 删除信息
