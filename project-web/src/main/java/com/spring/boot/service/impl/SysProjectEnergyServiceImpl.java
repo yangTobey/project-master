@@ -231,7 +231,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
             map.put("year", UtilHelper.getYear());
             map.put("month", UtilHelper.getMonth());
             SysProject sysProject=sysProjectBusinessService.sysProjectEnergyAnalysis(map);
-            return R.ok().putData(200, sysProject, "获取数据成功！");
+            return R.ok().putData(200, sysProject, "获取统计数据成功！");
         }catch (Exception e){
             e.printStackTrace();
             logger.info("获取工程能耗信息报表信息出错：" + e.getMessage());
