@@ -80,7 +80,7 @@ public class SysProjectEnergyController {
             , @RequestParam(value = "month", required = false) String month, @RequestParam(value = "projectUnfinishedTotal", required = false) String projectUnfinishedTotal
             , @RequestParam(value = "projectFinishedTotal", required = false) String projectFinishedTotal, @RequestParam(value = "monthConsumptionElectricity", required = false) String monthConsumptionElectricity
             , @RequestParam(value = "monthConsumptionWater", required = false) String monthConsumptionWater, @RequestParam(value = "fileInfo", required = false) String fileInfo
-            , @RequestParam(value = "detailsId", required = false) String projectId) {
+            , @RequestParam(value = "projectId", required = false) String projectId) {
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不合理！");
         } else if (!UtilHelper.isNumer(year)) {

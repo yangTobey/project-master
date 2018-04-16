@@ -66,4 +66,10 @@ public interface SysProjectBusinessService {
      * @return
      */
     int sysProjectEnergyListTotal(Map<String, Object> map);
+    /**
+     * 报表统计信息
+     * @param map
+     * @return
+     */
+    SysProject sysProjectEnergyAnalysis(Map<String, Object> map);
 }

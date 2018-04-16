@@ -72,5 +72,11 @@ public interface SysProjectDao extends BaseDao<SysProject> {
      * @return
      */
     List<SysProjectEnergyFile> findSysProjectEnergyFileById(Long projectId);
+    /**
+     * 报表统计信息
+     * @param map
+     * @return
+     */
+    SysProject sysProjectEnergyAnalysis(Map<String, Object> map);
 
 }

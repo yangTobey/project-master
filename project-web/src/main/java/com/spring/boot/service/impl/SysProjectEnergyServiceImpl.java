@@ -119,7 +119,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
             SysProject sysProject = sysProjectBusinessService.findSysProjectRecord(companyId, year, month);
             if (null != sysProject) {
                 if (!projectId.equals(sysProject.getProjectId())) {
-                    return R.error(500, "新增失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+                    return R.error(500, "更新失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
                 }
             }
             //sysProjectEnergyBusinessService.updateSysProjectEnergy(map);
@@ -217,6 +217,25 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
 
     @Override
     public Map<String, Object> sysProjectEnergyAnalysis(Long companyId) {
-        return null;
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<Long> sysUserCompanyIds = null;
+        try {
+            if (companyId == 0) {
+                //获取用户权限下可操作的小区信息
+                sysUserCompanyIds = SysUtil.getSysUserCompany();
+            } else {
+                sysUserCompanyIds = new ArrayList<Long>();
+                sysUserCompanyIds.add(companyId);
+            }
+            map.put("sysUserCompanyIds", sysUserCompanyIds);
+            map.put("year", UtilHelper.getYear());
+            map.put("month", UtilHelper.getMonth());
+            SysProject sysProject=sysProjectBusinessService.sysProjectEnergyAnalysis(map);
+            return R.ok().putData(200, sysProject, "获取数据成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取工程能耗信息报表信息出错：" + e.getMessage());
+            return R.error(500, "获取工程能耗信息报表信息失败，服务器异常，请联系管理员！");
+        }
     }
 }

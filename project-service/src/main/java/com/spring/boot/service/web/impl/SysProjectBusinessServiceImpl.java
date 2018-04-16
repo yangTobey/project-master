@@ -67,4 +67,9 @@ public class SysProjectBusinessServiceImpl implements SysProjectBusinessService 
     public List<SysProjectEnergyFile> findSysProjectEnergyFileById(Long projectId) {
         return sysProjectDao.findSysProjectEnergyFileById(projectId);
     }
+
+    @Override
+    public SysProject sysProjectEnergyAnalysis(Map<String, Object> map) {
+        return sysProjectDao.sysProjectEnergyAnalysis(map);
+    }
 }
