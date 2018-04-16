@@ -16,11 +16,11 @@
 
 	<update id="updateSysEnergy" parameterType="map">
 		update sys_energy set month_consumption_electricity = #{monthConsumptionElectricity},company_id= #{companyId},month_consumption_water = #{monthConsumptionWater},year=#{year},month=#{month}
-		where project_energy_id = #{projectEnergyId}
+		where project_id = #{projectId}
 	</update>
 	<insert id="addSysEnergy" parameterType="map">
-		INSERT INTO sys_energy (month_consumption_electricity, company_id, month_consumption_water,project_energy_id,year,month,create_time)
-              VALUES   (#{monthConsumptionElectricity},#{companyUd},#{monthConsumptionWater},#{projectEnergyId},#{year},#{month},#{createTime})
+		INSERT INTO sys_energy (month_consumption_electricity, company_id, month_consumption_water,year,month,create_time,project_id)
+              VALUES   (#{monthConsumptionElectricity},#{companyId},#{monthConsumptionWater},#{year},#{month},#{createTime},#{projectId})
 	</insert>
 
 

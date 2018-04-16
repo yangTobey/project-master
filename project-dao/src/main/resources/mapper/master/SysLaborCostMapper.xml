@@ -154,7 +154,7 @@
     <!--根据年份、月份、公司id查找系统记录-->
     <select id="findRecordByYearAndMonthAndCompanyId" resultMap="sysLaborCost" >
         select labor_cost_id from sys_labor_cost
-        where  company_id=#{companyId} and year=#{year} and month=#{month}
+        where  company_id=#{companyId} and year=#{year} and month=#{month} and status_code!=2
     </select>
     <!--根据人员成本id查找对应部门详细信息-->
     <select id="findSysLaborCostDetailsByLaborCostId" resultMap="sysLaborCostDetails" parameterType="Long">

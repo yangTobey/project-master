@@ -1,6 +1,9 @@
 package com.spring.boot.bean.master;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/4/13.
@@ -11,11 +14,18 @@ public class SysProject {
     private Integer projectTotal;
     private Integer projectUnfinishedTotal;
     private Integer projectFinishedTotal;
-    private Long projectEnergyId;
     private Date createTime;
     private Long companyId;
     private Integer year;
     private Integer month;
+    private Integer statusCode;
+
+    private Integer monthConsumptionElectricity;
+    private Integer monthConsumptionWater;
+    private Integer fileNum;
+    private String companyName;
+
+    List<SysProjectEnergyFile> fileList;
 
     public Long getProjectId() {
         return projectId;
@@ -56,15 +66,7 @@ public class SysProject {
     public void setProjectFinishedTotal(Integer projectFinishedTotal) {
         this.projectFinishedTotal = projectFinishedTotal;
     }
-
-    public Long getProjectEnergyId() {
-        return projectEnergyId;
-    }
-
-    public void setProjectEnergyId(Long projectEnergyId) {
-        this.projectEnergyId = projectEnergyId;
-    }
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     public Date getCreateTime() {
         return createTime;
     }
@@ -95,5 +97,53 @@ public class SysProject {
 
     public void setMonth(Integer month) {
         this.month = month;
+    }
+
+    public Integer getMonthConsumptionElectricity() {
+        return monthConsumptionElectricity;
+    }
+
+    public void setMonthConsumptionElectricity(Integer monthConsumptionElectricity) {
+        this.monthConsumptionElectricity = monthConsumptionElectricity;
+    }
+
+    public Integer getMonthConsumptionWater() {
+        return monthConsumptionWater;
+    }
+
+    public void setMonthConsumptionWater(Integer monthConsumptionWater) {
+        this.monthConsumptionWater = monthConsumptionWater;
+    }
+
+    public Integer getFileNum() {
+        return fileNum;
+    }
+
+    public void setFileNum(Integer fileNum) {
+        this.fileNum = fileNum;
+    }
+
+    public List<SysProjectEnergyFile> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<SysProjectEnergyFile> fileList) {
+        this.fileList = fileList;
+    }
+
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

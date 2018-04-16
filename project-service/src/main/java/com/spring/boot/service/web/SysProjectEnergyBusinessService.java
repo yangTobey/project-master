@@ -25,12 +25,7 @@ public interface SysProjectEnergyBusinessService {
      * @return
      */
     int addSysProjectEnergy(SysProjectEnergy sysProjectEnergy);
-    /**
-     * 添加工程能耗基础附件信息
-     * @param sysProjectEnergyFile
-     * @return
-     */
-    int addSysProjectEnergyFile(SysProjectEnergyFile sysProjectEnergyFile);
+
 
     /**
      * 更新工程能耗信息
@@ -46,14 +41,14 @@ public interface SysProjectEnergyBusinessService {
     int updateSysProjectEnergyFile(Map<String,Object> map);
 
 
-    int deleteSysProjectEnergy(Long detailsId);
+    int deleteSysProjectEnergy(Long projectId);
 
     /**
      * 根据主键id查找信息
-     * @param detailsId
+     * @param projectId
      * @return
      */
-    SysProjectEnergy findSysProjectEnergyById(Long detailsId);
+    SysProjectEnergy findSysProjectEnergyById(Long projectId);
 
 
 }

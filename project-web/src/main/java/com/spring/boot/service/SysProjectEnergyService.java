@@ -24,7 +24,7 @@ public interface SysProjectEnergyService {
 
     /**
      * 更新信息
-     * @param detailsId
+     * @param projectId
      * @param companyId
      * @param year
      * @param month
@@ -35,20 +35,20 @@ public interface SysProjectEnergyService {
      * @param fileInfo
      * @return
      */
-    Map<String,Object> updateSysProjectEnergy(Long detailsId,Long companyId,Integer year,Integer month,Integer projectUnfinishedTotal,Integer projectFinishedTotal,Integer monthConsumptionElectricity,Integer monthConsumptionWater,String fileInfo);
+    Map<String,Object> updateSysProjectEnergy(Long projectId,Long companyId,Integer year,Integer month,Integer projectUnfinishedTotal,Integer projectFinishedTotal,Integer monthConsumptionElectricity,Integer monthConsumptionWater,String fileInfo);
 
     /**
      * 删除信息
-     * @param detailsId
+     * @param projectId
      * @return
      */
-    Map<String,Object> deleteSysProjectEnergy(Long detailsId);
+    Map<String,Object> deleteSysProject(Long projectId);
     /**
      * 根据主键id查找信息
-     * @param detailsId
+     * @param projectId
      * @return
      */
-    Map<String,Object> findSysProjectEnergyById(Long detailsId);
+    Map<String,Object> findSysProjectEnergyById(Long projectId);
 
     /**
      * 查找列表信息
@@ -56,7 +56,7 @@ public interface SysProjectEnergyService {
      * @param year
      * @return
      */
-    Map<String,Object> sysProjectEnergyList(Long companyId, Integer year);
+    Map<String,Object> sysProjectEnergyList(Long companyId, Integer year,Integer limit, Integer offset);
     /**
      * 查找报表统计信息
      * @param companyId

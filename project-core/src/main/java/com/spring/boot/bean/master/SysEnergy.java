@@ -13,6 +13,7 @@ public class SysEnergy {
     private Long companyId;
     private Integer year;
     private Integer month;
+    private Long projectId;
 
     public Long getEnergyId() {
         return energyId;
@@ -68,5 +69,13 @@ public class SysEnergy {
 
     public void setMonth(Integer month) {
         this.month = month;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 }

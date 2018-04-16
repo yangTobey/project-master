@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.spring.boot.dao.web.master.SysProjectDao">
@@ -8,26 +7,112 @@
 		<result column="project_total" property="projectTotal" />
 		<result column="project_unfinished_total" property="projectUnfinishedTotal" />
 		<result column="project_finished_total" property="projectFinishedTotal" />
-		<result column="project_energy_id" property="projectEnergyId" />
 		<result column="create_time" property="createTime" />
 		<result column="company_id" property="companyId" />
 		<result column="year" property="year" />
 		<result column="month" property="month" />
+		<result column="status_code" property="statusCode" />
+		<result column="month_consumption_electricity" property="monthConsumptionElectricity" />
+		<result column="month_consumption_water" property="monthConsumptionWater" />
+		<result column="fileNum" property="fileNum" />
+		<result column="company_name" property="companyName" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		project_id,project_name,project_total,project_unfinished_total,project_finished_total,project_energy_id,create_time,company_id,year,month
+		project_id,project_name,project_total,project_unfinished_total,project_finished_total,create_time,company_id,year,month
 	</sql>
 
-
+	<!--更新工程信息-->
 	<update id="updateSysProject" parameterType="map">
-		update sys_project set project_total = #{projectTotal},project_unfinished_total = #{projectUnfinishedTotal},project_finished_total = #{projectFinishedTotal},
+		update sys_project set project_unfinished_total = #{projectUnfinishedTotal},project_finished_total = #{projectFinishedTotal},
 		company_id = #{companyId},year = #{year},month = #{month}
-		where project_energy_id = #{projectEnergyId}
+		where project_id = #{projectId}
 	</update>
+	<!--新增工程信息-->
 	<insert id="addSysProject" parameterType="com.spring.boot.bean.master.SysProject" useGeneratedKeys="true" keyProperty="projectId">
-		INSERT INTO sys_project  (project_total, project_unfinished_total,project_finished_total,project_energy_id,create_time,company_id,year,month)
-              VALUES   (#{projectTotal},#{projectUnfinishedTotal},#{projectFinishedTotal},#{projectEnergyId},#{createTime},#{companyId},#{year},#{month})
+		INSERT INTO sys_project  ( project_unfinished_total,project_finished_total,create_time,company_id,year,month)
+              VALUES   (#{projectUnfinishedTotal},#{projectFinishedTotal},#{createTime},#{companyId},#{year},#{month})
+	</insert>
+	<!--删除工程信息-->
+	<update id="deleteSysProject" parameterType="map">
+		update sys_project set status_code =2
+		where project_id = #{projectId}
+	</update>
+
+	<!--查找列表信息-->
+	<select id="sysProjectEnergyList" resultMap="sysProject" parameterType="map">
+		SELECT
+			project.project_id, project.company_id, project.`year`, project.`month`, project.project_finished_total,
+			project.project_unfinished_total, project.create_time, project.status_code, energy.month_consumption_electricity, energy.month_consumption_water,
+			COUNT(file.file_id) AS fileNum
+			FROM
+				sys_project AS project
+			LEFT JOIN sys_energy AS energy ON project.project_id = energy.project_id
+			LEFT JOIN sys_project_energy_file AS file ON project.project_id = file.project_id
+			LEFT JOIN sys_company AS company ON company.company_id = project.company_id
+			where 1=1 and project.status_code!=2
+			and project.year=#{year}
+			<if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+				AND project.company_id IN
+				<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+
+			GROUP BY project.project_id
+			<if test="offset != null and limit != null">
+				limit #{offset},#{limit}
+			</if>
+	</select>
+	<!--查找列表信息-->
+	<select id="sysProjectEnergyListTotal" resultType="int" parameterType="map">
+		SELECT COUNT(project_id)
+		FROM
+		sys_project AS project
+		where 1=1
+		<if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+			AND project.company_id IN
+			<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		and project.status_code!=2
+		and project.year=#{year}
+	</select>
+	<!--根据主键id查找信息-->
+	<select id="findSysProjectEnergyById" resultMap="sysProject" >
+		SELECT
+		project.project_id, project.company_id, project.`year`, project.`month`, project.project_finished_total,
+		project.project_unfinished_total, project.create_time, project.status_code, energy.month_consumption_electricity, energy.month_consumption_water,company.company_name
+		FROM
+		sys_project AS project
+		LEFT JOIN sys_energy AS energy ON project.project_id = energy.project_id
+		LEFT JOIN sys_company AS company ON company.company_id = project.company_id
+		where 1=1 and project.status_code!=2 and project.project_id=#{projectId}
+	</select>
+	<!--根据id查找附件文档信息-->
+	<select id="findSysProjectEnergyFileById" resultType="com.spring.boot.bean.master.SysProjectEnergyFile" >
+		SELECT
+		file_id as fileId,file_name as fileName,file_size as fileSize,file_url as fileUrl,project_id as projectId,upload_time as uploadTime
+		FROM sys_project_energy_file
+		where 1=1 and project_id=#{projectId}
+	</select>
+	<!--根据年份、月份、公司id查找系统记录-->
+	<select id="findSysProjectRecord" resultType="com.spring.boot.bean.master.SysProject" >
+		SELECT project_id as projectId FROM sys_project
+		where 1=1 and company_id=#{companyId}  and year=#{year} and month=#{month} and status_code!=2
+	</select>
+
+	<!--&lt;!&ndash;更新附件文档信息&ndash;&gt;
+	<update id="updateSysProjectEnergyFile" parameterType="map">
+		update sys_project_energy_file set project_total = #{projectTotal},project_unfinished_total = #{projectUnfinishedTotal},project_finished_total = #{projectFinishedTotal},
+		company_id = #{companyId},year = #{year},month = #{month}
+		where project_id = #{projectId}
+	</update>-->
+	<!--新增附件文档信息-->
+	<insert id="addSysProjectEnergyFile" parameterType="com.spring.boot.bean.master.SysProject" useGeneratedKeys="true" keyProperty="projectId">
+		INSERT INTO sys_project_energy_file  (file_url, file_size,project_id,upload_time)
+		VALUES   (#{fileUrl},#{fileSize},#{projectId},#{uploadTime})
 	</insert>
 
 

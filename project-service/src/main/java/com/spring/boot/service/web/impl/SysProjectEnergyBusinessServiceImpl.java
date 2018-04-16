@@ -29,10 +29,6 @@ public class SysProjectEnergyBusinessServiceImpl implements SysProjectEnergyBusi
         return sysProjectEnergyDao.addSysProjectEnergy(sysProjectEnergy);
     }
 
-    @Override
-    public int addSysProjectEnergyFile(SysProjectEnergyFile sysProjectEnergyFile) {
-        return 0;
-    }
 
 
 
@@ -49,12 +45,12 @@ public class SysProjectEnergyBusinessServiceImpl implements SysProjectEnergyBusi
 
 
     @Override
-    public int deleteSysProjectEnergy(Long detailsId) {
-        return sysProjectEnergyDao.delete(detailsId);
+    public int deleteSysProjectEnergy(Long projectId) {
+        return sysProjectEnergyDao.delete(projectId);
     }
 
     @Override
-    public SysProjectEnergy findSysProjectEnergyById(Long detailsId) {
+    public SysProjectEnergy findSysProjectEnergyById(Long projectId) {
         return null;
     }
 }

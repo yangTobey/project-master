@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2018/1/25.
  */
-public interface SysProjectEnergyDao extends BaseDao<SysBasicDataEntity> {
+public interface SysProjectEnergyDao extends BaseDao<SysProjectEnergy> {
     /**
      * 根据公司id、年份、月份查找系统记录
      * @return

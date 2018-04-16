@@ -13,6 +13,7 @@ public class SysProjectEnergy {
     private Integer statusCode;
     private Date createTime;
     private String companyName;
+    private Long projectId;
 
     public Long getDetailsId() {
         return detailsId;
@@ -68,5 +69,13 @@ public class SysProjectEnergy {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 }

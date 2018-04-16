@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class SysProjectEnergyFile {
     private Long fileId;
-    private Long detailsId;
+    private Long projectId;
     private String fileName;
     private String fileUrl;
     private Double fileSize;
@@ -24,12 +24,12 @@ public class SysProjectEnergyFile {
         this.fileId = fileId;
     }
 
-    public Long getDetailsId() {
-        return detailsId;
+    public Long getProjectId() {
+        return projectId;
     }
 
-    public void setDetailsId(Long detailsId) {
-        this.detailsId = detailsId;
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
     public String getFileName() {
