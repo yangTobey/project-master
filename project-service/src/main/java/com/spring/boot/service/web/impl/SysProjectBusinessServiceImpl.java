@@ -69,7 +69,17 @@ public class SysProjectBusinessServiceImpl implements SysProjectBusinessService 
     }
 
     @Override
-    public SysProject sysProjectEnergyAnalysis(Map<String, Object> map) {
-        return sysProjectDao.sysProjectEnergyAnalysis(map);
+    public SysProject sysProjectEnergyAnalysisForYear(Map<String, Object> map) {
+        return sysProjectDao.sysProjectEnergyAnalysisForYear(map);
+    }
+
+    @Override
+    public SysProject sysProjectEnergyByYearAndMonthAndCompanyId(Integer year, Integer month,List<Long> sysUserCompanyIds) {
+        return sysProjectDao.sysProjectEnergyByYearAndMonthAndCompanyId(year,month,sysUserCompanyIds);
+    }
+
+    @Override
+    public List<SysProject> sysProjectEnergyAnalysisForMonth(Map<String, Object> map) {
+        return sysProjectDao.sysProjectEnergyAnalysisForMonth(map);
     }
 }

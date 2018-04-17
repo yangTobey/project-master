@@ -110,8 +110,8 @@ public class SysLaborCostController {
 
         Map<String,Object> map = sysLaborCostService.addSysLaborCost(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month),Double.valueOf(propertyLaborCost) , Integer.valueOf(propertyHeadcountTotal)
                 , Integer.valueOf(propertyEmployeeTotal), Integer.valueOf(propertyEntryTotal), Integer.valueOf(propertyDemissionTotal),
-                Double.valueOf(eBusinessLaborCost), Integer.valueOf(eBusinessHeadcountTotal), Integer.valueOf(eBusinessEmployeeTotal), Integer.valueOf(eBusinessEntryTotal), Integer.valueOf(eBusinessDemissionTotal),
-                Double.valueOf(saleLaborCost), Integer.valueOf(saleHeadcountTotal), Integer.valueOf(saleEmployeeTotal), Integer.valueOf(saleEntryTotal), Integer.valueOf(saleDemissionTotal));
+        UtilHelper.toDoubleNum(eBusinessLaborCost), UtilHelper.toIntegerNum(eBusinessHeadcountTotal), UtilHelper.toIntegerNum(eBusinessEmployeeTotal), UtilHelper.toIntegerNum(eBusinessEntryTotal),UtilHelper.toIntegerNum(eBusinessDemissionTotal),
+                UtilHelper.toDoubleNum(saleLaborCost),UtilHelper.toIntegerNum(saleHeadcountTotal), UtilHelper.toIntegerNum(saleEmployeeTotal), UtilHelper.toIntegerNum(saleEntryTotal),UtilHelper.toIntegerNum(saleDemissionTotal));
 
         return R.ok(map);
     }
@@ -171,8 +171,8 @@ public class SysLaborCostController {
             return R.error(400,"物业月离职人数格式不正确！");
         }
         Map<String,Object> map = sysLaborCostService.updateSysLaborCostInfo(Long.valueOf(laborCostId),Long.valueOf(companyId) , Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(propertyLaborCost), Integer.valueOf(propertyHeadcountTotal),Integer.valueOf(propertyEmployeeTotal) ,Integer.valueOf(propertyEntryTotal) , Integer.valueOf(propertyDemissionTotal),
-                Double.valueOf(eBusinessLaborCost), Integer.valueOf(eBusinessHeadcountTotal), Integer.valueOf(eBusinessEmployeeTotal), Integer.valueOf(eBusinessEntryTotal),Integer.valueOf(eBusinessDemissionTotal) ,
-                Double.valueOf(saleLaborCost), Integer.valueOf(saleHeadcountTotal), Integer.valueOf(saleEmployeeTotal), Integer.valueOf(saleEntryTotal), Integer.valueOf(saleDemissionTotal));
+                UtilHelper.toDoubleNum(eBusinessLaborCost),UtilHelper.toIntegerNum(eBusinessHeadcountTotal),UtilHelper.toIntegerNum(eBusinessEmployeeTotal),UtilHelper.toIntegerNum(eBusinessEntryTotal),UtilHelper.toIntegerNum(eBusinessDemissionTotal) ,
+                UtilHelper.toDoubleNum(saleLaborCost),UtilHelper.toIntegerNum(saleHeadcountTotal),UtilHelper.toIntegerNum(saleEmployeeTotal),UtilHelper.toIntegerNum(saleEntryTotal), UtilHelper.toIntegerNum(saleDemissionTotal));
         return R.ok(map);
 
     }
@@ -184,7 +184,7 @@ public class SysLaborCostController {
      */
     @RequestMapping(value = "/findSysLaborCostById", method = RequestMethod.GET)
     public R findSysLaborCostById(@RequestParam(value = "laborCostId", required = false)String laborCostId) {
-        if (UtilHelper.isEmpty(laborCostId)) {
+        if (!UtilHelper.isNumer(laborCostId)) {
             return R.error(400, "人员成本id编号不能为空，请联系系统管理员！");
         }
         Map<String,Object> map = sysLaborCostService.findSysLaborCostById(Long.valueOf(laborCostId));
@@ -200,7 +200,7 @@ public class SysLaborCostController {
      */
     @RequestMapping(value = "/deleteSysLaborCost", method = RequestMethod.GET)
     public R deleteSysLaborCost(@RequestParam(value = "laborCostId", required = false)String laborCostId) {
-        if (UtilHelper.isEmpty(laborCostId)) {
+        if (!UtilHelper.isNumer(laborCostId)) {
             return R.error(400, "人员成本id编号不能为空，请联系系统管理员！");
         }
         Map<String,Object> map = sysLaborCostService.deleteSysLaborCostInfo(Long.valueOf(laborCostId));

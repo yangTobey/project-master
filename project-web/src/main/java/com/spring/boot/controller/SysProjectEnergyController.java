@@ -57,7 +57,7 @@ public class SysProjectEnergyController {
             return R.error(400, "月耗水量格式不合理！");
         }
         Map<String, Object> map = sysProjectEnergyService.addSysProjectEnergy(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(projectUnfinishedTotal)
-                , Integer.valueOf(projectFinishedTotal), Integer.valueOf(monthConsumptionElectricity), Integer.valueOf(monthConsumptionWater), fileInfo);
+                , Integer.valueOf(projectFinishedTotal), Double.valueOf(monthConsumptionElectricity), Double.valueOf(monthConsumptionWater), fileInfo);
         return R.ok(map);
     }
 
@@ -99,7 +99,7 @@ public class SysProjectEnergyController {
             return R.error(400, "主键id格式不正确！");
         }
         Map<String, Object> map = sysProjectEnergyService.updateSysProjectEnergy(Long.valueOf(projectId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(projectUnfinishedTotal)
-                , Integer.valueOf(projectFinishedTotal), Integer.valueOf(monthConsumptionElectricity), Integer.valueOf(monthConsumptionWater), fileInfo);
+                , Integer.valueOf(projectFinishedTotal), Double.valueOf(monthConsumptionElectricity), Double.valueOf(monthConsumptionWater), fileInfo);
         return R.ok(map);
     }
 
@@ -153,7 +153,7 @@ public class SysProjectEnergyController {
         return R.ok(map);
     }
     /**
-     * 查找报表统计信息
+     * 查找年度和月度报表统计信息
      * @param companyId
      * @return
      */
@@ -163,6 +163,19 @@ public class SysProjectEnergyController {
             return R.error(400, "公司id格式不合理！");
         }
         Map<String, Object> map = sysProjectEnergyService.sysProjectEnergyAnalysis(Long.valueOf(companyId));
+        return R.ok(map);
+    }
+    /**
+     * 查找年度每月报表统计信息
+     * @param companyId
+     * @return
+     */
+    @RequestMapping(value = "/sysProjectEnergyAnalysisForMonth", method = RequestMethod.GET)
+    public R sysProjectEnergyAnalysisForMonth(@RequestParam(value = "companyId", required = false) String companyId) {
+        if (!UtilHelper.isNumer(companyId)) {
+            return R.error(400, "公司id格式不合理！");
+        }
+        Map<String, Object> map = sysProjectEnergyService.sysProjectEnergyAnalysisForMonth(Long.valueOf(companyId));
         return R.ok(map);
     }
 }

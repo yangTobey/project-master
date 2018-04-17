@@ -1,6 +1,7 @@
 package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.*;
+import com.spring.boot.bean.master.entity.SysProjectEnergyEntity;
 import com.spring.boot.service.SysProjectEnergyService;
 import com.spring.boot.service.web.SysEnergyBusinessService;
 import com.spring.boot.service.web.SysProjectBusinessService;
@@ -39,7 +40,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addSysProjectEnergy(Long companyId, Integer year, Integer month, Integer projectUnfinishedTotal, Integer projectFinishedTotal, Integer monthConsumptionElectricity, Integer monthConsumptionWater, String fileInfo) {
+    public Map<String, Object> addSysProjectEnergy(Long companyId, Integer year, Integer month, Integer projectUnfinishedTotal, Integer projectFinishedTotal, Double monthConsumptionElectricity, Double monthConsumptionWater, String fileInfo) {
         try {
             //先根据年份、月份、公司id查找系统是不是已经存在该月的记录
             SysProject sysProject = sysProjectBusinessService.findSysProjectRecord(companyId, year, month);
@@ -104,7 +105,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> updateSysProjectEnergy(Long projectId, Long companyId, Integer year, Integer month, Integer projectUnfinishedTotal, Integer projectFinishedTotal, Integer monthConsumptionElectricity, Integer monthConsumptionWater, String fileInfo) {
+    public Map<String, Object> updateSysProjectEnergy(Long projectId, Long companyId, Integer year, Integer month, Integer projectUnfinishedTotal, Integer projectFinishedTotal, Double monthConsumptionElectricity, Double monthConsumptionWater, String fileInfo) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("projectId", projectId);
         map.put("companyId", companyId);
@@ -227,11 +228,120 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                 sysUserCompanyIds = new ArrayList<Long>();
                 sysUserCompanyIds.add(companyId);
             }
+            int year= UtilHelper.getYear();
+            int month= UtilHelper.getMonth();
+            int lastYear= 0;
+            int lastMonth= 0;
+            if(month==1){
+                lastMonth=12;
+                lastYear=year-1;
+            }else {
+                lastMonth=month-1;
+                lastYear=year;
+            }
             map.put("sysUserCompanyIds", sysUserCompanyIds);
-            map.put("year", UtilHelper.getYear());
-            map.put("month", UtilHelper.getMonth());
-            SysProject sysProject=sysProjectBusinessService.sysProjectEnergyAnalysis(map);
-            return R.ok().putData(200, sysProject, "获取统计数据成功！");
+            map.put("year", year);
+            map.put("month", month);
+            SysProject sysProjectForYear=sysProjectBusinessService.sysProjectEnergyAnalysisForYear(map);
+
+            if(null!=sysProjectForYear) {
+                sysProjectForYear.setYearProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProjectForYear.getYearProjectUnfinishedTotal(),sysProjectForYear.getYearProjectFinishedTotal())));
+                //当月数据
+                SysProject sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year, month, sysUserCompanyIds);
+                if (null != sysProjectForMonth) {
+                    sysProjectForYear.setMonthConsumptionElectricity(sysProjectForMonth.getMonthConsumptionElectricity());
+                    sysProjectForYear.setMonthConsumptionWater(sysProjectForMonth.getMonthConsumptionWater());
+                    //上个月数据
+                    SysProject sysProjectForLastMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(lastYear, lastMonth, sysUserCompanyIds);
+                    if (null != sysProjectForLastMonth) {
+                        sysProjectForYear.setMtOMtConsumptionElectricityScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionElectricity() - sysProjectForLastMonth.getMonthConsumptionElectricity(), sysProjectForLastMonth.getMonthConsumptionElectricity())));
+                        sysProjectForYear.setMtOMtConsumptionWaterScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionWater() - sysProjectForLastMonth.getMonthConsumptionWater(), sysProjectForLastMonth.getMonthConsumptionWater())));
+                        //上一年同月数据
+                        SysProject sysProjectForLastYear = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year - 1, month, sysUserCompanyIds);
+                        if (null != sysProjectForLastYear) {
+                            sysProjectForYear.setYoYConsumptionElectricityScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionElectricity() - sysProjectForLastYear.getMonthConsumptionWater(), sysProjectForLastYear.getMonthConsumptionWater())));
+                            sysProjectForYear.setYoYConsumptionWaterScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionWater() - sysProjectForLastYear.getMonthConsumptionWater(), sysProjectForLastYear.getMonthConsumptionWater())));
+                        }
+                    }
+                }
+                return R.ok().putData(200, sysProjectForYear, "获取统计数据成功！");
+            }
+            return R.error(500, "获取工程能耗信息报表信息失败，请联系管理员！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取工程能耗信息报表信息出错：" + e.getMessage());
+            return R.error(500, "获取工程能耗信息报表信息失败，服务器异常，请联系管理员！");
+        }
+    }
+
+    @Override
+    public Map<String, Object> sysProjectEnergyAnalysisForMonth(Long companyId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        List<Long> sysUserCompanyIds = null;
+        try {
+            if (companyId == 0) {
+                //获取用户权限下可操作的小区信息
+                sysUserCompanyIds = SysUtil.getSysUserCompany();
+            } else {
+                sysUserCompanyIds = new ArrayList<Long>();
+                sysUserCompanyIds.add(companyId);
+            }
+            int year= UtilHelper.getYear();
+            int month= UtilHelper.getMonth();
+            map.put("sysUserCompanyIds", sysUserCompanyIds);
+            map.put("year", year);
+            //耗电量环比
+            Map<Integer, Double> mtOMtCsElectricityScaleMap = null;
+            //耗水量环比
+            Map<Integer, Double> mtOMtCsWaterScaleMap = null;
+            //耗电量(月)
+            Map<Integer, Double> monthCsElectricityMap = null;
+            //耗水量(月)
+            Map<Integer, Double> monthCsWaterMap = null;
+            String monthsInfo = "";
+            for (int i = 1; i <= month; i++) {
+                //月份组装
+                if (i == month) {
+                    monthsInfo += i;
+                } else {
+                    monthsInfo += i + ",";
+                }
+            }
+            SysProjectEnergyEntity sysProjectEnergyEntity=new SysProjectEnergyEntity();
+            sysProjectEnergyEntity.setMonthInfo(monthsInfo);
+            //查询得到的信息列表里面的月份值
+            Integer infoMonth=0;
+            List<SysProject> sysProjectList=sysProjectBusinessService.sysProjectEnergyAnalysisForMonth(map);
+            if(null!=sysProjectList){
+                mtOMtCsElectricityScaleMap = new HashMap<Integer, Double>();
+                mtOMtCsWaterScaleMap = new HashMap<Integer, Double>();
+                monthCsElectricityMap = new HashMap<Integer, Double>();
+                monthCsWaterMap = new HashMap<Integer, Double>();
+                SysProject sysProjectForMonth=null;
+                for(SysProject sysProject:sysProjectList){
+                    infoMonth=sysProject.getMonth();
+                    if(null!=infoMonth){
+                        monthCsElectricityMap.put(infoMonth,sysProject.getMonthConsumptionElectricity());
+                        monthCsWaterMap.put(infoMonth,sysProject.getMonthConsumptionWater());
+                        if(infoMonth==1){
+                            sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year-1, 12, sysUserCompanyIds);
+                        }else{
+                            sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year, infoMonth-1, sysUserCompanyIds);
+                        }
+                        if(null!=sysProjectForMonth){
+                            mtOMtCsElectricityScaleMap.put(infoMonth,UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProject.getMonthConsumptionElectricity()-sysProjectForMonth.getMonthConsumptionElectricity(),sysProjectForMonth.getMonthConsumptionElectricity())));
+                            mtOMtCsWaterScaleMap.put(infoMonth,UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProject.getMonthConsumptionWater()-sysProjectForMonth.getMonthConsumptionWater(),sysProjectForMonth.getMonthConsumptionWater())));
+                        }
+                    }
+                }
+            }
+            sysProjectEnergyEntity.setMonthCsElectricityMap(monthCsElectricityMap);
+            sysProjectEnergyEntity.setMonthCsWaterMap(monthCsWaterMap);
+            sysProjectEnergyEntity.setMtOMtCsElectricityScaleMap(mtOMtCsElectricityScaleMap);
+            sysProjectEnergyEntity.setMtOMtCsWaterScaleMap(mtOMtCsWaterScaleMap);
+            return  R.ok().putData(200,sysProjectEnergyEntity,"获取信息成功！！");
+
         }catch (Exception e){
             e.printStackTrace();
             logger.info("获取工程能耗信息报表信息出错：" + e.getMessage());

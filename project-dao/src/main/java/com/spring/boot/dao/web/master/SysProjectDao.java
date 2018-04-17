@@ -73,10 +73,22 @@ public interface SysProjectDao extends BaseDao<SysProject> {
      */
     List<SysProjectEnergyFile> findSysProjectEnergyFileById(Long projectId);
     /**
-     * 报表统计信息
+     * 报表年度统计信息
      * @param map
      * @return
      */
-    SysProject sysProjectEnergyAnalysis(Map<String, Object> map);
+    SysProject sysProjectEnergyAnalysisForYear(Map<String, Object> map);
+    /**
+     * 报表月度（当月）统计信息
+     * @param
+     * @return
+     */
+    SysProject sysProjectEnergyByYearAndMonthAndCompanyId(@Param("year")Integer year, @Param("month")Integer month,@Param("sysUserCompanyIds")List<Long> sysUserCompanyIds);
+    /**
+     * 根据年份、公司id查找年度工程能耗分析信息
+     * @param map
+     * @return
+     */
+    List<SysProject> sysProjectEnergyAnalysisForMonth(Map<String, Object> map);
 
 }

@@ -148,6 +148,31 @@ public class UtilHelper {
     }
 
     /**
+     * 将字符串转化为Double类型返回
+     * @param str
+     * @return
+     */
+    public static Double toDoubleNum(String str) {
+        if (UtilHelper.isEmpty(str)) {
+            return 0.00;
+        }else{
+            return Double.valueOf(str);
+        }
+    }
+    /**
+     * 将字符串转化为Integer类型返回
+     * @param str
+     * @return
+     */
+    public static Integer toIntegerNum(String str) {
+        if (UtilHelper.isEmpty(str)) {
+            return 0;
+        }else{
+            return Integer.valueOf(str);
+        }
+    }
+
+    /**
      * 手机号验证
      *
      * @param str

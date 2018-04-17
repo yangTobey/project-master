@@ -7,8 +7,8 @@ import java.util.Date;
  */
 public class SysEnergy {
     private Long energyId;
-    private Integer monthConsumptionElectricity;
-    private Integer monthConsumptionWater;
+    private Double monthConsumptionElectricity;
+    private Double monthConsumptionWater;
     private Date createTime;
     private Long companyId;
     private Integer year;
@@ -23,19 +23,19 @@ public class SysEnergy {
         this.energyId = energyId;
     }
 
-    public Integer getMonthConsumptionElectricity() {
+    public Double getMonthConsumptionElectricity() {
         return monthConsumptionElectricity;
     }
 
-    public void setMonthConsumptionElectricity(Integer monthConsumptionElectricity) {
+    public void setMonthConsumptionElectricity(Double monthConsumptionElectricity) {
         this.monthConsumptionElectricity = monthConsumptionElectricity;
     }
 
-    public Integer getMonthConsumptionWater() {
+    public Double getMonthConsumptionWater() {
         return monthConsumptionWater;
     }
 
-    public void setMonthConsumptionWater(Integer monthConsumptionWater) {
+    public void setMonthConsumptionWater(Double monthConsumptionWater) {
         this.monthConsumptionWater = monthConsumptionWater;
     }
 

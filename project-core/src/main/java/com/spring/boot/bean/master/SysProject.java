@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/4/13.
@@ -14,18 +15,36 @@ public class SysProject {
     private Integer projectTotal;
     private Integer projectUnfinishedTotal;
     private Integer projectFinishedTotal;
+    private Integer yearProjectUnfinishedTotal;
+    private Integer yearProjectFinishedTotal;
     private Date createTime;
     private Long companyId;
     private Integer year;
     private Integer month;
     private Integer statusCode;
 
-    private Integer monthConsumptionElectricity;
-    private Integer monthConsumptionWater;
+    private Double monthConsumptionElectricity;
+    private Double monthConsumptionWater;
+    //年度耗电量
+    private Double yearConsumptionElectricity;
+    //年度耗水量
+    private Double yearConsumptionWater;
     private Integer fileNum;
     private String companyName;
 
+    //年系统遗留问题处理率
+    private Double yearProjectUnfinishedScale;
+    //耗电量同比
+    private Double yoYConsumptionElectricityScale;
+    //耗电量环比
+    private Double mtOMtConsumptionElectricityScale;
+    //耗水量同比
+    private Double yoYConsumptionWaterScale;
+    //耗电量环比
+    private Double mtOMtConsumptionWaterScale;
     List<SysProjectEnergyFile> fileList;
+
+
 
     public Long getProjectId() {
         return projectId;
@@ -99,20 +118,36 @@ public class SysProject {
         this.month = month;
     }
 
-    public Integer getMonthConsumptionElectricity() {
+    public Double getMonthConsumptionElectricity() {
         return monthConsumptionElectricity;
     }
 
-    public void setMonthConsumptionElectricity(Integer monthConsumptionElectricity) {
+    public void setMonthConsumptionElectricity(Double monthConsumptionElectricity) {
         this.monthConsumptionElectricity = monthConsumptionElectricity;
     }
 
-    public Integer getMonthConsumptionWater() {
+    public Double getMonthConsumptionWater() {
         return monthConsumptionWater;
     }
 
-    public void setMonthConsumptionWater(Integer monthConsumptionWater) {
+    public void setMonthConsumptionWater(Double monthConsumptionWater) {
         this.monthConsumptionWater = monthConsumptionWater;
+    }
+
+    public Double getYearConsumptionElectricity() {
+        return yearConsumptionElectricity;
+    }
+
+    public void setYearConsumptionElectricity(Double yearConsumptionElectricity) {
+        this.yearConsumptionElectricity = yearConsumptionElectricity;
+    }
+
+    public Double getYearConsumptionWater() {
+        return yearConsumptionWater;
+    }
+
+    public void setYearConsumptionWater(Double yearConsumptionWater) {
+        this.yearConsumptionWater = yearConsumptionWater;
     }
 
     public Integer getFileNum() {
@@ -146,4 +181,62 @@ public class SysProject {
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
+
+    public Integer getYearProjectUnfinishedTotal() {
+        return yearProjectUnfinishedTotal;
+    }
+
+    public void setYearProjectUnfinishedTotal(Integer yearProjectUnfinishedTotal) {
+        this.yearProjectUnfinishedTotal = yearProjectUnfinishedTotal;
+    }
+
+    public Integer getYearProjectFinishedTotal() {
+        return yearProjectFinishedTotal;
+    }
+
+    public void setYearProjectFinishedTotal(Integer yearProjectFinishedTotal) {
+        this.yearProjectFinishedTotal = yearProjectFinishedTotal;
+    }
+
+    public Double getYearProjectUnfinishedScale() {
+        return yearProjectUnfinishedScale;
+    }
+
+    public void setYearProjectUnfinishedScale(Double yearProjectUnfinishedScale) {
+        this.yearProjectUnfinishedScale = yearProjectUnfinishedScale;
+    }
+
+    public Double getYoYConsumptionElectricityScale() {
+        return yoYConsumptionElectricityScale;
+    }
+
+    public void setYoYConsumptionElectricityScale(Double yoYConsumptionElectricityScale) {
+        this.yoYConsumptionElectricityScale = yoYConsumptionElectricityScale;
+    }
+
+    public Double getMtOMtConsumptionElectricityScale() {
+        return mtOMtConsumptionElectricityScale;
+    }
+
+    public void setMtOMtConsumptionElectricityScale(Double mtOMtConsumptionElectricityScale) {
+        this.mtOMtConsumptionElectricityScale = mtOMtConsumptionElectricityScale;
+    }
+
+    public Double getYoYConsumptionWaterScale() {
+        return yoYConsumptionWaterScale;
+    }
+
+    public void setYoYConsumptionWaterScale(Double yoYConsumptionWaterScale) {
+        this.yoYConsumptionWaterScale = yoYConsumptionWaterScale;
+    }
+
+    public Double getMtOMtConsumptionWaterScale() {
+        return mtOMtConsumptionWaterScale;
+    }
+
+    public void setMtOMtConsumptionWaterScale(Double mtOMtConsumptionWaterScale) {
+        this.mtOMtConsumptionWaterScale = mtOMtConsumptionWaterScale;
+    }
+
+
 }

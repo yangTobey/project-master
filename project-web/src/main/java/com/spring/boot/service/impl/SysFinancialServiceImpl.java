@@ -511,7 +511,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             SysBudgetDetails sysBudget = sysBudgetDetailsBusinessService.findRecordByYearAndMonth(sysBudgetDetails.getYear(), sysBudgetDetails.getMonth(),sysBudgetDetails.getCompanyId());
             //如果系统已存在年份和月份的数据，不给予新增操作
             if (null != sysBudget) {
-                if(sysBudget.getBudgetId()!=sysBudgetDetails.getBudgetId()){
+                if(!(sysBudget.getBudgetId()).equals(sysBudgetDetails.getBudgetId())){
                     return R.error(500, "更新执行预算信息失败，系统已存在" + sysBudgetDetails.getYear() + "年" + sysBudgetDetails.getMonth() + "月的数据，不能重复添加！！");
                 }
             }
