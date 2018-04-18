@@ -91,10 +91,10 @@ public interface SysContractBusinessService {
 
     /**
      * 报表统计列表
-     * @param companyId
+     * @param map
      * @return
      */
-    List<SysContract> sysContractAnalysisData(Long companyId);
+    List<SysContract> sysContractAnalysisData(Map<String, Object> map);
     /**
      * 根据id获取附件文档信息
      * @return

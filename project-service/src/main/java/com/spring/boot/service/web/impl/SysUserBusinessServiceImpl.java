@@ -74,8 +74,8 @@ public class SysUserBusinessServiceImpl implements SysUserBusinessService {
     }
 
     @Override
-    public List<Long> queryUserAllMenuId(Long userId) {
-        return sysUserDao.queryUserAllMenuId(userId);
+    public List<Long> queryUserAllMenuId(Long userId,Integer selectType) {
+        return sysUserDao.queryUserAllMenuId(userId,selectType);
     }
 
     @Override

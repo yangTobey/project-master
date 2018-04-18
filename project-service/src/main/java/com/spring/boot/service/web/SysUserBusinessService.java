@@ -80,7 +80,7 @@ public interface SysUserBusinessService {
     /**
      * 查询用户的所有菜单ID
      */
-    List<Long> queryUserAllMenuId(Long userId);
+    List<Long> queryUserAllMenuId(Long userId,Integer selectType);
 
     /**
      * 查询用户的所有菜单和功能按钮ID

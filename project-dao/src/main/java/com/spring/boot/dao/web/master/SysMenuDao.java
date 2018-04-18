@@ -1,6 +1,7 @@
 package com.spring.boot.dao.web.master;
 
 import com.spring.boot.bean.master.SysMenu;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface SysMenuDao {
      * @param parentId
      * @return
      */
-    List<SysMenu> findMenuByParentId(Long parentId);
+    List<SysMenu> findMenuByParentId(@Param("parentId")Long parentId, @Param("selectType")Integer selectType);
 }

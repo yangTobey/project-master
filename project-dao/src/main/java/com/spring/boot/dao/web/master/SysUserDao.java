@@ -2,6 +2,7 @@ package com.spring.boot.dao.web.master;
 
 import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.bean.master.SysUserCompany;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -77,7 +78,7 @@ public interface SysUserDao {
     /**
      * 查询用户的所有菜单ID
      */
-    List<Long> queryUserAllMenuId(Long userId);
+    List<Long> queryUserAllMenuId( @Param("userId")Long userId, @Param("selectType")Integer selectType);
     /**
      * 获取用户权限下可以操作的公司
      *

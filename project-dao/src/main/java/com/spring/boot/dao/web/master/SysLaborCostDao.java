@@ -59,6 +59,7 @@ public interface SysLaborCostDao extends BaseDao<SysLaborCost> {
      * @param companyId 公司id
      * @param year
      * @param month
+     * * 注：如果mybatis需要使用if:test判断参数，需要在dao层加上@Param
      * @return
      */
     SysLaborCost findRecordByYearAndMonthAndCompanyId(@Param("companyId") Long companyId,@Param("year") Integer year,@Param("month") Integer month);

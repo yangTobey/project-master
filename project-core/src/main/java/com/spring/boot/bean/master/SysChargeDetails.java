@@ -24,6 +24,7 @@ public class SysChargeDetails {
     private Double chargeMoneyScale;
     //清欠收缴率
     private Double chargeDebtScale;
+    private String companyName;
 
     public Long getChargeId() {
         return chargeId;
@@ -119,5 +120,13 @@ public class SysChargeDetails {
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

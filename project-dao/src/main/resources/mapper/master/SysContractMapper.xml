@@ -59,8 +59,11 @@
 			</choose>
 			/*and TO_DAYS( contract.contract_endTime )- TO_DAYS(NOW()) BETWEEN 0 and 30*/
 		</if>
-		<if test="companyId != 0">
-			and contract.company_id=#{companyId}
+		<if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+			AND contract.company_id IN
+			<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
 		</if>
 		<if test="contractStartTime != null and contractStartTime !=''">
 			and contract.contract_startTime <![CDATA[ >= ]]>#{contractStartTime}
@@ -97,8 +100,11 @@
 		 from sys_contract as contract
 		 where 1=1
 		 and contract.status_code!=5
-		<if test="companyId != 0">
-			and contract.company_id=#{companyId}
+		<if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+			AND contract.company_id IN
+			<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
 		</if>
 		GROUP BY contract.status_code
 	</select>
@@ -164,8 +170,11 @@
 			</choose>
 			/*and TO_DAYS( contract.contract_endTime )- TO_DAYS(NOW()) BETWEEN 0 and 30*/
 		</if>
-		<if test="companyId != 0">
-			and contract.company_id=#{companyId}
+		<if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+			AND contract.company_id IN
+			<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
 		</if>
 		<if test="contractStartTime != null and contractStartTime!=''">
 			and contract.contract_startTime <![CDATA[ >= ]]>#{contractStartTime}

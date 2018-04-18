@@ -21,5 +21,5 @@ public interface SysMenuBusinessService {
      * @param parentId
      * @return
      */
-    List<SysMenu> findMenuByParentId(Long parentId);
+    List<SysMenu> findMenuByParentId(Long parentId,Integer selectType);
 }

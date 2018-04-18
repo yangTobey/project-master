@@ -10,6 +10,7 @@ import com.spring.boot.service.SysDepartmentService;
 import com.spring.boot.service.web.SysContractBusinessService;
 import com.spring.boot.service.web.SysDepartmentBusinessService;
 import com.spring.boot.util.R;
+import com.spring.boot.util.SysUtil;
 import com.spring.boot.util.UtilHelper;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,18 +129,27 @@ public class SysContractServiceImpl implements SysContractService {
             , String secondPartyCompany, Integer limit, Integer offset, Long companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        map.put("contractName", contractName);
-        map.put("contractCode", contractCode);
-        map.put("companyId", companyId);
-        map.put("statusCode", statusCode);
-        map.put("contractStartTime", contractStartTime);
-        map.put("contractEndTime", contractEndTime);
-        map.put("contractTypeId", contractTypeId);
-        map.put("firstPartyCompany", firstPartyCompany);
-        map.put("secondPartyCompany", secondPartyCompany);
-        map.put("limit", limit);
-        map.put("offset", offset);
+        List<Long> sysUserCompanyIds = null;
         try {
+            if (companyId == 0) {
+                //获取用户权限下可操作的小区信息
+                sysUserCompanyIds = SysUtil.getSysUserCompany();
+            } else {
+                sysUserCompanyIds = new ArrayList<Long>();
+                sysUserCompanyIds.add(companyId);
+            }
+            map.put("sysUserCompanyIds",sysUserCompanyIds);
+            map.put("contractName", contractName);
+            map.put("contractCode", contractCode);
+            map.put("companyId", companyId);
+            map.put("statusCode", statusCode);
+            map.put("contractStartTime", contractStartTime);
+            map.put("contractEndTime", contractEndTime);
+            map.put("contractTypeId", contractTypeId);
+            map.put("firstPartyCompany", firstPartyCompany);
+            map.put("secondPartyCompany", secondPartyCompany);
+            map.put("limit", limit);
+            map.put("offset", offset);
             int count = sysContractBusinessService.sysContractDataTotal(map);
             List<SysContract> list = sysContractBusinessService.sysContractDataList(map);
 
@@ -334,8 +345,18 @@ public class SysContractServiceImpl implements SysContractService {
     @Override
     public Map<String, Object> sysContractAnalysisData(Long companyId) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<Long> sysUserCompanyIds = null;
         try {
-            List<SysContract> list = sysContractBusinessService.sysContractAnalysisData(companyId);
+            if (companyId == 0) {
+                //获取用户权限下可操作的小区信息
+                sysUserCompanyIds = SysUtil.getSysUserCompany();
+            } else {
+                sysUserCompanyIds = new ArrayList<Long>();
+                sysUserCompanyIds.add(companyId);
+            }
+            map.put("sysUserCompanyIds",sysUserCompanyIds);
+            List<SysContract> list = sysContractBusinessService.sysContractAnalysisData(map);
             int contractWorking = 0;
             int contractNumber = 0;
             int contractexpired = 0;
@@ -347,12 +368,11 @@ public class SysContractServiceImpl implements SysContractService {
                 }
                 contractNumber += sysContract.getTotal();
             }
-            Map<String, Object> map = new HashMap<String, Object>();
             /*组装结果数据*/
-            map.put("contractWorking", contractWorking);
-            map.put("contractNumber", contractNumber);
-            map.put("contractexpired", contractexpired);
-            return R.ok().putData(200, map, "获取数据成功！！");
+            resultMap.put("contractWorking", contractWorking);
+            resultMap.put("contractNumber", contractNumber);
+            resultMap.put("contractexpired", contractexpired);
+            return R.ok().putData(200, resultMap, "获取数据成功！！");
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("获取合同档案统计数据失败：" + e.getMessage());

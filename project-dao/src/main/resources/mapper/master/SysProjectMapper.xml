@@ -48,7 +48,7 @@
 		SELECT
 			project.project_id, project.company_id, project.`year`, project.`month`, project.project_finished_total,
 			project.project_unfinished_total, project.create_time, project.status_code, energy.month_consumption_electricity, energy.month_consumption_water,
-			COUNT(file.file_id) AS fileNum
+		company.company_name,COUNT(file.file_id) AS fileNum
 			FROM
 				sys_project AS project
 			LEFT JOIN sys_energy AS energy ON project.project_id = energy.project_id
@@ -158,7 +158,8 @@
 	<select id="sysProjectEnergyAnalysisForMonth" resultMap="sysProject" parameterType="map">
 		SELECT
 		SUM(energy.month_consumption_electricity) as month_consumption_electricity,
-		SUM(energy.month_consumption_water) as month_consumption_water
+		SUM(energy.month_consumption_water) as month_consumption_water,
+		project.month
 		FROM sys_project AS project
 		LEFT JOIN sys_energy AS energy ON project.project_id = energy.project_id
 		WHERE 1=1

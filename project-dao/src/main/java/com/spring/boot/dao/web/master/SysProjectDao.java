@@ -31,6 +31,7 @@ public interface SysProjectDao extends BaseDao<SysProject> {
     int updateSysProject(Map<String, Object> map);
     /**
      * 根据公司id、年份、月份查找系统记录
+     * * 注：如果mybatis需要使用if:test判断参数，需要在dao层加上@Param
      * @return
      */
     SysProject findSysProjectRecord(@Param("companyId")Long companyId, @Param("year")Integer year, @Param("month")Integer month);

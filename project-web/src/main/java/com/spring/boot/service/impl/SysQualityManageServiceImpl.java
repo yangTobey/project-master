@@ -9,6 +9,7 @@ import com.spring.boot.service.SysQualityManageService;
 import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.service.web.SysQualityManageBusinessService;
 import com.spring.boot.util.R;
+import com.spring.boot.util.SysUtil;
 import com.spring.boot.util.UtilHelper;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,13 +41,22 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     @Override
     public Map<String, Object> sysQualityManageAnalysis(long companyId) {
         resultMap = new HashMap<String, Object>();
+        List<Long> sysUserCompanyIds = null;
         map = new HashMap<String, Object>();
-        map.put("companyId", companyId);
-        map.put("year", UtilHelper.getYear());
-        map.put("month", UtilHelper.getMonth());
+
         SysQualityManageEntity sysQualityManageEntityForYear = null;
         SysQualityManageEntity sysQualityManageEntityForMonth = null;
         try {
+            if (companyId == 0) {
+                //获取用户权限下可操作的小区信息
+                sysUserCompanyIds = SysUtil.getSysUserCompany();
+            } else {
+                sysUserCompanyIds = new ArrayList<Long>();
+                sysUserCompanyIds.add(companyId);
+            }
+            map.put("sysUserCompanyIds", sysUserCompanyIds);
+            map.put("year", UtilHelper.getYear());
+            map.put("month", UtilHelper.getMonth());
             //查找年度报表数据
             sysQualityManageEntityForYear = sysQualityManageBusinessService.sysQualityManageAnalysisForYear(map);
             if (sysQualityManageEntityForYear != null) {
@@ -141,11 +152,19 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     public Map<String, Object> getSysQualityManageList(long companyId, int year, int limit, int offset) {
         resultMap = new HashMap<String, Object>();
         map = new HashMap<String, Object>();
-        map.put("companyId", companyId);
-        map.put("year", year);
-        map.put("limit", limit);
-        map.put("offset", offset);
+        List<Long> sysUserCompanyIds = null;
         try {
+            if (companyId == 0) {
+                //获取用户权限下可操作的小区信息
+                sysUserCompanyIds = SysUtil.getSysUserCompany();
+            } else {
+                sysUserCompanyIds = new ArrayList<Long>();
+                sysUserCompanyIds.add(companyId);
+            }
+            map.put("sysUserCompanyIds", sysUserCompanyIds);
+            map.put("year", year);
+            map.put("limit", limit);
+            map.put("offset", offset);
             resultMap.put("total", sysQualityManageBusinessService.getSysQualityManageListTotal(map));
             resultMap.put("list", sysQualityManageBusinessService.getSysQualityManageList(map));
             return R.ok().putData(200, resultMap, "获取数据成功！");

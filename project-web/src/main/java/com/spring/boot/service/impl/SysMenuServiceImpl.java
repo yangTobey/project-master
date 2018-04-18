@@ -39,8 +39,8 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public Map<String, Object> getSysMenu(long userId) {
         //用户菜单列表
-        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId);
-        List<SysMenu> menuList = getAllMenuList(menuIdList);
+        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId,1);
+        List<SysMenu> menuList = getAllMenuList(menuIdList,1);
         resultMap = new HashMap<String, Object>();
         resultMap.put("data", menuList);
         return resultMap;
@@ -56,8 +56,8 @@ public class SysMenuServiceImpl implements SysMenuService {
         }
         Long userId=ShiroUtils.getUserEntity().getUserId();
         //用户菜单列表
-        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId);
-        List<SysMenu> menuList = getAllMenuList(menuIdList);
+        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId,2);
+        List<SysMenu> menuList = getAllMenuList(menuIdList,2);
         resultMap = new HashMap<String, Object>();
         resultMap.put("data", menuList);
         return resultMap;
@@ -67,33 +67,58 @@ public class SysMenuServiceImpl implements SysMenuService {
      * 获取所有菜单列表
      *
      * @param menuIdList 用户权限内所有菜单信息列表
+     * @param selectType 查找类型 1:菜单，2：菜单、功能模块（如：新增、修改）
      * @return
      */
-    private List<SysMenu> getAllMenuList(List<Long> menuIdList) {
+    private List<SysMenu> getAllMenuList(List<Long> menuIdList,Integer selectType) {
         //查询根菜单列表
-        List<SysMenu> menuList = queryListParentId(0L, menuIdList);
-        //递归获取子菜单
-        getMenuTreeList(menuList, menuIdList);
+        List<SysMenu> menuList = queryListParentId(0L, menuIdList,selectType);
+        if(selectType==1){
+            //递归获取子菜单
+            getMenuTreeList(menuList, menuIdList,selectType);
+        }else{
+            //递归获取子菜单、功能模块（如：新增、修改等）
+            getMenuModuleTreeList(menuList, menuIdList,selectType);
+        }
         return menuList;
     }
 
     /**
-     * 递归生成子菜单
+     * 递归生成子菜单(不包含子功能模块，如：添加、更新)
      *
      * @param menuList   根菜单列表
      * @param menuIdList 用户权限内所有菜单信息列表
      * @return
      */
-    private List<SysMenu> getMenuTreeList(List<SysMenu> menuList, List<Long> menuIdList) {
+    private List<SysMenu> getMenuTreeList(List<SysMenu> menuList, List<Long> menuIdList,Integer selectType) {
         List<SysMenu> subMenuList = new ArrayList<SysMenu>();
         for (SysMenu sysMenu : menuList) {
             //菜单列表
             if (sysMenu.getType() == Constant.MenuType.MENU.getValue()) {
-                List<SysMenu> list = getMenuTreeList(queryListParentId(sysMenu.getMenuId(), menuIdList), menuIdList);
+                List<SysMenu> list = getMenuTreeList(queryListParentId(sysMenu.getMenuId(), menuIdList,selectType), menuIdList,selectType);
                 if (list != null && list.size() > 0) {
                     sysMenu.setList(list);
                 }
             }
+            subMenuList.add(sysMenu);
+        }
+        return subMenuList;
+    }
+
+    /**
+     * 递归生成子菜单和功能模块(包含子功能模块，如：添加、更新)
+     *
+     * @param menuList   根菜单列表
+     * @param menuIdList 用户权限内所有菜单信息列表
+     * @return
+     */
+    private List<SysMenu> getMenuModuleTreeList(List<SysMenu> menuList, List<Long> menuIdList,Integer selectType) {
+        List<SysMenu> subMenuList = new ArrayList<SysMenu>();
+        for (SysMenu sysMenu : menuList) {
+                List<SysMenu> list = getMenuTreeList(queryListParentId(sysMenu.getMenuId(), menuIdList,selectType), menuIdList,selectType);
+                if (list != null && list.size() > 0) {
+                    sysMenu.setList(list);
+                }
             subMenuList.add(sysMenu);
         }
         return subMenuList;
@@ -106,14 +131,13 @@ public class SysMenuServiceImpl implements SysMenuService {
      * @param menuIdList 用户权限内所有菜单信息列表
      * @return
      */
-    public List<SysMenu> queryListParentId(Long parentId, List<Long> menuIdList) {
+    public List<SysMenu> queryListParentId(Long parentId, List<Long> menuIdList,Integer selectType) {
         //查询根菜单列表
-        List<SysMenu> menuList = sysMenuBusinessService.findMenuByParentId(parentId);
+        List<SysMenu> menuList = sysMenuBusinessService.findMenuByParentId(parentId,Integer.valueOf(selectType));
         /*List<SysMenu> menuList = sysMenuDao.queryListParentId(parentId);*/
         if (menuIdList == null) {
             return menuList;
         }
-
         List<SysMenu> userMenuList = new ArrayList<>();
         for (SysMenu menu : menuList) {
             if (menuIdList.contains(menu.getMenuId())) {

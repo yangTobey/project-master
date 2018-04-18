@@ -104,7 +104,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public Map<String, Object> updatePassword(Long userId, String password, String newPassword) {
+    public Map<String, Object> updatePassword( String password, String newPassword) {
         Map<String, Object> map = new HashMap<String, Object>();
         if (ShiroUtils.getUserEntity() == null) {
             return R.error(500, "请登录系统再进行操作功能！");
@@ -113,6 +113,7 @@ public class SysUserServiceImpl implements SysUserService {
             return R.error(500, "请登录系统再进行操作功能！");
         }
         String userAccount = ShiroUtils.getUserEntity().getAccount();
+        Long userId=ShiroUtils.getUserEntity().getUserId();
         //根据用户提交的密码，利用md5加密得到加密后的原密码
         password = new SimpleHash("md5", password, ByteSource.Util.bytes(userAccount), 2).toHex();
         //根据用户提交的新密码，利用md5加密得到加密后的新密码

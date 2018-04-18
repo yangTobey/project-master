@@ -7,6 +7,7 @@ import com.spring.boot.service.SysCompanyService;
 import com.spring.boot.service.web.SysBasicDataBusinessService;
 import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.util.R;
+import com.spring.boot.util.SysUtil;
 import com.spring.boot.util.UtilHelper;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,10 +41,18 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     public Map<String, Object> sysBasicDataAnalysisData(long companyId, int year,int month) {
         resultMap = new HashMap<String, Object>();
         map = new HashMap<String, Object>();
-        map.put("companyId",companyId);
-        map.put("year",year);
-        map.put("month",month);
+        List<Long> sysUserCompanyIds = null;
         try {
+            if (companyId == 0) {
+                //获取用户权限下可操作的小区信息
+                sysUserCompanyIds = SysUtil.getSysUserCompany();
+            } else {
+                sysUserCompanyIds = new ArrayList<Long>();
+                sysUserCompanyIds.add(companyId);
+            }
+            map.put("sysUserCompanyIds", sysUserCompanyIds);
+            map.put("year",year);
+            map.put("month",month);
             SysBasicDataEntity sysBasicDataEntity = sysBasicDataBusinessService.sysBasicDataAnalysisData(map);
             if (sysBasicDataEntity!=null) {
                 int querySubsidiaryCount=sysCompanyBusinessService.querySubsidiaryCount(map);
@@ -70,11 +81,19 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     public Map<String, Object> sysBasicDataAnalysisList(long companyId,int limit, int offset, int year) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         map = new HashMap<String, Object>();
-        map.put("companyId",companyId);
-        map.put("limit",limit);
-        map.put("offset",offset);
-        map.put("year",year);
+        List<Long> sysUserCompanyIds = null;
         try {
+            if (companyId == 0) {
+                //获取用户权限下可操作的小区信息
+                sysUserCompanyIds = SysUtil.getSysUserCompany();
+            } else {
+                sysUserCompanyIds = new ArrayList<Long>();
+                sysUserCompanyIds.add(companyId);
+            }
+            map.put("sysUserCompanyIds",sysUserCompanyIds);
+            map.put("limit",limit);
+            map.put("offset",offset);
+            map.put("year",year);
             resultMap.put("total", sysBasicDataBusinessService.sysBasicDataAnalysisListTotal(map));
             resultMap.put("list", sysBasicDataBusinessService.sysBasicDataAnalysisList(map));
             return R.ok().putData(200,resultMap,"获取成功！");

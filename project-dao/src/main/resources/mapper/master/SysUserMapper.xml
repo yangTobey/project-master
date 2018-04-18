@@ -85,7 +85,10 @@
 		select distinct rm.menu_id from sys_user_role ur
 		LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
 		LEFT JOIN sys_menu as menu on rm.menu_id=menu.menu_id
-		where 1=1 and menu.type=1 and ur.user_id = #{userId}
+		where 1=1  and ur.user_id = #{userId}
+		<if test="selectType != null and selectType==1">
+			and menu.type=1
+		</if>
 	</select>
 
 	<select id="sysUserInfo" resultMap="sysUser" parameterType="map">

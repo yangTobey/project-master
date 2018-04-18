@@ -40,12 +40,11 @@ public interface SysUserService {
 
     /***
      * 用户修改密码
-     * @param userId
      * @param password
      * @param newPassword
      * @return
      */
-    Map<String, Object> updatePassword(Long userId, String password, String newPassword);
+    Map<String, Object> updatePassword( String password, String newPassword);
 
     /***
      * 重置密码

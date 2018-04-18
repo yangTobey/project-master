@@ -22,7 +22,7 @@ public class SysMenuBusinessServiceImpl implements SysMenuBusinessService {
     }
 
     @Override
-    public List<SysMenu> findMenuByParentId(Long parentId) {
-        return sysMenuDao.findMenuByParentId(parentId);
+    public List<SysMenu> findMenuByParentId(Long parentId,Integer selectType) {
+        return sysMenuDao.findMenuByParentId(parentId,selectType);
     }
 }

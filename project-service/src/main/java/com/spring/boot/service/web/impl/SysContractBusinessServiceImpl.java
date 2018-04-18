@@ -81,8 +81,8 @@ public class SysContractBusinessServiceImpl implements SysContractBusinessServic
     }
 
     @Override
-    public List<SysContract> sysContractAnalysisData(Long companyId) {
-        return sysContractDao.sysContractAnalysisData(companyId);
+    public List<SysContract> sysContractAnalysisData(Map<String, Object> map) {
+        return sysContractDao.sysContractAnalysisData(map);
     }
 
     @Override

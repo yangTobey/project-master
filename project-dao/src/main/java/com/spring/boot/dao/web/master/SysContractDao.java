@@ -51,11 +51,11 @@ public interface SysContractDao extends BaseDao<SysContract>{
     int sysContractDataTotal(Map<String, Object> map);
     /**
      * 报表统计列表
-     * @param companyId
+     * @param map
      * 注：如果mybatis需要使用if:test判断参数，需要在dao层加上@Param
      * @return
      */
-    List<SysContract> sysContractAnalysisData(@Param("companyId") Long companyId);
+    List<SysContract> sysContractAnalysisData(Map<String, Object> map);
     /**
      * 根据id获取附件文档信息
      * @return

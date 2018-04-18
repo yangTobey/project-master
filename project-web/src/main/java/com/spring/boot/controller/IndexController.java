@@ -98,4 +98,30 @@ public class IndexController {
     public String sysLaborCostIndex(){
         return "views/personer/PersonnelCost";
     }
+
+    /**
+     * 工程能耗
+     * @return
+     */
+    @RequestMapping(value = "/sysProjectEnergy", method = RequestMethod.GET)
+    public String sysProjectEnergy(){
+        return "views/energy/EnergyConsumption";
+    }
+
+    /**
+     * 物业数据大屏
+     * @return
+     */
+    @RequestMapping(value = "/sysPropertyDetails", method = RequestMethod.GET)
+    public String sysPropertyDetails(){
+        return "views/dataStatistics/index";
+    }
+    /**
+     * 财务数据大屏
+     * @return
+     */
+    @RequestMapping(value = "/sysfinancialDetails", method = RequestMethod.GET)
+    public String sysfinancialDetails(){
+        return "views/dataStatistics/index-area";
+    }
 }

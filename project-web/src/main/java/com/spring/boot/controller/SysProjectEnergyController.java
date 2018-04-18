@@ -26,7 +26,7 @@ public class SysProjectEnergyController {
     /**
      * 新增工程能耗信息
      *
-     * @param companyId                   公司id
+     * @param companyId 公司id
      * @param year
      * @param month
      * @param projectUnfinishedTotal

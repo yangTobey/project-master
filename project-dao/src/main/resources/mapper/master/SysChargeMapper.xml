@@ -12,6 +12,7 @@
         <result column="status_code" property="statusCode"/>
         <result column="year" property="year"/>
         <result column="week_of_year" property="weekOfYear"/>
+        <result column="company_name" property="companyName"/>
     </resultMap>
 
     <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
@@ -41,11 +42,11 @@
     </select>
     <!--根据主键id查找信息-->
     <select id="findSysChargeDetailsById" resultMap="sysChargeDetails" >
-        select
-        <include refid="Base_Column_List"/>
-        from sys_charge_details
-        where status_code!=2
-        and   charge_id = #{chargeId}
+        select charge.charge_id, charge.charge_money, charge.charge_money_now, charge.charge_debt,charge.charge_debt_return,charge.create_time,charge.company_id,charge.status_code
+        ,company.company_name
+        from sys_charge_details as charge left join sys_company as company on charge.company_id=company_id
+        where charge.status_code!=2
+        and charge.charge_id = #{chargeId}
     </select>
     <!--根据年份跟周数查找信息-->
     <select id="findSysChargeDetailsByWeekOfYear" resultMap="sysChargeDetails" >

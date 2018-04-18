@@ -26,20 +26,20 @@ public class SysLoginController {
 
     /**
      * 登录系统
-     * @param userName 账号
+     * @param userAccount 账号
      * @param password 密码
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
-    public R login(@RequestParam(value = "userName", required = false)String userName,@RequestParam(value = "password", required = false) String password){
+    public R login(@RequestParam(value = "userAccount", required = false)String userAccount,@RequestParam(value = "password", required = false) String password){
         try{
             Subject subject = ShiroUtils.getSubject();
             //sha256加密
             //password = new Sha256Hash(password).toHex();
            // password= new SimpleHash("md5", password,  ByteSource.Util.bytes(userName), 2).toHex();
-            System.out.println("密码："+new SimpleHash("md5", password,  ByteSource.Util.bytes(userName), 2).toHex());
-            UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
+            System.out.println("密码："+new SimpleHash("md5", password,  ByteSource.Util.bytes(userAccount), 2).toHex());
+            UsernamePasswordToken token = new UsernamePasswordToken(userAccount, password);
             subject.login(token);
             //验证是否通过
             if(subject.isAuthenticated()){
@@ -64,7 +64,7 @@ public class SysLoginController {
     /**
      * 退出登录
      */
-    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/loginOut", method = RequestMethod.GET)
     public String logout() {
         //清除登录缓存
         ShiroUtils.logout();

@@ -58,7 +58,7 @@ public class SysUserController {
         } else if (UtilHelper.isEmpty(newPassword)) {
             return R.error(400, "新密码不能为空！");
         }
-        Map<String, Object> map = sysUserService.updatePassword(ShiroUtils.getUserEntity().getUserId(), password, newPassword);
+        Map<String, Object> map = sysUserService.updatePassword(password, newPassword);
         return R.ok(map);
     }
 
