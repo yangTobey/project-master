@@ -1,3 +1,4 @@
+/*
 package com.spring.boot.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -14,9 +15,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+*/
 /**
  * Created by Administrator on 2018/4/19.
- */
+ *//*
+
 @Configuration
 @EnableCaching
 public class RedisCacheConfig {
@@ -24,12 +27,14 @@ public class RedisCacheConfig {
     public CacheManager cacheManager(RedisTemplate<?, ?> redisTemplate) {
         CacheManager cacheManager = new RedisCacheManager(redisTemplate);
         return cacheManager;
-        /*RedisCacheManager rcm = new RedisCacheManager(redisTemplate);
+        */
+/*RedisCacheManager rcm = new RedisCacheManager(redisTemplate);
         // 多个缓存的名称,目前只定义了一个
         rcm.setCacheNames(Arrays.asList("thisredis"));
         //设置缓存默认过期时间(秒)
         rcm.setDefaultExpiration(600);
-        return rcm;*/
+        return rcm;*//*
+
     }
     // 以下两种redisTemplate自由根据场景选择
     @Bean
@@ -59,3 +64,4 @@ public class RedisCacheConfig {
     }
 
 }
+*/

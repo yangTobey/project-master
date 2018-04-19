@@ -14,6 +14,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
     //对象
-    @Autowired
+    @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
     Map<String, Object> map = null;
@@ -207,7 +208,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
      */
     public void setBasicDataAnalysisDataToRedis() {
         Map<String, Object> analysisMap = new HashMap<String, Object>();
-        analysisMap.put("sysUserCompanyIds", "");
+        analysisMap.put("sysUserCompanyIds", null);
         analysisMap.put("year", UtilHelper.getYear());
         analysisMap.put("month", UtilHelper.getMonth());
         /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
@@ -225,7 +226,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             sysBasicDataEntity.setForSaleHouseScale(Double.valueOf(UtilHelper.DecimalFormatNumber(sysBasicDataEntity.getForSaleHouseNumber(), sysBasicDataEntity.getHouseNumber())) * 100);
             List<SysBasicDataEntity> list = null;
             //设置基础信息redis缓存信息，为物业大屏数据分析统计做缓存服务
-            //redisTemplate.opsForValue().set("sysBasicData", sysBasicDataEntity);
+            redisTemplate.opsForValue().set("sysBasicData", sysBasicDataEntity);
         }
     }
 }
