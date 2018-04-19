@@ -17,20 +17,31 @@
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:1.3.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:1.3.0.RELEASE" />
           <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />
+          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-redis:1.6.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:4.2.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.2.3.RELEASE" />
+          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.2.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.13" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:4.2.3.RELEASE" />
           <element id="archive" name="project-service-1.0-SNAPSHOT.jar">
             <element id="module-output" name="project-service" />
           </element>
           <element id="archive" name="project-dao-1.0-SNAPSHOT.jar">
             <element id="module-output" name="project-dao" />
           </element>
-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-redis:1.3.2.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-redis:1.6.1.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.2.3.RELEASE" />
-          <element id="library" level="project" name="Maven: redis.clients:jedis:2.7.3" />
-          <element id="library" level="project" name="Maven: org.apache.commons:commons-pool2:2.4.2" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-data-redis:2.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: io.lettuce:lettuce-core:5.0.3.RELEASE" />
+          <element id="library" level="project" name="Maven: io.projectreactor:reactor-core:2.0.7.RELEASE" />
+          <element id="library" level="project" name="Maven: org.reactivestreams:reactive-streams:1.0.0" />
+          <element id="library" level="project" name="Maven: io.netty:netty-common:4.1.22.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-transport:4.1.22.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-buffer:4.1.22.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-resolver:4.1.22.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-handler:4.1.22.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-codec:4.1.22.Final" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-web:1.5.8.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:1.3.0.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-core:4.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.16" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-validator:5.2.2.Final" />
           <element id="library" level="project" name="Maven: javax.validation:validation-api:1.1.0.Final" />
@@ -40,10 +51,7 @@
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.3" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.3" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:4.2.3.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.2.3.RELEASE" />
-          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.2.3.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:4.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.mybatis.spring.boot:mybatis-spring-boot-starter:1.0.0" />
@@ -62,7 +70,6 @@
           <element id="library" level="project" name="Maven: ognl:ognl:3.0.8" />
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.18.1-GA" />
           <element id="library" level="project" name="Maven: org.unbescape:unbescape:1.1.0.RELEASE" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.13" />
           <element id="library" level="project" name="Maven: nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:1.3.1" />
           <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy:2.4.4" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-spring:1.3.2" />
@@ -70,7 +77,7 @@
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-web:1.3.2" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-ehcache:1.3.2" />
           <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.5.3" />
-          <element id="library" level="project" name="Maven: com.github.theborakompanioni:thymeleaf-extras-shiro:1.2.1" />
+          <element id="library" level="project" name="Maven: com.github.theborakompanioni:thymeleaf-extras-shiro:2.0.0" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-velocity:1.4.7.RELEASE" />
           <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.9.2" />
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />

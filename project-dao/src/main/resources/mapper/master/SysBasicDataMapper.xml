@@ -39,11 +39,14 @@
         <include refid="Base_Data_Total"/>
         from sys_basic_data as basic
         where 1=1
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND basic.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
+        /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
+        <if test="type == 1">
+            <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND basic.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
         </if>
         and basic.year = #{year}
         and basic.month = #{month}

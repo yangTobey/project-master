@@ -1,12 +1,13 @@
 package com.spring.boot.bean.master.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * 基础数据
  * Created by Administrator on 2018/3/16.
  */
-public class SysBasicDataEntity {
+public class SysBasicDataEntity implements Serializable {
 
     private Long basicId;
     private Long companyId;

@@ -41,64 +41,58 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> addSysProjectEnergy(Long companyId, Integer year, Integer month, Integer projectUnfinishedTotal, Integer projectFinishedTotal, Double monthConsumptionElectricity, Double monthConsumptionWater, String fileInfo) {
-        try {
-            //先根据年份、月份、公司id查找系统是不是已经存在该月的记录
-            SysProject sysProject = sysProjectBusinessService.findSysProjectRecord(companyId, year, month);
-            if (null != sysProject) {
-                return R.error(500, "新增失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
-            } else {
-                Date date = Timestamp.valueOf(UtilHelper.getNowTimeStr());
+
+        //先根据年份、月份、公司id查找系统是不是已经存在该月的记录
+        SysProject sysProject = sysProjectBusinessService.findSysProjectRecord(companyId, year, month);
+        if (null != sysProject) {
+            return R.error(500, "新增失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+        } else {
+            Date date = Timestamp.valueOf(UtilHelper.getNowTimeStr());
                 /*sysProjectEnergy=new SysProjectEnergy();
                 sysProjectEnergy.setCompanyId(companyId);
                 sysProjectEnergy.setMonth(month);
                 sysProjectEnergy.setYear(year);
                 sysProjectEnergy.setCreateTime(date);
                 sysProjectEnergyBusinessService.addSysProjectEnergy(sysProjectEnergy);*/
-                sysProject = new SysProject();
-                sysProject.setCompanyId(companyId);
-                sysProject.setYear(year);
-                sysProject.setMonth(month);
-                sysProject.setCreateTime(date);
-                sysProject.setProjectFinishedTotal(projectFinishedTotal);
-                sysProject.setProjectUnfinishedTotal(projectUnfinishedTotal);
-                int count = sysProjectBusinessService.addSysProject(sysProject);
-                if (count > 0) {
-                    SysEnergy sysEnergy = new SysEnergy();
-                    sysEnergy.setCompanyId(companyId);
-                    sysEnergy.setYear(year);
-                    sysEnergy.setMonth(month);
-                    sysEnergy.setProjectId(sysProject.getProjectId());
-                    sysEnergy.setMonthConsumptionElectricity(monthConsumptionElectricity);
-                    sysEnergy.setMonthConsumptionWater(monthConsumptionWater);
-                    sysEnergy.setCreateTime(date);
-                    sysEnergyBusinessService.addSysEergy(sysEnergy);
-                    //添加附件信息
-                    if (!UtilHelper.isEmpty(fileInfo)) {
-                        String[] fileInfoArray;
-                        //去掉最后那个逗号，在进行获取数据
-                        fileInfoArray = fileInfo.substring(0, fileInfo.length() - 1).split(";");
-                        SysProjectEnergyFile sysProjectEnergyFile = null;
-                        String[] fileData;
-                        for (String fileUrl : fileInfoArray) {
-                            sysProjectEnergyFile = new SysProjectEnergyFile();
-                            //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
-                            fileData = fileUrl.substring(0, fileUrl.length()).split(",");
-                            sysProjectEnergyFile.setProjectId(sysProject.getProjectId());
-                            sysProjectEnergyFile.setFileName(fileData[0].substring(fileData[0].lastIndexOf("/") + 1, fileData[0].lastIndexOf(".")));
-                            sysProjectEnergyFile.setFileSize(Double.valueOf(fileData[1]));
-                            sysProjectEnergyFile.setFileUrl(fileData[0]);
-                            sysProjectEnergyFile.setUploadTime(date);
-                            sysProjectBusinessService.addSysProjectEnergyFile(sysProjectEnergyFile);
-                        }
+            sysProject = new SysProject();
+            sysProject.setCompanyId(companyId);
+            sysProject.setYear(year);
+            sysProject.setMonth(month);
+            sysProject.setCreateTime(date);
+            sysProject.setProjectFinishedTotal(projectFinishedTotal);
+            sysProject.setProjectUnfinishedTotal(projectUnfinishedTotal);
+            int count = sysProjectBusinessService.addSysProject(sysProject);
+            if (count > 0) {
+                SysEnergy sysEnergy = new SysEnergy();
+                sysEnergy.setCompanyId(companyId);
+                sysEnergy.setYear(year);
+                sysEnergy.setMonth(month);
+                sysEnergy.setProjectId(sysProject.getProjectId());
+                sysEnergy.setMonthConsumptionElectricity(monthConsumptionElectricity);
+                sysEnergy.setMonthConsumptionWater(monthConsumptionWater);
+                sysEnergy.setCreateTime(date);
+                sysEnergyBusinessService.addSysEergy(sysEnergy);
+                //添加附件信息
+                if (!UtilHelper.isEmpty(fileInfo)) {
+                    String[] fileInfoArray;
+                    //去掉最后那个逗号，在进行获取数据
+                    fileInfoArray = fileInfo.substring(0, fileInfo.length() - 1).split(";");
+                    SysProjectEnergyFile sysProjectEnergyFile = null;
+                    String[] fileData;
+                    for (String fileUrl : fileInfoArray) {
+                        sysProjectEnergyFile = new SysProjectEnergyFile();
+                        //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
+                        fileData = fileUrl.substring(0, fileUrl.length()).split(",");
+                        sysProjectEnergyFile.setProjectId(sysProject.getProjectId());
+                        sysProjectEnergyFile.setFileName(fileData[0].substring(fileData[0].lastIndexOf("/") + 1, fileData[0].lastIndexOf(".")));
+                        sysProjectEnergyFile.setFileSize(Double.valueOf(fileData[1]));
+                        sysProjectEnergyFile.setFileUrl(fileData[0]);
+                        sysProjectEnergyFile.setUploadTime(date);
+                        sysProjectBusinessService.addSysProjectEnergyFile(sysProjectEnergyFile);
                     }
-                    return R.ok(200, "添加信息成功！！");
                 }
+                return R.ok(200, "添加信息成功！！");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.info("新增工程能耗出错：" + e.getMessage());
-            throw new RuntimeException();
-           // return R.error(500, "添加失败，服务器异常，请联系管理员！");
         }
         return R.error(500, "新增工程能耗信息失败，请联系系统管理员！！");
     }
@@ -150,7 +144,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("更新工程能耗出错：" + e.getMessage());
-            throw new RuntimeException();
+            throw new RuntimeException("");
             //return R.error(500, "更新失败，服务器异常，请联系管理员！");
         }
     }
@@ -190,7 +184,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
     }
 
     @Override
-    public Map<String, Object> sysProjectEnergyList(Long companyId, Integer year,Integer limit, Integer offset) {
+    public Map<String, Object> sysProjectEnergyList(Long companyId, Integer year, Integer limit, Integer offset) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
@@ -228,24 +222,24 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                 sysUserCompanyIds = new ArrayList<Long>();
                 sysUserCompanyIds.add(companyId);
             }
-            int year= UtilHelper.getYear();
-            int month= UtilHelper.getMonth();
-            int lastYear= 0;
-            int lastMonth= 0;
-            if(month==1){
-                lastMonth=12;
-                lastYear=year-1;
-            }else {
-                lastMonth=month-1;
-                lastYear=year;
+            int year = UtilHelper.getYear();
+            int month = UtilHelper.getMonth();
+            int lastYear = 0;
+            int lastMonth = 0;
+            if (month == 1) {
+                lastMonth = 12;
+                lastYear = year - 1;
+            } else {
+                lastMonth = month - 1;
+                lastYear = year;
             }
             map.put("sysUserCompanyIds", sysUserCompanyIds);
             map.put("year", year);
             map.put("month", month);
-            SysProject sysProjectForYear=sysProjectBusinessService.sysProjectEnergyAnalysisForYear(map);
+            SysProject sysProjectForYear = sysProjectBusinessService.sysProjectEnergyAnalysisForYear(map);
 
-            if(null!=sysProjectForYear) {
-                sysProjectForYear.setYearProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProjectForYear.getYearProjectUnfinishedTotal(),sysProjectForYear.getYearProjectFinishedTotal())));
+            if (null != sysProjectForYear) {
+                sysProjectForYear.setYearProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProjectForYear.getYearProjectUnfinishedTotal(), sysProjectForYear.getYearProjectFinishedTotal())));
                 //当月数据
                 SysProject sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year, month, sysUserCompanyIds);
                 if (null != sysProjectForMonth) {
@@ -267,7 +261,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                 return R.ok().putData(200, sysProjectForYear, "获取统计数据成功！");
             }
             return R.error(500, "获取工程能耗信息报表信息失败，请联系管理员！");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             logger.info("获取工程能耗信息报表信息出错：" + e.getMessage());
             return R.error(500, "获取工程能耗信息报表信息失败，服务器异常，请联系管理员！");
@@ -287,8 +281,8 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                 sysUserCompanyIds = new ArrayList<Long>();
                 sysUserCompanyIds.add(companyId);
             }
-            int year= UtilHelper.getYear();
-            int month= UtilHelper.getMonth();
+            int year = UtilHelper.getYear();
+            int month = UtilHelper.getMonth();
             map.put("sysUserCompanyIds", sysUserCompanyIds);
             map.put("year", year);
             //耗电量环比
@@ -308,30 +302,30 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                     monthsInfo += i + ",";
                 }
             }
-            SysProjectEnergyEntity sysProjectEnergyEntity=new SysProjectEnergyEntity();
+            SysProjectEnergyEntity sysProjectEnergyEntity = new SysProjectEnergyEntity();
             sysProjectEnergyEntity.setMonthInfo(monthsInfo);
             //查询得到的信息列表里面的月份值
-            Integer infoMonth=0;
-            List<SysProject> sysProjectList=sysProjectBusinessService.sysProjectEnergyAnalysisForMonth(map);
-            if(null!=sysProjectList){
+            Integer infoMonth = 0;
+            List<SysProject> sysProjectList = sysProjectBusinessService.sysProjectEnergyAnalysisForMonth(map);
+            if (null != sysProjectList) {
                 mtOMtCsElectricityScaleMap = new HashMap<Integer, Double>();
                 mtOMtCsWaterScaleMap = new HashMap<Integer, Double>();
                 monthCsElectricityMap = new HashMap<Integer, Double>();
                 monthCsWaterMap = new HashMap<Integer, Double>();
-                SysProject sysProjectForMonth=null;
-                for(SysProject sysProject:sysProjectList){
-                    infoMonth=sysProject.getMonth();
-                    if(null!=infoMonth){
-                        monthCsElectricityMap.put(infoMonth,sysProject.getMonthConsumptionElectricity());
-                        monthCsWaterMap.put(infoMonth,sysProject.getMonthConsumptionWater());
-                        if(infoMonth==1){
-                            sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year-1, 12, sysUserCompanyIds);
-                        }else{
-                            sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year, infoMonth-1, sysUserCompanyIds);
+                SysProject sysProjectForMonth = null;
+                for (SysProject sysProject : sysProjectList) {
+                    infoMonth = sysProject.getMonth();
+                    if (null != infoMonth) {
+                        monthCsElectricityMap.put(infoMonth, sysProject.getMonthConsumptionElectricity());
+                        monthCsWaterMap.put(infoMonth, sysProject.getMonthConsumptionWater());
+                        if (infoMonth == 1) {
+                            sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year - 1, 12, sysUserCompanyIds);
+                        } else {
+                            sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year, infoMonth - 1, sysUserCompanyIds);
                         }
-                        if(null!=sysProjectForMonth){
-                            mtOMtCsElectricityScaleMap.put(infoMonth,UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProject.getMonthConsumptionElectricity()-sysProjectForMonth.getMonthConsumptionElectricity(),sysProjectForMonth.getMonthConsumptionElectricity())));
-                            mtOMtCsWaterScaleMap.put(infoMonth,UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProject.getMonthConsumptionWater()-sysProjectForMonth.getMonthConsumptionWater(),sysProjectForMonth.getMonthConsumptionWater())));
+                        if (null != sysProjectForMonth) {
+                            mtOMtCsElectricityScaleMap.put(infoMonth, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProject.getMonthConsumptionElectricity() - sysProjectForMonth.getMonthConsumptionElectricity(), sysProjectForMonth.getMonthConsumptionElectricity())));
+                            mtOMtCsWaterScaleMap.put(infoMonth, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProject.getMonthConsumptionWater() - sysProjectForMonth.getMonthConsumptionWater(), sysProjectForMonth.getMonthConsumptionWater())));
                         }
                     }
                 }
@@ -340,9 +334,9 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
             sysProjectEnergyEntity.setMonthCsWaterMap(monthCsWaterMap);
             sysProjectEnergyEntity.setMtOMtCsElectricityScaleMap(mtOMtCsElectricityScaleMap);
             sysProjectEnergyEntity.setMtOMtCsWaterScaleMap(mtOMtCsWaterScaleMap);
-            return  R.ok().putData(200,sysProjectEnergyEntity,"获取信息成功！！");
+            return R.ok().putData(200, sysProjectEnergyEntity, "获取信息成功！！");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             logger.info("获取工程能耗信息报表信息出错：" + e.getMessage());
             return R.error(500, "获取工程能耗信息报表信息失败，服务器异常，请联系管理员！");

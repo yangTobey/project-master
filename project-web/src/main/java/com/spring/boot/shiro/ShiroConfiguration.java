@@ -94,6 +94,11 @@ public class ShiroConfiguration {
     @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilterFactoryBean() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
+        //shiroFilterFactoryBean.setLoginUrl("/views/login/login");
+        shiroFilterFactoryBean.setSuccessUrl("/views/main/index");
+        //用户访问未对其授权的资源时,所显示的连接
+        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         shiroFilterFactoryBean.setSecurityManager(securityManager());
 
        /* Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
@@ -127,11 +132,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
-        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-        //shiroFilterFactoryBean.setLoginUrl("/views/login/login");
-        shiroFilterFactoryBean.setSuccessUrl("/views/main/index");
-        //用户访问未对其授权的资源时,所显示的连接
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+
         return shiroFilterFactoryBean;
     }
 

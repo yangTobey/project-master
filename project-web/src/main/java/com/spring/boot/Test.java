@@ -29,5 +29,13 @@ public class Test {
 
 
         System.out.println(UtilHelper.getWeekOfYear());
+
+
+
+        String b=new StringBuffer("a1a").append("php").toString();
+        System.out.println(b.intern()==b);
+        String a=new StringBuffer("j").append("ava").toString();
+        System.out.println(a.intern()==a);
+
     }
 }

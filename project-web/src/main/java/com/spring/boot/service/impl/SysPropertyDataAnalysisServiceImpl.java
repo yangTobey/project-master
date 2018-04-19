@@ -1,8 +1,7 @@
 package com.spring.boot.service.impl;
 
-import com.spring.boot.bean.cluster.ActivityUser;
 import com.spring.boot.dao.web.cluster.ActivityUserDao;
-import com.spring.boot.service.ActivityUserService;
+import com.spring.boot.service.SysPropertyDataAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -15,7 +14,7 @@ import java.util.Map;
  * Created by Administrator on 2018/1/25.
  */
 @Service
-public class ActivityUserServiceImpl implements ActivityUserService {
+public class SysPropertyDataAnalysisServiceImpl implements SysPropertyDataAnalysisService {
     @Autowired
     private ActivityUserDao activityUserDao;
 
@@ -23,9 +22,9 @@ public class ActivityUserServiceImpl implements ActivityUserService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public ActivityUser findByUserId(String userId) {
+    public Map<String,Object> sysPropertyDataAnalysis() {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("userId", userId);
+
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
         // 缓存存在
         boolean hasKey = redisTemplate.hasKey("admin");
@@ -36,7 +35,7 @@ public class ActivityUserServiceImpl implements ActivityUserService {
             operations.set("admin","hello world everybody!");
             System.out.println("set-admin-value:"+operations.get("admin"));
         }
-        return activityUserDao.findByUserId(map);
+        return null;
     }
 
 }

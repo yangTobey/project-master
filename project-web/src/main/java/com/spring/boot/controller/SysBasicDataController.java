@@ -128,10 +128,17 @@ public class SysBasicDataController {
         }else if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不正确！");
         }
-        Map<String, Object> map = sysBasicDataService.addSysBasicData(Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
-                , Integer.valueOf(projectNumber), Integer.valueOf(houseNumber), Integer.valueOf(acceptHouseNumber), Integer.valueOf(forSaleHouseNumber), Integer.valueOf(decorateHouseNumber),
-                Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Integer.valueOf(companyId));
-        return R.ok(map);
+        //异常捕捉，service层做事物管理回滚
+        try{
+            Map<String, Object> map = sysBasicDataService.addSysBasicData(Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
+                    , Integer.valueOf(projectNumber), Integer.valueOf(houseNumber), Integer.valueOf(acceptHouseNumber), Integer.valueOf(forSaleHouseNumber), Integer.valueOf(decorateHouseNumber),
+                    Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Integer.valueOf(companyId));
+            return R.ok(map);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("新增失败："+e.getMessage());
+            return R.error(500,"新增失败，服务器异常，请联系系统管理员！");
+        }
     }
 
     /**
@@ -194,12 +201,16 @@ public class SysBasicDataController {
         }else if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不正确！");
         }
-        Map<String, Object> map = sysBasicDataService.updateSysBasicData(Integer.valueOf(basicId), Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
-                , Integer.valueOf(projectNumber), Integer.valueOf(houseNumber), Integer.valueOf(acceptHouseNumber), Integer.valueOf(forSaleHouseNumber), Integer.valueOf(decorateHouseNumber),
-                Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Integer.valueOf(companyId));
-
-        return R.ok(map);
-
+        try {
+            Map<String, Object> map = sysBasicDataService.updateSysBasicData(Integer.valueOf(basicId), Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
+                    , Integer.valueOf(projectNumber), Integer.valueOf(houseNumber), Integer.valueOf(acceptHouseNumber), Integer.valueOf(forSaleHouseNumber), Integer.valueOf(decorateHouseNumber),
+                    Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Integer.valueOf(companyId));
+            return R.ok(map);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("更新失败："+e.getMessage());
+            return R.error(500,"更新失败，服务器异常，请联系系统管理员！");
+        }
     }
 
     /**
@@ -213,8 +224,14 @@ public class SysBasicDataController {
         if (UtilHelper.isEmpty(basicId)) {
             return R.error(400, "基础信息id编号不能为空，请联系系统管理员！");
         }
-        Map<String, Object> map = sysBasicDataService.deleteSysBasicData(Integer.valueOf(basicId));
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysBasicDataService.deleteSysBasicData(Integer.valueOf(basicId));
+            return R.ok(map);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("删除失败："+e.getMessage());
+            return R.error(500,"删除失败，服务器异常，请联系系统管理员！");
+        }
     }
     /**
      * 根据基础数据id查找信息

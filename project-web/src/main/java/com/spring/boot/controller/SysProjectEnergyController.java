@@ -56,9 +56,15 @@ public class SysProjectEnergyController {
         } else if (!UtilHelper.isNumer(monthConsumptionWater)) {
             return R.error(400, "月耗水量格式不合理！");
         }
-        Map<String, Object> map = sysProjectEnergyService.addSysProjectEnergy(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(projectUnfinishedTotal)
-                , Integer.valueOf(projectFinishedTotal), Double.valueOf(monthConsumptionElectricity), Double.valueOf(monthConsumptionWater), fileInfo);
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysProjectEnergyService.addSysProjectEnergy(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(projectUnfinishedTotal)
+                    , Integer.valueOf(projectFinishedTotal), Double.valueOf(monthConsumptionElectricity), Double.valueOf(monthConsumptionWater), fileInfo);
+            return R.ok(map);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("新增工程能耗出错：" + e.getMessage());
+            return R.error(500, "添加失败，服务器异常，请联系管理员！");
+        }
     }
 
     /**
