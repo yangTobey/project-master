@@ -57,11 +57,14 @@
         SUM(quality.security_event) as securityEvent
         FROM sys_quality_manage AS quality
         WHERE 1 = 1
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND quality.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
+        /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
+        <if test="type == 1">
+            <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND quality.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
         </if>
         and quality.year = #{year}
         and quality.status_code!=2
@@ -78,11 +81,14 @@
         SUM(quality.security_event) as securityEvent
         FROM sys_quality_manage AS quality
         WHERE 1 = 1
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND  quality.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
+        /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
+        <if test="type == 1">
+            <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND  quality.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
         </if>
         and quality.year = #{year}
         and quality.month = #{month}
@@ -94,11 +100,14 @@
         <include refid="Base_Column_List"/>
         FROM sys_quality_manage AS quality
         WHERE 1 = 1
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND  quality.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
+        /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
+        <if test="type == 1">
+            <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND  quality.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
         </if>
         and quality.year = #{year}
     <!-- /*and quality.month = #{month}*/-->

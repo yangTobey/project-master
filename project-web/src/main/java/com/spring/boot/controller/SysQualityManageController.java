@@ -35,6 +35,7 @@ public class SysQualityManageController {
         Map<String, Object> map = sysQualityManageService.sysQualityManageAnalysis(Long.valueOf(companyId));
         return R.ok(map);
     }
+
     /**
      * 查询品质管理列表信息
      *
@@ -79,9 +80,6 @@ public class SysQualityManageController {
             , @RequestParam(value = "qualityCheckPass", required = false) String qualityCheckPass, @RequestParam(value = "qualityCheckFail", required = false) String qualityCheckFail
             , @RequestParam(value = "securityEvent", required = false) String securityEvent, @RequestParam(value = "qualityCheckUnmodified", required = false) String qualityCheckUnmodified
             , @RequestParam(value = "fileInfo", required = false) String fileInfo) {
-        Map<String, Object> map =sysQualityManageService.addSysQualityManage(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(qualityCheck), Integer.valueOf(qualityCheckPass)
-                , Integer.valueOf(qualityCheckFail), Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified),fileInfo);
-
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不正确！");
         } else if (!UtilHelper.isNumer(year)) {
@@ -90,16 +88,24 @@ public class SysQualityManageController {
             return R.error(400, "月份格式不正确！");
         } else if (!UtilHelper.isNumer(qualityCheck)) {
             return R.error(400, "月品质检查项格式不正确！");
-        }else if (!UtilHelper.isNumer(qualityCheckPass)) {
+        } else if (!UtilHelper.isNumer(qualityCheckPass)) {
             return R.error(400, "月品质检查合格项格式不正确！");
-        }else if (!UtilHelper.isNumer(qualityCheckFail)) {
+        } else if (!UtilHelper.isNumer(qualityCheckFail)) {
             return R.error(400, "月品质检查不合格项格式不正确！");
-        }else if (!UtilHelper.isNumer(securityEvent)) {
+        } else if (!UtilHelper.isNumer(securityEvent)) {
             return R.error(400, "月安全事故数量项格式不正确！");
-        }else if (!UtilHelper.isNumer(qualityCheckUnmodified)) {
+        } else if (!UtilHelper.isNumer(qualityCheckUnmodified)) {
             return R.error(400, "月品质检查未整改项格式不正确！");
         }
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysQualityManageService.addSysQualityManage(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(qualityCheck), Integer.valueOf(qualityCheckPass)
+                    , Integer.valueOf(qualityCheckFail), Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified), fileInfo);
+            return R.ok(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("新增品质管理数据失败：" + e.getMessage());
+            return R.error(500, "新增品质管理数据失败，服务器异常，请联系系统管理员！");
+        }
     }
 
     /**
@@ -127,25 +133,30 @@ public class SysQualityManageController {
             return R.error(400, "质量管理编号格式不正确，请联系系统管理员！");
         } else if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司编号格式不正确，请联系系统管理员！");
-        }else if (!UtilHelper.isNumer(year)) {
+        } else if (!UtilHelper.isNumer(year)) {
             return R.error(400, "年份格式不正确！");
         } else if (!UtilHelper.isNumer(month)) {
             return R.error(400, "月份格式不正确！");
         } else if (!UtilHelper.isNumer(qualityCheck)) {
             return R.error(400, "月品质检查项格式不正确！");
-        }else if (!UtilHelper.isNumer(qualityCheckPass)) {
+        } else if (!UtilHelper.isNumer(qualityCheckPass)) {
             return R.error(400, "月品质检查合格项格式不正确！");
-        }else if (!UtilHelper.isNumer(qualityCheckFail)) {
+        } else if (!UtilHelper.isNumer(qualityCheckFail)) {
             return R.error(400, "月品质检查不合格项格式不正确！");
-        }else if (!UtilHelper.isNumer(securityEvent)) {
+        } else if (!UtilHelper.isNumer(securityEvent)) {
             return R.error(400, "月安全事故数量项格式不正确！");
-        }else if (!UtilHelper.isNumer(qualityCheckUnmodified)) {
+        } else if (!UtilHelper.isNumer(qualityCheckUnmodified)) {
             return R.error(400, "月品质检查未整改项格式不正确！");
         }
-        Map<String, Object> map =sysQualityManageService.updateSysQualityManage(Long.valueOf(qualityId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(qualityCheck), Integer.valueOf(qualityCheckPass)
-                , Integer.valueOf(qualityCheckFail), Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified),fileInfo);
-        return R.ok(map);
-
+        try {
+            Map<String, Object> map = sysQualityManageService.updateSysQualityManage(Long.valueOf(qualityId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(qualityCheck), Integer.valueOf(qualityCheckPass)
+                    , Integer.valueOf(qualityCheckFail), Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified), fileInfo);
+            return R.ok(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("更新品质管理数据失败：" + e.getMessage());
+            return R.error(500, "更新品质管理数据失败，服务器异常，请联系系统管理员！");
+        }
     }
 
     /**
@@ -159,8 +170,14 @@ public class SysQualityManageController {
         if (!UtilHelper.isNumer(qualityId)) {
             return R.error(400, "质量管理编号格式不正确，请联系系统管理员！");
         }
-        Map<String, Object> map =sysQualityManageService.deleteSysQualityManageById(Long.valueOf(qualityId));
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysQualityManageService.deleteSysQualityManageById(Long.valueOf(qualityId));
+            return R.ok(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("删除品质管理数据失败：" + e.getMessage());
+            return R.error(500, "删除品质管理数据失败，服务器异常，请联系系统管理员！");
+        }
     }
 
     /**
@@ -177,6 +194,7 @@ public class SysQualityManageController {
         Map<String, Object> map = sysQualityManageService.findSysQualityManageById(Long.valueOf(qualityId));
         return R.ok(map);
     }
+
     /**
      * 根据公司id获取附件文档信息
      *

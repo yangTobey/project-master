@@ -51,12 +51,15 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
-    public R updatePassword(@RequestParam(value = "password", required = false) String password, @RequestParam(value = "newPassword", required = false) String newPassword) {
+    public R updatePassword(@RequestParam(value = "password", required = false) String password, @RequestParam(value = "newPassword", required = false) String newPassword
+            , @RequestParam(value = "confirmNewPassword", required = false) String confirmNewPassword) {
         logger.info("hello world");
         if (UtilHelper.isEmpty(password)) {
             return R.error(400, "原密码不能为空！");
         } else if (UtilHelper.isEmpty(newPassword)) {
             return R.error(400, "新密码不能为空！");
+        }else if(!newPassword.equals(confirmNewPassword)){
+            return R.error(400, "两次输入的新密码不相同，请重新输入！");
         }
         Map<String, Object> map = sysUserService.updatePassword(password, newPassword);
         return R.ok(map);

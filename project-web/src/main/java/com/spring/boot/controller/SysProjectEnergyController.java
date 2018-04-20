@@ -78,7 +78,7 @@ public class SysProjectEnergyController {
      * @param monthConsumptionElectricity
      * @param monthConsumptionWater
      * @param fileInfo
-     * @param projectId                   主键id
+     * @param projectId  主键id
      * @return
      */
     @RequestMapping(value = "/updateSysProjectEnergy", method = RequestMethod.GET)
@@ -104,9 +104,15 @@ public class SysProjectEnergyController {
         } else if (!UtilHelper.isNumer(projectId)) {
             return R.error(400, "主键id格式不正确！");
         }
-        Map<String, Object> map = sysProjectEnergyService.updateSysProjectEnergy(Long.valueOf(projectId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(projectUnfinishedTotal)
-                , Integer.valueOf(projectFinishedTotal), Double.valueOf(monthConsumptionElectricity), Double.valueOf(monthConsumptionWater), fileInfo);
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysProjectEnergyService.updateSysProjectEnergy(Long.valueOf(projectId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(projectUnfinishedTotal)
+                    , Integer.valueOf(projectFinishedTotal), Double.valueOf(monthConsumptionElectricity), Double.valueOf(monthConsumptionWater), fileInfo);
+            return R.ok(map);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("更新工程能耗出错：" + e.getMessage());
+            return R.error(500, "更新失败，服务器异常，请联系管理员！");
+        }
     }
 
     /**
@@ -119,8 +125,14 @@ public class SysProjectEnergyController {
         if (!UtilHelper.isNumer(projectId)) {
             return R.error(400, "主键id格式不合理！");
         }
-        Map<String, Object> map = sysProjectEnergyService.deleteSysProject(Long.valueOf(projectId));
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysProjectEnergyService.deleteSysProject(Long.valueOf(projectId));
+            return R.ok(map);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("删除工程能耗出错：" + e.getMessage());
+            return R.error(500, "删除失败，服务器异常，请联系管理员！");
+        }
     }
 
     /**
