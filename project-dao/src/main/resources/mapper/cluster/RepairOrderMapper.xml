@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.web.cluster.RepairOrderDao">
+	<resultMap id="repairOrder" type="com.spring.boot.bean.cluster.RepairOrder">
+		<result column="repairId" property="repairId" />
+		<result column="repairTotal" property="repairTotal" />
+		<result column="monthRepairTotal" property="monthRepairTotal" />
+		<result column="repairStatus" property="repairStatus" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, name, phone, address
+	</sql>
+	<!--查找当年已完成工单数据-->
+	<select id="getRepairOrderFinish" resultMap="repairOrder" parameterType="map">
+		SELECT COUNT(repair_id) as repairTotal from `repair` WHERE repair_time <![CDATA[ >= ]]> #{startTime} and repair_time <![CDATA[ <= ]]> #{endTime}
+		and status=2
+		<!--<if test="type != null and type!=''">
+			<choose>
+				<when test="type==1">
+					and status!=-1 and status!=3
+				</when>
+				<when test="type==2">
+					and status=2
+				</when>
+			</choose>
+		</if>-->
+	</select>
+	<!--查找上个月的数据信息-->
+	<select id="getRepairOrderForLastMonth" resultMap="repairOrder" parameterType="map">
+		SELECT COUNT(repair_id) as monthRepairTotal from `repair` WHERE DATE_FORMAT(repair_time, '%Y') = #{year} and DATE_FORMAT(repair_time, '%m') = #{month}
+		and status!=-1 and status!=3
+	</select>
+
+	<!--查找当年每个月的数据信息-->
+	<select id="getRepairOrderForMonth" resultMap="repairOrder" parameterType="map">
+		SELECT MONTH, COUNT(*) AS monthRepairTotal
+		FROM
+		( SELECT DATE_FORMAT(repair_time, '%m') MONTH FROM `repair`
+		WHERE DATE_FORMAT(repair_time, '%Y') = #{year}
+		and status!=-1 and status!=3
+		) a
+		GROUP BY MONTH
+	</select>
+</mapper>

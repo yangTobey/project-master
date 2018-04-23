@@ -17,6 +17,12 @@ public interface SysChargeBusinessService {
      */
     SysChargeDetails sysChargeDetails(Map<String, Object> map);
     /**
+     * 收费情况报表统计(年，为大屏财务数据展示服务)
+     *
+     * @return
+     */
+    SysChargeDetails sysChargeDetailsForYear(Map<String, Object> map);
+    /**
      * 根据主键id查找信息
      *
      * @return
@@ -40,47 +46,4 @@ public interface SysChargeBusinessService {
     int updateSysCharge(Map<String, Object> map);
 
 
-    /**
-     * Created by Administrator on 2018/1/25.
-     */
-    interface SysBudgetDetailsBusinessService {
-        /**
-         * 月度应收账款报表统计详细信息
-         *
-         * @return
-         */
-        SysAccountsReceivable sysAccountsReceivableAnalysis(Map<String, Object> map);
-        /**
-         * 根据年份和月份查询数据库记录
-         *
-         * @return
-         */
-        SysAccountsReceivable findRecordByYearAndMonth(Integer year, Integer month);
-        /**
-         * 月度应收账款报表统计详细信息(柱状图)
-         *
-         * @return
-         */
-        List<SysAccountsReceivable> sysAccountsReceivableAnalysisForMonth(List<Long> sysUserCompanyIds);
-        /**
-         * 获取数据所有月份
-         *
-         * @return
-         */
-        String sysAccountsReceivableMonths(Map<String, Object> map);
-        /**
-         * 新增月度应收账款报表统计详细信息
-         *
-         * @return
-         */
-        int addSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable);
-        /**
-         * 更新月度应收账款报表统计详细信息
-         *
-         * @return
-         */
-        int updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable);
-
-
-    }
 }

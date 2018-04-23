@@ -19,6 +19,12 @@ public interface SysChargeDao extends BaseDao<SysChargeDetails> {
      */
     SysChargeDetails sysChargeDetails(Map<String, Object> map);
     /**
+     * 收费情况报表统计(年，为大屏财务数据展示服务)
+     *
+     * @return
+     */
+    SysChargeDetails sysChargeDetailsForYear(Map<String, Object> map);
+    /**
      * 根据年份跟周数查找信息
      *
      * @return

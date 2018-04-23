@@ -40,6 +40,27 @@
             </foreach>
         </if>
     </select>
+    <!--查找当年全年数据，为大屏财务数据页面展示提供服务-->
+    <select id="sysChargeDetailsForYear" resultMap="sysChargeDetails" parameterType="map">
+        SELECT charge_id,SUM(charge_money) AS charge_money,SUM(charge_money_now) AS charge_money_now,SUM(charge_debt) AS charge_debt,SUM(charge_debt_return) AS charge_debt_return from sys_charge_details where 1=1
+        and status_code!=2 and month = #{month} and year=#{year} GROUP BY month
+        /*SELECT
+        a.MONTH,
+        SUM(charge_money) AS charge_money,
+        SUM(charge_money_now) AS charge_money_now,
+        SUM(charge_debt) AS charge_debt,
+        SUM(charge_debt_return) AS charge_debt_return
+        FROM (SELECT
+            DATE_FORMAT(create_time, '%m') MONTH,
+            charge_money,
+            charge_money_now,
+            charge_debt,
+            charge_debt_return
+              FROM sys_charge_details
+                WHERE DATE_FORMAT(create_time, '%Y') = #{year} AND status_code != 2
+            ) a
+          GROUP BY a.MONTH*/
+    </select>
     <!--根据主键id查找信息-->
     <select id="findSysChargeDetailsById" resultMap="sysChargeDetails" >
         select charge.charge_id, charge.charge_money, charge.charge_money_now, charge.charge_debt,charge.charge_debt_return,charge.create_time,charge.company_id,charge.status_code

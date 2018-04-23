@@ -98,9 +98,15 @@ public class SysFinancialController {
         } else if (!UtilHelper.isDoubleNumer(chargeDebtReturn)) {
             return R.error(400, "清欠回款格式不正确，只能保留两位小数！");
         }
-        Map<String, Object> map = sysFinancialService.addSysCharge(Long.valueOf(companyId), Double.valueOf(chargeMoney), Double.valueOf(chargeMoneyNow)
-                , Double.valueOf(chargeDebt), Double.valueOf(chargeDebtReturn));
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysFinancialService.addSysCharge(Long.valueOf(companyId), Double.valueOf(chargeMoney), Double.valueOf(chargeMoneyNow)
+                    , Double.valueOf(chargeDebt), Double.valueOf(chargeDebtReturn));
+            return R.ok(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("新增收费信息失败！" + e.getMessage());
+            return R.error(500, "服务器异常，请联系管理员！");
+        }
     }
 
     /**
@@ -130,9 +136,15 @@ public class SysFinancialController {
         } else if (!UtilHelper.isDoubleNumer(chargeDebtReturn)) {
             return R.error(400, "清欠回款格式不正确，只能保留两位小数！");
         }
-        Map<String, Object> map = sysFinancialService.updateSysCharge(Long.valueOf(chargeId), Long.valueOf(companyId), Double.valueOf(chargeMoney), Double.valueOf(chargeMoneyNow)
-                , Double.valueOf(chargeDebt), Double.valueOf(chargeDebtReturn));
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysFinancialService.updateSysCharge(Long.valueOf(chargeId), Long.valueOf(companyId), Double.valueOf(chargeMoney), Double.valueOf(chargeMoneyNow)
+                    , Double.valueOf(chargeDebt), Double.valueOf(chargeDebtReturn));
+            return R.ok(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("更新收费信息失败！" + e.getMessage());
+            return R.error(500, "服务器异常，请联系管理员！");
+        }
     }
     /*****************************************************应收账款模块**********************************************************/
 
@@ -153,9 +165,10 @@ public class SysFinancialController {
 
     /**
      * 应收账款列表
+     *
      * @param companyId 公司id
-     * @param year 年份
-     * @param limit 每页数据条数限制
+     * @param year      年份
+     * @param limit     每页数据条数限制
      * @param offset
      * @return
      */
@@ -174,6 +187,7 @@ public class SysFinancialController {
         Map<String, Object> map = sysFinancialService.sysAccountsReceivableList(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(limit), Integer.valueOf(offset));
         return R.ok(map);
     }
+
     /**
      * 根据主键id查找数据
      *
@@ -208,8 +222,14 @@ public class SysFinancialController {
         } else if (!completeHouse.equals(sysAccountsReceivable.getCompleteHouse())) {
             return R.error(400, "地产 应 收款总数不对，请联系管理员进行处理！");
         }
-        Map<String, Object> map = sysFinancialService.addSysAccountsReceivable(sysAccountsReceivable);
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysFinancialService.addSysAccountsReceivable(sysAccountsReceivable);
+            return R.ok(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("新增信息失败！" + e.getMessage());
+            return R.error(500, "服务器异常，请联系管理员！");
+        }
     }
 
     /**
@@ -231,8 +251,14 @@ public class SysFinancialController {
         } else if (!completeHouse.equals(sysAccountsReceivable.getCompleteHouse())) {
             return R.error(400, "地产 应 收款总数不对，请联系管理员进行处理！");
         }
-        Map<String, Object> map = sysFinancialService.updateSysAccountsReceivable(sysAccountsReceivable);
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysFinancialService.updateSysAccountsReceivable(sysAccountsReceivable);
+            return R.ok(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("更新信息失败！" + e.getMessage());
+            return R.error(500, "服务器异常，请联系管理员！");
+        }
     }
 
     /**
@@ -262,8 +288,14 @@ public class SysFinancialController {
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不正确！");
         }
-        Map<String, Object> map = sysFinancialService.sysBudgetDetailsAnalysis(Long.valueOf(companyId));
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysFinancialService.sysBudgetDetailsAnalysis(Long.valueOf(companyId));
+            return R.ok(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("删除执行预算信息失败！" + e.getMessage());
+            return R.error(500, "服务器异常，请联系管理员！");
+        }
     }
 
     /**
@@ -317,8 +349,14 @@ public class SysFinancialController {
         if (!realExpensesTotal.equals(sysBudgetDetails.getRealExpensesTotal())) {
             return R.error(400, "实际总支出与详细数据合计总数不对，请联系管理员进行处理！");
         }
-        Map<String, Object> map = sysFinancialService.addSysBudgetDetails(sysBudgetDetails);
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysFinancialService.addSysBudgetDetails(sysBudgetDetails);
+            return R.ok(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("新增信息失败！" + e.getMessage());
+            return R.error(500, "服务器异常，请联系管理员！");
+        }
     }
 
     /**
@@ -337,8 +375,15 @@ public class SysFinancialController {
         } else if (!realExpensesTotal.equals(sysBudgetDetails.getRealExpensesTotal())) {
             return R.error(400, "实际总支出与详细数据合计总数不对，请联系管理员进行处理！");
         }
-        Map<String, Object> map = sysFinancialService.updateSysBudgetDetails(sysBudgetDetails);
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysFinancialService.updateSysBudgetDetails(sysBudgetDetails);
+            return R.ok(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("更新执行预算信息失败！" + e.getMessage());
+            return R.error(500, "服务器异常，请联系管理员！");
+        }
+
     }
 
     /**
@@ -352,7 +397,13 @@ public class SysFinancialController {
         if (!UtilHelper.isNumer(budgetId)) {
             return R.error(400, "主键id格式不正确，请联系系统管理员进行处理！");
         }
-        Map<String, Object> map = sysFinancialService.deleteSysBudgetDetails(Long.valueOf(budgetId));
-        return R.ok(map);
+        try {
+            Map<String, Object> map = sysFinancialService.deleteSysBudgetDetails(Long.valueOf(budgetId));
+            return R.ok(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("删除执行预算信息失败！" + e.getMessage());
+            return R.error(500, "服务器异常，请联系管理员！");
+        }
     }
 }
