@@ -5,6 +5,7 @@ import com.spring.boot.bean.master.SysQualityManage;
 import com.spring.boot.bean.master.SysQualityManageFile;
 import com.spring.boot.bean.master.entity.SysQualityManageEntity;
 import com.spring.boot.service.SysCompanyService;
+import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysQualityManageService;
 import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.service.web.SysQualityManageBusinessService;
@@ -34,6 +35,8 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     private static final Logger logger = Logger.getLogger(SysQualityManageServiceImpl.class);
     @Autowired
     private SysQualityManageBusinessService sysQualityManageBusinessService;
+    @Autowired
+    private SysDataAnalysisService sysDataAnalysisService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -144,7 +147,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addSysQualityManage(long companyId, int year, int month, int qualityCheck, int qualityCheckPass, int qualityCheckFail, int securityEvent, int qualityCheckUnmodified, String fileInfo) {
+    public Map<String, Object> addSysQualityManage(Long companyId, Integer year, Integer month, Integer qualityCheck, Integer qualityCheckPass, Integer qualityCheckFail, Integer securityEvent, Integer qualityCheckUnmodified, String fileInfo) {
         SysQualityManage sysQualityManage = new SysQualityManage();
         sysQualityManage.setCompanyId(companyId);
         sysQualityManage.setYear(year);
@@ -155,9 +158,12 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         sysQualityManage.setSecurityEvent(securityEvent);
         sysQualityManage.setQualityCheckUnmodified(qualityCheckUnmodified);
         sysQualityManage.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
+        SysQualityManage record=sysQualityManageBusinessService.sysQualityManageRecord(companyId,year,month);
+        if(null!=record){
+            return R.error(500, "新增失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+        }
         int count = sysQualityManageBusinessService.addSysQualityManage(sysQualityManage);
         if (count > 0) {
-            System.out.println("新增id为：" + sysQualityManage.getQualityId());
             if (!UtilHelper.isEmpty(fileInfo)) {
                 String[] fileInfoArray;
                 //去掉最后那个逗号，在进行获取数据
@@ -186,8 +192,8 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> updateSysQualityManage(long qualityId, long companyId, int year, int month, int qualityCheck, int qualityCheckPass
-            , int qualityCheckFail, int securityEvent, int qualityCheckUnmodified, String fileInfo) {
+    public Map<String, Object> updateSysQualityManage(Long qualityId, Long companyId, Integer year, Integer month, Integer qualityCheck, Integer qualityCheckPass
+            , Integer qualityCheckFail, Integer securityEvent, Integer qualityCheckUnmodified, String fileInfo) {
         map = new HashMap<String, Object>();
         map.put("qualityId", qualityId);
         map.put("companyId", companyId);
@@ -198,7 +204,12 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         map.put("qualityCheckFail", qualityCheckFail);
         map.put("securityEvent", securityEvent);
         map.put("qualityCheckUnmodified", qualityCheckUnmodified);
-
+        SysQualityManage record=sysQualityManageBusinessService.sysQualityManageRecord(companyId,year,month);
+        if(null!=record){
+            if(!qualityId.equals(record.getQualityId())){
+                return R.error(500, "更新失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+            }
+        }
         int count = sysQualityManageBusinessService.updateSysQualityManage(map);
         if (count > 0) {
             if (!UtilHelper.isEmpty(fileInfo)) {
@@ -283,6 +294,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
      * 将年度、月度统计报表信息放进redis缓存
      */
     public void setDataToRedis() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
         SysQualityManageEntity sysQualityManageEntityForYear = null;
         SysQualityManageEntity sysQualityManageEntityForMonth = null;
         Map<String, Object> map = new HashMap<String, Object>();
@@ -298,7 +310,8 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
             sysQualityManageEntityForYear.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckUnmodified(), sysQualityManageEntityForYear.getQualityCheckFail())));
         }
         //将年度统计信息放入redis缓存
-        redisTemplate.opsForValue().set("qualityManageYear", sysQualityManageEntityForYear);
+        //redisTemplate.opsForValue().set("qualityManageYear", sysQualityManageEntityForYear);
+        resultMap.put("qualityManageYear", sysQualityManageEntityForYear);
         //查找月度报表数据
         sysQualityManageEntityForMonth = sysQualityManageBusinessService.sysQualityManageAnalysisForMonth(map);
         if (sysQualityManageEntityForMonth != null) {
@@ -328,8 +341,11 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
             sysQualityManageEntityForMonth.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckPass(), sysQualityManageEntityForMonth.getQualityCheck())));
             sysQualityManageEntityForMonth.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckUnmodified(), sysQualityManageEntityForMonth.getQualityCheckFail())));
         }
+        resultMap.put("qualityManageMonth", sysQualityManageEntityForMonth);
         //将月度统计报表信息放入redis缓存
-        redisTemplate.opsForValue().set("qualityManageMonth", sysQualityManageEntityForMonth);
+        redisTemplate.opsForValue().set("qualityManage", resultMap);
+        //调取物业大屏数据接口
+        sysDataAnalysisService.sysPropertyDataAnalysis();
 
     }
 }

@@ -1,7 +1,9 @@
 package com.spring.boot.service.impl;
 
+import com.spring.boot.bean.master.SysBasicData;
 import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 import com.spring.boot.service.SysBasicDataService;
+import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.web.SysBasicDataBusinessService;
 import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.util.R;
@@ -30,6 +32,8 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     private SysBasicDataBusinessService sysBasicDataBusinessService;
     @Autowired
     private SysCompanyBusinessService sysCompanyBusinessService;
+    @Autowired
+    private SysDataAnalysisService sysDataAnalysisService;
 
     //字符串
     @Autowired
@@ -112,8 +116,12 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addSysBasicData(int year, int month, double constructionArea, double chargeArea, int cityNumber, int projectNumber, int houseNumber, int acceptHouseNumber
-            , int forSaleHouseNumber, int decorateHouseNumber, int parkingSpace, int forSaleParkingSpace, int salesDistribution, int companyId) {
+    public Map<String, Object> addSysBasicData(Integer year, Integer month, Double constructionArea, Double chargeArea, Integer cityNumber, Integer projectNumber, Integer houseNumber, Integer acceptHouseNumber
+            , Integer forSaleHouseNumber, Integer decorateHouseNumber, Integer parkingSpace, Integer forSaleParkingSpace, Integer salesDistribution, Long companyId) {
+        SysBasicData sysBasicData = sysBasicDataBusinessService.sysBasicDataRecord(companyId, year, month);
+        if (null != sysBasicData) {
+            return R.error(500, "新增失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+        }
         map = new HashMap<String, Object>();
         map.put("year", year);
         map.put("month", month);
@@ -129,6 +137,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         map.put("forSaleParkingSpace", forSaleParkingSpace);
         map.put("salesDistribution", salesDistribution);
         map.put("companyId", companyId);
+
         int count = sysBasicDataBusinessService.addSysBasicData(map);
         if (count > 0) {
             //将基础信息放进redis缓存
@@ -141,8 +150,14 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> updateSysBasicData(int basicId, int year, int month, double constructionArea, double chargeArea, int cityNumber, int projectNumber, int houseNumber, int acceptHouseNumber
-            , int forSaleHouseNumber, int decorateHouseNumber, int parkingSpace, int forSaleParkingSpace, int salesDistribution, int companyId) {
+    public Map<String, Object> updateSysBasicData(Long basicId, Integer year, Integer month, Double constructionArea, Double chargeArea, Integer cityNumber, Integer projectNumber, Integer houseNumber, Integer acceptHouseNumber
+            , Integer forSaleHouseNumber, Integer decorateHouseNumber, Integer parkingSpace, Integer forSaleParkingSpace, Integer salesDistribution, Long companyId) {
+        SysBasicData sysBasicData = sysBasicDataBusinessService.sysBasicDataRecord(companyId, year, month);
+        if (null != sysBasicData) {
+            if (!basicId.equals(sysBasicData.getBasicId())) {
+                return R.error(500, "更新失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+            }
+        }
         map = new HashMap<String, Object>();
         map.put("basicId", basicId);
         map.put("year", year);
@@ -226,6 +241,8 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             sysBasicDataEntity.setForSaleHouseScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysBasicDataEntity.getForSaleHouseNumber(), sysBasicDataEntity.getHouseNumber())));
             //设置基础信息redis缓存信息，为物业大屏数据分析统计做缓存服务
             redisTemplate.opsForValue().set("sysBasicData", sysBasicDataEntity);
+            //调取物业大屏数据接口
+            sysDataAnalysisService.sysPropertyDataAnalysis();
         }
     }
 }

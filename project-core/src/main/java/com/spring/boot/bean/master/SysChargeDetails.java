@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/3/2.
@@ -20,11 +21,17 @@ public class SysChargeDetails {
     private Integer statusCode;
     private Integer weekOfYear;
     private Integer year;
+    private Integer month;
     //当期收缴率
     private Double chargeMoneyScale;
     //清欠收缴率
     private Double chargeDebtScale;
     private String companyName;
+
+    //一年当期收缴率（针对大屏数据展示页面）
+    private Map<Integer,Double> yearChargeMoneyScale;
+    //一年清欠收缴率（针对大屏数据展示页面）
+    private Map<Integer,Double> yearChargeDebtScale;
 
     public Long getChargeId() {
         return chargeId;
@@ -128,5 +135,29 @@ public class SysChargeDetails {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public Map<Integer, Double> getYearChargeMoneyScale() {
+        return yearChargeMoneyScale;
+    }
+
+    public void setYearChargeMoneyScale(Map<Integer, Double> yearChargeMoneyScale) {
+        this.yearChargeMoneyScale = yearChargeMoneyScale;
+    }
+
+    public Map<Integer, Double> getYearChargeDebtScale() {
+        return yearChargeDebtScale;
+    }
+
+    public void setYearChargeDebtScale(Map<Integer, Double> yearChargeDebtScale) {
+        this.yearChargeDebtScale = yearChargeDebtScale;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
     }
 }

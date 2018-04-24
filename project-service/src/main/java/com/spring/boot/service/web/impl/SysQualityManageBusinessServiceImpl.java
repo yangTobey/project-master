@@ -29,6 +29,11 @@ public class SysQualityManageBusinessServiceImpl implements SysQualityManageBusi
     }
 
     @Override
+    public SysQualityManage sysQualityManageRecord(Long companyId, Integer year, Integer month) {
+        return sysQualityManageDao.sysQualityManageRecord(companyId,year,month);
+    }
+
+    @Override
     public SysQualityManageEntity sysQualityManageAnalysisForMonth(Map<String, Object> map) {
         return sysQualityManageDao.sysQualityManageAnalysisForMonth(map);
     }

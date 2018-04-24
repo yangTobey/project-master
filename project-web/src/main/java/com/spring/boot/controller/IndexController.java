@@ -124,4 +124,13 @@ public class IndexController {
     public String sysfinancialDetails(){
         return "views/dataStatistics/index-area";
     }
+
+    /**
+     * 测试链接
+     * @return
+     */
+    @RequestMapping(value = "/tesWebsocket", method = RequestMethod.GET)
+    public String tesWebsocket(){
+        return "views/main/index";
+    }
 }

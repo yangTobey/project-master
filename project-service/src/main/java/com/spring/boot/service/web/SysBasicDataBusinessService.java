@@ -20,6 +20,15 @@ public interface SysBasicDataBusinessService {
     SysBasicDataEntity sysBasicDataAnalysisData(Map<String, Object> map);
 
     /**
+     * 根据公司id、年份、月份查找系统记录
+     * @param companyId
+     * @param year
+     * @param month
+     * @return
+     */
+    SysBasicData sysBasicDataRecord(Long companyId,Integer year,Integer month);
+
+    /**
      * 获取基础数据列表数据条数
      *
      * @return

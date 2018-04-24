@@ -4,6 +4,7 @@ import com.spring.boot.bean.master.SysAccountsReceivable;
 import com.spring.boot.bean.master.SysBudgetDetails;
 import com.spring.boot.bean.master.SysChargeDetails;
 import com.spring.boot.bean.master.entity.SysReceivableAccountsOwnerEntity;
+import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysFinancialService;
 import com.spring.boot.service.web.SysAccountsReceivableBusinessService;
 import com.spring.boot.service.web.SysBudgetDetailsBusinessService;
@@ -37,6 +38,9 @@ public class SysFinancialServiceImpl implements SysFinancialService {
     private SysAccountsReceivableBusinessService sysAccountsReceivableBusinessService;
     @Autowired
     private SysBudgetDetailsBusinessService sysBudgetDetailsBusinessService;
+
+    @Autowired
+    private SysDataAnalysisService sysDataAnalysisService;
     //对象
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
@@ -104,6 +108,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             sysChargeDetails.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
             sysChargeDetails.setYear(UtilHelper.getYear());
             sysChargeDetails.setWeekOfYear(UtilHelper.getWeekOfYear());
+            sysChargeDetails.setMonth(UtilHelper.getMonth());
         }
         int count = sysChargeBusinessService.addSysCharge(sysChargeDetails);
         if (count > 0) {
@@ -556,9 +561,22 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 if (null != sysChargeDetails.getChargeDebtReturn() && null != sysChargeDetails.getChargeDebt()) {
                     sysChargeDetails.setChargeDebtScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysChargeDetails.getChargeDebtReturn(), sysChargeDetails.getChargeDebt())));
                 }
+                List<SysChargeDetails> list = sysChargeBusinessService.sysChargeDetailsForYear(map);
+                //一年当期收缴率（针对大屏数据展示页面）
+                 Map<Integer,Double> yearChargeMoneyScale=new HashMap<Integer,Double>();
+                //一年清欠收缴率（针对大屏数据展示页面）
+                 Map<Integer,Double> yearChargeDebtScale=new HashMap<Integer,Double>();;
+                for(SysChargeDetails data:list){
+                    yearChargeMoneyScale.put(data.getMonth(),UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(data.getChargeMoneyNow(),data.getChargeMoney())));
+                    yearChargeDebtScale.put(data.getMonth(),UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(data.getChargeDebtReturn(),data.getChargeDebt())));
+                }
+                sysChargeDetails.setYearChargeMoneyScale(yearChargeMoneyScale);
+                sysChargeDetails.setYearChargeDebtScale(yearChargeDebtScale);
             }
             //存储到redis缓存，为大屏财务数据页面展示提供服务
             redisTemplate.opsForValue().set("sysChargeDetails", sysChargeDetails);
+            //调取财务大屏数据接口
+            sysDataAnalysisService.sysFinancialDataAnalysis();
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("统计信息失败！" + e.getMessage());
@@ -624,6 +642,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             resultMap.put("sysAccountsReceivableMonth", sysReceivableAccountsOwnerEntity);
             //存储到redis缓存，为大屏财务数据页面展示提供服务
             redisTemplate.opsForValue().set("sysReceivableAccount", resultMap);
+            //调取财务大屏数据接口
+            sysDataAnalysisService.sysFinancialDataAnalysis();
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("收费情况报表统计详细信息失败！" + e.getMessage());
@@ -708,6 +728,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             }
             //存储到redis缓存，为大屏财务数据页面展示提供服务
             redisTemplate.opsForValue().set("sysBudgetDetails", sysBudgetDetails);
+            //调取财务大屏数据接口
+            sysDataAnalysisService.sysFinancialDataAnalysis();
             // return R.ok().putData(200, sysBudgetDetails, "获取成功！");
         } catch (Exception e) {
             e.printStackTrace();

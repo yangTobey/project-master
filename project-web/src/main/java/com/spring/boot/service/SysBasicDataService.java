@@ -45,8 +45,8 @@ public interface SysBasicDataService {
      * @param companyId           公司id
      * @return
      */
-    Map<String, Object> addSysBasicData(int year, int month, double constructionArea, double chargeArea, int cityNumber, int projectNumber, int houseNumber, int acceptHouseNumber
-            , int forSaleHouseNumber, int decorateHouseNumber, int parkingSpace, int forSaleParkingSpace, int salesDistribution, int companyId);
+    Map<String, Object> addSysBasicData(Integer year, Integer month, Double constructionArea, Double chargeArea, Integer cityNumber, Integer projectNumber, Integer houseNumber, Integer acceptHouseNumber
+            , Integer forSaleHouseNumber, Integer decorateHouseNumber, Integer parkingSpace, Integer forSaleParkingSpace, Integer salesDistribution, Long companyId);
 
     /**
      * 更新信息
@@ -68,8 +68,8 @@ public interface SysBasicDataService {
      * @param companyId           公司id
      * @return
      */
-    Map<String, Object> updateSysBasicData(int basicId, int year, int month, double constructionArea, double chargeArea, int cityNumber, int projectNumber, int houseNumber, int acceptHouseNumber
-            , int forSaleHouseNumber, int decorateHouseNumber, int parkingSpace, int forSaleParkingSpace, int salesDistribution, int companyId);
+    Map<String, Object> updateSysBasicData(Long basicId, Integer year, Integer month, Double constructionArea, Double chargeArea, Integer cityNumber, Integer projectNumber, Integer houseNumber, Integer acceptHouseNumber
+            , Integer forSaleHouseNumber, Integer decorateHouseNumber, Integer parkingSpace, Integer forSaleParkingSpace, Integer salesDistribution, Long companyId);
 
     /**
      * 删除基础数据信息

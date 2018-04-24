@@ -132,7 +132,7 @@ public class SysBasicDataController {
         try{
             Map<String, Object> map = sysBasicDataService.addSysBasicData(Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
                     , Integer.valueOf(projectNumber), Integer.valueOf(houseNumber), Integer.valueOf(acceptHouseNumber), Integer.valueOf(forSaleHouseNumber), Integer.valueOf(decorateHouseNumber),
-                    Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Integer.valueOf(companyId));
+                    Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Long.valueOf(companyId));
             return R.ok(map);
         }catch (Exception e){
             e.printStackTrace();
@@ -202,9 +202,9 @@ public class SysBasicDataController {
             return R.error(400, "公司id格式不正确！");
         }
         try {
-            Map<String, Object> map = sysBasicDataService.updateSysBasicData(Integer.valueOf(basicId), Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
+            Map<String, Object> map = sysBasicDataService.updateSysBasicData(Long.valueOf(basicId), Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
                     , Integer.valueOf(projectNumber), Integer.valueOf(houseNumber), Integer.valueOf(acceptHouseNumber), Integer.valueOf(forSaleHouseNumber), Integer.valueOf(decorateHouseNumber),
-                    Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Integer.valueOf(companyId));
+                    Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Long.valueOf(companyId));
             return R.ok(map);
         }catch (Exception e){
             e.printStackTrace();

@@ -4,6 +4,7 @@ import com.spring.boot.bean.master.SysBasicData;
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 import com.spring.boot.dao.BaseDao;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,14 @@ public interface SysBasicDataDao extends BaseDao<SysBasicDataEntity> {
      * @return
      */
     SysBasicDataEntity sysBasicDataAnalysisData(Map<String, Object> map);
+    /**
+     * 根据公司id、年份、月份查找系统记录
+     * @param companyId
+     * @param year
+     * @param month
+     * @return
+     */
+    SysBasicData sysBasicDataRecord(@Param("companyId")Long companyId, @Param("year")Integer year,@Param("month") Integer month);
 
     /**
      * 获取基础数据列表条数

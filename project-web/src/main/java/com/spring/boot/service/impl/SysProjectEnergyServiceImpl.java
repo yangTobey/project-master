@@ -2,6 +2,7 @@ package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.*;
 import com.spring.boot.bean.master.entity.SysProjectEnergyEntity;
+import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysProjectEnergyService;
 import com.spring.boot.service.web.SysEnergyBusinessService;
 import com.spring.boot.service.web.SysProjectBusinessService;
@@ -32,6 +33,8 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
     private SysProjectBusinessService sysProjectBusinessService;
     @Autowired
     private SysEnergyBusinessService sysEnergyBusinessService;
+    @Autowired
+    private SysDataAnalysisService sysDataAnalysisService;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
     @Resource
@@ -340,6 +343,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
      */
     public void setDataToRedis() {
         Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
         int year = UtilHelper.getYear();
         int month = UtilHelper.getMonth();
@@ -385,7 +389,8 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
             }
         }
         //将组装的数据存储到redis缓存
-        redisTemplate.opsForValue().set("sysProjectForYear", sysProjectForYear);
+        //redisTemplate.opsForValue().set("sysProjectForYear", sysProjectForYear);
+        resultMap.put("sysProjectForYear", sysProjectForYear);
         /********************************获取年度耗水量、耗电量统计报表信息*******************************/
         //耗电量环比
         Map<Integer, Double> mtOMtCsElectricityScaleMap = null;
@@ -436,8 +441,10 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
         sysProjectEnergyEntity.setMonthCsWaterMap(monthCsWaterMap);
         sysProjectEnergyEntity.setMtOMtCsElectricityScaleMap(mtOMtCsElectricityScaleMap);
         sysProjectEnergyEntity.setMtOMtCsWaterScaleMap(mtOMtCsWaterScaleMap);
+        resultMap.put("sysProjectForMonth", sysProjectEnergyEntity);
         //将组装的数据存储到redis缓存
-        redisTemplate.opsForValue().set("sysProjectEnergyForMonth", sysProjectEnergyEntity);
-
+        redisTemplate.opsForValue().set("sysProjectEnergy", resultMap);
+        //调取物业大屏数据接口
+        sysDataAnalysisService.sysPropertyDataAnalysis();
     }
 }

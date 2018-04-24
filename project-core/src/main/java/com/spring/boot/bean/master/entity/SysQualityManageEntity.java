@@ -1,12 +1,13 @@
 package com.spring.boot.bean.master.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Map;
 
 /**
  * Created by Administrator on 2018/3/20.
  */
-public class SysQualityManageEntity {
+public class SysQualityManageEntity implements Serializable {
     private Long qualityId;
     private Integer qualityCheck;
     private Integer qualityCheckPass;

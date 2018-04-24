@@ -28,7 +28,7 @@ public class SysChargeBusinessServiceImpl implements SysChargeBusinessService {
     }
 
     @Override
-    public SysChargeDetails sysChargeDetailsForYear(Map<String, Object> map) {
+    public List<SysChargeDetails> sysChargeDetailsForYear(Map<String, Object> map) {
         return sysChargeDao.sysChargeDetailsForYear(map);
     }
 

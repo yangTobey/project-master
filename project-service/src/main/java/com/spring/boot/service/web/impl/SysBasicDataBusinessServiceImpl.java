@@ -27,6 +27,11 @@ public class SysBasicDataBusinessServiceImpl implements SysBasicDataBusinessServ
     }
 
     @Override
+    public SysBasicData sysBasicDataRecord(Long companyId, Integer year, Integer month) {
+        return sysBasicDataDao.sysBasicDataRecord(companyId,year,month);
+    }
+
+    @Override
     public List<SysBasicDataEntity> sysBasicDataAnalysisList(Map<String, Object> map) {
         return sysBasicDataDao.sysBasicDataAnalysisList(map);
     }

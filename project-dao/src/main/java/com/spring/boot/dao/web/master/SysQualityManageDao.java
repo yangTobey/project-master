@@ -5,6 +5,7 @@ import com.spring.boot.bean.master.SysQualityManage;
 import com.spring.boot.bean.master.SysQualityManageFile;
 import com.spring.boot.bean.master.entity.SysQualityManageEntity;
 import com.spring.boot.dao.BaseDao;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,14 @@ public interface SysQualityManageDao extends BaseDao<SysQualityManage> {
      * @return
      */
     SysQualityManageEntity sysQualityManageAnalysisForMonth(Map<String, Object> map);
+    /**
+     * 根据公司id、年份、月份查找系统记录
+     * @param companyId
+     * @param year
+     * @param month
+     * @return
+     */
+    SysQualityManage sysQualityManageRecord(@Param("companyId")Long companyId,@Param("year") Integer year, @Param("month")Integer month);
     /**
      * 根据年份和月份查找品质管理列表信息
      * @return

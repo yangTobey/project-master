@@ -92,6 +92,16 @@
         and basic.basic_id = #{basicId}
         and basic.status_code!=2
     </select>
+    <!--根据公司id、年份、月份查找系统记录-->
+    <select id="sysBasicDataRecord" resultType="com.spring.boot.bean.master.SysBasicData" >
+        select basic.basic_id as basicId
+        from sys_basic_data  as basic
+        where 1=1
+        and basic.company_id = #{companyId}
+        and basic.year = #{year}
+        and basic.month = #{month}
+        and basic.status_code!=2
+    </select>
     <update id="updateSysBasicData" parameterType="map">
 		update sys_basic_data set company_id = #{companyId},year = #{year},month = #{month},construction_area = #{constructionArea},charge_area = #{chargeArea}
 		,city_number = #{cityNumber},project_number = #{projectNumber},house_number = #{houseNumber},accept_house_number = #{acceptHouseNumber},accept_house_number = #{acceptHouseNumber}

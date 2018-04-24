@@ -138,7 +138,7 @@ public class SysContractServiceImpl implements SysContractService {
                 sysUserCompanyIds = new ArrayList<Long>();
                 sysUserCompanyIds.add(companyId);
             }
-            map.put("sysUserCompanyIds",sysUserCompanyIds);
+            map.put("sysUserCompanyIds", sysUserCompanyIds);
             map.put("contractName", contractName);
             map.put("contractCode", contractCode);
             map.put("companyId", companyId);
@@ -158,7 +158,7 @@ public class SysContractServiceImpl implements SysContractService {
             map.put("total", count);
             map.put("list", list);
             return R.ok().putData(200, map, "获取成功！");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             logger.info("获取失败：" + e.getMessage());
             return R.error(500, "服务器异常，请联系管理员！");
@@ -239,45 +239,43 @@ public class SysContractServiceImpl implements SysContractService {
         map.put("secondPartyCompany", secondPartyCompany);
         map.put("personLiableName", personLiableName);
         map.put("createTime", Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-        Boolean isExist = false;
+
         try {
             SysContract sysContract = sysContractBusinessService.findSysContractByContractCode(contractCode);
             if (sysContract != null) {
                 //判断是否已存在该编号的合同
                 if (!contractId.equals(sysContract.getContractId())) {
-                    isExist = true;
+                    return R.error(500, "更新合同失败，系统已存在相同编号的合同，请重新添加或者联系系统管理员！！");
                 }
             }
-            if (!isExist) {
-                int count = sysContractBusinessService.updateSysContract(map);
-                if (count > 0) {
-                    if (!UtilHelper.isEmpty(fileInfo)) {
-                        //先删除原有数据库记录
-                        sysContractBusinessService.deleteSysContractFileByContractId(contractId);
-                        String[] fileInfoArray;
-                        //去掉最后那个逗号，在进行获取数据
-                        fileInfoArray = fileInfo.substring(0, fileInfo.length() - 1).split(";");
-                        SysContractFile sysContractFile = null;
-                        String[] fileData;
-                        for (String fileUrl : fileInfoArray) {
-                            sysContractFile = new SysContractFile();
-                            //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
-                            fileData = fileUrl.substring(0, fileUrl.length()).split(",");
-                            sysContractFile.setContractId(contractId);
-                            sysContractFile.setFileName(fileData[0].substring(fileData[0].lastIndexOf("/") + 1, fileData[0].lastIndexOf(".")));
-                            sysContractFile.setFileSize(Double.valueOf(fileData[1]));
-                            sysContractFile.setFileUrl(fileData[0]);
-                            sysContractFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-                            sysContractBusinessService.addSysContractFile(sysContractFile);
-                        }
+
+            int count = sysContractBusinessService.updateSysContract(map);
+            if (count > 0) {
+                if (!UtilHelper.isEmpty(fileInfo)) {
+                    //先删除原有数据库记录
+                    sysContractBusinessService.deleteSysContractFileByContractId(contractId);
+                    String[] fileInfoArray;
+                    //去掉最后那个逗号，在进行获取数据
+                    fileInfoArray = fileInfo.substring(0, fileInfo.length() - 1).split(";");
+                    SysContractFile sysContractFile = null;
+                    String[] fileData;
+                    for (String fileUrl : fileInfoArray) {
+                        sysContractFile = new SysContractFile();
+                        //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
+                        fileData = fileUrl.substring(0, fileUrl.length()).split(",");
+                        sysContractFile.setContractId(contractId);
+                        sysContractFile.setFileName(fileData[0].substring(fileData[0].lastIndexOf("/") + 1, fileData[0].lastIndexOf(".")));
+                        sysContractFile.setFileSize(Double.valueOf(fileData[1]));
+                        sysContractFile.setFileUrl(fileData[0]);
+                        sysContractFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
+                        sysContractBusinessService.addSysContractFile(sysContractFile);
                     }
-                    return R.ok(200, "更新合同信息成功！！！");
-                } else {
-                    return R.error(500, "更新合同失败，请联系系统管理员！！");
                 }
+                return R.ok(200, "更新合同信息成功！！！");
             } else {
-                return R.error(500, "更新合同失败，系统已存在相同编号的合同，请重新添加或者联系系统管理员！！");
+                return R.error(500, "更新合同失败，请联系系统管理员！！");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("更新合同失败：" + e.getMessage());
@@ -317,7 +315,7 @@ public class SysContractServiceImpl implements SysContractService {
         try {
             resultMap.put("total", sysContractBusinessService.sysContractDataTotal(map));
             return R.ok().putData(200, resultMap, "获取即将过期合同信息总条数成功！！");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             logger.info("获取合即将过期同档案数据失败：" + e.getMessage());
             return R.error(500, "服务器异常！！");
@@ -355,7 +353,7 @@ public class SysContractServiceImpl implements SysContractService {
                 sysUserCompanyIds = new ArrayList<Long>();
                 sysUserCompanyIds.add(companyId);
             }
-            map.put("sysUserCompanyIds",sysUserCompanyIds);
+            map.put("sysUserCompanyIds", sysUserCompanyIds);
             List<SysContract> list = sysContractBusinessService.sysContractAnalysisData(map);
             int contractWorking = 0;
             int contractNumber = 0;

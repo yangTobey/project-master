@@ -21,7 +21,7 @@ public interface SysChargeBusinessService {
      *
      * @return
      */
-    SysChargeDetails sysChargeDetailsForYear(Map<String, Object> map);
+    List<SysChargeDetails> sysChargeDetailsForYear(Map<String, Object> map);
     /**
      * 根据主键id查找信息
      *

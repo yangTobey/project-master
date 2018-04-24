@@ -17,6 +17,15 @@ public interface SysQualityManageBusinessService {
      * @return
      */
     SysQualityManageEntity sysQualityManageAnalysisForYear(Map<String, Object> map);
+
+    /**
+     * 根据公司id、年份、月份查找系统记录
+     * @param companyId
+     * @param year
+     * @param month
+     * @return
+     */
+    SysQualityManage sysQualityManageRecord(Long companyId,Integer year,Integer month);
     /**
      * 获取品质管理月度报表数据
      * @return
@@ -27,21 +36,17 @@ public interface SysQualityManageBusinessService {
      * @return
      */
     List<SysQualityManage> sysQualityManageAnalysisList(Map<String, Object> map);
-
-
     /**
      * 获取列表数据
      * @return
      */
     List<SysQualityManage> getSysQualityManageList(Map<String, Object> map);
-
     /**
      * 获取列表数据条数
      * @param map
      * @return
      */
     int getSysQualityManageListTotal(Map<String, Object> map);
-
     /**
      * 新增质量管理信息
      * @param sysQualityManage
@@ -54,7 +59,6 @@ public interface SysQualityManageBusinessService {
      * @return
      */
     int addSysQualityManageFile(SysQualityManageFile sysQualityManageFile);
-
     /**
      * 更新信息
      * @param map

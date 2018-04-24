@@ -183,5 +183,13 @@
     <delete id="deleteSysQualityManageFileByQualityId" >
         DELETE FROM sys_quality_manage_file WHERE quality_id = #{qualityId}
     </delete>
+    <!--根据公司id、年份、月份查找系统记录-->
+    <select id="sysQualityManageRecord" resultType="com.spring.boot.bean.master.SysQualityManage" >
+        SELECT
+        quality_id AS qualityId  FROM
+        sys_quality_manage where 1=1
+        and company_id = #{companyId} and year = #{year}
+        and month = #{month} and status_code!=2
+    </select>
 
 </mapper>

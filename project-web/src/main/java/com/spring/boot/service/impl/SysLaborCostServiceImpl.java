@@ -5,6 +5,7 @@ import com.spring.boot.bean.master.SysLaborCost;
 import com.spring.boot.bean.master.SysLaborCostDetails;
 import com.spring.boot.bean.master.entity.SysLaborCostDepartmentEntity;
 import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
+import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysLaborCostService;
 import com.spring.boot.service.web.SysBudgetDetailsBusinessService;
 import com.spring.boot.service.web.SysLaborCostBusinessService;
@@ -35,6 +36,8 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
     private SysLaborCostBusinessService sysLaborCostBusinessService;
     @Autowired
     private SysBudgetDetailsBusinessService sysBudgetDetailsBusinessService;
+    @Autowired
+    private SysDataAnalysisService sysDataAnalysisService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -384,5 +387,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
         }
         //将统计信息存储到redis缓存中
         redisTemplate.opsForValue().set("sysLaborCostDetails", sysLaborCostDetails);
+        //调取物业大屏数据接口
+        sysDataAnalysisService.sysPropertyDataAnalysis();
     }
 }

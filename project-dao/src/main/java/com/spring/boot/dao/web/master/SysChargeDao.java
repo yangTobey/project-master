@@ -23,7 +23,7 @@ public interface SysChargeDao extends BaseDao<SysChargeDetails> {
      *
      * @return
      */
-    SysChargeDetails sysChargeDetailsForYear(Map<String, Object> map);
+    List<SysChargeDetails> sysChargeDetailsForYear(Map<String, Object> map);
     /**
      * 根据年份跟周数查找信息
      *
