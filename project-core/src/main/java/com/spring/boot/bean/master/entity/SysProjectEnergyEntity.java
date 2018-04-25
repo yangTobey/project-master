@@ -1,17 +1,18 @@
 package com.spring.boot.bean.master.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
 /**
  * Created by Administrator on 2018/4/13.
  */
-public class SysProjectEnergyEntity {
+public class SysProjectEnergyEntity implements Serializable {
     private String monthInfo;
     //耗电量环比
-    private Map<Integer, Double> mtOMtCsElectricityScaleMap ;
+    private Map<Integer, Double> mtoMtCsElectricityScaleMap ;
     //耗水量环比
-    private Map<Integer, Double> mtOMtCsWaterScaleMap ;
+    private Map<Integer, Double> mtoMtCsWaterScaleMap ;
     //耗电量(月)
     private Map<Integer, Double> monthCsElectricityMap ;
     //耗水量(月)
@@ -25,20 +26,20 @@ public class SysProjectEnergyEntity {
         this.monthInfo = monthInfo;
     }
 
-    public Map<Integer, Double> getMtOMtCsElectricityScaleMap() {
-        return mtOMtCsElectricityScaleMap;
+    public Map<Integer, Double> getMtoMtCsElectricityScaleMap() {
+        return mtoMtCsElectricityScaleMap;
     }
 
-    public void setMtOMtCsElectricityScaleMap(Map<Integer, Double> mtOMtCsElectricityScaleMap) {
-        this.mtOMtCsElectricityScaleMap = mtOMtCsElectricityScaleMap;
+    public void setMtoMtCsElectricityScaleMap(Map<Integer, Double> mtoMtCsElectricityScaleMap) {
+        this.mtoMtCsElectricityScaleMap = mtoMtCsElectricityScaleMap;
     }
 
-    public Map<Integer, Double> getMtOMtCsWaterScaleMap() {
-        return mtOMtCsWaterScaleMap;
+    public Map<Integer, Double> getMtoMtCsWaterScaleMap() {
+        return mtoMtCsWaterScaleMap;
     }
 
-    public void setMtOMtCsWaterScaleMap(Map<Integer, Double> mtOMtCsWaterScaleMap) {
-        this.mtOMtCsWaterScaleMap = mtOMtCsWaterScaleMap;
+    public void setMtoMtCsWaterScaleMap(Map<Integer, Double> mtoMtCsWaterScaleMap) {
+        this.mtoMtCsWaterScaleMap = mtoMtCsWaterScaleMap;
     }
 
     public Map<Integer, Double> getMonthCsElectricityMap() {

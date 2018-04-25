@@ -1,5 +1,6 @@
+var websocket = null;
 (function () {
-    var websocket = null;
+
     var url = 'property';
     //判断当前浏览器是否支持WebSocket
     if ('WebSocket' in window) {

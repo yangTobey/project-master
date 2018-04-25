@@ -2,6 +2,7 @@ package com.spring.boot.bean.master;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2018/4/13.
  */
-public class SysProject {
+public class SysProject implements Serializable {
     private Long projectId;
     private String projectName;
     private Integer projectTotal;
@@ -37,11 +38,11 @@ public class SysProject {
     //耗电量同比
     private Double yoYConsumptionElectricityScale;
     //耗电量环比
-    private Double mtOMtConsumptionElectricityScale;
+    private Double mtoMtConsumptionElectricityScale;
     //耗水量同比
     private Double yoYConsumptionWaterScale;
     //耗电量环比
-    private Double mtOMtConsumptionWaterScale;
+    private Double mtoMtConsumptionWaterScale;
     List<SysProjectEnergyFile> fileList;
 
 
@@ -214,12 +215,12 @@ public class SysProject {
         this.yoYConsumptionElectricityScale = yoYConsumptionElectricityScale;
     }
 
-    public Double getMtOMtConsumptionElectricityScale() {
-        return mtOMtConsumptionElectricityScale;
+    public Double getMtoMtConsumptionElectricityScale() {
+        return mtoMtConsumptionElectricityScale;
     }
 
-    public void setMtOMtConsumptionElectricityScale(Double mtOMtConsumptionElectricityScale) {
-        this.mtOMtConsumptionElectricityScale = mtOMtConsumptionElectricityScale;
+    public void setMtoMtConsumptionElectricityScale(Double mtoMtConsumptionElectricityScale) {
+        this.mtoMtConsumptionElectricityScale = mtoMtConsumptionElectricityScale;
     }
 
     public Double getYoYConsumptionWaterScale() {
@@ -230,13 +231,11 @@ public class SysProject {
         this.yoYConsumptionWaterScale = yoYConsumptionWaterScale;
     }
 
-    public Double getMtOMtConsumptionWaterScale() {
-        return mtOMtConsumptionWaterScale;
+    public Double getMtoMtConsumptionWaterScale() {
+        return mtoMtConsumptionWaterScale;
     }
 
-    public void setMtOMtConsumptionWaterScale(Double mtOMtConsumptionWaterScale) {
-        this.mtOMtConsumptionWaterScale = mtOMtConsumptionWaterScale;
+    public void setMtoMtConsumptionWaterScale(Double mtoMtConsumptionWaterScale) {
+        this.mtoMtConsumptionWaterScale = mtoMtConsumptionWaterScale;
     }
-
-
 }

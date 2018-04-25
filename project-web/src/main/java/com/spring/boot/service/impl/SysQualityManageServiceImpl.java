@@ -302,7 +302,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         map.put("year", UtilHelper.getYear());
         map.put("month", UtilHelper.getMonth());
         /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
-        map.put("type", 1);
+        map.put("type", 2);
         //查找年度报表数据
         sysQualityManageEntityForYear = sysQualityManageBusinessService.sysQualityManageAnalysisForYear(map);
         if (sysQualityManageEntityForYear != null) {

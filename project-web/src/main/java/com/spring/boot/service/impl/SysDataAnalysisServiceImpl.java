@@ -11,6 +11,7 @@ import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.util.JsonUtils;
 import com.spring.boot.util.R;
 import com.spring.boot.websocket.PropertyWebSocket;
+import com.spring.boot.websocket.WebSocket;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -58,7 +59,7 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             //品质检查统计信息
             boolean qualityManageKey = redisTemplate.hasKey("qualityManage");
             if (qualityManageKey) {
-                Map<String, Object> resultMap = (Map<String, Object>) redisTemplate.opsForValue().get("qualityManageYear");
+                Map<String, Object> resultMap = (Map<String, Object>) redisTemplate.opsForValue().get("qualityManage");
                 sysPropertyDataAnalysisEntity.setQualityManageMap(resultMap);
             }
             /***********************************工程能耗管理数据缓存******************************/
@@ -66,7 +67,7 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             //工程能耗管理统计信息
             boolean sysProjectEnergyKey = redisTemplate.hasKey("sysProjectEnergy");
             if (sysProjectEnergyKey) {
-                Map<String, Object> resultMap = (Map<String, Object>) redisTemplate.opsForValue().get("sysProjectForYear");
+                Map<String, Object> resultMap = (Map<String, Object>) redisTemplate.opsForValue().get("sysProjectEnergy");
                 sysPropertyDataAnalysisEntity.setSysProjectEnergyMap(resultMap);
             }
 
@@ -79,13 +80,13 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
                 sysPropertyDataAnalysisEntity.setSysLaborCostDetails(SysLaborCostDetailsEntity);
             }
             map.put("property",sysPropertyDataAnalysisEntity);
-            PropertyWebSocket.sendInfo(JsonUtils.obj2JsonString(R.ok().putData(200, map, "获取成功！！")));
+            WebSocket.sendInfo(JsonUtils.obj2JsonString(R.ok().putData(200, map, "获取成功！！")));
             return R.ok().putData(200, sysPropertyDataAnalysisEntity, "获取成功！！");
         }catch (Exception e){
             e.printStackTrace();
             logger.info("获取物业大屏数据展示统计详细信息失败！" + e.getMessage());
             try {
-                PropertyWebSocket.sendInfo(JsonUtils.obj2JsonString(R.error(500, "获取物业大屏数据展示统计详细信息失败，服务器异常，请联系管理员！")));
+                WebSocket.sendInfo(JsonUtils.obj2JsonString(R.error(500, "获取物业大屏数据展示统计详细信息失败，服务器异常，请联系管理员！")));
             }catch (Exception ex){
                 ex.printStackTrace();
             }
@@ -109,9 +110,7 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             boolean sysChargeDetailsKey = redisTemplate.hasKey("sysChargeDetails");
             if (sysChargeDetailsKey) {
                 SysChargeDetails sysChargeDetails = (SysChargeDetails) redisTemplate.opsForValue().get("sysChargeDetails");
-                Map<String, Object> sysChargeMap = new HashMap<String, Object>();
-                sysChargeMap.put("sysChargeMap", sysChargeDetails);
-                sysFinancialDataAnalysisEntity.setSysChargeDetailsMap(sysChargeMap);
+                sysFinancialDataAnalysisEntity.setSysChargeDetails(sysChargeDetails);
             }
             /***********************************应收账款数据缓存******************************/
             // 缓存key是否存在
@@ -119,9 +118,7 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             boolean sysReceivableAccountKey = redisTemplate.hasKey("sysReceivableAccount");
             if (sysReceivableAccountKey) {
                 Map<String, Object> resultMap = (Map<String, Object>) redisTemplate.opsForValue().get("sysReceivableAccount");
-                Map<String, Object> sysAccountMap = new HashMap<String, Object>();
-                sysAccountMap.put("sysAccountMap", resultMap);
-                sysFinancialDataAnalysisEntity.setSysAccountsReceivableMap(sysAccountMap);
+                sysFinancialDataAnalysisEntity.setSysAccountsReceivableMap(resultMap);
             }
             /***********************************执行预算数据缓存******************************/
             // 缓存key是否存在
@@ -129,18 +126,16 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             boolean sysBudgetDetailsKey = redisTemplate.hasKey("sysBudgetDetails");
             if (sysBudgetDetailsKey) {
                 SysBudgetDetails sysBudgetDetails = (SysBudgetDetails) redisTemplate.opsForValue().get("sysBudgetDetails");
-                Map<String, Object> sysBudgetMap = new HashMap<String, Object>();
-                sysBudgetMap.put("sysAccountMap", sysBudgetDetails);
-                sysFinancialDataAnalysisEntity.setSysBudgetDetailsMap(sysBudgetMap);
+                sysFinancialDataAnalysisEntity.setSysBudgetDetails(sysBudgetDetails);
             }
             map.put("financial",sysFinancialDataAnalysisEntity);
-            PropertyWebSocket.sendInfo(JsonUtils.obj2JsonString(R.ok().putData(200, map, "获取成功！！")));
+            WebSocket.sendInfo(JsonUtils.obj2JsonString(R.ok().putData(200, map, "获取成功！！")));
             return R.ok().putData(200, sysFinancialDataAnalysisEntity, "获取成功！！");
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("获取财务大屏数据展示统计详细信息失败！" + e.getMessage());
             try {
-                PropertyWebSocket.sendInfo(JsonUtils.obj2JsonString(R.error(500, "获取财务大屏数据展示统计详细信息失败，服务器异常，请联系管理员！")));
+                WebSocket.sendInfo(JsonUtils.obj2JsonString(R.error(500, "获取财务大屏数据展示统计详细信息失败，服务器异常，请联系管理员！")));
             }catch (Exception ex){
                 ex.printStackTrace();
             }

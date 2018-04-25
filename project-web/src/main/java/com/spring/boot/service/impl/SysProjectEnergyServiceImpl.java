@@ -242,8 +242,8 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                     //上个月数据
                     SysProject sysProjectForLastMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(lastYear, lastMonth, sysUserCompanyIds);
                     if (null != sysProjectForLastMonth) {
-                        sysProjectForYear.setMtOMtConsumptionElectricityScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionElectricity() - sysProjectForLastMonth.getMonthConsumptionElectricity(), sysProjectForLastMonth.getMonthConsumptionElectricity())));
-                        sysProjectForYear.setMtOMtConsumptionWaterScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionWater() - sysProjectForLastMonth.getMonthConsumptionWater(), sysProjectForLastMonth.getMonthConsumptionWater())));
+                        sysProjectForYear.setMtoMtConsumptionElectricityScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionElectricity() - sysProjectForLastMonth.getMonthConsumptionElectricity(), sysProjectForLastMonth.getMonthConsumptionElectricity())));
+                        sysProjectForYear.setMtoMtConsumptionWaterScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionWater() - sysProjectForLastMonth.getMonthConsumptionWater(), sysProjectForLastMonth.getMonthConsumptionWater())));
                         //上一年同月数据
                         SysProject sysProjectForLastYear = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year - 1, month, sysUserCompanyIds);
                         if (null != sysProjectForLastYear) {
@@ -328,8 +328,8 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
             }
             sysProjectEnergyEntity.setMonthCsElectricityMap(monthCsElectricityMap);
             sysProjectEnergyEntity.setMonthCsWaterMap(monthCsWaterMap);
-            sysProjectEnergyEntity.setMtOMtCsElectricityScaleMap(mtOMtCsElectricityScaleMap);
-            sysProjectEnergyEntity.setMtOMtCsWaterScaleMap(mtOMtCsWaterScaleMap);
+            sysProjectEnergyEntity.setMtoMtCsElectricityScaleMap(mtOMtCsElectricityScaleMap);
+            sysProjectEnergyEntity.setMtoMtCsWaterScaleMap(mtOMtCsWaterScaleMap);
             return R.ok().putData(200, sysProjectEnergyEntity, "获取信息成功！！");
         } catch (Exception e) {
             e.printStackTrace();
@@ -377,8 +377,8 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                 //上个月数据
                 SysProject sysProjectForLastMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(lastYear, lastMonth, sysUserCompanyIds);
                 if (null != sysProjectForLastMonth) {
-                    sysProjectForYear.setMtOMtConsumptionElectricityScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionElectricity() - sysProjectForLastMonth.getMonthConsumptionElectricity(), sysProjectForLastMonth.getMonthConsumptionElectricity())));
-                    sysProjectForYear.setMtOMtConsumptionWaterScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionWater() - sysProjectForLastMonth.getMonthConsumptionWater(), sysProjectForLastMonth.getMonthConsumptionWater())));
+                    sysProjectForYear.setMtoMtConsumptionElectricityScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionElectricity() - sysProjectForLastMonth.getMonthConsumptionElectricity(), sysProjectForLastMonth.getMonthConsumptionElectricity())));
+                    sysProjectForYear.setMtoMtConsumptionWaterScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionWater() - sysProjectForLastMonth.getMonthConsumptionWater(), sysProjectForLastMonth.getMonthConsumptionWater())));
                     //上一年同月数据
                     SysProject sysProjectForLastYear = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year - 1, month, sysUserCompanyIds);
                     if (null != sysProjectForLastYear) {
@@ -439,8 +439,8 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
         }
         sysProjectEnergyEntity.setMonthCsElectricityMap(monthCsElectricityMap);
         sysProjectEnergyEntity.setMonthCsWaterMap(monthCsWaterMap);
-        sysProjectEnergyEntity.setMtOMtCsElectricityScaleMap(mtOMtCsElectricityScaleMap);
-        sysProjectEnergyEntity.setMtOMtCsWaterScaleMap(mtOMtCsWaterScaleMap);
+        sysProjectEnergyEntity.setMtoMtCsElectricityScaleMap(mtOMtCsElectricityScaleMap);
+        sysProjectEnergyEntity.setMtoMtCsWaterScaleMap(mtOMtCsWaterScaleMap);
         resultMap.put("sysProjectForMonth", sysProjectEnergyEntity);
         //将组装的数据存储到redis缓存
         redisTemplate.opsForValue().set("sysProjectEnergy", resultMap);

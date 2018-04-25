@@ -17,14 +17,12 @@ public class SysPropertyDataAnalysisEntity implements Serializable {
 
     /**********************************基础数据统计信息**************************/
     private  SysBasicDataEntity sysBasicData;
-    private  Map<String, Object> sysBasicDataMap;
 
     /****************************************品质检查统计数据******************************/
     //品质检查信息
     private  Map<String, Object> qualityManageMap;
 
     /*******************************人员成本统计信息************************/
-    private  Map<String, Object> sysLaborCostDetailsMap;
     private  SysLaborCostDetailsEntity sysLaborCostDetails;
 
     public Map<String, Object> getSysProjectEnergyMap() {
@@ -35,12 +33,12 @@ public class SysPropertyDataAnalysisEntity implements Serializable {
         this.sysProjectEnergyMap = sysProjectEnergyMap;
     }
 
-    public Map<String, Object> getSysBasicDataMap() {
-        return sysBasicDataMap;
+    public SysBasicDataEntity getSysBasicData() {
+        return sysBasicData;
     }
 
-    public void setSysBasicDataMap(Map<String, Object> sysBasicDataMap) {
-        this.sysBasicDataMap = sysBasicDataMap;
+    public void setSysBasicData(SysBasicDataEntity sysBasicData) {
+        this.sysBasicData = sysBasicData;
     }
 
     public Map<String, Object> getQualityManageMap() {
@@ -49,22 +47,6 @@ public class SysPropertyDataAnalysisEntity implements Serializable {
 
     public void setQualityManageMap(Map<String, Object> qualityManageMap) {
         this.qualityManageMap = qualityManageMap;
-    }
-
-    public Map<String, Object> getSysLaborCostDetailsMap() {
-        return sysLaborCostDetailsMap;
-    }
-
-    public void setSysLaborCostDetailsMap(Map<String, Object> sysLaborCostDetailsMap) {
-        this.sysLaborCostDetailsMap = sysLaborCostDetailsMap;
-    }
-
-    public SysBasicDataEntity getSysBasicData() {
-        return sysBasicData;
-    }
-
-    public void setSysBasicData(SysBasicDataEntity sysBasicData) {
-        this.sysBasicData = sysBasicData;
     }
 
     public SysLaborCostDetailsEntity getSysLaborCostDetails() {

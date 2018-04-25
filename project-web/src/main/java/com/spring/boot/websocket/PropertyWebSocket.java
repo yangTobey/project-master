@@ -1,7 +1,11 @@
 package com.spring.boot.websocket;
 
 
+import com.spring.boot.service.SysDataAnalysisService;
+import com.spring.boot.shiro.WebsocketUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ContextLoader;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -11,9 +15,13 @@ import java.util.concurrent.CopyOnWriteArraySet;
 /**
  * Created by Administrator on 2018/4/24.
  */
-@ServerEndpoint(value = "/websocket/{url}")
 @Component
+//@ServerEndpoint(value = "/websocket/{url}")
 public class PropertyWebSocket {
+    //@Autowired
+    //private SysDataAnalysisService sysDataAnalysisService;
+//    private SysDataAnalysisService sysDataAnalysisService=(SysDataAnalysisService) ContextLoader.getCurrentWebApplicationContext().getBean("sysDataAnalysisServiceImpl");
+
     /**
      * 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
      */
@@ -64,16 +72,23 @@ public class PropertyWebSocket {
      */
     @OnMessage
     public void onMessage(String message, Session session) {
-        System.out.println("来自客户端的消息:" + message);
-
+        //物业大屏界面连接成功后请求信息
+        if("property".equals(message)){
+            //sysDataAnalysisService.sysPropertyDataAnalysis();
+        }else if("financial".equals(message)){
+            //财务大屏界面连接成功后请求信息
+            //sysDataAnalysisService.sysFinancialDataAnalysis();
+        }
+        //WebsocketUtil websocketUtil=new WebsocketUtil();
+        //websocketUtil.sendMessage(message);
         //群发消息
-        for (PropertyWebSocket item : webSocketSet) {
+        /*for (PropertyWebSocket item : webSocketSet) {
             try {
                 item.sendMessage(message);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     /**

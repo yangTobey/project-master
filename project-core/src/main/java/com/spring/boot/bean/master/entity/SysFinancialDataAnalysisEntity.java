@@ -1,5 +1,8 @@
 package com.spring.boot.bean.master.entity;
 
+import com.spring.boot.bean.master.SysBudgetDetails;
+import com.spring.boot.bean.master.SysChargeDetails;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -10,18 +13,18 @@ import java.util.Map;
 public class SysFinancialDataAnalysisEntity implements Serializable {
 
     /********************************收费情况统计信息************************/
-    private  Map<String, Object> sysChargeDetailsMap;
+    private SysChargeDetails sysChargeDetails;
     /********************************应收账款统计信息************************/
-    private  Map<String, Object> sysAccountsReceivableMap;
+    private Map<String, Object> sysAccountsReceivableMap;
     /********************************执行预算统计信息************************/
-    private  Map<String, Object> sysBudgetDetailsMap;
+    private SysBudgetDetails sysBudgetDetails;
 
-    public Map<String, Object> getSysChargeDetailsMap() {
-        return sysChargeDetailsMap;
+    public SysChargeDetails getSysChargeDetails() {
+        return sysChargeDetails;
     }
 
-    public void setSysChargeDetailsMap(Map<String, Object> sysChargeDetailsMap) {
-        this.sysChargeDetailsMap = sysChargeDetailsMap;
+    public void setSysChargeDetails(SysChargeDetails sysChargeDetails) {
+        this.sysChargeDetails = sysChargeDetails;
     }
 
     public Map<String, Object> getSysAccountsReceivableMap() {
@@ -32,12 +35,12 @@ public class SysFinancialDataAnalysisEntity implements Serializable {
         this.sysAccountsReceivableMap = sysAccountsReceivableMap;
     }
 
-    public Map<String, Object> getSysBudgetDetailsMap() {
-        return sysBudgetDetailsMap;
+    public SysBudgetDetails getSysBudgetDetails() {
+        return sysBudgetDetails;
     }
 
-    public void setSysBudgetDetailsMap(Map<String, Object> sysBudgetDetailsMap) {
-        this.sysBudgetDetailsMap = sysBudgetDetailsMap;
+    public void setSysBudgetDetails(SysBudgetDetails sysBudgetDetails) {
+        this.sysBudgetDetails = sysBudgetDetails;
     }
 }
 

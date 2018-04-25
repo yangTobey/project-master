@@ -1,6 +1,7 @@
 package com.spring.boot.util;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import java.util.Map;
 
@@ -20,13 +21,13 @@ public class JsonUtils {
     }
 
     /**
-     * 转换为json字符串
+     * 转换为json字符串（保留null值以及字段）
      *
-     * @param obj
+     * @param obj 需要转化的对象
      * @return
      */
     public static String obj2JsonString(Object obj) {
-        return JSON.toJSONString(obj);
+        return JSON.toJSONString(obj, SerializerFeature.WriteMapNullValue);
     }
 
 }
