@@ -54,5 +54,8 @@
 		update sys_role set `status` =2
 		where role_id = #{roleId}
 	</update>
+	<delete id="deleteSysRoleMenu" >
+		DELETE FROM sys_role_menu WHERE role_id = #{roleId}
+	</delete>
 
 </mapper>

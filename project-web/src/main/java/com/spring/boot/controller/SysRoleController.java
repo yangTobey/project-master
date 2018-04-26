@@ -57,22 +57,23 @@ public class SysRoleController {
      * @return
      */
     @RequestMapping(value = "/addSysRole", method = RequestMethod.GET)
-    public R addSysRole(@RequestParam(value = "roleName", required = false)String roleName,@RequestParam(value = "moduleId", required = false) String moduleId
+    public R addSysRole(@RequestParam(value = "roleName", required = false)String roleName,@RequestParam(value = "moduleIds", required = false) String moduleIds
             ,@RequestParam(value = "remark", required = false)String remark) {
         if(UtilHelper.isEmpty(roleName)){
             return R.error(400, "角色名称不能为空，请联系系统管理员！");
         }
-        Map<String, Object> map= sysRoleService.addSysRole(roleName,moduleId, remark);
+        Map<String, Object> map= sysRoleService.addSysRole(roleName,moduleIds, remark);
         return R.ok(map);
 
     }
 
     @RequestMapping(value = "/updateSysRole", method = RequestMethod.GET)
-    public R updateSysRole(String roleId,String roleName,String remark) {
+    public R updateSysRole(@RequestParam(value = "roleId", required = false)String roleId,@RequestParam(value = "roleName", required = false)String roleName
+            ,@RequestParam(value = "remark", required = false)String remark,@RequestParam(value = "moduleIds", required = false) String moduleIds) {
         if(!UtilHelper.isNumer(roleId)){
             return R.error(400, "角色编号格式不正确，请联系系统管理员！");
         }
-        Map<String, Object> map= sysRoleService.updateSysRole(roleId,roleName,remark);
+        Map<String, Object> map= sysRoleService.updateSysRole(Long.valueOf(roleId),roleName,remark,moduleIds);
         return R.ok(map);
 
     }

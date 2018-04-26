@@ -39,8 +39,8 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public Map<String, Object> getSysMenu(long userId) {
         //用户菜单列表
-        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId,1);
-        List<SysMenu> menuList = getAllMenuList(menuIdList,1);
+        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 1);
+        List<SysMenu> menuList = getAllMenuList(menuIdList, 1);
         resultMap = new HashMap<String, Object>();
         resultMap.put("data", menuList);
         return resultMap;
@@ -48,16 +48,16 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     @Override
     public Map<String, Object> getSysModule() {
-        if(ShiroUtils.getUserEntity()==null){
-            return R.error(500,"请登录系统再进行操作功能！");
+        if (ShiroUtils.getUserEntity() == null) {
+            return R.error(500, "请登录系统再进行操作功能！");
         }
-        if(ShiroUtils.getUserEntity().getUserId()==null){
-            return R.error(500,"请登录系统再进行操作功能！");
+        if (ShiroUtils.getUserEntity().getUserId() == null) {
+            return R.error(500, "请登录系统再进行操作功能！");
         }
-        Long userId=ShiroUtils.getUserEntity().getUserId();
+        Long userId = ShiroUtils.getUserEntity().getUserId();
         //用户菜单列表
-        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId,2);
-        List<SysMenu> menuList = getAllMenuList(menuIdList,2);
+        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 2);
+        List<SysMenu> menuList = getAllMenuList(menuIdList, 2);
         resultMap = new HashMap<String, Object>();
         resultMap.put("data", menuList);
         return resultMap;
@@ -70,17 +70,17 @@ public class SysMenuServiceImpl implements SysMenuService {
      * @param selectType 查找类型 1:菜单，2：菜单、功能模块（如：新增、修改）
      * @return
      */
-    private List<SysMenu> getAllMenuList(List<Long> menuIdList,Integer selectType) {
+    private List<SysMenu> getAllMenuList(List<Long> menuIdList, Integer selectType) {
         //查询根菜单列表
         List<SysMenu> menuList = null;
-        if(selectType==1){
-            menuList = queryListParentId(0L, menuIdList,selectType);
+        if (selectType == 1) {
+            menuList = queryListParentId(0L, menuIdList, selectType);
             //递归获取子菜单
-            menuList=getMenuTreeList(menuList, menuIdList,selectType);
-        }else{
+            menuList = getMenuTreeList(menuList, menuIdList, selectType);
+        } else {
             menuList = sysMenuBusinessService.findMenuAndModule();
             //递归获取子菜单、功能模块（如：新增、修改等）
-            menuList=getMenuModuleTreeList(menuList, menuIdList,selectType);
+            menuList = getMenuModuleTreeList(menuList, menuIdList, selectType);
         }
         return menuList;
     }
@@ -92,18 +92,18 @@ public class SysMenuServiceImpl implements SysMenuService {
      * @param menuIdList 用户权限内所有菜单信息列表
      * @return
      */
-    private List<SysMenu> getMenuTreeList(List<SysMenu> menuList, List<Long> menuIdList,Integer selectType) {
+    private List<SysMenu> getMenuTreeList(List<SysMenu> menuList, List<Long> menuIdList, Integer selectType) {
         List<SysMenu> subMenuList = new ArrayList<SysMenu>();
         for (SysMenu sysMenu : menuList) {
             //*************************组装菜单列表**********************************/
             if (sysMenu.getType() == Constant.MenuType.CATALOG.getValue()) {
                 //两级菜单，需要判断时候有下级菜单，如果有，组装第一级菜单，如果没有，不组装
-                List<SysMenu> list = getMenuTreeList(queryListParentId(sysMenu.getMenuId(), menuIdList,selectType), menuIdList,selectType);
+                List<SysMenu> list = getMenuTreeList(queryListParentId(sysMenu.getMenuId(), menuIdList, selectType), menuIdList, selectType);
                 if (list != null && list.size() > 0) {
                     sysMenu.setList(list);
                     subMenuList.add(sysMenu);
                 }
-            }else if(sysMenu.getType() == Constant.MenuType.MENU.getValue()){
+            } else if (sysMenu.getType() == Constant.MenuType.MENU.getValue()) {
                 //一级菜单，直接判断权限信息内有没有数据，如果有，直接组装
                 if (menuIdList.contains(sysMenu.getMenuId())) {
                     subMenuList.add(sysMenu);
@@ -120,19 +120,21 @@ public class SysMenuServiceImpl implements SysMenuService {
      * @param menuIdList 用户权限内所有菜单信息列表
      * @return
      */
-    private List<SysMenu> getMenuModuleTreeList(List<SysMenu> menuList, List<Long> menuIdList,Integer selectType) {
+    private List<SysMenu> getMenuModuleTreeList(List<SysMenu> menuList, List<Long> menuIdList, Integer selectType) {
         List<SysMenu> subMenuList = new ArrayList<SysMenu>();
         for (SysMenu sysMenu : menuList) {
-                List<SysMenu> list = getMenuModuleTreeList(queryListParentId(sysMenu.getMenuId(), menuIdList,selectType), menuIdList,selectType);
-                if (list != null && list.size() > 0) {
-
-                            //将菜单本身，设置为查看功能按钮，返回到前端界面，在授权时，直接将菜单本身写入到数据库记录中
-                            SysMenu sysMenuAdd=new SysMenu();
-                            sysMenuAdd=sysMenu;
-                            sysMenuAdd.setMenuName("查看");
-                            list.add(sysMenuAdd);
-                            sysMenu.setList(list);
-                }
+            List<SysMenu> list = queryListParentId(sysMenu.getMenuId(), menuIdList, selectType);
+            //将菜单本身，设置为查看功能按钮，返回到前端界面，在授权时，直接将菜单本身写入到数据库记录中
+            SysMenu sysMenuAdd = new SysMenu();
+            sysMenuAdd.setMenuId(sysMenu.getMenuId());
+            sysMenuAdd.setParentId(sysMenu.getParentId());
+            sysMenuAdd.setPerms(sysMenu.getPerms());
+            sysMenuAdd.setIsUse(sysMenu.getIsUse());
+            sysMenuAdd.setType(sysMenu.getType());
+            sysMenuAdd.setMenuName("查看");
+            sysMenuAdd.setAuth(true);
+            list.add(sysMenuAdd);
+            sysMenu.setList(list);
             subMenuList.add(sysMenu);
         }
         return subMenuList;
@@ -145,9 +147,9 @@ public class SysMenuServiceImpl implements SysMenuService {
      * @param menuIdList 用户权限内所有菜单信息列表
      * @return
      */
-    public List<SysMenu> queryListParentId(Long parentId, List<Long> menuIdList,Integer selectType) {
+    public List<SysMenu> queryListParentId(Long parentId, List<Long> menuIdList, Integer selectType) {
         //查询根菜单列表
-        List<SysMenu> menuList = sysMenuBusinessService.findMenuByParentId(parentId,Integer.valueOf(selectType));
+        List<SysMenu> menuList = sysMenuBusinessService.findMenuByParentId(parentId, selectType);
         /*List<SysMenu> menuList = sysMenuDao.queryListParentId(parentId);*/
         if (menuIdList == null) {
             return menuList;
@@ -155,7 +157,14 @@ public class SysMenuServiceImpl implements SysMenuService {
         List<SysMenu> userMenuList = new ArrayList<>();
         for (SysMenu menu : menuList) {
             //权限内的菜单，或者目录菜单，将进行添加（目录菜单在授权时，不保存到数据库记录）
-            if (menuIdList.contains(menu.getMenuId())||menu.getType()==0) {
+            if(selectType==1){
+                if (menuIdList.contains(menu.getMenuId()) || menu.getType() == 0) {
+                    userMenuList.add(menu);
+                }
+            }else if(selectType==2){
+                if (menuIdList.contains(menu.getMenuId())) {
+                    menu.setAuth(true);
+                }
                 userMenuList.add(menu);
             }
         }

@@ -27,7 +27,7 @@ public interface SysRoleService {
      * @param remark     备注信息
      * @return
      */
-    Map<String, Object> addSysRole(String roleName,String moduleId, String remark);
+    Map<String, Object> addSysRole(String roleName,String moduleIds, String remark);
 
     /**
      * 更新角色信息
@@ -37,7 +37,7 @@ public interface SysRoleService {
      * @param remark       备注信息
      * @return
      */
-    Map<String, Object> updateSysRole(String roleId, String roleName, String remark);
+    Map<String, Object> updateSysRole(Long roleId, String roleName, String remark,String  moduleIds);
 
     /**
      * 删除角色信息（只更新角色状态，不作删除处理）

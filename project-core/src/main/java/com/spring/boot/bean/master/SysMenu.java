@@ -17,6 +17,9 @@ public class SysMenu {
     private Integer sort;
     private Integer isUse;
     private String remark;
+
+    //是否已经授权
+    private Boolean isAuth=false;
     private List<?> list;
 
     public Long getMenuId() {
@@ -98,6 +101,13 @@ public class SysMenu {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+    public Boolean getAuth() {
+        return isAuth;
+    }
+
+    public void setAuth(Boolean auth) {
+        isAuth = auth;
+    }
 
     public List<?> getList() {
         return list;
@@ -106,4 +116,6 @@ public class SysMenu {
     public void setList(List<?> list) {
         this.list = list;
     }
+
+
 }

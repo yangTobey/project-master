@@ -3,6 +3,7 @@ package com.spring.boot.dao.web.master;
 import com.spring.boot.bean.master.SysRole;
 import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.dao.BaseDao;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -45,4 +46,18 @@ public interface SysRoleDao extends BaseDao<SysRole>{
      * @return
      */
     int getSysRoleListTotal();
+
+    /**
+     * 添加菜单角色信息
+     * @param menuId
+     * @param roleId
+     * @return
+     */
+    int addRoleMenu(@Param("menuId")Long menuId,@Param("roleId") Long roleId);
+    /**
+     * 删除菜单权限信息
+     * @param roleId
+     * @return
+     */
+    int deleteSysRoleMenu(Long roleId);
 }

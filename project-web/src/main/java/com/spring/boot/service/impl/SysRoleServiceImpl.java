@@ -67,7 +67,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public Map<String, Object> addSysRole(String roleName,String moduleId, String remark) {
+    public Map<String, Object> addSysRole(String roleName,String moduleIds, String remark) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("roleName", roleName);
         map.put("remark", remark);
@@ -81,7 +81,10 @@ public class SysRoleServiceImpl implements SysRoleService {
             if(count>0){
                 String[] moduleIdArray;
                 //去掉最后那个逗号，在进行获取数据
-                moduleIdArray = moduleId.substring(0, moduleId.length() - 1).split(",");
+                moduleIdArray = moduleIds.substring(0, moduleIds.length() - 1).split(",");
+                for(String moduleId:moduleIdArray){
+                    sysRoleBusinessService.addRoleMenu(Long.valueOf(moduleId),sysRole.getRoleId());
+                }
                 return R.ok(200,"新增成功！");
             }else{
                 return R.error(500,"新增失败，请联系管理员！");
@@ -94,7 +97,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public Map<String, Object> updateSysRole(String roleId, String roleName, String remark) {
+    public Map<String, Object> updateSysRole(Long roleId, String roleName, String remark,String moduleIds) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("roleId", roleId);
         map.put("roleName", roleName);
@@ -102,6 +105,15 @@ public class SysRoleServiceImpl implements SysRoleService {
         try {
             int count=sysRoleBusinessService.updateSysRole(map);
             if(count>0){
+                int deleteCount=sysRoleBusinessService.deleteSysRoleMenu(roleId);
+                if(deleteCount>0){
+                    String[] moduleIdArray;
+                    //去掉最后那个逗号，在进行获取数据
+                    moduleIdArray = moduleIds.substring(0, moduleIds.length() - 1).split(",");
+                    for(String moduleId:moduleIdArray){
+                        sysRoleBusinessService.addRoleMenu(Long.valueOf(moduleId),roleId);
+                    }
+                }
                 return R.ok(200,"更新成功！");
             }else{
                 return R.error(500,"更新失败，请联系管理员！");

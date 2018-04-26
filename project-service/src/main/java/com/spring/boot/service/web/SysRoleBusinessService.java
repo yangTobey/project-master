@@ -31,6 +31,21 @@ public interface SysRoleBusinessService {
     int addSysRole(SysRole sysRole);
 
     /**
+     * 添加菜单角色信息
+     * @param menuId
+     * @param roleId
+     * @return
+     */
+    int addRoleMenu(Long menuId,Long roleId);
+
+    /**
+     * 删除菜单权限信息
+     * @param roleId
+     * @return
+     */
+    int deleteSysRoleMenu(Long roleId);
+
+    /**
      * 更新角色信息
      *
      * @param map

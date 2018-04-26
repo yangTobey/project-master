@@ -32,7 +32,7 @@ public class SysMenuController {
     @RequestMapping(value = "/getSysMenu", method = RequestMethod.GET)
     public R getSysMenu() {
         Map<String, Object> map = sysMenuService.getSysMenu(ShiroUtils.getUserEntity().getUserId());
-        return R.ok().put(200, map,"获取成功！");
+        return R.ok(map);
     }
 
     /**
@@ -43,7 +43,7 @@ public class SysMenuController {
     @RequestMapping(value = "/getSysModule", method = RequestMethod.GET)
     public R getSysModule() {
         Map<String, Object> map = sysMenuService.getSysModule();
-        return R.ok().put(200, map,"获取成功！");
+        return R.ok(map);
     }
     /**
      * 查询公司信息
