@@ -25,4 +25,9 @@ public class SysMenuBusinessServiceImpl implements SysMenuBusinessService {
     public List<SysMenu> findMenuByParentId(Long parentId,Integer selectType) {
         return sysMenuDao.findMenuByParentId(parentId,selectType);
     }
+
+    @Override
+    public List<SysMenu> findMenuAndModule() {
+        return sysMenuDao.findMenuAndModule();
+    }
 }

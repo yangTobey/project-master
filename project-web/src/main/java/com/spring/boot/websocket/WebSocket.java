@@ -35,6 +35,7 @@ public class WebSocket extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        System.out.println("websocket关闭成功！");
         super.afterConnectionClosed(session, status);
     }
 
@@ -46,6 +47,7 @@ public class WebSocket extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        System.out.println("websocket连接成功！");
         COUNTS.add(session);
         super.afterConnectionEstablished(session);
     }
@@ -92,6 +94,7 @@ public class WebSocket extends TextWebSocketHandler {
      */
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+        System.out.println("websocket连接失败！");
         super.handleTransportError(session, exception);
         COUNTS.remove(session);
     }

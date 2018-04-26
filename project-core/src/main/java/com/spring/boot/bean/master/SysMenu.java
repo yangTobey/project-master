@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class SysMenu {
     private Long menuId;
-    private String manuName;
+    private String menuName;
     private Long parentId;
     private String url;
     private String perms;
@@ -27,12 +27,12 @@ public class SysMenu {
         this.menuId = menuId;
     }
 
-    public String getManuName() {
-        return manuName;
+    public String getMenuName() {
+        return menuName;
     }
 
-    public void setManuName(String manuName) {
-        this.manuName = manuName;
+    public void setMenuName(String menuName) {
+        this.menuName = menuName;
     }
 
     public Long getParentId() {

@@ -22,4 +22,9 @@ public interface SysMenuBusinessService {
      * @return
      */
     List<SysMenu> findMenuByParentId(Long parentId,Integer selectType);
+    /**
+     * 查找系统全部菜单和按钮（不包含目录）
+     * @return
+     */
+    List<SysMenu> findMenuAndModule();
 }

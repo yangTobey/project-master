@@ -21,4 +21,9 @@ public interface SysMenuDao {
      * @return
      */
     List<SysMenu> findMenuByParentId(@Param("parentId")Long parentId, @Param("selectType")Integer selectType);
+    /**
+     * 查找系统全部菜单和按钮（不包含目录）
+     * @return
+     */
+    List<SysMenu> findMenuAndModule();
 }

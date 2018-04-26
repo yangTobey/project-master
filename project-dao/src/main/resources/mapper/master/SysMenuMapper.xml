@@ -3,7 +3,7 @@
 <mapper namespace="com.spring.boot.dao.web.master.SysMenuDao">
     <resultMap id="sysMenu" type="com.spring.boot.bean.master.SysMenu">
         <result column="menu_id" property="menuId"/>
-        <result column="menu_name" property="manuName"/>
+        <result column="menu_name" property="menuName"/>
         <result column="parent_id" property="parentId"/>
         <result column="url" property="url"/>
         <result column="perms" property="perms"/>
@@ -38,9 +38,23 @@
     </select>
     <select id="findMenuByParentId" resultMap="sysMenu" >
         select * from sys_menu where 1=1 and parent_id = #{parentId} and is_use=1
-        <if test="selectType != null and selectType==1">
-            and type=1
-        </if>
+        <if test="selectType != null and selectType!=''">
+			<choose>
+				<when test="selectType==1">
+                    and type!=2
+				</when>
+				<!--<when test="selectType==2">
+                    and type!=0
+				</when>-->
+			</choose>
+		</if>
+        <!--<if test="selectType != null and selectType==1">
+            and type=1 and type=0
+        </if>-->
+    </select>
+    <select id="findMenuAndModule" resultMap="sysMenu" >
+        select * from sys_menu where 1=1 and type =1 and is_use=1
+
     </select>
     <select id="getSysCompanyListTotal" resultType="int"  parameterType="map">
         select count(company_id)
