@@ -389,8 +389,8 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
             }
         }
         //将组装的数据存储到redis缓存
-        //redisTemplate.opsForValue().set("sysProjectForYear", sysProjectForYear);
-        resultMap.put("sysProjectForYear", sysProjectForYear);
+        redisTemplate.opsForValue().set("sysProjectForYear", sysProjectForYear);
+        //resultMap.put("sysProjectForYear", sysProjectForYear);
         /********************************获取年度耗水量、耗电量统计报表信息*******************************/
         //耗电量环比
         Map<Integer, Double> mtOMtCsElectricityScaleMap = null;
@@ -441,9 +441,9 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
         sysProjectEnergyEntity.setMonthCsWaterMap(monthCsWaterMap);
         sysProjectEnergyEntity.setMtoMtCsElectricityScaleMap(mtOMtCsElectricityScaleMap);
         sysProjectEnergyEntity.setMtoMtCsWaterScaleMap(mtOMtCsWaterScaleMap);
-        resultMap.put("sysProjectForMonth", sysProjectEnergyEntity);
+        //resultMap.put("sysProjectForMonth", sysProjectEnergyEntity);
         //将组装的数据存储到redis缓存
-        redisTemplate.opsForValue().set("sysProjectEnergy", resultMap);
+        redisTemplate.opsForValue().set("sysProjectForMonth", sysProjectEnergyEntity);
         //调取物业大屏数据接口
         sysDataAnalysisService.sysPropertyDataAnalysis();
     }

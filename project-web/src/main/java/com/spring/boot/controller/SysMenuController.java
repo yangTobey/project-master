@@ -31,7 +31,7 @@ public class SysMenuController {
      */
     @RequestMapping(value = "/getSysMenu", method = RequestMethod.GET)
     public R getSysMenu() {
-        Map<String, Object> map = sysMenuService.getSysMenu(ShiroUtils.getUserEntity().getUserId());
+        Map<String, Object> map = sysMenuService.getSysMenu();
         return R.ok(map);
     }
 
@@ -41,8 +41,11 @@ public class SysMenuController {
      * @return
      */
     @RequestMapping(value = "/getSysModule", method = RequestMethod.GET)
-    public R getSysModule() {
-        Map<String, Object> map = sysMenuService.getSysModule();
+    public R getSysModule(@RequestParam(value = "type", required = false) String type) {
+        if(UtilHelper.isEmpty(type)){
+            return R.error(400, "操作类型不能为空！！");
+        }
+        Map<String, Object> map = sysMenuService.getSysModule(type);
         return R.ok(map);
     }
     /**

@@ -15,7 +15,7 @@ public class SysRole {
     private String remark;
     private Date createTime;
     private Long createUserId;
-    private Integer status;
+    private Integer statusCode;
 
     public Long getRoleId() {
         return roleId;
@@ -57,11 +57,11 @@ public class SysRole {
         this.createUserId = createUserId;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getStatusCode() {
+        return statusCode;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 }

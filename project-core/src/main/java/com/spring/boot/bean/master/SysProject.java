@@ -41,7 +41,7 @@ public class SysProject implements Serializable {
     private Double mtoMtConsumptionElectricityScale;
     //耗水量同比
     private Double yoYConsumptionWaterScale;
-    //耗电量环比
+    //耗水量环比
     private Double mtoMtConsumptionWaterScale;
     List<SysProjectEnergyFile> fileList;
 

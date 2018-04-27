@@ -36,7 +36,7 @@ public interface SysRoleBusinessService {
      * @param roleId
      * @return
      */
-    int addRoleMenu(Long menuId,Long roleId);
+    int addSysRoleMenu(Long menuId,Long roleId);
 
     /**
      * 删除菜单权限信息

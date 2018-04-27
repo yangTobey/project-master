@@ -37,17 +37,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     Map<String, Object> map = null;
 
     @Override
-    public Map<String, Object> getSysMenu(long userId) {
-        //用户菜单列表
-        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 1);
-        List<SysMenu> menuList = getAllMenuList(menuIdList, 1);
-        resultMap = new HashMap<String, Object>();
-        resultMap.put("data", menuList);
-        return resultMap;
-    }
-
-    @Override
-    public Map<String, Object> getSysModule() {
+    public Map<String, Object> getSysMenu() {
         if (ShiroUtils.getUserEntity() == null) {
             return R.error(500, "请登录系统再进行操作功能！");
         }
@@ -56,11 +46,40 @@ public class SysMenuServiceImpl implements SysMenuService {
         }
         Long userId = ShiroUtils.getUserEntity().getUserId();
         //用户菜单列表
-        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 2);
+        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 1);
+        List<SysMenu> menuList = getAllMenuList(menuIdList, 1);
+        if(null!=menuList&&menuList.size()>0){
+            return R.ok().putData(200,menuList,"获取成功！");
+        }else {
+            return R.error(500, "获取失败，没找到数据！");
+        }
+
+    }
+
+    @Override
+    public Map<String, Object> getSysModule(String type) {
+        //用户菜单列表
+        List<Long> menuIdList=null;
+        if("add".equals(type)){
+            //新增不需要获取登录用户已授权的功能菜单和按钮
+            menuIdList=null;
+        }else if("update".equals(type)){
+            if (ShiroUtils.getUserEntity() == null) {
+                return R.error(500, "请登录系统再进行操作功能！");
+            }
+            if (ShiroUtils.getUserEntity().getUserId() == null) {
+                return R.error(500, "请登录系统再进行操作功能！");
+            }
+            Long userId = ShiroUtils.getUserEntity().getUserId();
+            //用户菜单列表
+             menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 2);
+        }
         List<SysMenu> menuList = getAllMenuList(menuIdList, 2);
-        resultMap = new HashMap<String, Object>();
-        resultMap.put("data", menuList);
-        return resultMap;
+        if(null!=menuList&&menuList.size()>0){
+            return R.ok().putData(200,menuList,"获取成功！");
+        }else {
+            return R.error(500, "获取失败，没找到数据！");
+        }
     }
 
     /**

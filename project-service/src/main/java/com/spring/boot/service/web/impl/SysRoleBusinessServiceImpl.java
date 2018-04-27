@@ -40,8 +40,8 @@ public class SysRoleBusinessServiceImpl implements SysRoleBusinessService {
     }
 
     @Override
-    public int addRoleMenu(Long menuId,Long roleId) {
-        return sysRoleDao.addRoleMenu(menuId,roleId);
+    public int addSysRoleMenu(Long menuId,Long roleId) {
+        return sysRoleDao.addSysRoleMenu(menuId,roleId);
     }
 
     @Override

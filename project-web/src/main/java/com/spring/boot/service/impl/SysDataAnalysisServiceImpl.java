@@ -2,14 +2,13 @@ package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.SysBudgetDetails;
 import com.spring.boot.bean.master.SysChargeDetails;
-import com.spring.boot.bean.master.entity.SysBasicDataEntity;
-import com.spring.boot.bean.master.entity.SysFinancialDataAnalysisEntity;
-import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
-import com.spring.boot.bean.master.entity.SysPropertyDataAnalysisEntity;
+import com.spring.boot.bean.master.SysProject;
+import com.spring.boot.bean.master.entity.*;
 import com.spring.boot.dao.web.cluster.ActivityUserDao;
 import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.util.JsonUtils;
 import com.spring.boot.util.R;
+import com.spring.boot.util.UtilHelper;
 import com.spring.boot.websocket.PropertyWebSocket;
 import com.spring.boot.websocket.WebSocket;
 import org.apache.log4j.Logger;
@@ -52,23 +51,75 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             boolean sysBasicDataKey = redisTemplate.hasKey("sysBasicData");
             if (sysBasicDataKey) {
                 SysBasicDataEntity sysBasicDataEntity = (SysBasicDataEntity) redisTemplate.opsForValue().get("sysBasicData");
-                sysPropertyDataAnalysisEntity.setSysBasicData(sysBasicDataEntity);
+                sysPropertyDataAnalysisEntity.setConstructionArea(sysBasicDataEntity.getConstructionArea());
+                sysPropertyDataAnalysisEntity.setChargeArea(sysBasicDataEntity.getChargeArea());
+                sysPropertyDataAnalysisEntity.setSubsidiaryCount(sysBasicDataEntity.getSubsidiaryCount());
+                sysPropertyDataAnalysisEntity.setCityNumber(sysBasicDataEntity.getCityNumber());
+                sysPropertyDataAnalysisEntity.setProjectNumber(sysBasicDataEntity.getProjectNumber());
+                sysPropertyDataAnalysisEntity.setSalesDistribution(sysBasicDataEntity.getSalesDistribution());
+                sysPropertyDataAnalysisEntity.setHouseNumber(sysBasicDataEntity.getHouseNumber());
+                sysPropertyDataAnalysisEntity.setAcceptHouseNumber(sysBasicDataEntity.getAcceptHouseNumber());
+                sysPropertyDataAnalysisEntity.setDecorateHouseNumber(sysBasicDataEntity.getDecorateHouseNumber());
+                sysPropertyDataAnalysisEntity.setForSaleHouseNumber(sysBasicDataEntity.getForSaleHouseNumber());
+                sysPropertyDataAnalysisEntity.setParkingSpace(sysBasicDataEntity.getParkingSpace());
+                sysPropertyDataAnalysisEntity.setForSaleParkingSpace(sysBasicDataEntity.getForSaleParkingSpace());
+                sysPropertyDataAnalysisEntity.setForSaleHouseScale(sysBasicDataEntity.getForSaleHouseScale());
+                sysPropertyDataAnalysisEntity.setDecorateHouseScale(sysBasicDataEntity.getDecorateHouseScale());
+                sysPropertyDataAnalysisEntity.setForSaleParkingSpaceScale(sysBasicDataEntity.getForSaleParkingSpaceScale());
             }
             /***********************************品质检查数据缓存******************************/
             // 缓存key是否存在
             //品质检查统计信息
-            boolean qualityManageKey = redisTemplate.hasKey("qualityManage");
-            if (qualityManageKey) {
-                Map<String, Object> resultMap = (Map<String, Object>) redisTemplate.opsForValue().get("qualityManage");
-                sysPropertyDataAnalysisEntity.setQualityManageMap(resultMap);
+            boolean qualityManageYearKey = redisTemplate.hasKey("qualityManageYear");
+            boolean qualityManageMonthKey = redisTemplate.hasKey("qualityManageMonth");
+            if (qualityManageYearKey) {
+                SysQualityManageEntity sysQualityManageEntityForYear =(SysQualityManageEntity) redisTemplate.opsForValue().get("qualityManageYear");
+                sysPropertyDataAnalysisEntity.setYearQualityCheck(sysQualityManageEntityForYear.getQualityCheck());
+                sysPropertyDataAnalysisEntity.setYearQualityCheckPass(sysQualityManageEntityForYear.getQualityCheckPass());
+                sysPropertyDataAnalysisEntity.setYearQualityCheckFail(sysQualityManageEntityForYear.getQualityCheckFail());
+                sysPropertyDataAnalysisEntity.setYearQualityCheckUnmodified(sysQualityManageEntityForYear.getQualityCheckUnmodified());
+                sysPropertyDataAnalysisEntity.setYearQualityCheckPassPercent(sysQualityManageEntityForYear.getQualityCheckPassScale());
+                sysPropertyDataAnalysisEntity.setYearModifiedPassPercent(sysQualityManageEntityForYear.getModifiedPassScale());
+
+            }
+            if (qualityManageMonthKey) {
+                SysQualityManageEntity sysQualityManageEntityForMonth = (SysQualityManageEntity) redisTemplate.opsForValue().get("qualityManageMonth");
+                sysPropertyDataAnalysisEntity.setQualityCheck(sysQualityManageEntityForMonth.getQualityCheck());
+                sysPropertyDataAnalysisEntity.setQualityCheckPass(sysQualityManageEntityForMonth.getQualityCheckPass());
+                sysPropertyDataAnalysisEntity.setQualityCheckFail(sysQualityManageEntityForMonth.getQualityCheckFail());
+                sysPropertyDataAnalysisEntity.setQualityCheckUnmodified(sysQualityManageEntityForMonth.getQualityCheckUnmodified());
+                sysPropertyDataAnalysisEntity.setQualityCheckPassPercent(sysQualityManageEntityForMonth.getQualityCheckPassScale());
+                sysPropertyDataAnalysisEntity.setModifiedPassPercent(sysQualityManageEntityForMonth.getModifiedPassScale());
+                sysPropertyDataAnalysisEntity.setCheckPassScaleMap(sysQualityManageEntityForMonth.getCheckPassScaleMap());
+                sysPropertyDataAnalysisEntity.setModifiedPassScaleMap(sysQualityManageEntityForMonth.getModifiedPassScaleMap());
+
             }
             /***********************************工程能耗管理数据缓存******************************/
             // 缓存key是否存在
             //工程能耗管理统计信息
-            boolean sysProjectEnergyKey = redisTemplate.hasKey("sysProjectEnergy");
-            if (sysProjectEnergyKey) {
-                Map<String, Object> resultMap = (Map<String, Object>) redisTemplate.opsForValue().get("sysProjectEnergy");
-                sysPropertyDataAnalysisEntity.setSysProjectEnergyMap(resultMap);
+            boolean sysProjectForYearKey = redisTemplate.hasKey("sysProjectForYear");
+            boolean sysProjectForMonthKey = redisTemplate.hasKey("sysProjectForMonth");
+            if (sysProjectForYearKey) {
+                SysProject sysProject = (SysProject) redisTemplate.opsForValue().get("sysProjectForYear");
+                sysPropertyDataAnalysisEntity.setProjectUnfinishedTotal(sysProject.getProjectUnfinishedTotal());
+                sysPropertyDataAnalysisEntity.setProjectFinishedTotal(sysProject.getProjectFinishedTotal());
+                sysPropertyDataAnalysisEntity.setMonthProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProject.getProjectFinishedTotal(),sysProject.getProjectUnfinishedTotal())));
+                sysPropertyDataAnalysisEntity.setYearConsumptionElectricity(sysProject.getYearConsumptionElectricity());
+                sysPropertyDataAnalysisEntity.setYearConsumptionWater(sysProject.getYearConsumptionWater());
+                sysPropertyDataAnalysisEntity.setMonthConsumptionElectricity(sysProject.getMonthConsumptionElectricity());
+                sysPropertyDataAnalysisEntity.setMonthConsumptionWater(sysProject.getMonthConsumptionWater());
+
+                sysPropertyDataAnalysisEntity.setYoYElectricityScale(sysProject.getYoYConsumptionElectricityScale());
+                sysPropertyDataAnalysisEntity.setMtoMtElectricityScale(sysProject.getMtoMtConsumptionElectricityScale());
+                sysPropertyDataAnalysisEntity.setYoYWaterScale(sysProject.getYoYConsumptionWaterScale());
+                sysPropertyDataAnalysisEntity.setMtoMtWaterScale(sysProject.getMtoMtConsumptionWaterScale());
+            }
+            if (sysProjectForMonthKey) {
+                SysProjectEnergyEntity sysProjectEnergyEntity = (SysProjectEnergyEntity) redisTemplate.opsForValue().get("sysProjectForMonth");
+                sysPropertyDataAnalysisEntity.setMtoMtCsElectricityScaleMap(sysProjectEnergyEntity.getMtoMtCsElectricityScaleMap());
+                sysPropertyDataAnalysisEntity.setMtoMtCsWaterScaleMap(sysProjectEnergyEntity.getMtoMtCsWaterScaleMap());
+                sysPropertyDataAnalysisEntity.setMonthCsElectricityMap(sysProjectEnergyEntity.getMonthCsElectricityMap());
+                sysPropertyDataAnalysisEntity.setMonthCsWaterMap(sysProjectEnergyEntity.getMonthCsWaterMap());
             }
 
             /***********************************人员成本管理数据缓存******************************/
@@ -77,7 +128,20 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             boolean sysLaborCostDetailsKey = redisTemplate.hasKey("sysLaborCostDetails");
             if (sysLaborCostDetailsKey) {
                 SysLaborCostDetailsEntity SysLaborCostDetailsEntity = (SysLaborCostDetailsEntity) redisTemplate.opsForValue().get("sysLaborCostDetails");
-                sysPropertyDataAnalysisEntity.setSysLaborCostDetails(SysLaborCostDetailsEntity);
+                sysPropertyDataAnalysisEntity.setLaborCostTotal(SysLaborCostDetailsEntity.getLaborCostTotal());
+                sysPropertyDataAnalysisEntity.setAverageLaborCost(SysLaborCostDetailsEntity.getAverageLaborCost());
+                sysPropertyDataAnalysisEntity.setHeadcountTotal(SysLaborCostDetailsEntity.getHeadcountTotal());
+                sysPropertyDataAnalysisEntity.setEmployeeTotal(SysLaborCostDetailsEntity.getEmployeeTotal());
+                sysPropertyDataAnalysisEntity.setEntryTotal(SysLaborCostDetailsEntity.getEntryTotal());
+                sysPropertyDataAnalysisEntity.setDemissionTotal(SysLaborCostDetailsEntity.getDemissionTotal());
+                sysPropertyDataAnalysisEntity.setSysEmployeeScale(SysLaborCostDetailsEntity.getSysEmployeeScale());
+                sysPropertyDataAnalysisEntity.setSysLaborCostScale(SysLaborCostDetailsEntity.getSysLaborCostScale());
+                sysPropertyDataAnalysisEntity.setSysLaborCostLastMonthScale(SysLaborCostDetailsEntity.getSysLaborCostLastMonthScale());
+                sysPropertyDataAnalysisEntity.setSysDemissionScale(SysLaborCostDetailsEntity.getSysDemissionScale());
+                sysPropertyDataAnalysisEntity.setPropertyLaborCostScale(SysLaborCostDetailsEntity.getPropertyLaborCostScale());
+                sysPropertyDataAnalysisEntity.seteBusinessScale(SysLaborCostDetailsEntity.geteBusinessScale());
+                sysPropertyDataAnalysisEntity.setSaleLaborCostScale(SysLaborCostDetailsEntity.getSaleLaborCostScale());
+                
             }
             map.put("property",sysPropertyDataAnalysisEntity);
             WebSocket.sendInfo(JsonUtils.obj2JsonString(R.ok().putData(200, map, "获取成功！！")));

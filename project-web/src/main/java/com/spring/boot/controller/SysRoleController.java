@@ -62,9 +62,14 @@ public class SysRoleController {
         if(UtilHelper.isEmpty(roleName)){
             return R.error(400, "角色名称不能为空，请联系系统管理员！");
         }
-        Map<String, Object> map= sysRoleService.addSysRole(roleName,moduleIds, remark);
-        return R.ok(map);
-
+        try {
+            Map<String, Object> map= sysRoleService.addSysRole(roleName,moduleIds, remark);
+            return R.ok(map);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("新增角色信息失败：" + e.getMessage());
+            return R.error(500, "新增角色信息失败，服务器异常，请联系系统管理员！");
+        }
     }
 
     @RequestMapping(value = "/updateSysRole", method = RequestMethod.GET)
@@ -73,12 +78,17 @@ public class SysRoleController {
         if(!UtilHelper.isNumer(roleId)){
             return R.error(400, "角色编号格式不正确，请联系系统管理员！");
         }
-        Map<String, Object> map= sysRoleService.updateSysRole(Long.valueOf(roleId),roleName,remark,moduleIds);
-        return R.ok(map);
-
+        try {
+            Map<String, Object> map= sysRoleService.updateSysRole(Long.valueOf(roleId),roleName,remark,moduleIds);
+            return R.ok(map);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("更新角色信息失败：" + e.getMessage());
+            return R.error(500, "更新角色信息失败，服务器异常，请联系系统管理员！");
+        }
     }
     @RequestMapping(value = "/deleteSysRole", method = RequestMethod.GET)
-    public R  deleteSysRole(String roleId) {
+    public R  deleteSysRole(@RequestParam(value = "roleId", required = false)String roleId) {
         if(!UtilHelper.isNumer(roleId)){
             return R.error(400, "角色编号格式不正确，请联系系统管理员！");
         }

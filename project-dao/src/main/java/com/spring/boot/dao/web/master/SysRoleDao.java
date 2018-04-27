@@ -53,7 +53,7 @@ public interface SysRoleDao extends BaseDao<SysRole>{
      * @param roleId
      * @return
      */
-    int addRoleMenu(@Param("menuId")Long menuId,@Param("roleId") Long roleId);
+    int addSysRoleMenu(@Param("menuId")Long menuId,@Param("roleId") Long roleId);
     /**
      * 删除菜单权限信息
      * @param roleId

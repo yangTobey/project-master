@@ -310,8 +310,8 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
             sysQualityManageEntityForYear.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckUnmodified(), sysQualityManageEntityForYear.getQualityCheckFail())));
         }
         //将年度统计信息放入redis缓存
-        //redisTemplate.opsForValue().set("qualityManageYear", sysQualityManageEntityForYear);
-        resultMap.put("qualityManageYear", sysQualityManageEntityForYear);
+        redisTemplate.opsForValue().set("qualityManageYear", sysQualityManageEntityForYear);
+        //resultMap.put("qualityManageYear", sysQualityManageEntityForYear);
         //查找月度报表数据
         sysQualityManageEntityForMonth = sysQualityManageBusinessService.sysQualityManageAnalysisForMonth(map);
         if (sysQualityManageEntityForMonth != null) {
@@ -341,9 +341,9 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
             sysQualityManageEntityForMonth.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckPass(), sysQualityManageEntityForMonth.getQualityCheck())));
             sysQualityManageEntityForMonth.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckUnmodified(), sysQualityManageEntityForMonth.getQualityCheckFail())));
         }
-        resultMap.put("qualityManageMonth", sysQualityManageEntityForMonth);
+        //resultMap.put("qualityManageMonth", sysQualityManageEntityForMonth);
         //将月度统计报表信息放入redis缓存
-        redisTemplate.opsForValue().set("qualityManage", resultMap);
+        redisTemplate.opsForValue().set("qualityManageMonth", sysQualityManageEntityForMonth);
         //调取物业大屏数据接口
         sysDataAnalysisService.sysPropertyDataAnalysis();
 
