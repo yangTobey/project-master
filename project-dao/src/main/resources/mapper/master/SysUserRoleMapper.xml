@@ -12,6 +12,7 @@
 		DELETE FROM sys_user_role WHERE user_id = #{userId}
 	</delete>
 
-
-
+	<select id="findRoleByUserId" resultType="com.spring.boot.bean.master.SysUserRole"  parameterType="map">
+		SELECT id,user_id as userId,role_id as roleId from sys_user_role where user_id=#{userId}
+	</select>
 </mapper>

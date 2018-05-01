@@ -3,7 +3,7 @@ package com.spring.boot.bean.master;
 /**
  * Created by Administrator on 2018/2/6.
  */
-public class SysMenuRole {
+public class SysRoleMenu {
 
     private Long id;
     private Long menuId;

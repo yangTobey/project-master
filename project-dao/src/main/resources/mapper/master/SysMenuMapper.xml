@@ -17,7 +17,7 @@
     <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
 
     <sql id="Base_Column_List">
-		company_id, company_name, company_code, parent_id,company_phone,company_address,status_code
+		menu_id,menu_name,parent_id,url,perms,type,icon,sort,is_use,remark
 	</sql>
  <!--   <select id="queryList" resultMap="sysCompany" parameterType="map">
         select
@@ -54,7 +54,6 @@
     </select>
     <select id="findMenuAndModule" resultMap="sysMenu" >
         select * from sys_menu where 1=1 and type =1 and is_use=1
-
     </select>
     <select id="getSysCompanyListTotal" resultType="int"  parameterType="map">
         select count(company_id)
@@ -73,6 +72,11 @@
 		update sys_company set status_code = 2
 		where company_id = #{companyId}
 	</update>
+    <select id="findSysMenuInfoByMenuId" resultMap="sysMenu" >
+        select <include refid="Base_Column_List"/>
+        from sys_menu where 1=1   and is_use=1 and menu_id=#{menuId}
+    </select>
+
 
 
 </mapper>

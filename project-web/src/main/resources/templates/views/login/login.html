@@ -5,6 +5,11 @@
 <input id="text" type="text" /><button onclick="send()">Send</button>    <button onclick="closeWebSocket()">Close</button>
 <div id="message">
 </div>
+<div id="test">
+    #if($shiro.hasPermission("qualityManage:list"))
+    权限信息获取得到
+    #end
+</div>
 <script src="../../../project-web/static/js/jquery/jquery.min.js"></script>
 
 <script src="../../../project-web/static/js/websocket.js"></script>

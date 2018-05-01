@@ -3,7 +3,7 @@ package com.spring.boot.shiro;
 import com.spring.boot.bean.master.*;
 import com.spring.boot.service.SysUserService;
 import com.spring.boot.service.web.SysMenuBusinessService;
-import com.spring.boot.service.web.SysMenuRoleService;
+import com.spring.boot.service.web.SysRoleMenuBusinessService;
 import com.spring.boot.service.web.SysUserCompanyBusinessService;
 import com.spring.boot.service.web.SysUserRoleBusinessService;
 import org.apache.shiro.SecurityUtils;
@@ -37,7 +37,7 @@ public class ShiroRealm extends AuthorizingRealm {
     @Autowired
     private SysMenuBusinessService sysMenuBusinessService;
     @Autowired
-    private SysMenuRoleService menuRoleService;
+    private SysRoleMenuBusinessService sysRoleMenuBusinessService;
 
     @Autowired
     private SysUserCompanyBusinessService sysUserCompanyBusinessService;
@@ -67,8 +67,8 @@ public class ShiroRealm extends AuthorizingRealm {
         //  info.addStringPermission(permission.getName());
         // }
         for (SysUserRole userRole : permissionList) {
-            List<SysMenuRole> menuRoleList = menuRoleService.findMenuRoleInfoByRoleId(userRole.getRoleId());
-            for (SysMenuRole menuRole : menuRoleList) {
+            List<SysRoleMenu> menuRoleList = sysRoleMenuBusinessService.findRoleMenuInfoByRoleId(userRole.getRoleId());
+            for (SysRoleMenu menuRole : menuRoleList) {
                 SysMenu sysMenu = sysMenuBusinessService.findSysMenuInfoByMenuId(menuRole.getMenuId());
                 if (sysMenu != null) {
                     permsSet.add(sysMenu.getPerms());

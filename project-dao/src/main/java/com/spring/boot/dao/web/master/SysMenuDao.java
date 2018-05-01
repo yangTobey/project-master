@@ -14,7 +14,7 @@ public interface SysMenuDao {
      * @param menuId
      * @return
      */
-    SysMenu findSysMenuInfoByMenuId(long menuId);
+    SysMenu findSysMenuInfoByMenuId(Long menuId);
     /**
      * 根据上级id查找菜单列表
      * @param parentId
