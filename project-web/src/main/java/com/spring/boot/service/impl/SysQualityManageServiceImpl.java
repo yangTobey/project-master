@@ -75,7 +75,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                 sysQualityManageEntityForYear.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckUnmodified(), sysQualityManageEntityForYear.getQualityCheckFail())));
                 resultMap.put("qualityManageYear", sysQualityManageEntityForYear);
             } else {
-                return R.error(500, "获取信息失败,不存在数据！");
+                return R.error(500, "获取年度信息失败,不存在数据！");
             }
             //查找月度报表数据
             sysQualityManageEntityForMonth = sysQualityManageBusinessService.sysQualityManageAnalysisForMonth(map);
@@ -107,7 +107,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                 sysQualityManageEntityForMonth.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckUnmodified(), sysQualityManageEntityForMonth.getQualityCheckFail())));
                 resultMap.put("qualityManageMonth", sysQualityManageEntityForMonth);
             } else {
-                return R.error(500, "获取信息失败，不存在数据！");
+                return R.error(500, "获取月度信息失败，不存在数据！");
             }
         } catch (Exception e) {
             e.printStackTrace();

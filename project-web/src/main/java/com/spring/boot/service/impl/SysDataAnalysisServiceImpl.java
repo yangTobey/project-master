@@ -1,5 +1,6 @@
 package com.spring.boot.service.impl;
 
+import com.spring.boot.bean.master.SysAccountsReceivable;
 import com.spring.boot.bean.master.SysBudgetDetails;
 import com.spring.boot.bean.master.SysChargeDetails;
 import com.spring.boot.bean.master.SysProject;
@@ -51,6 +52,9 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             boolean sysBasicDataKey = redisTemplate.hasKey("sysBasicData");
             if (sysBasicDataKey) {
                 SysBasicDataEntity sysBasicDataEntity = (SysBasicDataEntity) redisTemplate.opsForValue().get("sysBasicData");
+                if(sysBasicDataEntity==null){
+                    sysBasicDataEntity=new SysBasicDataEntity();
+                }
                 sysPropertyDataAnalysisEntity.setConstructionArea(sysBasicDataEntity.getConstructionArea());
                 sysPropertyDataAnalysisEntity.setChargeArea(sysBasicDataEntity.getChargeArea());
                 sysPropertyDataAnalysisEntity.setSubsidiaryCount(sysBasicDataEntity.getSubsidiaryCount());
@@ -74,6 +78,9 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             boolean qualityManageMonthKey = redisTemplate.hasKey("qualityManageMonth");
             if (qualityManageYearKey) {
                 SysQualityManageEntity sysQualityManageEntityForYear =(SysQualityManageEntity) redisTemplate.opsForValue().get("qualityManageYear");
+                if(sysQualityManageEntityForYear==null){
+                    sysQualityManageEntityForYear=new SysQualityManageEntity();
+                }
                 sysPropertyDataAnalysisEntity.setYearQualityCheck(sysQualityManageEntityForYear.getQualityCheck());
                 sysPropertyDataAnalysisEntity.setYearQualityCheckPass(sysQualityManageEntityForYear.getQualityCheckPass());
                 sysPropertyDataAnalysisEntity.setYearQualityCheckFail(sysQualityManageEntityForYear.getQualityCheckFail());
@@ -84,6 +91,9 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             }
             if (qualityManageMonthKey) {
                 SysQualityManageEntity sysQualityManageEntityForMonth = (SysQualityManageEntity) redisTemplate.opsForValue().get("qualityManageMonth");
+                if(sysQualityManageEntityForMonth==null){
+                    sysQualityManageEntityForMonth=new SysQualityManageEntity();
+                }
                 sysPropertyDataAnalysisEntity.setQualityCheck(sysQualityManageEntityForMonth.getQualityCheck());
                 sysPropertyDataAnalysisEntity.setQualityCheckPass(sysQualityManageEntityForMonth.getQualityCheckPass());
                 sysPropertyDataAnalysisEntity.setQualityCheckFail(sysQualityManageEntityForMonth.getQualityCheckFail());
@@ -101,6 +111,9 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             boolean sysProjectForMonthKey = redisTemplate.hasKey("sysProjectForMonth");
             if (sysProjectForYearKey) {
                 SysProject sysProject = (SysProject) redisTemplate.opsForValue().get("sysProjectForYear");
+                if(sysProject==null){
+                    sysProject=new SysProject();
+                }
                 sysPropertyDataAnalysisEntity.setProjectUnfinishedTotal(sysProject.getProjectUnfinishedTotal());
                 sysPropertyDataAnalysisEntity.setProjectFinishedTotal(sysProject.getProjectFinishedTotal());
                 sysPropertyDataAnalysisEntity.setMonthProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProject.getProjectFinishedTotal(),sysProject.getProjectUnfinishedTotal())));
@@ -116,6 +129,9 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             }
             if (sysProjectForMonthKey) {
                 SysProjectEnergyEntity sysProjectEnergyEntity = (SysProjectEnergyEntity) redisTemplate.opsForValue().get("sysProjectForMonth");
+                if(sysProjectEnergyEntity==null){
+                    sysProjectEnergyEntity=new SysProjectEnergyEntity();
+                }
                 sysPropertyDataAnalysisEntity.setMtoMtCsElectricityScaleMap(sysProjectEnergyEntity.getMtoMtCsElectricityScaleMap());
                 sysPropertyDataAnalysisEntity.setMtoMtCsWaterScaleMap(sysProjectEnergyEntity.getMtoMtCsWaterScaleMap());
                 sysPropertyDataAnalysisEntity.setMonthCsElectricityMap(sysProjectEnergyEntity.getMonthCsElectricityMap());
@@ -128,6 +144,9 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             boolean sysLaborCostDetailsKey = redisTemplate.hasKey("sysLaborCostDetails");
             if (sysLaborCostDetailsKey) {
                 SysLaborCostDetailsEntity SysLaborCostDetailsEntity = (SysLaborCostDetailsEntity) redisTemplate.opsForValue().get("sysLaborCostDetails");
+                if(SysLaborCostDetailsEntity==null){
+                    SysLaborCostDetailsEntity=new SysLaborCostDetailsEntity();
+                }
                 sysPropertyDataAnalysisEntity.setLaborCostTotal(SysLaborCostDetailsEntity.getLaborCostTotal());
                 sysPropertyDataAnalysisEntity.setAverageLaborCost(SysLaborCostDetailsEntity.getAverageLaborCost());
                 sysPropertyDataAnalysisEntity.setHeadcountTotal(SysLaborCostDetailsEntity.getHeadcountTotal());
@@ -174,7 +193,17 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             boolean sysChargeDetailsKey = redisTemplate.hasKey("sysChargeDetails");
             if (sysChargeDetailsKey) {
                 SysChargeDetails sysChargeDetails = (SysChargeDetails) redisTemplate.opsForValue().get("sysChargeDetails");
-                sysFinancialDataAnalysisEntity.setSysChargeDetails(sysChargeDetails);
+                if(sysChargeDetails==null){
+                    sysChargeDetails=new SysChargeDetails();
+                }
+                sysFinancialDataAnalysisEntity.setChargeMoney(sysChargeDetails.getChargeMoney());
+                sysFinancialDataAnalysisEntity.setChargeMoneyNow(sysChargeDetails.getChargeMoneyNow());
+                sysFinancialDataAnalysisEntity.setChargeDebt(sysChargeDetails.getChargeDebt());
+                sysFinancialDataAnalysisEntity.setChargeDebtReturn(sysChargeDetails.getChargeDebtReturn());
+                sysFinancialDataAnalysisEntity.setChargeMoneyScale(sysChargeDetails.getChargeMoneyScale());
+                sysFinancialDataAnalysisEntity.setChargeDebtScale(sysChargeDetails.getChargeDebtScale());
+                sysFinancialDataAnalysisEntity.setYearChargeDebtScale(sysChargeDetails.getYearChargeDebtScale());
+                sysFinancialDataAnalysisEntity.setYearChargeMoneyScale(sysChargeDetails.getYearChargeMoneyScale());
             }
             /***********************************应收账款数据缓存******************************/
             // 缓存key是否存在
@@ -182,15 +211,85 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             boolean sysReceivableAccountKey = redisTemplate.hasKey("sysReceivableAccount");
             if (sysReceivableAccountKey) {
                 Map<String, Object> resultMap = (Map<String, Object>) redisTemplate.opsForValue().get("sysReceivableAccount");
-                sysFinancialDataAnalysisEntity.setSysAccountsReceivableMap(resultMap);
+                SysAccountsReceivable sysAccountsReceivable=(SysAccountsReceivable)resultMap.get("sysAccountsReceivableMonth");
+                SysReceivableAccountsOwnerEntity sysReceivableAccountsOwnerEntity=(SysReceivableAccountsOwnerEntity)resultMap.get("sysAccountsReceivable");
+                if(sysAccountsReceivable==null){
+                    sysAccountsReceivable=new SysAccountsReceivable();
+                }
+                if(sysReceivableAccountsOwnerEntity==null){
+                    sysReceivableAccountsOwnerEntity=new SysReceivableAccountsOwnerEntity();
+                }
+                sysFinancialDataAnalysisEntity.setReceivableAccountsOwner(sysAccountsReceivable.getReceivableAccountsOwner());
+                sysFinancialDataAnalysisEntity.setCompleteAccountsOwner(sysAccountsReceivable.getCompleteAccountsOwner());
+                sysFinancialDataAnalysisEntity.setCompleteCoupon(sysAccountsReceivable.getCompleteCoupon());
+                sysFinancialDataAnalysisEntity.setReceivableCoupon(sysAccountsReceivable.getReceivableCoupon());
+                sysFinancialDataAnalysisEntity.setCompleteVacancy(sysAccountsReceivable.getCompleteVacancy());
+                sysFinancialDataAnalysisEntity.setReceivableVacancy(sysAccountsReceivable.getReceivableVacancy());
+                sysFinancialDataAnalysisEntity.setCompleteSubsidy(sysAccountsReceivable.getCompleteSubsidy());
+                sysFinancialDataAnalysisEntity.setReceivableSubsidy(sysAccountsReceivable.getReceivableSubsidy());
+                sysFinancialDataAnalysisEntity.setCompleteSales(sysAccountsReceivable.getCompleteSales());
+                sysFinancialDataAnalysisEntity.setReceivableSales(sysAccountsReceivable.getReceivableSales());
+                sysFinancialDataAnalysisEntity.setReceivableOpen(sysAccountsReceivable.getReceivableOpen());
+                sysFinancialDataAnalysisEntity.setCompleteOpen(sysAccountsReceivable.getCompleteOpen());
+                sysFinancialDataAnalysisEntity.setCompletePropertySubsidy(sysAccountsReceivable.getCompletePropertySubsidy());
+                sysFinancialDataAnalysisEntity.setReceivablePropertySubsidy(sysAccountsReceivable.getReceivablePropertySubsidy());
+                sysFinancialDataAnalysisEntity.setCompleteHouseOther(sysAccountsReceivable.getCompleteHouseOther());
+                sysFinancialDataAnalysisEntity.setReceivableHouseOther(sysAccountsReceivable.getReceivableHouseOther());
+                sysFinancialDataAnalysisEntity.setCompleteHouse(sysAccountsReceivable.getCompleteHouse());
+                sysFinancialDataAnalysisEntity.setReceivableHouse(sysAccountsReceivable.getReceivableHouse());
+                sysFinancialDataAnalysisEntity.setCouponScale(sysAccountsReceivable.getCouponScale());
+                sysFinancialDataAnalysisEntity.setVacancyScale(sysAccountsReceivable.getVacancyScale());
+                sysFinancialDataAnalysisEntity.setSubsidyScale(sysAccountsReceivable.getSubsidyScale());
+                sysFinancialDataAnalysisEntity.setSalesScale(sysAccountsReceivable.getSalesScale());
+                sysFinancialDataAnalysisEntity.setOpenScale(sysAccountsReceivable.getOpenScale());
+                sysFinancialDataAnalysisEntity.setPropertySubsidyScale(sysAccountsReceivable.getPropertySubsidyScale());
+                sysFinancialDataAnalysisEntity.setHouseOtherScale(sysAccountsReceivable.getHouseOtherScale());
+                sysFinancialDataAnalysisEntity.setReceivableAccounts(sysReceivableAccountsOwnerEntity.getReceivableAccounts());
+                sysFinancialDataAnalysisEntity.setCompleteAccounts(sysReceivableAccountsOwnerEntity.getCompleteAccounts());
+
+
             }
             /***********************************执行预算数据缓存******************************/
             // 缓存key是否存在
             //执行预算统计信息
             boolean sysBudgetDetailsKey = redisTemplate.hasKey("sysBudgetDetails");
             if (sysBudgetDetailsKey) {
-                SysBudgetDetails sysBudgetDetails = (SysBudgetDetails) redisTemplate.opsForValue().get("sysBudgetDetails");
-                sysFinancialDataAnalysisEntity.setSysBudgetDetails(sysBudgetDetails);
+                SysBudgetDetailsEntity sysBudgetDetailsEntity = (SysBudgetDetailsEntity) redisTemplate.opsForValue().get("sysBudgetDetails");
+                if(sysBudgetDetailsEntity==null){
+                    sysBudgetDetailsEntity=new SysBudgetDetailsEntity();
+                }
+                SysBudgetDetails sysBudgetDetailsForMonth=sysBudgetDetailsEntity.getSysBudgetDetailsForMonth();
+                if(sysBudgetDetailsForMonth==null){
+                    sysBudgetDetailsForMonth=new SysBudgetDetails();
+                }
+                SysBudgetDetails sysBudgetDetailsForYear=sysBudgetDetailsEntity.getSysBudgetDetailsForYear();
+                if(sysBudgetDetailsForYear==null){
+                    sysBudgetDetailsForYear=new SysBudgetDetails();
+                }
+                //月度信息
+                sysFinancialDataAnalysisEntity.setBudgetIncome(sysBudgetDetailsForMonth.getBudgetIncome());
+                sysFinancialDataAnalysisEntity.setRealIncome(sysBudgetDetailsForMonth.getRealIncome());
+                sysFinancialDataAnalysisEntity.setBudgetProfits(sysBudgetDetailsForMonth.getBudgetProfits());
+                sysFinancialDataAnalysisEntity.setRealProfits(sysBudgetDetailsForMonth.getRealProfits());
+                //年度信息
+                sysFinancialDataAnalysisEntity.setBudgetExpenses(sysBudgetDetailsForYear.getBudgetExpenses());
+                sysFinancialDataAnalysisEntity.setPersonnelCost(sysBudgetDetailsForYear.getPersonnelCost());
+                sysFinancialDataAnalysisEntity.setAdministrativeCost(sysBudgetDetailsForYear.getAdministrativeCost());
+                sysFinancialDataAnalysisEntity.setMaterialCost(sysBudgetDetailsForYear.getMaterialCost());
+                sysFinancialDataAnalysisEntity.setEnergyCost(sysBudgetDetailsForYear.getEnergyCost());
+                sysFinancialDataAnalysisEntity.setEquipmentCost(sysBudgetDetailsForYear.getEquipmentCost());
+                sysFinancialDataAnalysisEntity.setCleaningCost(sysBudgetDetailsForYear.getCleaningCost());
+                sysFinancialDataAnalysisEntity.setAfforestCost(sysBudgetDetailsForYear.getAfforestCost());
+                sysFinancialDataAnalysisEntity.setOrderMaintenanceCost(sysBudgetDetailsForYear.getOrderMaintenanceCost());
+                sysFinancialDataAnalysisEntity.setCommunityActivitiesCost(sysBudgetDetailsForYear.getCommunityActivitiesCost());
+                sysFinancialDataAnalysisEntity.setOtherCost(sysBudgetDetailsForYear.getOtherCost());
+                sysFinancialDataAnalysisEntity.setRealExpensesTotal(sysBudgetDetailsForYear.getRealExpensesTotal());
+                sysFinancialDataAnalysisEntity.setBudgetIncomeMap(sysBudgetDetailsForYear.getBudgetIncomeMap());
+                sysFinancialDataAnalysisEntity.setRealIncomeMap(sysBudgetDetailsForYear.getRealIncomeMap());
+                sysFinancialDataAnalysisEntity.setRealExpensesTotalMap(sysBudgetDetailsForYear.getRealExpensesTotalMap());
+                sysFinancialDataAnalysisEntity.setBudgetExpensesMap(sysBudgetDetailsForYear.getBudgetExpensesMap());
+                sysFinancialDataAnalysisEntity.setRealProfitsMap(sysBudgetDetailsForYear.getRealProfitsMap());
+                sysFinancialDataAnalysisEntity.setRealProfitsScaleMap(sysBudgetDetailsForYear.getRealProfitsScaleMap());
             }
             map.put("financial",sysFinancialDataAnalysisEntity);
             WebSocket.sendInfo(JsonUtils.obj2JsonString(R.ok().putData(200, map, "获取成功！！")));

@@ -17,7 +17,10 @@ var websocket = null;
 
     //连接成功建立的回调方法
     websocket.onopen = function (event) {
-        setMessageInnerHTML("open");
+        //setMessageInnerHTML("open");
+        /*type为property表示物业大屏界面，type为financial时表示财务大屏界面*/
+        //send("financial");
+        send("property");
     }
 
     //接收到消息的回调方法
@@ -49,7 +52,6 @@ function closeWebSocket() {
 }
 
 //发送消息
-function send() {
-    var message = document.getElementById('text').value;
-    websocket.send(message);
+function send(type) {
+    websocket.send(type);
 }

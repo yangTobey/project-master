@@ -3,6 +3,7 @@ package com.spring.boot.service.impl;
 import com.spring.boot.bean.master.SysAccountsReceivable;
 import com.spring.boot.bean.master.SysBudgetDetails;
 import com.spring.boot.bean.master.SysChargeDetails;
+import com.spring.boot.bean.master.entity.SysBudgetDetailsEntity;
 import com.spring.boot.bean.master.entity.SysReceivableAccountsOwnerEntity;
 import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysFinancialService;
@@ -588,15 +589,25 @@ public class SysFinancialServiceImpl implements SysFinancialService {
      */
     public void setSysAccountsReceivableToRedis() {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> mapForMonth = new HashMap<String, Object>();
+
+        Map<String, Object> mapForYear = new HashMap<String, Object>();
         int thisYear = UtilHelper.getYear();
         int thisMonth = UtilHelper.getMonth();
-        map.put("year", thisYear);
-        map.put("month", thisMonth);
+        mapForYear.put("year", thisYear);
+        mapForYear.put("month", null);
+        mapForYear.put("sysUserCompanyIds", null);
+
+        mapForMonth.put("year", thisYear);
+        mapForMonth.put("month", thisMonth);
+        mapForMonth.put("sysUserCompanyIds", null);
         try {
-            map.put("sysUserCompanyIds", null);
-            //也可以封装成map传值
-            SysAccountsReceivable sysAccountsReceivable = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(map);
+
+            //当年数据，也可以封装成map传值
+            SysAccountsReceivable sysAccountsReceivable = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(mapForYear);
+            //当月数据
+            SysAccountsReceivable sysAccountsReceivableMonth = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(mapForYear);
+
             if (null != sysAccountsReceivable) {
                 sysAccountsReceivable.setCouponScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompleteCoupon(), sysAccountsReceivable.getReceivableCoupon())));
                 sysAccountsReceivable.setVacancyScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompleteVacancy(), sysAccountsReceivable.getReceivableVacancy())));
@@ -606,19 +617,10 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 sysAccountsReceivable.setPropertySubsidyScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompletePropertySubsidy(), sysAccountsReceivable.getReceivablePropertySubsidy())));
                 sysAccountsReceivable.setHouseOtherScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompleteHouseOther(), sysAccountsReceivable.getReceivableHouseOther())));
             }
-            List<SysAccountsReceivable> sysAccountsReceivableAnalysisList = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysisForMonth(map);
+            List<SysAccountsReceivable> sysAccountsReceivableAnalysisList = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysisForMonth(mapForYear);
             //获取所在年份对应的所有数据的月份
             SysReceivableAccountsOwnerEntity sysReceivableAccountsOwnerEntity = null;
-            //当年月份组装（非数据库查询，避免数据库数据库因忘记添加数据而照成月份丢失）
-            String monthsInfo = "";
-            for (int i = 1; i <= thisMonth; i++) {
-                //月份组装
-                if (i == thisMonth) {
-                    monthsInfo += i;
-                } else {
-                    monthsInfo += i + ",";
-                }
-            }
+
             sysReceivableAccountsOwnerEntity = new SysReceivableAccountsOwnerEntity();
             Map<Integer, Object> receivableMap = null;
             Map<Integer, Object> completeMap = null;
@@ -635,7 +637,13 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                     }
                 }
             }
-            sysReceivableAccountsOwnerEntity.setMonthsInfo(monthsInfo);
+            //注：因财务统计界面需求，业主应收款、业主已收款、地产应收款、地产已收款为月度信息，需要将这几个字段的数据切换为月度数据
+            if(sysAccountsReceivableMonth!=null){
+                sysAccountsReceivable.setReceivableAccountsOwner(sysAccountsReceivableMonth.getReceivableAccountsOwner());
+                sysAccountsReceivable.setCompleteAccountsOwner(sysAccountsReceivableMonth.getCompleteAccountsOwner());
+                sysAccountsReceivable.setCompleteHouse(sysAccountsReceivableMonth.getCompleteHouse());
+                sysAccountsReceivable.setCompleteHouse(sysAccountsReceivableMonth.getCompleteHouse());
+            }
             sysReceivableAccountsOwnerEntity.setReceivableAccounts(receivableMap);
             sysReceivableAccountsOwnerEntity.setCompleteAccounts(completeMap);
             resultMap.put("sysAccountsReceivable", sysAccountsReceivable);
@@ -654,18 +662,25 @@ public class SysFinancialServiceImpl implements SysFinancialService {
      * 保存预算信息到redis缓存
      */
     public void setsysBudgetDetailsToRedis() {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> mapForYear = new HashMap<String, Object>();
+        Map<String, Object> mapForMonth = new HashMap<String, Object>();
         int thisYear = UtilHelper.getYear();
         int thisMonth = UtilHelper.getMonth();
-        map.put("year", thisYear);
-        map.put("month", thisMonth);
+        mapForMonth.put("year", thisYear);
+        mapForMonth.put("month", thisMonth);
+        mapForMonth.put("sysUserCompanyIds", null);
+
+        mapForYear.put("year", thisYear);
+        mapForYear.put("month", null);
+        mapForYear.put("sysUserCompanyIds", null);
         try {
-            map.put("sysUserCompanyIds", null);
+            SysBudgetDetailsEntity sysBudgetDetailsEntity=new SysBudgetDetailsEntity();
             //mybatis涉及到in查询的，传参数时，可以一个或者多个，也可以封装成map进行传值
-            SysBudgetDetails sysBudgetDetails = sysBudgetDetailsBusinessService.sysBudgetDetailsAnalysis(map);
-            if (null != sysBudgetDetails) {
-                List<SysBudgetDetails> sysBudgetDetailsList = sysBudgetDetailsBusinessService.sysBudgetDetailsIncomeForMonth(map);
+            SysBudgetDetails sysBudgetDetailsForyear = sysBudgetDetailsBusinessService.sysBudgetDetailsAnalysis(mapForYear);
+            //mybatis涉及到in查询的，传参数时，可以一个或者多个，也可以封装成map进行传值
+            SysBudgetDetails sysBudgetDetailsForMonth = sysBudgetDetailsBusinessService.sysBudgetDetailsAnalysis(mapForMonth);
+            if (null != sysBudgetDetailsForyear) {
+                List<SysBudgetDetails> sysBudgetDetailsList = sysBudgetDetailsBusinessService.sysBudgetDetailsIncomeForMonth(mapForYear);
                 //实际收入
                 Map<Integer, Object> realIncomeMap = null;
                 //预算收入
@@ -719,15 +734,17 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                         }
                     }
                 }
-                sysBudgetDetails.setRealIncomeMap(realIncomeMap);
-                sysBudgetDetails.setBudgetIncomeMap(budgetIncomeMap);
-                sysBudgetDetails.setRealExpensesTotalMap(realExpensesTotalMap);
-                sysBudgetDetails.setBudgetExpensesMap(budgetExpensesMap);
-                sysBudgetDetails.setRealProfitsMap(realProfitsMap);
-                sysBudgetDetails.setRealProfitsScaleMap(realProfitsScaleMap);
+                sysBudgetDetailsForyear.setRealIncomeMap(realIncomeMap);
+                sysBudgetDetailsForyear.setBudgetIncomeMap(budgetIncomeMap);
+                sysBudgetDetailsForyear.setRealExpensesTotalMap(realExpensesTotalMap);
+                sysBudgetDetailsForyear.setBudgetExpensesMap(budgetExpensesMap);
+                sysBudgetDetailsForyear.setRealProfitsMap(realProfitsMap);
+                sysBudgetDetailsForyear.setRealProfitsScaleMap(realProfitsScaleMap);
             }
+            sysBudgetDetailsEntity.setSysBudgetDetailsForMonth(sysBudgetDetailsForMonth);
+            sysBudgetDetailsEntity.setSysBudgetDetailsForYear(sysBudgetDetailsForyear);
             //存储到redis缓存，为大屏财务数据页面展示提供服务
-            redisTemplate.opsForValue().set("sysBudgetDetails", sysBudgetDetails);
+            redisTemplate.opsForValue().set("sysBudgetDetails", sysBudgetDetailsEntity);
             //调取财务大屏数据接口
             sysDataAnalysisService.sysFinancialDataAnalysis();
             // return R.ok().putData(200, sysBudgetDetails, "获取成功！");

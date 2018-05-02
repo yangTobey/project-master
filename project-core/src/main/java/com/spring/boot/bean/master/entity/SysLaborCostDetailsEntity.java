@@ -2,6 +2,7 @@ package com.spring.boot.bean.master.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.zip.DeflaterOutputStream;
@@ -9,7 +10,7 @@ import java.util.zip.DeflaterOutputStream;
 /**
  * Created by Administrator on 2018/3/12.
  */
-public class SysLaborCostDetailsEntity {
+public class SysLaborCostDetailsEntity implements Serializable {
 
     private Long  laborCostId;
     private Integer year;

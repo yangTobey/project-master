@@ -83,7 +83,9 @@
         SUM(order_maintenance_cost) AS order_maintenance_cost,SUM(community_activities_cost) AS community_activities_cost,SUM(other_cost) AS other_cost
         FROM sys_budget_details where 1=1
         and year = #{year}
-        and month = #{month}
+        <if test="month != null and month!=''">
+            and month = #{month}
+        </if>
         <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
             AND company_id IN
             <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">

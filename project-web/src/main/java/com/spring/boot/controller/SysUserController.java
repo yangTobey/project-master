@@ -216,4 +216,15 @@ public class SysUserController {
         Map<String, Object> map = sysUserService.sysUserCompanyAuthority(Long.valueOf(userId));
         return R.ok(map);
     }
+
+    /**
+     * 获取登录用户的操作权限（系统的增删改查等功能）
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getUserRole", method = RequestMethod.GET)
+    public R getUserRole() {
+        Map<String, Object> map = sysUserService.getUserRole();
+        return R.ok(map);
+    }
 }

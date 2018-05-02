@@ -13,9 +13,6 @@ public class SysPropertyDataAnalysisEntity implements Serializable {
 
     /********************************工程能耗统计信息************************/
     //工程能耗统计信息
-    private  Map<String, Object> sysProjectEnergyMap;
-
-
 
     //问题遗留数量（月）
     private Integer projectUnfinishedTotal;
@@ -31,21 +28,21 @@ public class SysPropertyDataAnalysisEntity implements Serializable {
     private Double monthConsumptionElectricity;
     //耗水量（月）
     private Double monthConsumptionWater;
-    //耗电量同比
+    //耗电量同比（月）
     private Double yoYElectricityScale;
-    //耗电量环比
+    //耗电量环比（月）
     private Double mtoMtElectricityScale;
-    //耗水量同比
+    //耗水量同比（月）
     private Double yoYWaterScale;
-    //耗水量环比
+    //耗水量环比（月）
     private Double mtoMtWaterScale;
-    //耗电量环比
+    //耗电量环比（）
     private Map<Integer, Double> mtoMtCsElectricityScaleMap ;
     //耗水量环比
     private Map<Integer, Double> mtoMtCsWaterScaleMap ;
-    //耗电量(月)
+    //耗电量(年)
     private Map<Integer, Double> monthCsElectricityMap ;
-    //耗水量(月)
+    //耗水量(年)
     private Map<Integer, Double> monthCsWaterMap ;
     /*//年度统计信息
     private  Map<String, Object> sysProjectForYearMap;
@@ -53,8 +50,6 @@ public class SysPropertyDataAnalysisEntity implements Serializable {
     private  Map<String, Object> sysProjectEnergyForMonthMap;*/
 
     /**********************************基础数据统计信息**************************/
-    private  SysBasicDataEntity sysBasicData;
-
     //建筑总面积
     private Double constructionArea;
     //收费总面积
@@ -89,8 +84,6 @@ public class SysPropertyDataAnalysisEntity implements Serializable {
 
     /****************************************品质检查统计数据******************************/
     //品质检查信息
-    private  Map<String, Object> qualityManageMap;
-
     //月品质检查项（个/年）
     private Integer yearQualityCheck;
     //月品质检查合格项（个/年）
@@ -128,8 +121,6 @@ public class SysPropertyDataAnalysisEntity implements Serializable {
 
 
     /*******************************人员成本统计信息************************/
-    private  SysLaborCostDetailsEntity sysLaborCostDetails;
-
 
     //月人工成本支出
     private Double laborCostTotal;
@@ -157,38 +148,6 @@ public class SysPropertyDataAnalysisEntity implements Serializable {
     private Double eBusinessScale;
     //销配成本占比
     private Double saleLaborCostScale;
-
-    public Map<String, Object> getSysProjectEnergyMap() {
-        return sysProjectEnergyMap;
-    }
-
-    public void setSysProjectEnergyMap(Map<String, Object> sysProjectEnergyMap) {
-        this.sysProjectEnergyMap = sysProjectEnergyMap;
-    }
-
-    public SysBasicDataEntity getSysBasicData() {
-        return sysBasicData;
-    }
-
-    public void setSysBasicData(SysBasicDataEntity sysBasicData) {
-        this.sysBasicData = sysBasicData;
-    }
-
-    public Map<String, Object> getQualityManageMap() {
-        return qualityManageMap;
-    }
-
-    public void setQualityManageMap(Map<String, Object> qualityManageMap) {
-        this.qualityManageMap = qualityManageMap;
-    }
-
-    public SysLaborCostDetailsEntity getSysLaborCostDetails() {
-        return sysLaborCostDetails;
-    }
-
-    public void setSysLaborCostDetails(SysLaborCostDetailsEntity sysLaborCostDetails) {
-        this.sysLaborCostDetails = sysLaborCostDetails;
-    }
 
     public Integer getProjectUnfinishedTotal() {
         return projectUnfinishedTotal;

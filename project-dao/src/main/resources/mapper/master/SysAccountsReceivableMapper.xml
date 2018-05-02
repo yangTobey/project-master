@@ -53,7 +53,10 @@
         complete_house_other,SUM(receivable_house_other) AS receivable_house_other
         from sys_accounts_receivable where 1=1
         and year = #{year}
-        and month = #{month}
+        <if test="month != null and month!=''">
+            and month = #{month}
+        </if>
+
         <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
             AND company_id IN
             <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
@@ -61,7 +64,7 @@
             </foreach>
         </if>
     </select>
-    <!--//也可以封装成map传值-->
+    <!--获取当年每月的数据-->
     <select id="sysAccountsReceivableAnalysisForMonth" resultMap="sysAccountsReceivable">
         SELECT SUM(receivable_accounts_owner) as receivable_accounts_owner,SUM(complete_accounts_owner) as
         complete_accounts_owner,month

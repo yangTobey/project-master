@@ -10,6 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -102,45 +103,36 @@ public class ShiroRealm extends AuthorizingRealm {
             return null;
        // }
 //        return null;*/
-        String username = (String) authenticationToken.getPrincipal();
+        String userAccount = (String) authenticationToken.getPrincipal();
         String password = new String((char[]) authenticationToken.getCredentials());
         //UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         //String userName=token.getUsername();
         //logger.info(userName+token.getPassword());
-        SysUser u = sysUserService.findByUserId("1");
-        System.out.println("测试账号：" + u.getAccount());
         //查询用户信息
-        SysUser user = sysUserService.findByUserAccount(username);
-        if (user != null) {
-            Session session = SecurityUtils.getSubject().getSession();
-            session.setAttribute("user", user);
-            /************************获取登录用户权限下可以操作的公司列表公司id******************/
-            List<Long> sysUserCompanyIds=sysUserCompanyBusinessService.sysUserCompanyInfo(user.getUserId());
-            if(null!=sysUserCompanyIds){
-                session.setAttribute("sysUserCompany", sysUserCompanyIds);
-            }
-            SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(username), getName());
-            return info;
-        } else {
-            //账号不存在
-            if (user == null) {
-                System.out.println("EE");
-                throw new UnknownAccountException("账号或密码不正确");
-            }
-
-            //密码错误
-            if (!password.equals(user.getPassword())) {
-                System.out.println("FF");
-                throw new IncorrectCredentialsException("账号或密码不正确");
-            }
-
-            //账号锁定
-            if (user.getStatusCode() == 0) {
-                System.out.println("GG");
-                throw new LockedAccountException("账号已被锁定,请联系管理员");
-            }
-            return null;
+        SysUser user = sysUserService.findByUserAccount(userAccount);
+        //账号不存在
+        if (user == null) {
+            throw new UnknownAccountException("账号或密码不正确");
         }
+        //密码错误
+        if (!(new SimpleHash("md5", password, null, 2).toHex()).equals(user.getPassword())) {
+            throw new IncorrectCredentialsException("账号或密码不正确");
+        }
+        //账号锁定
+        if (user.getStatusCode() == 0) {
+            throw new LockedAccountException("账号已被锁定,请联系管理员");
+        }
+
+        Session session = SecurityUtils.getSubject().getSession();
+        session.setAttribute("user", user);
+        /************************获取登录用户权限下可以操作的公司列表公司id******************/
+        List<Long> sysUserCompanyIds = sysUserCompanyBusinessService.sysUserCompanyInfo(user.getUserId());
+        if (null != sysUserCompanyIds) {
+            session.setAttribute("sysUserCompany", sysUserCompanyIds);
+        }
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), null, getName());
+        return info;
+
     }
 
 }

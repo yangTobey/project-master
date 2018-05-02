@@ -97,4 +97,10 @@ public interface SysUserService {
      * @return
      */
     Map<String, Object> sysUserCompanyAuthority(Long userId);
+    /**
+     * 获取登录用户的操作权限（系统的增删改查等功能）
+     *
+     * @return
+     */
+    Map<String, Object> getUserRole();
 }
