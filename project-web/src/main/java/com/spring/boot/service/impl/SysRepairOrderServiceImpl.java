@@ -31,9 +31,9 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
      * 定时任务，每一分钟执行一次
      * @return
      */
-
+    @Scheduled(cron = "0/30 * * * * *")
     @Override
-    public Map<String, Object> getRepairOrder() {
+    public void getRepairOrder() {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         Integer year = UtilHelper.getYear();
@@ -87,10 +87,10 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
                 repairOrderInfo.setRepairOrderLatestList(repairOrderLatestList);
                 resultMap.put("repairOrder",repairOrderInfo);
                 WebSocket.sendInfo(JsonUtils.obj2JsonString(R.ok().putData(200, resultMap, "获取成功！！")));
-                return R.ok().putData(200, repairOrderInfo, "获取数据成功！");
+                //return R.ok().putData(200, repairOrderInfo, "获取数据成功！");
             } else {
                 WebSocket.sendInfo(JsonUtils.obj2JsonString(R.error(500, "获取工单统计信息失败，服务器异常，请联系管理员！")));
-                return R.error(500, "获取工单信息失败，服务器异常，请联系系统管理员！");
+               // return R.error(500, "获取工单信息失败，服务器异常，请联系系统管理员！");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,7 +100,7 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
             }catch (Exception ex){
                 ex.printStackTrace();
             }
-            return R.error(500, "获取工单信息失败，服务器异常，请联系系统管理员！");
+            //return R.error(500, "获取工单信息失败，服务器异常，请联系系统管理员！");
         }
     }
 }

@@ -29,9 +29,9 @@ public class SysRepairOrderController {
      * 获取瑞加+系统的工单统计信息
      * @return
      */
-    @Scheduled(cron = "0/30 * * * * *")
-    public R getRepairOrder(){
-        Map<String,Object> map=sysRepairOrderService.getRepairOrder();
-        return  R.ok(map);
+    //@Scheduled(cron = "0/30 * * * * *")
+    public void getRepairOrder(){
+        sysRepairOrderService.getRepairOrder();
+
     }
 }

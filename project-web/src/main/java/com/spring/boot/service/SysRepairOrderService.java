@@ -11,6 +11,6 @@ public interface SysRepairOrderService {
      * 获取瑞加+系统的工单统计信息
      * @return
      */
-    Map<String,Object> getRepairOrder();
+    void getRepairOrder();
 
 }
