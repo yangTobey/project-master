@@ -8,4 +8,8 @@
 		from sys_role_menu where role_id = #{roleId}
 	</select>
 
+	<select id="getMenuIdByRoleId" resultType="long" >
+		select menu_id from sys_role_menu where role_id = #{roleId}
+	</select>
+
 </mapper>

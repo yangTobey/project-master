@@ -1,6 +1,8 @@
 package com.spring.boot.service.web.impl;
 
+import com.spring.boot.bean.cluster.CityInfo;
 import com.spring.boot.bean.cluster.RepairOrder;
+import com.spring.boot.bean.cluster.RepairOrderLatest;
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.dao.web.cluster.RepairOrderDao;
 import com.spring.boot.dao.web.master.SysCompanyDao;
@@ -33,5 +35,15 @@ public class SysRepairOrderBusinessServiceImpl implements SysRepairOrderBusiness
     @Override
     public RepairOrder getRepairOrderFinish(Map<String, Object> map) {
         return repairOrderDao.getRepairOrderFinish(map);
+    }
+
+    @Override
+    public List<CityInfo> getCityInfo() {
+        return repairOrderDao.getCityInfo();
+    }
+
+    @Override
+    public List<RepairOrderLatest> getRepairOrderLatest() {
+        return repairOrderDao.getRepairOrderLatest();
     }
 }

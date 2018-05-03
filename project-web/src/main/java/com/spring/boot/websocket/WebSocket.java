@@ -1,6 +1,7 @@
 package com.spring.boot.websocket;
 
 import com.spring.boot.service.SysDataAnalysisService;
+import com.spring.boot.service.SysRepairOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -19,6 +20,8 @@ import java.util.List;
 public class WebSocket extends TextWebSocketHandler {
     @Autowired
     private SysDataAnalysisService sysDataAnalysisService;
+    @Autowired
+    private SysRepairOrderService sysRepairOrderService;
 
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的WebSocket对象。
@@ -67,6 +70,8 @@ public class WebSocket extends TextWebSocketHandler {
         } else if ("financial".equals(message.getPayload())) {
             //财务大屏界面连接成功后请求信息
             sysDataAnalysisService.sysFinancialDataAnalysis();
+        }else if("repairOrder".equals(message.getPayload())){
+            sysRepairOrderService.getRepairOrder();
         }
         //System.out.println(message.getPayload());
         //TextMessage msg = new TextMessage(message.getPayload());

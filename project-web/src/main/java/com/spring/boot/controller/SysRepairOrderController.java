@@ -9,6 +9,8 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +19,7 @@ import java.util.Map;
 /**
  * Created by xiaoyang on 2018/4/23.
  */
-@RestController
-@RequestMapping("/repairOrder")
+@Component
 public class SysRepairOrderController {
 
     @Autowired
@@ -28,7 +29,7 @@ public class SysRepairOrderController {
      * 获取瑞加+系统的工单统计信息
      * @return
      */
-    @RequestMapping(value = "/getRepairOrder", method = RequestMethod.GET)
+    @Scheduled(cron = "0/30 * * * * *")
     public R getRepairOrder(){
         Map<String,Object> map=sysRepairOrderService.getRepairOrder();
         return  R.ok(map);

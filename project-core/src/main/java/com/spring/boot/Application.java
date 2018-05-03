@@ -7,6 +7,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -20,6 +21,7 @@ import org.springframework.web.filter.CorsFilter;
 @SpringBootApplication  // Spring Boot 应用的标识
 @MapperScan("com.spring.boot.dao.*")  // mapper 接口类扫描包配置
 @EnableTransactionManagement
+@EnableScheduling
 public class Application extends SpringBootServletInitializer {
 
     /*注：外部tomcat启动，类需要继承SpringBootServletInitializer,实现SpringBootServletInitializer可以让spring-boot项目在web容器中运行 */

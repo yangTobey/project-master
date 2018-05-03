@@ -42,4 +42,15 @@ public class SysDataAnalysisController {
         Map<String, Object> map = sysDataAnalysisService.sysFinancialDataAnalysis();
         return R.ok().put(200, map, "获取成功！");
     }
+
+    /**
+     * 获取物业大屏界面工单统计信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/sysRepairOrder", method = RequestMethod.GET)
+    public R sysRepairOrder() {
+        Map<String, Object> map = sysDataAnalysisService.sysRepairOrder();
+        return R.ok().put(200, map, "获取成功！");
+    }
 }

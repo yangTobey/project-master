@@ -305,4 +305,13 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             return R.error(500, "获取财务大屏数据展示统计详细信息失败，服务器异常，请联系管理员！");
         }
     }
+
+    /**
+     * 获取物业大屏界面工单统计信息
+     * @return
+     */
+    @Override
+    public Map<String, Object> sysRepairOrder() {
+        return null;
+    }
 }

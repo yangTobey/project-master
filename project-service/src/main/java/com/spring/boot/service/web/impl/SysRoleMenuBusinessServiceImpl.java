@@ -20,4 +20,8 @@ public class SysRoleMenuBusinessServiceImpl implements SysRoleMenuBusinessServic
         return sysRoleMenuDao.findRoleMenuInfoByRoleId(roleId);
     }
 
+    @Override
+    public List<Long> getMenuIdByRoleId(Long roleId) {
+        return sysRoleMenuDao.getMenuIdByRoleId(roleId);
+    }
 }

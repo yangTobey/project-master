@@ -102,15 +102,14 @@ public class SysRoleServiceImpl implements SysRoleService {
         int count = sysRoleBusinessService.updateSysRole(map);
         if (count > 0) {
             int deleteCount = sysRoleBusinessService.deleteSysRoleMenu(roleId);
-            if (deleteCount > 0) {
-                String[] moduleIdArray;
-                //去掉最后那个逗号，在进行获取数据
-                moduleIdArray = moduleIds.substring(0, moduleIds.length() - 1).split(",");
-                for (String moduleId : moduleIdArray) {
-                    sysRoleBusinessService.addSysRoleMenu(Long.valueOf(moduleId), roleId);
-                }
-                return R.ok(200, "更新成功！");
+            String[] moduleIdArray;
+            //去掉最后那个逗号，在进行获取数据
+            moduleIdArray = moduleIds.substring(0, moduleIds.length() - 1).split(",");
+            for (String moduleId : moduleIdArray) {
+                sysRoleBusinessService.addSysRoleMenu(Long.valueOf(moduleId), roleId);
             }
+            return R.ok(200, "更新成功！");
+
         }
         return R.error(500, "更新失败，请联系管理员！");
     }

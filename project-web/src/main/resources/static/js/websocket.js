@@ -20,7 +20,7 @@ var websocket = null;
         //setMessageInnerHTML("open");
         /*type为property表示物业大屏界面，type为financial时表示财务大屏界面*/
         //send("financial");
-        send("property");
+        send("repairOrder");
     }
 
     //接收到消息的回调方法

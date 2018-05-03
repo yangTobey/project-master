@@ -41,13 +41,23 @@ public class SysMenuController {
      * @return
      */
     @RequestMapping(value = "/getSysModule", method = RequestMethod.GET)
-    public R getSysModule(@RequestParam(value = "type", required = false) String type) {
-        if(UtilHelper.isEmpty(type)){
+    public R getSysModule(@RequestParam(value = "type", required = false) String type, @RequestParam(value = "roleId", required = false) String roleId) {
+        if (UtilHelper.isEmpty(type)) {
             return R.error(400, "操作类型不能为空！！");
+        } else {
+            if ("update".equals(type)) {
+                if (!UtilHelper.isNumer(roleId)) {
+                    return R.error(400, "角色id格式不正确！！");
+                }
+            }else{
+                //赋值roleId为0,避免类型转化出错，不实际查询操作
+                roleId="0";
+            }
         }
-        Map<String, Object> map = sysMenuService.getSysModule(type);
+        Map<String, Object> map = sysMenuService.getSysModule(type, Long.valueOf(roleId));
         return R.ok(map);
     }
+
     /**
      * 查询公司信息
      *
@@ -64,7 +74,7 @@ public class SysMenuController {
             return R.error(400, "分页控制，页码offset只能为数字！");
         }
         Map<String, Object> map = sysMenuService.getSysCompanyList(Integer.valueOf(limit), Integer.valueOf(offset));
-        return R.ok().put(200, map,"获取成功！");
+        return R.ok().put(200, map, "获取成功！");
     }
 
     /**
@@ -76,8 +86,8 @@ public class SysMenuController {
      * @return
      */
     @RequestMapping(value = "/addSysCompany", method = RequestMethod.GET)
-    public R addSysCompany(@RequestParam(value = "companyName", required = false)String companyName, @RequestParam(value = "companyPhone", required = false)String companyPhone
-            , @RequestParam(value = "companyAddress", required = false)String companyAddress) {
+    public R addSysCompany(@RequestParam(value = "companyName", required = false) String companyName, @RequestParam(value = "companyPhone", required = false) String companyPhone
+            , @RequestParam(value = "companyAddress", required = false) String companyAddress) {
         int count = sysMenuService.addSysCompany(companyName, companyPhone, companyAddress);
         if (count > 0) {
             return R.ok(200, "新增成功！");
@@ -95,10 +105,10 @@ public class SysMenuController {
      * @return
      */
     @RequestMapping(value = "/updateSysCompanyInfo", method = RequestMethod.GET)
-    public R updateSysCompanyInfo(@RequestParam(value = "companyId", required = false)String companyId, @RequestParam(value = "companyName", required = false)String companyName
-            , @RequestParam(value = "companyPhone", required = false)String companyPhone,@RequestParam(value = "companyAddress", required = false) String companyAddress) {
+    public R updateSysCompanyInfo(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "companyName", required = false) String companyName
+            , @RequestParam(value = "companyPhone", required = false) String companyPhone, @RequestParam(value = "companyAddress", required = false) String companyAddress) {
         logger.info("公司信息更新操作！");
-        if(!UtilHelper.isNumer(companyId)){
+        if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司编号格式不正确，请联系系统管理员！");
         }
         if (UtilHelper.isEmpty(companyName)) {
@@ -119,8 +129,8 @@ public class SysMenuController {
      * @return
      */
     @RequestMapping(value = "/deleteSysCompanyById", method = RequestMethod.GET)
-    public R deleteSysCompanyById(@RequestParam(value = "companyId", required = false)String companyId) {
-         if(!UtilHelper.isNumer(companyId)){
+    public R deleteSysCompanyById(@RequestParam(value = "companyId", required = false) String companyId) {
+        if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司编号格式不正确，请联系系统管理员！");
         }
         int count = sysMenuService.deleteSysCompanyById(companyId);
@@ -129,6 +139,7 @@ public class SysMenuController {
         }
         return R.error(500, "删除失败，系统异常，请联系系统管理员！");
     }
+
     /**
      * 根据公司id获取信息
      *
@@ -136,11 +147,11 @@ public class SysMenuController {
      * @return
      */
     @RequestMapping(value = "/findSysCompanyByCompanyId", method = RequestMethod.GET)
-    public R findSysCompanyByCompanyId(@RequestParam(value = "companyId", required = false)String companyId){
-        if(!UtilHelper.isNumer(companyId)){
+    public R findSysCompanyByCompanyId(@RequestParam(value = "companyId", required = false) String companyId) {
+        if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司编号格式不正确，请联系系统管理员！");
         }
         Map<String, Object> map = sysMenuService.findSysCompanyByCompanyId(Long.valueOf(companyId));
-        return R.ok().put(200, map,"获取成功！");
+        return R.ok().put(200, map, "获取成功！");
     }
 }

@@ -1,5 +1,6 @@
 package com.spring.boot.bean.cluster;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,11 +10,11 @@ public class RepairOrder {
     private Long repairId;
     //年工单总数
     private Integer repairTotal;
-    //月工单总数
+    //月工单总数，在查询数据时使用
     private Integer monthRepairTotal;
     //工单状态
     private Integer repairStatus;
-    //月份
+    //月份,在查询数据时使用
     private Integer month;
     //工单完成率
     private Double repairOrderFinishScale;
@@ -22,6 +23,10 @@ public class RepairOrder {
     private Map<Integer, Integer> monthRepairOrderMap ;
     //工单环比增长率(月)
     private Map<Integer, Double> monthToMonthRepairOrderMap ;
+
+    private List<CityInfo> cityInfos;
+
+    private List<RepairOrderLatest> repairOrderLatestList;
 
     public Long getRepairId() {
         return repairId;
@@ -85,5 +90,21 @@ public class RepairOrder {
 
     public void setMonthToMonthRepairOrderMap(Map<Integer, Double> monthToMonthRepairOrderMap) {
         this.monthToMonthRepairOrderMap = monthToMonthRepairOrderMap;
+    }
+
+    public List<CityInfo> getCityInfos() {
+        return cityInfos;
+    }
+
+    public void setCityInfos(List<CityInfo> cityInfos) {
+        this.cityInfos = cityInfos;
+    }
+
+    public List<RepairOrderLatest> getRepairOrderLatestList() {
+        return repairOrderLatestList;
+    }
+
+    public void setRepairOrderLatestList(List<RepairOrderLatest> repairOrderLatestList) {
+        this.repairOrderLatestList = repairOrderLatestList;
     }
 }

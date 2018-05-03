@@ -42,4 +42,21 @@
 		) a
 		GROUP BY MONTH
 	</select>
+
+	<!--查找当年每个月的数据信息-->
+	<select id="getCityInfo" resultType="com.spring.boot.bean.cluster.CityInfo" >
+		SELECT id as cityId,cityName,longitude,latitude from worker_branchCompany WHERE `status`!=2
+	</select>
+	<!--查找最后的30条订单信息-->
+	<select id="getRepairOrderLatest" resultType="com.spring.boot.bean.cluster.RepairOrderLatest" >
+		SELECT
+			company.cityName,company.longitude,company.latitude,re.community_id as communityId,re.`status`,company.id as cityId
+		FROM
+			`repair` AS re
+		LEFT JOIN community AS co ON re.community_id = co.community_id
+		LEFT JOIN worker_branchCommunity AS wocom ON wocom.community = co.community_id
+		LEFT JOIN worker_branchCompany AS company ON company.id = wocom.branchCompanyId
+		WHERE re.`status`!=-1 and re.`status`!=3
+		ORDER BY re.repair_time DESC LIMIT 0, 30
+	</select>
 </mapper>

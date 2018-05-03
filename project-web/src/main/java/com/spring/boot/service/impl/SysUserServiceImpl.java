@@ -338,7 +338,7 @@ public class SysUserServiceImpl implements SysUserService {
             Long userId = ShiroUtils.getUserEntity().getUserId();
             //用户权限列表
             //Set<String> permsSet = new HashSet<String>();
-            Map<String,String> map=new HashMap<String,String>();
+            Map<String,Boolean> map=new HashMap<String,Boolean>();
             //获得所有的权限
             List<SysUserRole> permissionList = sysUserRoleBusinessService.findRoleByUserId(userId);
             for (SysUserRole userRole : permissionList) {
@@ -347,7 +347,7 @@ public class SysUserServiceImpl implements SysUserService {
                     SysMenu sysMenu = sysMenuBusinessService.findSysMenuInfoByMenuId(menuRole.getMenuId());
                     if (sysMenu != null&&sysMenu.getPerms()!=null&&sysMenu.getPerms()!="") {
                         //permsSet.add(sysMenu.getPerms());
-                        map.put(sysMenu.getPerms(),sysMenu.getPerms());
+                        map.put(sysMenu.getPerms(),true);
                     }
                 }
             }

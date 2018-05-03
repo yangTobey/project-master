@@ -16,7 +16,7 @@ public interface SysMenuService {
      * 获取系统菜单和功能按钮
      * @return
      */
-    Map<String,Object> getSysModule(String type);
+    Map<String,Object> getSysModule(String type,Long roleId);
     /**
      * 获取公司列表数据
      * @return

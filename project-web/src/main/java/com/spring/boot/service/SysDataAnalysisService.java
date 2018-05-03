@@ -20,4 +20,10 @@ public interface SysDataAnalysisService {
      */
     Map<String, Object> sysFinancialDataAnalysis();
 
+    /**
+     * 获取物业大屏界面工单统计信息
+     * @return
+     */
+    Map<String, Object> sysRepairOrder();
+
 }

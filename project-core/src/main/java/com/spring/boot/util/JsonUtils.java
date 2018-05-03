@@ -21,13 +21,16 @@ public class JsonUtils {
     }
 
     /**
-     * 转换为json字符串（保留null值以及字段）
+     * 转换为json字符串（WriteMapNullValue:保留null值以及字段,WriteNonStringKeyAsString:将map的key不为string类型的转换为string）
      *
      * @param obj 需要转化的对象
      * @return
      */
     public static String obj2JsonString(Object obj) {
-        return JSON.toJSONString(obj, SerializerFeature.WriteMapNullValue);
+        //SerializerFeature.WriteNonStringKeyAsString,//如果key不为String 则转换为String 比如Map的key为Integer
+        //SerializerFeature.WriteMapNullValue, //输出空置的字段
+        return JSON.toJSONString(obj, SerializerFeature.WriteNonStringKeyAsString, SerializerFeature.WriteMapNullValue);
+        // return JSON.toJSONString(obj, SerializerFeature.WriteMapNullValue).toString();
     }
 
 }

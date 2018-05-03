@@ -2,10 +2,12 @@ package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysMenu;
+import com.spring.boot.bean.master.SysUserRole;
 import com.spring.boot.service.SysCompanyService;
 import com.spring.boot.service.SysMenuService;
 import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.service.web.SysMenuBusinessService;
+import com.spring.boot.service.web.SysRoleMenuBusinessService;
 import com.spring.boot.service.web.SysUserBusinessService;
 import com.spring.boot.util.Constant;
 import com.spring.boot.util.R;
@@ -30,6 +32,8 @@ public class SysMenuServiceImpl implements SysMenuService {
     private SysMenuBusinessService sysMenuBusinessService;
     @Autowired
     private SysUserBusinessService sysUserBusinessService;
+    @Autowired
+    private SysRoleMenuBusinessService sysRoleMenuBusinessService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -57,24 +61,27 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public Map<String, Object> getSysModule(String type) {
+    public Map<String, Object> getSysModule(String type,Long roleId) {
         //用户菜单列表
         List<Long> menuIdList=null;
         if("add".equals(type)){
             //新增不需要获取登录用户已授权的功能菜单和按钮
             menuIdList=null;
         }else if("update".equals(type)){
-            if (ShiroUtils.getUserEntity() == null) {
+            /*if (ShiroUtils.getUserEntity() == null) {
                 return R.error(500, "请登录系统再进行操作功能！");
             }
             if (ShiroUtils.getUserEntity().getUserId() == null) {
                 return R.error(500, "请登录系统再进行操作功能！");
             }
-            Long userId = ShiroUtils.getUserEntity().getUserId();
+            Long userId = ShiroUtils.getUserEntity().getUserId();*/
             //用户菜单列表
-             menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 2);
+             //menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 2);
+            menuIdList = sysRoleMenuBusinessService.getMenuIdByRoleId(roleId);
         }
         List<SysMenu> menuList = getAllMenuList(menuIdList, 2);
+
+
         if(null!=menuList&&menuList.size()>0){
             return R.ok().putData(200,menuList,"获取成功！");
         }else {

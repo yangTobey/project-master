@@ -1,6 +1,8 @@
 package com.spring.boot.service.web;
 
+import com.spring.boot.bean.cluster.CityInfo;
 import com.spring.boot.bean.cluster.RepairOrder;
+import com.spring.boot.bean.cluster.RepairOrderLatest;
 import com.spring.boot.bean.master.SysCompany;
 
 import java.util.List;
@@ -32,5 +34,15 @@ public interface SysRepairOrderBusinessService {
      */
     RepairOrder getRepairOrderFinish(Map<String, Object> map);
 
+    /**
+     * 获取系统城市信息
+     * @return
+     */
+    List<CityInfo> getCityInfo();
+    /**
+     * 查找最后的30条订单信息
+     * @return
+     */
+    List<RepairOrderLatest> getRepairOrderLatest();
 
 }
