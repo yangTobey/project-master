@@ -5,12 +5,21 @@
 <input id="text" type="text" /><button onclick="send()">Send</button>    <button onclick="closeWebSocket()">Close</button>
 <div id="message">
 </div>
-<div id="test">
+<!--<div id="test">
     #if($shiro.hasPermission("qualityManage:list"))
     权限信息获取得到
     #end
+</div>-->
+<div>
+
+        <p>文件1：<input type="file" name="files" id="file1"/></p>
+        <p>文件2：<input type="file" name="files" id="file2"/></p>
+        <p>文件3：<input type="file" name="files" id="file3"/></p>
+        <p><input type="button" value="上传" onclick="uploads()"/></p>
+
 </div>
 <script src="../../../project-web/static/js/jquery/jquery.min.js"></script>
+<script src="../../../project-web/static/js/ajaxfileupload.js"></script>
 
 <script src="../../../project-web/static/js/websocket.js"></script>
 <script>

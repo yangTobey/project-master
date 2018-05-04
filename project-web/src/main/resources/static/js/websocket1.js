@@ -1,5 +1,6 @@
+var websocket = null;
 (function () {
-    var websocket = null;
+
     var url = 'financial';
     //判断当前浏览器是否支持WebSocket
     if ('WebSocket' in window) {
@@ -17,6 +18,7 @@
     //连接成功建立的回调方法
     websocket.onopen = function (event) {
         setMessageInnerHTML("open");
+        send("property");
     }
 
     //接收到消息的回调方法
@@ -36,7 +38,7 @@
 
     //将消息显示在网页上
     function setMessageInnerHTML(innerHTML) {
-        document.getElementById('message').innerHTML += innerHTML + '<br/>';
+        document.getElementById('message1').innerHTML += innerHTML + '<br/>';
     }
 
 
@@ -48,7 +50,7 @@ function closeWebSocket() {
 }
 
 //发送消息
-function send() {
+function send(type) {
     var message = document.getElementById('text').value;
-    websocket.send(message);
+    websocket.send(type);
 }

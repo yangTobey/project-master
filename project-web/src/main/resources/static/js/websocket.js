@@ -55,3 +55,20 @@ function closeWebSocket() {
 function send(type) {
     websocket.send(type);
 }
+
+function uploads() {
+    $.ajaxFileUpload({
+        url: 'http://localhost:8080/project-web/fileUpload/uploads', //用于文件上传的服务器端请求地址
+        type:'post',
+        secureuri: false, //是否需要安全协议，一般设置为false
+        fileElementId: ['file1','file2','file3'], //文件上传域的ID
+        data:{
+            "userId": 1
+        },//一同上传的数据
+        dataType: 'json', //返回值类型一般设置为json
+        success: function (data, status)  //服务器成功响应处理函数
+        {
+            console.log(data);
+        }
+    })
+}
