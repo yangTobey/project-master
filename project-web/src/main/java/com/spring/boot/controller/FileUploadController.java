@@ -1,8 +1,11 @@
 package com.spring.boot.controller;
 
+import com.spring.boot.bean.master.SysQualityManageFile;
+import com.spring.boot.service.SysFileService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,6 +27,9 @@ import java.util.UUID;
 @RequestMapping("/fileUpload")
 public class FileUploadController {
     private static final Logger logger = Logger.getLogger(FileUploadController.class);
+
+    @Autowired
+    private SysFileService sysFileService;
 
     /**
      * 多文件上传，注：@RequestParam("files")的files需要对应前端input标签的name属性
@@ -94,6 +101,81 @@ public class FileUploadController {
             map.put("error", "上传失败！");
         }
         return map;
+    }
+
+    /**
+     * 文件下载相关代码
+     * @param request
+     * @param response
+     * @param fileIds 需要下载的文件id集合
+     * @return
+     */
+    @RequestMapping(value = "/download",method = RequestMethod.GET)
+    public R downloadFile(HttpServletRequest request, HttpServletResponse response,@RequestParam("fileIds") String fileIds,@RequestParam("fileName") String fileName) {
+        //去掉最后那个逗号，在进行获取数据
+        String[]  fileInfoArray = fileIds.substring(0, fileIds.length() - 1).split(";");
+        for (String fileId : fileInfoArray) {
+            SysQualityManageFile sysQualityManageFile=sysFileService.fileSysQualityManageFileById(Long.valueOf(fileId));
+            if(sysQualityManageFile!=null){
+                try {
+                    outputFile(request,response,sysQualityManageFile.getFileUrl(),sysQualityManageFile.getFileName());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 输出需要下载的文件
+     * @param request
+     * @param response
+     * @param realPath
+     * @param fileName
+     */
+    public void outputFile(HttpServletRequest request, HttpServletResponse response,String realPath , String fileName)throws IOException{
+        //String fileName = "aim_test.txt";// 设置文件名，根据业务需要替换成要下载的文件名
+        if (fileName != null) {
+            //设置文件路径
+             realPath = request.getSession().getServletContext().getRealPath("/") +realPath;
+            File file = new File(realPath);
+            if (file.exists()) {
+                response.setContentType("application/force-download");// 设置强制下载不打开
+                //response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);// 设置文件名
+                response.setHeader("Content-Disposition", "attachment;fileName="+ new String(fileName.getBytes("UTF-8"),"ISO-8859-1"));
+                byte[] buffer = new byte[1024];
+                FileInputStream fis = null;
+                BufferedInputStream bis = null;
+                try {
+                    fis = new FileInputStream(file);
+                    bis = new BufferedInputStream(fis);
+                    OutputStream os = response.getOutputStream();
+                    int i = bis.read(buffer);
+                    while (i != -1) {
+                        os.write(buffer);
+                        i = bis.read(buffer);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (bis != null) {
+                        try {
+                            bis.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (fis != null) {
+                        try {
+                            fis.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

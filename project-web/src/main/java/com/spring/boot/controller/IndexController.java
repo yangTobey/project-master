@@ -131,6 +131,6 @@ public class IndexController {
      */
     @RequestMapping(value = "/tesWebsocket", method = RequestMethod.GET)
     public String tesWebsocket(){
-        return "views/main/index";
+        return "views/login";
     }
 }

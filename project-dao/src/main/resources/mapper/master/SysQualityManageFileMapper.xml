@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.web.master.SysFileDao">
+
+    <!--根据文件id查找记录-->
+    <select id="fileSysQualityManageFileById" resultType="com.spring.boot.bean.master.SysQualityManageFile" >
+        SELECT
+        file_name AS fileName,file_url as fileUrl  FROM
+        sys_quality_manage_file where 1=1
+        and file_id = #{fileId}
+    </select>
+
+</mapper>
