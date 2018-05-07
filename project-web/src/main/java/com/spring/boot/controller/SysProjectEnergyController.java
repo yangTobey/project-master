@@ -196,4 +196,18 @@ public class SysProjectEnergyController {
         Map<String, Object> map = sysProjectEnergyService.sysProjectEnergyAnalysisForMonth(Long.valueOf(companyId));
         return R.ok(map);
     }
+    /**
+     * 根据公司id获取附件文档信息
+     *
+     * @param projectId
+     * @return
+     */
+    @RequestMapping(value = "/findSysProjectFileById", method = RequestMethod.GET)
+    public R findSysProjectFileById(@RequestParam(value = "projectId", required = false) String projectId) {
+        if (!UtilHelper.isNumer(projectId)) {
+            return R.error(400, "主键ID格式不正确，请联系系统管理员！");
+        }
+        Map<String, Object> map = sysProjectEnergyService.findSysProjectFileById(Long.valueOf(projectId));
+        return R.ok(map);
+    }
 }

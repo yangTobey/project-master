@@ -12,10 +12,12 @@
 </div>-->
 <div>
 
-        <p>文件1：<input type="file" name="files" id="file1"/></p>
-        <p>文件2：<input type="file" name="files" id="file2"/></p>
-        <p>文件3：<input type="file" name="files" id="file3"/></p>
-        <p><input type="button" value="上传" onclick="uploads()"/></p>
+        <p>文件1：<input type="file" name="files" id="file1" multiple/></p>
+       <!-- <p>文件2：<input type="file" name="files" id="file2"/></p>
+        <p>文件3：<input type="file" name="files" id="file3"/></p>-->
+        <p><input type="button" value="上传" onclick="uploads()"/>
+       <a href="http://localhost:8080/project-web/fileUpload/download?fileIds=4;3;&fileName=22">下载</a>
+        </p>
 
 </div>
 <script src="../../../project-web/static/js/jquery/jquery.min.js"></script>

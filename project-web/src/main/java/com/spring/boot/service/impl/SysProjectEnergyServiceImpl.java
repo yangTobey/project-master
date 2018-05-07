@@ -164,14 +164,14 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
             if (null != sysProject) {
                 List<SysProjectEnergyFile> sysProjectEnergyFile = sysProjectBusinessService.findSysProjectEnergyFileById(projectId);
                 sysProject.setFileList(sysProjectEnergyFile);
-                return R.ok().putData(200, sysProject, "删除成功！！");
+                return R.ok().putData(200, sysProject, "获取成功！！");
             } else {
-                return R.error(500, "删除失败，服务器异常，请联系管理员！");
+                return R.error(500, "获取失败，服务器异常，请联系管理员！");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info("删除工程能耗出错：" + e.getMessage());
-            return R.error(500, "删除失败，服务器异常，请联系管理员！");
+            logger.info("获取信息工程能耗出错：" + e.getMessage());
+            return R.error(500, "获取工程能耗信息失败，服务器异常，请联系管理员！");
         }
     }
 
@@ -199,6 +199,24 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
             e.printStackTrace();
             logger.info("获取工程能耗信息列表出错：" + e.getMessage());
             return R.error(500, "获取工程能耗信息列表失败，服务器异常，请联系管理员！");
+        }
+    }
+
+    @Override
+    public Map<String, Object> findSysProjectFileById(long projectId) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            List<SysProjectEnergyFile> fileList = sysProjectBusinessService.findSysProjectEnergyFileById(projectId);
+            if (fileList != null) {
+                resultMap.put("list", fileList);
+                return R.ok().putData(200, resultMap, "根据id查找品质管理数据成功！");
+            } else {
+                return R.error(500, "不存在文件！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("获取品质管理文件失败：" + e.getMessage());
+            return R.error(500, "获取品质管理文件失败，服务器异常，请联系系统管理员！");
         }
     }
 
@@ -253,8 +271,10 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                     }
                 }
                 return R.ok().putData(200, sysProjectForYear, "获取统计数据成功！");
+            }else{
+                sysProjectForYear=new SysProject();
+                return R.ok().putData(200, sysProjectForYear, "数据不存在！");
             }
-            return R.error(500, "获取工程能耗信息报表信息失败，请联系管理员！");
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("获取工程能耗信息报表信息出错：" + e.getMessage());
@@ -387,6 +407,8 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                     }
                 }
             }
+        }else{
+            sysProjectForYear=new SysProject();
         }
         //将组装的数据存储到redis缓存
         redisTemplate.opsForValue().set("sysProjectForYear", sysProjectForYear);

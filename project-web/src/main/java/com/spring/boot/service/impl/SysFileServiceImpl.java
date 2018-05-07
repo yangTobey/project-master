@@ -1,5 +1,7 @@
 package com.spring.boot.service.impl;
 
+import com.spring.boot.bean.master.SysContractFile;
+import com.spring.boot.bean.master.SysProjectEnergyFile;
 import com.spring.boot.bean.master.SysQualityManageFile;
 import com.spring.boot.service.SysFileService;
 import com.spring.boot.service.web.SysFileBusinessService;
@@ -19,5 +21,15 @@ public class SysFileServiceImpl implements SysFileService {
     @Override
     public SysQualityManageFile fileSysQualityManageFileById(Long fileId) {
         return sysFileBusinessService.fileSysQualityManageFileById(fileId);
+    }
+
+    @Override
+    public SysProjectEnergyFile fileSysProjectEnergyFileById(Long fileId) {
+        return sysFileBusinessService.fileSysProjectEnergyFileById(fileId);
+    }
+
+    @Override
+    public SysContractFile fileSysContractFileById(Long fileId) {
+        return sysFileBusinessService.fileSysContractFileById(fileId);
     }
 }

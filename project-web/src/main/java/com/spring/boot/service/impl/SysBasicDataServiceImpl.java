@@ -76,7 +76,8 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
                 sysBasicDataEntity.setForSaleHouseScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysBasicDataEntity.getForSaleHouseNumber(), sysBasicDataEntity.getHouseNumber())) * 100);
                 return R.ok().putData(200, sysBasicDataEntity, "获取成功！");
             } else {
-                return R.error(500, "获取失败，数据不存在1！");
+                sysBasicDataEntity=new SysBasicDataEntity();
+                return R.ok().putData(200, sysBasicDataEntity, "数据不存在！");
             }
 
             //resultMap.put("data",sysBasicDataEntity);

@@ -14,6 +14,14 @@ public class IndexController {
      * 登录成功后，跳转系统主页面
      * @return
      */
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(){
+        return "views/login/login";
+    }
+    /**
+     * 登录成功后，跳转系统主页面
+     * @return
+     */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(){
         return "views/main/index";
@@ -132,5 +140,29 @@ public class IndexController {
     @RequestMapping(value = "/tesWebsocket", method = RequestMethod.GET)
     public String tesWebsocket(){
         return "views/login";
+    }
+    /**
+     * 401错误界面跳转
+     * @return
+     */
+    @RequestMapping(value = "/page401", method = RequestMethod.GET)
+    public String page401(){
+        return "views/error/401";
+    }
+    /**
+     * 404错误界面跳转
+     * @return
+     */
+    @RequestMapping(value = "/page404", method = RequestMethod.GET)
+    public String page404(){
+        return "views/error/404";
+    }
+    /**
+     * 500错误界面跳转
+     * @return
+     */
+    @RequestMapping(value = "/page500", method = RequestMethod.GET)
+    public String page500(){
+        return "views/error/500";
     }
 }

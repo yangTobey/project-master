@@ -117,6 +117,10 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
                 sysLaborCostDetails.setSysLaborCostScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(personnelCost, realExpensesTotal)));
                 //上月人工支出占比
                 sysLaborCostDetails.setSysLaborCostLastMonthScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(personnelCostLastMonth, realExpensesLastMonthTotal)));
+                return R.ok().putData(200, sysLaborCostDetails, "获取成功！");
+            }else{
+                sysLaborCostDetails=new SysLaborCostDetailsEntity();
+                return R.ok().putData(200, sysLaborCostDetails, "数据不存在！");
             }
 
             //resultMap.put("sysLaborCostTotal", sysLaborCostDetails);
@@ -128,7 +132,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             //resultMap.put("sysDemissionScale", (UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getDemissionTotal(),sysLaborCostDetails.getEntryTotal()))));
             //成本构成
             //resultMap.put("sysLaborCostsDepartmentList", sysLaborCostDepartment);
-            return R.ok().putData(200, sysLaborCostDetails, "获取成功！");
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("获取人员成本统计信息错误：" + e.getMessage());
@@ -384,10 +388,12 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             sysLaborCostDetails.setSysLaborCostScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(personnelCost, realExpensesTotal)));
             //上月人工支出占比
             sysLaborCostDetails.setSysLaborCostLastMonthScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(personnelCostLastMonth, realExpensesLastMonthTotal)));
+
+            //将统计信息存储到redis缓存中
+            redisTemplate.opsForValue().set("sysLaborCostDetails", sysLaborCostDetails);
+            //调取物业大屏数据接口
+            sysDataAnalysisService.sysPropertyDataAnalysis();
         }
-        //将统计信息存储到redis缓存中
-        redisTemplate.opsForValue().set("sysLaborCostDetails", sysLaborCostDetails);
-        //调取物业大屏数据接口
-        sysDataAnalysisService.sysPropertyDataAnalysis();
+
     }
 }

@@ -1,6 +1,8 @@
 package com.spring.boot.service.web.impl;
 
 import com.spring.boot.bean.master.SysBasicData;
+import com.spring.boot.bean.master.SysContractFile;
+import com.spring.boot.bean.master.SysProjectEnergyFile;
 import com.spring.boot.bean.master.SysQualityManageFile;
 import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 import com.spring.boot.dao.web.master.SysBasicDataDao;
@@ -24,5 +26,15 @@ public class SysFileBusinessServiceImpl implements SysFileBusinessService {
     @Override
     public SysQualityManageFile fileSysQualityManageFileById(Long fileId) {
         return sysFileDao.fileSysQualityManageFileById(fileId);
+    }
+
+    @Override
+    public SysProjectEnergyFile fileSysProjectEnergyFileById(Long fileId) {
+        return sysFileDao.fileSysProjectEnergyFileById(fileId);
+    }
+
+    @Override
+    public SysContractFile fileSysContractFileById(Long fileId) {
+        return sysFileDao.fileSysContractFileById(fileId);
     }
 }

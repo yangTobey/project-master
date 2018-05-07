@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 public class UtilHelper {
 
     public static final String module = UtilHelper.class.getName();
+    public static final SimpleDateFormat DATETIMEFORMATE = new SimpleDateFormat("yyyyMMddHHmmss");
     public static final SimpleDateFormat DATETIMEFULLFORMATE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static final SimpleDateFormat DATETIMEAPIFORMATE = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     public static final SimpleDateFormat DATEFORMATE = new SimpleDateFormat("yyyy-MM-dd");
@@ -49,6 +50,13 @@ public class UtilHelper {
      */
     public static String getNowDateStr() {
         return DATEFORMATE.format(new java.util.Date());
+    }
+    /**
+     * 获取系统当前时间（yyyyMMddHHmmss）
+     * @return
+     */
+    public static String getNowDateTimeStr() {
+        return DATETIMEFORMATE.format(new java.util.Date());
     }
 
     /**

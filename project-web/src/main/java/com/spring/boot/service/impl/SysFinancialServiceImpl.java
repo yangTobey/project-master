@@ -74,6 +74,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 if (null != sysChargeDetails.getChargeDebtReturn() && null != sysChargeDetails.getChargeDebt()) {
                     sysChargeDetails.setChargeDebtScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysChargeDetails.getChargeDebtReturn(), sysChargeDetails.getChargeDebt())));
                 }
+            }else{
+                sysChargeDetails=new SysChargeDetails();
             }
             return R.ok().putData(200, sysChargeDetails, "获取成功！");
         } catch (Exception e) {
@@ -176,6 +178,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 sysAccountsReceivable.setOpenScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompleteOpen(), sysAccountsReceivable.getReceivableOpen())));
                 sysAccountsReceivable.setPropertySubsidyScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompletePropertySubsidy(), sysAccountsReceivable.getReceivablePropertySubsidy())));
                 sysAccountsReceivable.setHouseOtherScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompleteHouseOther(), sysAccountsReceivable.getReceivableHouseOther())));
+            }else{
+                sysAccountsReceivable=new  SysAccountsReceivable();
             }
             List<SysAccountsReceivable> sysAccountsReceivableAnalysisList = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysisForMonth(map);
             //获取所在年份对应的所有数据的月份
@@ -434,6 +438,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 sysBudgetDetails.setBudgetExpensesMap(budgetExpensesMap);
                 sysBudgetDetails.setRealProfitsMap(realProfitsMap);
                 sysBudgetDetails.setRealProfitsScaleMap(realProfitsScaleMap);
+            }else{
+                sysBudgetDetails=new SysBudgetDetails();
             }
 
             //resultMap.put("incomeInfo", sysBudgetDetails);
@@ -573,11 +579,12 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 }
                 sysChargeDetails.setYearChargeMoneyScale(yearChargeMoneyScale);
                 sysChargeDetails.setYearChargeDebtScale(yearChargeDebtScale);
+                //存储到redis缓存，为大屏财务数据页面展示提供服务
+                redisTemplate.opsForValue().set("sysChargeDetails", sysChargeDetails);
+                //调取财务大屏数据接口
+                sysDataAnalysisService.sysFinancialDataAnalysis();
             }
-            //存储到redis缓存，为大屏财务数据页面展示提供服务
-            redisTemplate.opsForValue().set("sysChargeDetails", sysChargeDetails);
-            //调取财务大屏数据接口
-            sysDataAnalysisService.sysFinancialDataAnalysis();
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("统计信息失败！" + e.getMessage());
@@ -602,7 +609,6 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         mapForMonth.put("month", thisMonth);
         mapForMonth.put("sysUserCompanyIds", null);
         try {
-
             //当年数据，也可以封装成map传值
             SysAccountsReceivable sysAccountsReceivable = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(mapForYear);
             //当月数据
@@ -616,6 +622,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 sysAccountsReceivable.setOpenScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompleteOpen(), sysAccountsReceivable.getReceivableOpen())));
                 sysAccountsReceivable.setPropertySubsidyScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompletePropertySubsidy(), sysAccountsReceivable.getReceivablePropertySubsidy())));
                 sysAccountsReceivable.setHouseOtherScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompleteHouseOther(), sysAccountsReceivable.getReceivableHouseOther())));
+            }else{
+                sysAccountsReceivable=new SysAccountsReceivable();
             }
             List<SysAccountsReceivable> sysAccountsReceivableAnalysisList = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysisForMonth(mapForYear);
             //获取所在年份对应的所有数据的月份

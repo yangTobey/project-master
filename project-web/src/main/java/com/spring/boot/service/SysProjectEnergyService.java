@@ -69,6 +69,11 @@ public interface SysProjectEnergyService {
      * @return
      */
     Map<String,Object> sysProjectEnergyAnalysisForMonth(Long companyId);
+    /**
+     * 根据id获取附件文档信息
+     * @return
+     */
+    Map<String,Object> findSysProjectFileById(long projectId);
 
 
 }
