@@ -28,6 +28,8 @@ public class RepairOrder {
 
     private List<RepairOrderLatest> repairOrderLatestList;
 
+    Map<Long,List<String>> cityOrderMap;
+
     public Long getRepairId() {
         return repairId;
     }
@@ -106,5 +108,13 @@ public class RepairOrder {
 
     public void setRepairOrderLatestList(List<RepairOrderLatest> repairOrderLatestList) {
         this.repairOrderLatestList = repairOrderLatestList;
+    }
+
+    public Map<Long, List<String>> getCityOrderMap() {
+        return cityOrderMap;
+    }
+
+    public void setCityOrderMap(Map<Long, List<String>> cityOrderMap) {
+        this.cityOrderMap = cityOrderMap;
     }
 }

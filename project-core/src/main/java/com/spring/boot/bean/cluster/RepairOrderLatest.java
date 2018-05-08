@@ -21,6 +21,9 @@ public class RepairOrderLatest {
     private Integer status;
     //状态名称
     private String statusName;
+    private String communityName;
+    private String userName;
+    private String levelName;
 
     public String getCityName() {
         return cityName;
@@ -76,5 +79,29 @@ public class RepairOrderLatest {
 
     public void setCityId(Long cityId) {
         this.cityId = cityId;
+    }
+
+    public String getCommunityName() {
+        return communityName;
+    }
+
+    public void setCommunityName(String communityName) {
+        this.communityName = communityName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getLevelName() {
+        return levelName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
     }
 }

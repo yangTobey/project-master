@@ -50,13 +50,30 @@
 	<!--查找最后的30条订单信息-->
 	<select id="getRepairOrderLatest" resultType="com.spring.boot.bean.cluster.RepairOrderLatest" >
 		SELECT
-			company.cityName,company.longitude,company.latitude,re.community_id as communityId,re.`status`,company.id as cityId
+			company.cityName,company.longitude,company.latitude,re.community_id as communityId,re.`status`,
+			REPLACE (re.user_name,SUBSTR(re.user_name, 2),'**') as userName,company.id as cityId,co.`name` as communityName,
+			CASE re.`status`
+			WHEN 0 THEN
+				'工单待处理'
+			WHEN 1 THEN
+				'工单处理中'
+			WHEN 2 THEN
+				'工单已完成'
+			WHEN 4 THEN
+				'疑难工单'
+			END AS statusName,
+			CASE re.level
+			WHEN 0 THEN
+				'报修'
+			WHEN 1 THEN
+				'投诉'
+			END AS levelName
 		FROM
 			`repair` AS re
 		LEFT JOIN community AS co ON re.community_id = co.community_id
 		LEFT JOIN worker_branchCommunity AS wocom ON wocom.community = co.community_id
 		LEFT JOIN worker_branchCompany AS company ON company.id = wocom.branchCompanyId
-		WHERE re.`status`!=-1 and re.`status`!=3
+		WHERE re.`status`!=-1 and re.`status`!=3 and wocom.type=1
 		ORDER BY re.repair_time DESC LIMIT 0, 30
 	</select>
 </mapper>

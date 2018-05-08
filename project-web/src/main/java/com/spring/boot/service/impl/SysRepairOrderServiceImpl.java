@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,30 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
             List<CityInfo> cityInfoList=sysRepairOrderBusinessService.getCityInfo();
 
             List<RepairOrderLatest> repairOrderLatestList=sysRepairOrderBusinessService.getRepairOrderLatest();
+
+            Map<Long,List<String>> cityOrderMap=new HashMap<Long,List<String>>();
+            for(RepairOrderLatest repairOrderLatest:repairOrderLatestList){
+                String orderName="";
+                if(repairOrderLatest.getStatus()==0){
+                    orderName="新发布了一条"+repairOrderLatest.getUserName()+repairOrderLatest.getLevelName()+"工单";
+                }else if(repairOrderLatest.getStatus()==1){
+                    orderName="物业服务中心已确认接单，马上进行处理";
+                }else if(repairOrderLatest.getStatus()==2){
+                    orderName="物业服务中心已完成订单处理，代客服回访";
+                }else if(repairOrderLatest.getStatus()==4){
+                    orderName="该订单为疑难工单，物业管理正在努力解决";
+                }
+                if(cityOrderMap.containsKey(repairOrderLatest.getCityId())){
+                    cityOrderMap.get(repairOrderLatest.getCityId()).add(repairOrderLatest.getCommunityName()+"--"+orderName);
+                }else{
+                    if(repairOrderLatest.getCityId()!=null){
+                        List<String> listData=new ArrayList<String>();
+                        listData.add(repairOrderLatest.getCommunityName()+repairOrderLatest.getUserName()+"--"+orderName);
+                        cityOrderMap.put(repairOrderLatest.getCityId(),listData);
+                    }
+                }
+            }
+
             //查询结果得到的月份
             Integer monthInfo = 0;
             Integer repairTotal = 0;
@@ -84,7 +109,8 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
                 repairOrderInfo.setMonthToMonthRepairOrderMap(monthToMonthRepairOrderMap);
                 //城市信息
                 repairOrderInfo.setCityInfos(cityInfoList);
-                repairOrderInfo.setRepairOrderLatestList(repairOrderLatestList);
+                repairOrderInfo.setCityOrderMap(cityOrderMap);
+                //repairOrderInfo.setRepairOrderLatestList(repairOrderLatestList);
                 resultMap.put("repairOrder",repairOrderInfo);
                 WebSocket.sendInfo(JsonUtils.obj2JsonString(R.ok().putData(200, resultMap, "获取成功！！")));
                 //return R.ok().putData(200, repairOrderInfo, "获取数据成功！");
