@@ -58,6 +58,10 @@ public class FileManageController {
             String fileUrl = "";
             for (int i = 0; i < files.length; i++) {
                 if (files[i] != null && files[i].getSize() > 0) {
+                    //单个文件大小不能超过1024*8（8MB）
+                    /*if(files[i].getSize()>8192){
+                        return R.error(400, "单个文件不能超过8MB！");
+                    }*/
                     //调用上传文件方法
                     Map<String, String> map = executeUpload(uploadDir, files[i], uploadUrl);
                     if (map.containsKey("success")) {

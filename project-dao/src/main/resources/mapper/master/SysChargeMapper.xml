@@ -65,7 +65,7 @@
     <select id="findSysChargeDetailsById" resultMap="sysChargeDetails" >
         select charge.charge_id, charge.charge_money, charge.charge_money_now, charge.charge_debt,charge.charge_debt_return,charge.create_time,charge.company_id,charge.status_code
         ,company.company_name
-        from sys_charge_details as charge left join sys_company as company on charge.company_id=company_id
+        from sys_charge_details as charge left join sys_company as company on charge.company_id=company.company_id
         where charge.status_code!=2
         and charge.charge_id = #{chargeId}
     </select>

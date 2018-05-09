@@ -14,6 +14,7 @@ import com.spring.boot.util.R;
 import com.spring.boot.util.ShiroUtils;
 import com.spring.boot.util.UtilHelper;
 import org.apache.commons.lang.math.RandomUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import java.util.Map;
  */
 @Service
 public class SysMenuServiceImpl implements SysMenuService {
+    private static final Logger logger = Logger.getLogger(SysMenuServiceImpl.class);
     @Autowired
     private SysMenuBusinessService sysMenuBusinessService;
     @Autowired
@@ -52,22 +54,22 @@ public class SysMenuServiceImpl implements SysMenuService {
         //用户菜单列表
         List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 1);
         List<SysMenu> menuList = getAllMenuList(menuIdList, 1);
-        if(null!=menuList&&menuList.size()>0){
-            return R.ok().putData(200,menuList,"获取成功！");
-        }else {
+        if (null != menuList && menuList.size() > 0) {
+            return R.ok().putData(200, menuList, "获取成功！");
+        } else {
             return R.error(500, "获取失败，没找到数据！");
         }
 
     }
 
     @Override
-    public Map<String, Object> getSysModule(String type,Long roleId) {
+    public Map<String, Object> getSysModule(String type, Long roleId) {
         //用户菜单列表
-        List<Long> menuIdList=null;
-        if("add".equals(type)){
+        List<Long> menuIdList = null;
+        if ("add".equals(type)) {
             //新增不需要获取登录用户已授权的功能菜单和按钮
-            menuIdList=null;
-        }else if("update".equals(type)){
+            menuIdList = null;
+        } else if ("update".equals(type)) {
             /*if (ShiroUtils.getUserEntity() == null) {
                 return R.error(500, "请登录系统再进行操作功能！");
             }
@@ -76,15 +78,15 @@ public class SysMenuServiceImpl implements SysMenuService {
             }
             Long userId = ShiroUtils.getUserEntity().getUserId();*/
             //用户菜单列表
-             //menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 2);
+            //menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 2);
             menuIdList = sysRoleMenuBusinessService.getMenuIdByRoleId(roleId);
         }
         List<SysMenu> menuList = getAllMenuList(menuIdList, 2);
 
 
-        if(null!=menuList&&menuList.size()>0){
-            return R.ok().putData(200,menuList,"获取成功！");
-        }else {
+        if (null != menuList && menuList.size() > 0) {
+            return R.ok().putData(200, menuList, "获取成功！");
+        } else {
             return R.error(500, "获取失败，没找到数据！");
         }
     }
@@ -183,11 +185,11 @@ public class SysMenuServiceImpl implements SysMenuService {
         List<SysMenu> userMenuList = new ArrayList<>();
         for (SysMenu menu : menuList) {
             //权限内的菜单，或者目录菜单，将进行添加（目录菜单在授权时，不保存到数据库记录）
-            if(selectType==1){
+            if (selectType == 1) {
                 if (menuIdList.contains(menu.getMenuId()) || menu.getType() == 0) {
                     userMenuList.add(menu);
                 }
-            }else if(selectType==2){
+            } else if (selectType == 2) {
                 if (menuIdList.contains(menu.getMenuId())) {
                     menu.setAuth(true);
                 }
@@ -198,54 +200,99 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public Map<String, Object> getSysCompanyList(int limit, int offset) {
+    public Map<String, Object> getSysMenuList(Integer limit, Integer offset) {
         resultMap = new HashMap<String, Object>();
         map = new HashMap<String, Object>();
         map.put("limit", limit);
         map.put("offset", offset);
-        //resultMap.put("total", sysMenuBusinessService.getSysCompanyListTotal(map));
-        //resultMap.put("list", sysMenuBusinessService.getSysCompanyList(map));
-        return resultMap;
+        try {
+            resultMap.put("total", null);
+            resultMap.put("list", sysMenuBusinessService.getSysMenuList(map));
+            return R.ok().putData(200,resultMap,"获取成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("获取菜单列表出错："+e.getMessage());
+            return R.error(500,"服务器异常，请联系管理员！");
+        }
     }
 
     @Override
-    public int addSysCompany(String companyName, String companyPhone, String companyAddress) {
+    public Map<String, Object> addSysMenu(String menuName, String menuUrl, String menuPerms, String icon, Long parentId, String sort, Integer menuType, String remark) {
         map = new HashMap<String, Object>();
         //公司编码（服务识别号）
-        String companyCode = "C" + RandomUtils.nextInt(10) + RandomUtils.nextInt(10) + String.valueOf(System.currentTimeMillis()).substring(5, 12) + UtilHelper.chars.charAt((int) (Math.random() * 52));
-        map.put("companyName", companyName);
-        map.put("companyPhone", companyPhone);
-        map.put("parentId", 1);
-        map.put("companyAddress", companyAddress);
-        map.put("companyCode", companyCode);
-        return 0;
+        map.put("menuName", menuName);
+        map.put("menuUrl", menuUrl);
+        map.put("menuPerms", menuPerms);
+        map.put("icon", icon);
+        map.put("parentId", parentId);
+        map.put("sort", sort);
+        map.put("menuType", menuType);
+        map.put("remark", remark);
+        try {
+            int count=sysMenuBusinessService.addSysMenu(map);
+            if(count>0){
+                return R.ok(200,"新增成功！");
+            }else{
+                return R.error(500,"新增失败，请联系管理员！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("新增菜单出错："+e.getMessage());
+            return R.error(500,"添加失败，服务器异常，请联系管理员！");
+        }
     }
 
     @Override
-    public int updateSysCompanyInfo(String companyId, String companyName, String companyPhone, String companyAddress) {
+    public Map<String, Object> updateSysMenu(String menuName, String menuUrl, String menuPerms, String icon, Long parentId, String sort, Integer menuType, String remark, Long menuId) {
         map = new HashMap<String, Object>();
-        map.put("companyId", companyId);
-        map.put("companyName", companyName);
-        map.put("companyPhone", companyPhone);
-        map.put("parentId", 1);
-        map.put("companyAddress", companyAddress);
-        return 0;
+        map.put("menuName", menuName);
+        map.put("menuUrl", menuUrl);
+        map.put("menuPerms", menuPerms);
+        map.put("icon", icon);
+        map.put("parentId", parentId);
+        map.put("sort", sort);
+        map.put("menuType", menuType);
+        map.put("remark", remark);
+        map.put("menuId", menuId);
+        try {
+            int count=sysMenuBusinessService.updateSysMenu(map);
+            if(count>0){
+                return R.ok(200,"更新成功！");
+            }else{
+                return R.error(500,"更新失败，请联系管理员！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("更新菜单信息出错："+e.getMessage());
+            return R.error(500,"更新信息失败，服务器异常，请联系管理员！");
+        }
     }
 
     @Override
-    public int deleteSysCompanyById(String companyId) {
+    public Map<String, Object> deleteSysMenuById(Long menuId) {
         map = new HashMap<String, Object>();
-        map.put("companyId", companyId);
-        return 0;
+        map.put("menuId", menuId);
+
+        try {
+            int count=sysMenuBusinessService.deleteSysMenuById(menuId);
+            if(count>0){
+                return R.ok(200,"删除成功！");
+            }else{
+                return R.error(500,"删除失败，请联系管理员！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info("删除菜单信息出错："+e.getMessage());
+            return R.error(500,"删除信息失败，服务器异常，请联系管理员！");
+        }
     }
 
     @Override
-    public Map<String, Object> findSysCompanyByCompanyId(long companyId) {
+    public Map<String, Object> findSysMenuById(Long menuId) {
         map = new HashMap<String, Object>();
         resultMap = new HashMap<String, Object>();
-        map.put("companyId", companyId);
-        //SysCompany sysCompany=sysMenuBusinessService.findSysCompanyByCompanyId(map);
-        //resultMap.put("data", sysMenuBusinessService.findSysCompanyByCompanyId(map));
+        map.put("menuId", menuId);
+        sysMenuBusinessService.findSysMenuById(menuId);
         return resultMap;
     }
 }

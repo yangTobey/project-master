@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 /**
- * Created by Administrator on 2018/1/25.
+ * Created by xiaoyang on 2018/1/25.
  */
 @RestController
 @RequestMapping("/sysMenu")
@@ -49,9 +49,9 @@ public class SysMenuController {
                 if (!UtilHelper.isNumer(roleId)) {
                     return R.error(400, "角色id格式不正确！！");
                 }
-            }else{
+            } else {
                 //赋值roleId为0,避免类型转化出错，不实际查询操作
-                roleId="0";
+                roleId = "0";
             }
         }
         Map<String, Object> map = sysMenuService.getSysModule(type, Long.valueOf(roleId));
@@ -65,93 +65,94 @@ public class SysMenuController {
      * @param offset 页码
      * @return
      */
-    @RequestMapping(value = "/getSysCompanyList", method = RequestMethod.GET)
-    public R getSysCompanyList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
+    @RequestMapping(value = "/getSysMenuList", method = RequestMethod.GET)
+    public R getSysMenuList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
         if (!UtilHelper.isNumer(limit)) {
             return R.error(400, "分页控制，每页条数limit只能为数字！");
         }
         if (!UtilHelper.isNumer(offset)) {
             return R.error(400, "分页控制，页码offset只能为数字！");
         }
-        Map<String, Object> map = sysMenuService.getSysCompanyList(Integer.valueOf(limit), Integer.valueOf(offset));
+        Map<String, Object> map = sysMenuService.getSysMenuList(Integer.valueOf(limit), Integer.valueOf(offset));
         return R.ok().put(200, map, "获取成功！");
     }
 
     /**
-     * 新增公司信息
+     * 新增菜单信息
      *
-     * @param companyName
-     * @param companyPhone
-     * @param companyAddress
+     * @param menuName  菜单名称
+     * @param menuUrl   菜单地址
+     * @param menuPerms 菜单标识权限名称
+     * @param icon      菜单图标
+     * @param parentId  上级id
+     * @param sort      菜单排序号
+     * @param menuType  菜单类型（1：c菜单，2：按钮）
+     * @param remark    备注信息
      * @return
      */
-    @RequestMapping(value = "/addSysCompany", method = RequestMethod.GET)
-    public R addSysCompany(@RequestParam(value = "companyName", required = false) String companyName, @RequestParam(value = "companyPhone", required = false) String companyPhone
-            , @RequestParam(value = "companyAddress", required = false) String companyAddress) {
-        int count = sysMenuService.addSysCompany(companyName, companyPhone, companyAddress);
-        if (count > 0) {
-            return R.ok(200, "新增成功！");
-        }
-        return R.error(500, "新增失败，服务器异常，请联系系统管理员！");
-    }
-
-    /**
-     * 更新公司信息
-     *
-     * @param companyId      公司id
-     * @param companyName    公司名称
-     * @param companyPhone   公司电话
-     * @param companyAddress 公司地址
-     * @return
-     */
-    @RequestMapping(value = "/updateSysCompanyInfo", method = RequestMethod.GET)
-    public R updateSysCompanyInfo(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "companyName", required = false) String companyName
-            , @RequestParam(value = "companyPhone", required = false) String companyPhone, @RequestParam(value = "companyAddress", required = false) String companyAddress) {
-        logger.info("公司信息更新操作！");
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司编号格式不正确，请联系系统管理员！");
-        }
-        if (UtilHelper.isEmpty(companyName)) {
-            return R.error(400, "新密码不能为空！");
-        }
-        int count = sysMenuService.updateSysCompanyInfo(companyId, companyName, companyPhone, companyAddress);
-        if (count > 0) {
-            return R.ok(200, "更新成功！");
-        }
-        return R.error(500, "更新失败，服务器异常，请联系系统管理员！");
+    @RequestMapping(value = "/addSysMenu", method = RequestMethod.GET)
+    public R addSysCompany(@RequestParam(value = "menuName", required = false) String menuName, @RequestParam(value = "menuUrl", required = false) String menuUrl
+            , @RequestParam(value = "menuPerms", required = false) String menuPerms, @RequestParam(value = "icon", required = false) String icon
+            , @RequestParam(value = "parentId", required = false) String parentId, @RequestParam(value = "sort", required = false) String sort
+            , @RequestParam(value = "menuType", required = false) String menuType, @RequestParam(value = "remark", required = false) String remark) {
+        Map<String, Object> map = sysMenuService.addSysMenu(menuName, menuUrl, menuPerms, icon, Long.valueOf(parentId), sort, Integer.valueOf(menuType), remark);
+        return R.ok(map);
 
     }
 
     /**
-     * 根据公司id删除公司信息（只更新公司状态，不作删除处理）
-     *
-     * @param companyId
+     * @param menuName
+     * @param menuUrl
+     * @param menuPerms
+     * @param icon
+     * @param parentId
+     * @param sort
+     * @param menuType
+     * @param remark
+     * @param menuId    菜单id
      * @return
      */
-    @RequestMapping(value = "/deleteSysCompanyById", method = RequestMethod.GET)
-    public R deleteSysCompanyById(@RequestParam(value = "companyId", required = false) String companyId) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司编号格式不正确，请联系系统管理员！");
+    @RequestMapping(value = "/updateSysMenu", method = RequestMethod.GET)
+    public R updateSysMenu(@RequestParam(value = "menuName", required = false) String menuName, @RequestParam(value = "menuUrl", required = false) String menuUrl
+            , @RequestParam(value = "menuPerms", required = false) String menuPerms, @RequestParam(value = "icon", required = false) String icon
+            , @RequestParam(value = "parentId", required = false) String parentId, @RequestParam(value = "sort", required = false) String sort
+            , @RequestParam(value = "menuType", required = false) String menuType, @RequestParam(value = "remark", required = false) String remark
+            , @RequestParam(value = "menuId", required = false) String menuId) {
+        if (!UtilHelper.isNumer(menuId)) {
+            return R.error(400, "菜单编号格式不正确，请联系系统管理员！");
         }
-        int count = sysMenuService.deleteSysCompanyById(companyId);
-        if (count > 0) {
-            return R.ok(200, "更新成功！");
-        }
-        return R.error(500, "删除失败，系统异常，请联系系统管理员！");
+        Map<String, Object> map = sysMenuService.updateSysMenu(menuName, menuUrl, menuPerms, icon, Long.valueOf(parentId), sort, Integer.valueOf(menuType), remark, Long.valueOf(menuId));
+        return R.ok(map);
+
     }
 
     /**
-     * 根据公司id获取信息
+     * 根据公司id删除菜单信息（只更新状态，不作删除处理）
      *
-     * @param companyId
+     * @param menuId
      * @return
      */
-    @RequestMapping(value = "/findSysCompanyByCompanyId", method = RequestMethod.GET)
-    public R findSysCompanyByCompanyId(@RequestParam(value = "companyId", required = false) String companyId) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司编号格式不正确，请联系系统管理员！");
+    @RequestMapping(value = "/deleteSysMenuById", method = RequestMethod.GET)
+    public R deleteSysMenuById(@RequestParam(value = "menuId", required = false) String menuId) {
+        if (!UtilHelper.isNumer(menuId)) {
+            return R.error(400, "菜单编号格式不正确，请联系系统管理员！");
         }
-        Map<String, Object> map = sysMenuService.findSysCompanyByCompanyId(Long.valueOf(companyId));
+        Map<String, Object> map = sysMenuService.deleteSysMenuById(Long.valueOf(menuId));
+        return R.ok(map);
+    }
+
+    /**
+     * 根据菜单id获取信息
+     *
+     * @param menuId
+     * @return
+     */
+    @RequestMapping(value = "/findSysMenuById", method = RequestMethod.GET)
+    public R findSysMenuById(@RequestParam(value = "menuId", required = false) String menuId) {
+        if (!UtilHelper.isNumer(menuId)) {
+            return R.error(400, "菜单编号格式不正确，请联系系统管理员！");
+        }
+        Map<String, Object> map = sysMenuService.findSysMenuById(Long.valueOf(menuId));
         return R.ok().put(200, map, "获取成功！");
     }
 }
