@@ -64,6 +64,7 @@ public class SysCompanyServiceImpl implements SysCompanyService {
         map.put("parentId", 1);
         map.put("companyAddress", companyAddress);
         map.put("companyCode", companyCode);
+        map.put("createTime", UtilHelper.getNowTimeStr());
         try {
             int count=sysCompanyBusinessService.addSysCompany(map);
             if(count>0){

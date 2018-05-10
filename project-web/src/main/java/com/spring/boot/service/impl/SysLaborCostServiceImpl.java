@@ -3,7 +3,6 @@ package com.spring.boot.service.impl;
 import com.spring.boot.bean.master.SysBudgetDetails;
 import com.spring.boot.bean.master.SysLaborCost;
 import com.spring.boot.bean.master.SysLaborCostDetails;
-import com.spring.boot.bean.master.entity.SysLaborCostDepartmentEntity;
 import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
 import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysLaborCostService;

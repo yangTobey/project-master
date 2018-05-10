@@ -32,7 +32,7 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
      * 定时任务，每一分钟执行一次
      * @return
      */
-    @Scheduled(cron = "0/30 * * * * *")
+    @Scheduled(cron = "0 0/30 * * * ?")
     @Override
     public void getRepairOrder() {
         Map<String, Object> resultMap = new HashMap<String, Object>();

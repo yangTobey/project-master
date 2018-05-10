@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -138,6 +139,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         map.put("forSaleParkingSpace", forSaleParkingSpace);
         map.put("salesDistribution", salesDistribution);
         map.put("companyId", companyId);
+        map.put("createTime", UtilHelper.getNowTimeStr());
 
         int count = sysBasicDataBusinessService.addSysBasicData(map);
         if (count > 0) {

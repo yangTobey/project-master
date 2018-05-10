@@ -12,4 +12,8 @@
 		select menu_id from sys_role_menu where role_id = #{roleId}
 	</select>
 
+	<select id="findRoleMenuByMenuId" resultType="com.spring.boot.bean.master.SysRoleMenu" >
+		select menu_id as menuId,role_id as roleId from sys_role_menu where menu_id = #{menuId} and role_id = #{roleId}
+	</select>
+
 </mapper>

@@ -4,6 +4,7 @@ import com.spring.boot.bean.master.SysContractFile;
 import com.spring.boot.bean.master.SysProjectEnergyFile;
 import com.spring.boot.bean.master.SysQualityManageFile;
 import com.spring.boot.service.SysFileService;
+import com.spring.boot.util.JsonUtils;
 import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
 import org.apache.log4j.Logger;
@@ -41,7 +42,7 @@ public class FileManageController {
      * @return
      */
     @RequestMapping(value = "/uploads", method = RequestMethod.POST)
-    public R uploads(HttpServletRequest request, @RequestParam("files") MultipartFile[] files) {
+    public String uploads(HttpServletRequest request, @RequestParam("files") MultipartFile[] files) {
         String user = request.getParameter("userId");
         System.out.println("user:" + user);
         Map<String, String> resultMap = new HashMap<String, String>();
@@ -71,15 +72,15 @@ public class FileManageController {
             }
             if (!UtilHelper.isEmpty(fileUrl)) {
                 resultMap.put("url", fileUrl);
-                return R.ok().putData(200, resultMap, "上传成功！");
+                return JsonUtils.obj2JsonString(R.ok().putData(200, resultMap, "上传成功！"));
             } else {
-                return R.error(500, "上传文件失败，请联系管理员！");
+                return JsonUtils.obj2JsonString(R.error(500, "上传文件失败，请联系管理员！"));
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("文件上传出错：" + e.getMessage());
-            return R.error(500, "上传文件失败，服务器异常，请联系管理员！");
+            return JsonUtils.obj2JsonString(R.error(500, "上传文件失败，服务器异常，请联系管理员！"));
         }
     }
 

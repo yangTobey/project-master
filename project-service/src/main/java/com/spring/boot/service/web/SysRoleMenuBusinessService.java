@@ -21,4 +21,11 @@ public interface SysRoleMenuBusinessService {
      * @return
      */
     List<Long> getMenuIdByRoleId(Long roleId);
+
+    /**
+     * 根据菜单id查找菜单权限信息
+     * @param menuId
+     * @return
+     */
+    SysRoleMenu findRoleMenuByMenuId(Long menuId,Long roleId);
 }

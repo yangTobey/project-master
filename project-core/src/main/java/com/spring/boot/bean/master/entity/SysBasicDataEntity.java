@@ -1,5 +1,7 @@
 package com.spring.boot.bean.master.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -161,6 +163,7 @@ public class SysBasicDataEntity implements Serializable {
         this.statusCode = statusCode;
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     public Timestamp getCreateTime() {
         return createTime;
     }

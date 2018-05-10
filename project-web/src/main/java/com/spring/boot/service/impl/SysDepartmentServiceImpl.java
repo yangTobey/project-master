@@ -1,17 +1,11 @@
 package com.spring.boot.service.impl;
 
-import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.service.SysDepartmentService;
-import com.spring.boot.service.SysUserService;
 import com.spring.boot.service.web.SysDepartmentBusinessService;
-import com.spring.boot.service.web.SysUserBusinessService;
 import com.spring.boot.util.R;
-import com.spring.boot.util.ShiroUtils;
 import com.spring.boot.util.UtilHelper;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;

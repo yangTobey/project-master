@@ -28,13 +28,10 @@
             limit #{offset},#{limit}
         </if>
     </select>-->
-    <!--根据公司id查找子公司总数-->
-    <select id="querySubsidiaryCount" resultType="int" parameterType="map">
-        SELECT COUNT(company_id) FROM sys_company WHERE 1=1
-        <if test="companyId != 0">
-            and parent_id=#{companyId}
-        </if>
-        and status_code!=2
+    <!--查找目录和菜单，用于新增菜单时使用-->
+    <select id="queryCatalogAndMenu" resultMap="sysMenu" parameterType="map">
+        select <include refid="Base_Column_List"/> from sys_menu
+        where type!=2 and is_use!=3
     </select>
     <select id="findMenuByParentId" resultMap="sysMenu" >
         select * from sys_menu where 1=1 and parent_id = #{parentId} and is_use=1
@@ -55,22 +52,33 @@
     <select id="findMenuAndModule" resultMap="sysMenu" >
         select * from sys_menu where 1=1 and type =1 and is_use=1
     </select>
-    <select id="getSysCompanyListTotal" resultType="int"  parameterType="map">
-        select count(company_id)
-        from sys_company
-        where status_code!=2
+
+    <!--获取菜单列表-->
+    <select id="getSysMenuList" resultMap="sysMenu"  parameterType="map">
+        select <include refid="Base_Column_List"/>
+        from sys_menu
+        where is_use !=3
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
     </select>
-    <update id="update" parameterType="map">
-		update sys_company set company_name = #{companyName},parent_id = #{parentId},company_phone = #{companyPhone,jdbcType=VARCHAR},company_address = #{companyAddress,jdbcType=VARCHAR}
-		where company_id = #{companyId}
+    <!--获取菜单列表总条数-->
+    <select id="getSysMenuListTotal" resultType="int"  parameterType="map">
+        select count(menu_id)
+        from sys_menu
+        where is_use !=3
+    </select>
+    <update id="updateSysMenu" parameterType="map">
+		update sys_menu set menu_name = #{menuName},parent_id = #{parentId},url = #{menuUrl},perms = #{menuPerms},type = #{menuType},sort = #{sort},remark = #{remark},icon = #{icon}
+		where menu_id = #{menuId}
 	</update>
-    <insert id="save" parameterType="map">
-		INSERT INTO sys_company (company_name, company_code, parent_id, company_phone,company_address)
-              VALUES   (#{companyName},#{companyCode},#{parentId},#{companyPhone,jdbcType=VARCHAR},#{companyAddress,jdbcType=VARCHAR})
+    <insert id="addSysMenu" parameterType="map">
+		INSERT INTO sys_menu (menu_name, parent_id, url,perms,type,icon,sort,remark)
+              VALUES   (#{menuName},#{parentId},#{menuUrl},#{menuPerms},#{menuType},#{icon},#{sort},#{remark})
 	</insert>
-    <update id="delete" parameterType="map">
-		update sys_company set status_code = 2
-		where company_id = #{companyId}
+    <update id="deleteSysMenuById" parameterType="map">
+		update sys_menu set is_use =3
+		where menu_id = #{menuId}
 	</update>
     <select id="findSysMenuInfoByMenuId" resultMap="sysMenu" >
         select <include refid="Base_Column_List"/>

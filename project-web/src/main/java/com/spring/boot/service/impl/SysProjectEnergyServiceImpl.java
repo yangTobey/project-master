@@ -74,7 +74,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                 if (!UtilHelper.isEmpty(fileInfo)) {
                     String[] fileInfoArray;
                     //去掉最后那个逗号，在进行获取数据
-                    fileInfoArray = fileInfo.substring(0, fileInfo.length() - 1).split(";");
+                    fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
                     SysProjectEnergyFile sysProjectEnergyFile = null;
                     String[] fileData;
                     for (String fileUrl : fileInfoArray) {
@@ -123,7 +123,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
         if (!UtilHelper.isEmpty(fileInfo)) {
             String[] fileInfoArray;
             //去掉最后那个逗号，在进行获取数据
-            fileInfoArray = fileInfo.substring(0, fileInfo.length() - 1).split(";");
+            fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
             SysProjectEnergyFile sysProjectEnergyFile = null;
             String[] fileData;
             for (String fileUrl : fileInfoArray) {

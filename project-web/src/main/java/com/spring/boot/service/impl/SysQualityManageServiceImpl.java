@@ -1,18 +1,14 @@
 package com.spring.boot.service.impl;
 
-import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.SysQualityManage;
 import com.spring.boot.bean.master.SysQualityManageFile;
 import com.spring.boot.bean.master.entity.SysQualityManageEntity;
-import com.spring.boot.service.SysCompanyService;
 import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysQualityManageService;
-import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.service.web.SysQualityManageBusinessService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.SysUtil;
 import com.spring.boot.util.UtilHelper;
-import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -171,7 +167,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
             if (!UtilHelper.isEmpty(fileInfo)) {
                 String[] fileInfoArray;
                 //去掉最后那个逗号，在进行获取数据
-                fileInfoArray = fileInfo.substring(0, fileInfo.length() - 1).split(";");
+                fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
                 SysQualityManageFile sysQualityManageFile = null;
                 String[] fileData;
                 for (String fileUrl : fileInfoArray) {
@@ -221,7 +217,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                 sysQualityManageBusinessService.deleteSysQualityManageFileByQualityId(qualityId);
                 String[] fileInfoArray;
                 //去掉最后那个逗号，在进行获取数据
-                fileInfoArray = fileInfo.substring(0, fileInfo.length() - 1).split(";");
+                fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
                 SysQualityManageFile sysQualityManageFile = null;
                 String[] fileData;
                 for (String fileUrl : fileInfoArray) {

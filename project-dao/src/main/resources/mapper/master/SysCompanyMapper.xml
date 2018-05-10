@@ -9,12 +9,13 @@
         <result column="company_phone" property="companyPhone"/>
         <result column="company_address" property="companyAddress"/>
         <result column="status_code" property="statusCode"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
 
     <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
 
     <sql id="Base_Column_List">
-		company_id, company_name, company_code, parent_id,company_phone,company_address,status_code
+		company_id, company_name, company_code, parent_id,company_phone,company_address,status_code,create_time
 	</sql>
 
     <!--<select id="findByUserId" resultMap="User" parameterType="map">
@@ -35,6 +36,7 @@
         <include refid="Base_Column_List"/>
         from sys_company
         where status_code!=2
+        order by create_time desc
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
         </if>
@@ -70,8 +72,8 @@
 		where company_id = #{companyId}
 	</update>
     <insert id="save" parameterType="map">
-		INSERT INTO sys_company (company_name, company_code, parent_id, company_phone,company_address)
-              VALUES   (#{companyName},#{companyCode},#{parentId},#{companyPhone,jdbcType=VARCHAR},#{companyAddress,jdbcType=VARCHAR})
+		INSERT INTO sys_company (company_name, company_code, parent_id, company_phone,company_address,create_time)
+              VALUES   (#{companyName},#{companyCode},#{parentId},#{companyPhone,jdbcType=VARCHAR},#{companyAddress,jdbcType=VARCHAR},#{createTime})
 	</insert>
     <update id="delete" parameterType="map">
 		update sys_company set status_code = 2

@@ -36,6 +36,20 @@ public class SysMenuController {
     }
 
     /**
+     * 获取系统目录和菜单，用于新增菜单或者更新菜单信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/queryCatalogAndMenu", method = RequestMethod.GET)
+    public R queryCatalogAndMenu(@RequestParam(value = "type", required = false) String type) {
+        if (UtilHelper.isEmpty(type)) {
+            return R.error(400, "操作类型不能为空！！");
+        }
+        Map<String, Object> map = sysMenuService.queryCatalogAndMenu(type);
+        return R.ok(map);
+    }
+
+    /**
      * 获取系统菜单和功能按钮
      *
      * @return

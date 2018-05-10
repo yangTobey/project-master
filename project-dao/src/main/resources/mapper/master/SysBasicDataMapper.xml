@@ -111,9 +111,9 @@
 	</update>
     <insert id="addSysBasicData" parameterType="map">
 		INSERT INTO sys_basic_data (company_id, year, month, construction_area,charge_area,city_number,project_number,house_number,accept_house_number,for_sale_house_number,decorate_house_number
-		,parking_space,for_sale_parking_space,sales_distribution)
+		,parking_space,for_sale_parking_space,sales_distribution,create_time)
               VALUES   (#{companyId},#{year},#{month},#{constructionArea},#{chargeArea},#{cityNumber},#{projectNumber},#{houseNumber},#{acceptHouseNumber},#{forSaleHouseNumber},#{decorateHouseNumber}
-              ,#{parkingSpace} ,#{forSaleParkingSpace},#{salesDistribution} )
+              ,#{parkingSpace} ,#{forSaleParkingSpace},#{salesDistribution},#{createTime} )
 	</insert>
     <update id="deleteSysBasicData" parameterType="map">
 		update sys_basic_data set status_code = 2

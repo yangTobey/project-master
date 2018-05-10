@@ -37,5 +37,18 @@ public class Test {
         String a=new StringBuffer("j").append("ava").toString();
         System.out.println(a.intern()==a);
 
+        String arraryStringList="/a/b/a.txt,20;/b/q.exe,20;";
+        String[] permsCompanyIdArray = arraryStringList.substring(0, arraryStringList.length()).split(";");
+        System.out.println("长度："+permsCompanyIdArray.length);
+        for(String list:permsCompanyIdArray){
+            System.out.println(list);
+        }
+
+
+        String regex = "([A-Z]|[a-z]|[0-9]){0,18}";
+        System.out.println("af1111111111111111".matches(regex));
+        System.out.println("a454545aaaaa".matches(regex));
+        System.out.println("a_-1+".matches(regex));
+
     }
 }

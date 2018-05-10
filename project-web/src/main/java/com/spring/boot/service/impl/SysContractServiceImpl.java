@@ -3,12 +3,8 @@ package com.spring.boot.service.impl;
 import com.spring.boot.bean.master.SysContract;
 import com.spring.boot.bean.master.SysContractFile;
 import com.spring.boot.bean.master.SysContractType;
-import com.spring.boot.bean.master.SysQualityManageFile;
-import com.spring.boot.controller.SysCompanyController;
 import com.spring.boot.service.SysContractService;
-import com.spring.boot.service.SysDepartmentService;
 import com.spring.boot.service.web.SysContractBusinessService;
-import com.spring.boot.service.web.SysDepartmentBusinessService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.SysUtil;
 import com.spring.boot.util.UtilHelper;
@@ -194,7 +190,7 @@ public class SysContractServiceImpl implements SysContractService {
                     if (!UtilHelper.isEmpty(fileInfo)) {
                         String[] fileInfoArray;
                         //去掉最后那个逗号，在进行获取数据
-                        fileInfoArray = fileInfo.substring(0, fileInfo.length() - 1).split(";");
+                        fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
                         SysContractFile sysContractFile = null;
                         String[] fileData;
                         for (String fileUrl : fileInfoArray) {
@@ -256,7 +252,7 @@ public class SysContractServiceImpl implements SysContractService {
                     sysContractBusinessService.deleteSysContractFileByContractId(contractId);
                     String[] fileInfoArray;
                     //去掉最后那个逗号，在进行获取数据
-                    fileInfoArray = fileInfo.substring(0, fileInfo.length() - 1).split(";");
+                    fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
                     SysContractFile sysContractFile = null;
                     String[] fileData;
                     for (String fileUrl : fileInfoArray) {

@@ -10,7 +10,6 @@ import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.util.JsonUtils;
 import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
-import com.spring.boot.websocket.PropertyWebSocket;
 import com.spring.boot.websocket.WebSocket;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

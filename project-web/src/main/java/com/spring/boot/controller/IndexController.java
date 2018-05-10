@@ -35,6 +35,14 @@ public class IndexController {
         return "views/main/main";
     }
     /**
+     * 修改密码界面
+     * @return
+     */
+    @RequestMapping(value = "/updatePwd", method = RequestMethod.GET)
+    public String updatePwd(){
+        return "views/login/changepwd";
+    }
+    /**
      * 品质管理
      * @return
      */

@@ -38,7 +38,7 @@ public class SysUserController {
      */
     @RequestMapping(value = "/sysUserInfo", method = RequestMethod.GET)
     public R sysUserInfo(@RequestParam(value = "id", required = false) String id) {
-        System.out.println(id);
+
         Map<String, Object> map = sysUserService.sysUserInfo();
         return R.ok(map);
     }
@@ -53,11 +53,15 @@ public class SysUserController {
     @RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
     public R updatePassword(@RequestParam(value = "password", required = false) String password, @RequestParam(value = "newPassword", required = false) String newPassword
             , @RequestParam(value = "confirmNewPassword", required = false) String confirmNewPassword) {
-        logger.info("hello world");
+
         if (UtilHelper.isEmpty(password)) {
             return R.error(400, "原密码不能为空！");
         } else if (UtilHelper.isEmpty(newPassword)) {
             return R.error(400, "新密码不能为空！");
+        }else if (!UtilHelper.matcherStr(newPassword)) {
+            return R.error(400, "新密码存在非法字符！");
+        }else if (newPassword.length()<6||newPassword.length()>18) {
+            return R.error(400, "新密码长度不符合要求！");
         }else if(!newPassword.equals(confirmNewPassword)){
             return R.error(400, "两次输入的新密码不相同，请重新输入！");
         }
@@ -98,8 +102,16 @@ public class SysUserController {
             , @RequestParam(value = "permsCompanyId", required = false) String permsCompanyId) {
         if (UtilHelper.isEmpty(account)) {
             return R.error(400, "登录账号不能为空！");
-        } else if (UtilHelper.isEmpty(password)) {
+        } else if (!UtilHelper.matcherStr(account)) {
+            return R.error(400, "登录账号存在非法字符！");
+        }else if (account.length()<6||account.length()>18) {
+            return R.error(400, "登录账号长度不符合要求！");
+        }else if (UtilHelper.isEmpty(password)) {
             return R.error(400, "登录密码不能为空！");
+        }else if (!UtilHelper.matcherStr(password)) {
+            return R.error(400, "登录密码存在非法字符！");
+        }else if (password.length()<6||password.length()>18) {
+            return R.error(400, "登录密码长度不符合要求！");
         } else if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不正确！");
         } else if (!UtilHelper.isNumer(roleId)) {

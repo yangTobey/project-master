@@ -32,6 +32,11 @@ public interface SysMenuDao {
      * @return
      */
     List<SysMenu> getSysMenuList(Map<String, Object> map);
+    /**
+     * 获取菜单列表数据总条数
+     * @return
+     */
+    int getSysMenuListTotal(Map<String, Object> map);
 
     /**
      * 新增菜单信息

@@ -1,8 +1,5 @@
 package com.spring.boot.service;
 
-import com.spring.boot.bean.master.SysRole;
-import com.spring.boot.bean.master.SysUser;
-
 import java.util.Map;
 
 /**

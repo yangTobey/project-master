@@ -2,6 +2,7 @@ package com.spring.boot.dao.web.master;
 
 import com.spring.boot.bean.master.SysRoleMenu;
 import com.spring.boot.dao.BaseDao;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,5 +22,11 @@ public interface SysRoleMenuDao extends BaseDao<SysRoleMenu>{
      * @return
      */
     List<Long> getMenuIdByRoleId(Long roleId);
+    /**
+     * 根据菜单id查找菜单权限信息
+     * @param menuId
+     * @return
+     */
+    SysRoleMenu findRoleMenuByMenuId(@Param("menuId")Long menuId, @Param("roleId")Long roleId);
 
 }

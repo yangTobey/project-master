@@ -1,24 +1,17 @@
 package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.SysRole;
-import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.service.SysRoleService;
-import com.spring.boot.service.SysUserService;
 import com.spring.boot.service.web.SysRoleBusinessService;
-import com.spring.boot.service.web.SysUserBusinessService;
 import com.spring.boot.util.R;
-import com.spring.boot.util.ShiroUtils;
 import com.spring.boot.util.UtilHelper;
 import org.apache.log4j.Logger;
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,11 +73,14 @@ public class SysRoleServiceImpl implements SysRoleService {
         sysRole.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
         int count = sysRoleBusinessService.addSysRole(sysRole);
         if (count > 0) {
-            String[] moduleIdArray;
-            //去掉最后那个逗号，在进行获取数据
-            moduleIdArray = moduleIds.substring(0, moduleIds.length() - 1).split(",");
-            for (String moduleId : moduleIdArray) {
-                sysRoleBusinessService.addSysRoleMenu(Long.valueOf(moduleId), sysRole.getRoleId());
+            //当选择的权限不为空时
+            if(!UtilHelper.isEmpty(moduleIds)){
+                String[] moduleIdArray;
+                //去掉最后那个逗号，在进行获取数据
+                moduleIdArray = moduleIds.substring(0, moduleIds.length()).split(",");
+                for (String moduleId : moduleIdArray) {
+                    sysRoleBusinessService.addSysRoleMenu(Long.valueOf(moduleId), sysRole.getRoleId());
+                }
             }
             return R.ok(200, "新增成功！");
         } else {
@@ -102,14 +98,16 @@ public class SysRoleServiceImpl implements SysRoleService {
         int count = sysRoleBusinessService.updateSysRole(map);
         if (count > 0) {
             int deleteCount = sysRoleBusinessService.deleteSysRoleMenu(roleId);
-            String[] moduleIdArray;
-            //去掉最后那个逗号，在进行获取数据
-            moduleIdArray = moduleIds.substring(0, moduleIds.length() - 1).split(",");
-            for (String moduleId : moduleIdArray) {
-                sysRoleBusinessService.addSysRoleMenu(Long.valueOf(moduleId), roleId);
+            //当选择的权限不为空时
+            if(!UtilHelper.isEmpty(moduleIds)){
+                String[] moduleIdArray;
+                //去掉最后那个逗号，在进行获取数据
+                moduleIdArray = moduleIds.substring(0, moduleIds.length()).split(",");
+                for (String moduleId : moduleIdArray) {
+                    sysRoleBusinessService.addSysRoleMenu(Long.valueOf(moduleId), roleId);
+                }
             }
             return R.ok(200, "更新成功！");
-
         }
         return R.error(500, "更新失败，请联系管理员！");
     }

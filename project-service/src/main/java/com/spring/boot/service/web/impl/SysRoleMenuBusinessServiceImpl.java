@@ -24,4 +24,9 @@ public class SysRoleMenuBusinessServiceImpl implements SysRoleMenuBusinessServic
     public List<Long> getMenuIdByRoleId(Long roleId) {
         return sysRoleMenuDao.getMenuIdByRoleId(roleId);
     }
+
+    @Override
+    public SysRoleMenu findRoleMenuByMenuId(Long menuId,Long roleId) {
+        return sysRoleMenuDao.findRoleMenuByMenuId(menuId,roleId);
+    }
 }

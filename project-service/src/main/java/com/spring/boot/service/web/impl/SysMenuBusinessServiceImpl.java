@@ -38,6 +38,11 @@ public class SysMenuBusinessServiceImpl implements SysMenuBusinessService {
     }
 
     @Override
+    public int getSysMenuListTotal(Map<String, Object> map) {
+        return sysMenuDao.getSysMenuListTotal(map);
+    }
+
+    @Override
     public int addSysMenu(Map<String, Object> map) {
         return sysMenuDao.addSysMenu(map);
     }

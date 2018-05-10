@@ -323,6 +323,20 @@ public class UtilHelper {
     }
 
     /**
+     * 判断字符串是否只包含0-9，a-z,A-Z(用于校验账号或者密码)
+     * @param str
+     * @return
+     */
+    public static boolean matcherStr(String str){
+        if(UtilHelper.isEmpty(str)){
+            return  false;
+        }
+        //最多匹配18次，账号或者密码长度最大为18
+        String regex = "([A-Z]|[a-z]|[0-9]){0,18}";
+        return str.matches(regex);
+    }
+
+    /**
      * 生成校验码
      *
      * @return 校验码

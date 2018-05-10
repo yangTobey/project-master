@@ -1,11 +1,11 @@
 package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.*;
-import com.spring.boot.dao.web.master.SysUserDao;
 import com.spring.boot.service.SysUserService;
 import com.spring.boot.service.web.*;
 import com.spring.boot.util.R;
 import com.spring.boot.util.ShiroUtils;
+import com.spring.boot.util.UtilHelper;
 import org.apache.log4j.Logger;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
@@ -14,7 +14,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/1/25.
@@ -136,8 +138,8 @@ public class SysUserServiceImpl implements SysUserService {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
 
-            //新密码，利用md5加密得到加密后的新密码,重置密码后默认为111
-            String newPassword = new SimpleHash("md5", "111", ByteSource.Util.bytes(ShiroUtils.getUserEntity().getAccount()), 2).toHex();
+            //新密码，利用md5加密得到加密后的新密码,重置密码后默认为000000
+            String newPassword = new SimpleHash("md5", "000000", null, 2).toHex();
             map.put("userId", userId);
             map.put("newPassword", newPassword);
             int count = sysUserBusinessService.resetSysUserPassword(map);
@@ -183,15 +185,18 @@ public class SysUserServiceImpl implements SysUserService {
                 sysUserRole.setUserId(sysUser.getUserId());
                 sysUserRoleBusinessService.addUserRole(sysUserRole);
 
-                String[] permsCompanyIdArray;
-                //去掉最后那个逗号，在进行获取数据
-                permsCompanyIdArray = permsCompanyId.substring(0, permsCompanyId.length() - 1).split(",");
-                SysUserCompany sysUserCompany = null;
-                for (String id : permsCompanyIdArray) {
-                    sysUserCompany = new SysUserCompany();
-                    sysUserCompany.setCompanyId(Long.valueOf(id));
-                    sysUserCompany.setUserId(sysUser.getUserId());
-                    sysUserCompanyBusinessService.saveSysUserCompany(sysUserCompany);
+                //当选择的权限公司信息id不为空时，更新用户的权限公司信息
+                if(!UtilHelper.isEmpty(permsCompanyId)){
+                    String[] permsCompanyIdArray;
+                    //去掉最后那个逗号，在进行获取数据
+                    permsCompanyIdArray = permsCompanyId.substring(0, permsCompanyId.length()).split(",");
+                    SysUserCompany sysUserCompany = null;
+                    for (String id : permsCompanyIdArray) {
+                        sysUserCompany = new SysUserCompany();
+                        sysUserCompany.setCompanyId(Long.valueOf(id));
+                        sysUserCompany.setUserId(sysUser.getUserId());
+                        sysUserCompanyBusinessService.saveSysUserCompany(sysUserCompany);
+                    }
                 }
                 return R.ok(200, "新增成功！");
             } else {
@@ -223,15 +228,18 @@ public class SysUserServiceImpl implements SysUserService {
                 sysUserRoleBusinessService.addUserRole(sysUserRole);
 
                 sysUserCompanyBusinessService.deleteSysUserCompany(userId);
-                String[] permsCompanyIdArray;
-                //去掉最后那个逗号，在进行获取数据
-                permsCompanyIdArray = permsCompanyId.substring(0, permsCompanyId.length() - 1).split(",");
-                SysUserCompany sysUserCompany = null;
-                for (String id : permsCompanyIdArray) {
-                    sysUserCompany = new SysUserCompany();
-                    sysUserCompany.setCompanyId(Long.valueOf(id));
-                    sysUserCompany.setUserId(userId);
-                    sysUserCompanyBusinessService.saveSysUserCompany(sysUserCompany);
+                //当选择的权限公司信息id不为空时，更新用户的权限公司信息
+                if(!UtilHelper.isEmpty(permsCompanyId)){
+                    String[] permsCompanyIdArray;
+                    //去掉最后那个逗号，在进行获取数据
+                    permsCompanyIdArray = permsCompanyId.substring(0, permsCompanyId.length()).split(",");
+                    SysUserCompany sysUserCompany = null;
+                    for (String id : permsCompanyIdArray) {
+                        sysUserCompany = new SysUserCompany();
+                        sysUserCompany.setCompanyId(Long.valueOf(id));
+                        sysUserCompany.setUserId(userId);
+                        sysUserCompanyBusinessService.saveSysUserCompany(sysUserCompany);
+                    }
                 }
                 return R.ok(200, "更新成功！");
             } else {
