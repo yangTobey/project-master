@@ -86,7 +86,7 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
         map.put("departmentId", departmentId);
         map.put("departmentName", departmentName);
         map.put("companyId", companyId);
-        map.put("status", 2);
+        /*map.put("status", 2);*/
         try {
             int count=sysDepartmentBusinessService.updateSysDepartmentInfo(map);
             if(count>0){

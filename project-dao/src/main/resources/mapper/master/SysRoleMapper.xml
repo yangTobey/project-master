@@ -26,6 +26,7 @@
 		<include refid="Base_Column_List" />
 		from sys_role
 		where status_code!=2
+		order by create_time desc
 		<if test="offset != null and limit != null">
 			limit #{offset},#{limit}
 		</if>

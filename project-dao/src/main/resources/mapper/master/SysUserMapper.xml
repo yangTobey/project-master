@@ -36,6 +36,7 @@
 		LEFT JOIN sys_department as department on department.department_id=user.department_id
 		LEFT JOIN sys_company as company on company.company_id=user.company_id
 		where user.status_code!=3
+		order by user.create_time desc
 		<if test="offset != null and limit != null">
 			limit #{offset},#{limit}
 		</if>

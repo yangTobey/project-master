@@ -16,7 +16,7 @@
 		 details_id,company_id,year,month,create_time,status_code
 	</sql>
 
-	<!--根据查询条件，查询合同分类列表数据-->
+	<!--根据查询条件，查询合同分类列表数据
 	<select id="sysContractTypeList" resultMap="sysProjectEnergy" parameterType="map">
 		SELECT
 		<include refid="Base_Column_List"/>
@@ -27,13 +27,13 @@
 		</if>
 
 	</select>
-	<!--查询合同分类条数-->
+	&lt;!&ndash;查询合同分类条数&ndash;&gt;
 	<select id="sysContractTypeDataTotal" resultType="int" parameterType="map">
 		SELECT count(contractType_id)
 		from sys_contract_type
 		where 1=1 and status_code!=2
 
-	</select>
+	</select>-->
 
 	<update id="updateSysProjectEnergy" parameterType="map">
 		update sys_project_energy set company_id = #{companyId},year = #{year},month = #{month}

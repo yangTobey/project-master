@@ -64,6 +64,7 @@
 			</if>
 
 			GROUP BY project.project_id
+			order by project.create_time desc
 			<if test="offset != null and limit != null">
 				limit #{offset},#{limit}
 			</if>

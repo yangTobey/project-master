@@ -38,14 +38,15 @@ public class SysMenuController {
     /**
      * 获取系统目录和菜单，用于新增菜单或者更新菜单信息
      *
+     * @param menuType 新增菜单类型（0：目录，1：菜单，2：按钮）
      * @return
      */
     @RequestMapping(value = "/queryCatalogAndMenu", method = RequestMethod.GET)
-    public R queryCatalogAndMenu(@RequestParam(value = "type", required = false) String type) {
-        if (UtilHelper.isEmpty(type)) {
+    public R queryCatalogAndMenu(@RequestParam(value = "menuType", required = false) String menuType) {
+        if (UtilHelper.isEmpty(menuType)) {
             return R.error(400, "操作类型不能为空！！");
         }
-        Map<String, Object> map = sysMenuService.queryCatalogAndMenu(type);
+        Map<String, Object> map = sysMenuService.queryCatalogAndMenu(Integer.valueOf(menuType));
         return R.ok(map);
     }
 

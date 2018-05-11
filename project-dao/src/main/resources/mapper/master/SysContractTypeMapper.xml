@@ -19,6 +19,7 @@
 		<include refid="Base_Column_List"/>
 		from sys_contract_type
 		where 1=1 and status_code!=2
+		ORDER BY create_time DESC
 		<if test="offset != null and limit != null">
 			limit #{offset},#{limit}
 		</if>
@@ -37,8 +38,8 @@
 		where contractType_id = #{contractTypeId}
 	</update>
 	<insert id="save" parameterType="map">
-		INSERT INTO sys_contract_type (contractType_name, contractType_code)
-              VALUES   (#{contractTypeName},#{contractTypeCode} )
+		INSERT INTO sys_contract_type (contractType_name, contractType_code,create_time)
+              VALUES   (#{contractTypeName},#{contractTypeCode} ,#{createTime})
 	</insert>
 	<update id="delete" parameterType="map">
 		update sys_contract_type set status_code = 2

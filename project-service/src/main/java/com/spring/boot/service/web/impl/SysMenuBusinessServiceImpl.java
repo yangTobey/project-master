@@ -38,6 +38,11 @@ public class SysMenuBusinessServiceImpl implements SysMenuBusinessService {
     }
 
     @Override
+    public List<SysMenu> queryCatalogAndMenu(Integer menuType) {
+        return sysMenuDao.queryCatalogAndMenu(menuType);
+    }
+
+    @Override
     public int getSysMenuListTotal(Map<String, Object> map) {
         return sysMenuDao.getSysMenuListTotal(map);
     }

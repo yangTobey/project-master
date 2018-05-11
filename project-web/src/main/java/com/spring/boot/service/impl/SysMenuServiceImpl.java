@@ -58,41 +58,20 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public Map<String, Object> queryCatalogAndMenu(String type) {
-        if (ShiroUtils.getUserEntity() == null) {
-            return R.error(500, "请登录系统再进行操作功能！");
-        }
-        if (ShiroUtils.getUserEntity().getUserId() == null) {
-            return R.error(500, "请登录系统再进行操作功能！");
-        }
-        Long userId = ShiroUtils.getUserEntity().getUserId();
-        return null;
-    }
-
-    /**
-     * 根据上级菜单id，获取下级菜单id信息(用于新增菜单或者更新菜单信息)
-     *
-     * @param parentId
-     * @param menuIdList 用户权限内所有菜单信息列表
-     * @return
-     */
-    public List<SysMenu> queryCatalogAndMenuByParentId(Long parentId, List<Long> menuIdList, Integer selectType) {
-        //查询根菜单列表
-        List<SysMenu> menuList = sysMenuBusinessService.findMenuByParentId(parentId, selectType);
-        if (menuIdList == null) {
-            return menuList;
-        }
-        List<SysMenu> userMenuList = new ArrayList<>();
-        for (SysMenu menu : menuList) {
-            //权限内的菜单，或者目录菜单，将进行添加（目录菜单在授权时，不保存到数据库记录）
-            if (selectType == 2) {
-                if (menuIdList.contains(menu.getMenuId())) {
-                    menu.setAuth(true);
-                }
-                userMenuList.add(menu);
-            }
-        }
-        return userMenuList;
+    public Map<String, Object> queryCatalogAndMenu(Integer menuType) {
+       try {
+           //查询根菜单列表
+           List<SysMenu> menuList = sysMenuBusinessService.queryCatalogAndMenu(menuType);
+           if(null!=menuList&&menuList.size()>0){
+               return R.ok().putData(200, menuList, "获取成功！");
+           }else{
+               return R.error(500, "获取出错,服务器异常，请联系管理员！");
+           }
+       }catch (Exception e){
+           e.printStackTrace();
+           logger.info("获取出错：" + e.getMessage());
+           return R.error(500, "获取出错,服务器异常，请联系管理员！");
+       }
     }
 
     @Override

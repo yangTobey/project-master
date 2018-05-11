@@ -95,6 +95,9 @@
             </foreach>
         </if>
         and accountsRe.year = #{year} ORDER BY accountsRe.create_time desc
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
     </select>
     <!--应收账款列表信息总条数-->
     <select id="sysAccountsReceivableListTotal" resultType="int" parameterType="map">

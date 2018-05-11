@@ -28,6 +28,12 @@ public interface SysMenuBusinessService {
      * @return
      */
     List<SysMenu> findMenuAndModule();
+    /**
+     * 获取系统目录和菜单，用于新增菜单或者更新菜单信息
+     * @param menuType 新增菜单类型（0：目录，1：菜单，2：按钮）
+     * @return
+     */
+    List<SysMenu> queryCatalogAndMenu(Integer menuType);
 
     /**
      * 获取菜单列表数据

@@ -14,11 +14,13 @@ public interface SysMenuService {
      * @return
      */
     Map<String,Object> getSysMenu();
+
     /**
      * 获取系统目录和菜单，用于新增菜单或者更新菜单信息
+     * @param menuType 新增菜单类型（0：目录，1：菜单，2：按钮）
      * @return
      */
-    Map<String,Object> queryCatalogAndMenu(String type);
+    Map<String,Object> queryCatalogAndMenu(Integer menuType);
     /**
      * 获取系统菜单和功能按钮
      * @return

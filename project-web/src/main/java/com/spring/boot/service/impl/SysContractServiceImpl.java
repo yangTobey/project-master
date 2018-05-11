@@ -78,6 +78,7 @@ public class SysContractServiceImpl implements SysContractService {
         String contractTypeCode = "D" + RandomUtils.nextInt(10) + RandomUtils.nextInt(10) + String.valueOf(System.currentTimeMillis()).substring(5, 12) + UtilHelper.chars.charAt((int) (Math.random() * 52));
         map.put("contractTypeName", contractTypeName);
         map.put("contractTypeCode", contractTypeCode);
+        map.put("createTime", UtilHelper.getNowTimeStr());
         try {
             int count = sysContractBusinessService.addSysContractType(map);
             if (count > 0) {

@@ -28,6 +28,13 @@ public interface SysMenuDao {
      */
     List<SysMenu> findMenuAndModule();
     /**
+     * 获取系统目录和菜单，用于新增菜单或者更新菜单信息
+     * @param menuType 新增菜单类型（0：目录，1：菜单，2：按钮）
+     * 注：如sql需要利用参数作判断，需要添加@Param注解
+     * @return
+     */
+    List<SysMenu> queryCatalogAndMenu(@Param("menuType")Integer menuType);
+    /**
      * 获取菜单列表数据
      * @return
      */

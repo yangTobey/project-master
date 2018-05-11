@@ -3,6 +3,7 @@ package com.spring.boot.controller;
 import com.spring.boot.service.SysUserService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.ShiroUtils;
+import org.apache.log4j.Logger;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/login")
 public class SysLoginController {
+    private static final Logger logger = Logger.getLogger(SysLoginController.class);
 
     @Autowired
     private SysUserService sysUserService;
@@ -38,12 +40,12 @@ public class SysLoginController {
             //sha256加密
             //password = new Sha256Hash(password).toHex();
            // password= new SimpleHash("md5", password,  ByteSource.Util.bytes(userName), 2).toHex();
-            //System.out.println("密码："+new SimpleHash("md5", password,  null, 2).toHex());
+            logger.info("密码："+new SimpleHash("md5", password,  null, 2).toHex());
             UsernamePasswordToken token = new UsernamePasswordToken(userAccount, password);
             subject.login(token);
             //验证是否通过
             if(subject.isAuthenticated()){
-                System.out.println("登录成功，请进行对应操作！！");
+                logger.info("登录成功，请进行对应操作！！");
             }
         }catch (UnknownAccountException e) {
             return R.error(e.getMessage());

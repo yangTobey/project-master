@@ -123,6 +123,7 @@
         and laborCost.year=#{year}
         and laborCost.status_code!=2
         GROUP BY  laborCost.labor_cost_id
+        order by laborCost.create_time desc
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
         </if>

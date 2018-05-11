@@ -2,6 +2,7 @@ package com.spring.boot.websocket;
 
 import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysRepairOrderService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -18,6 +19,7 @@ import java.util.List;
  * Created by xiaoyang on 2018/4/25.
  */
 public class WebSocket extends TextWebSocketHandler {
+    private static final Logger logger = Logger.getLogger(WebSocket.class);
     @Autowired
     private SysDataAnalysisService sysDataAnalysisService;
     @Autowired
@@ -38,7 +40,7 @@ public class WebSocket extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        System.out.println("websocket关闭成功！");
+        logger.info("websocket关闭成功！");
         super.afterConnectionClosed(session, status);
     }
 
@@ -50,7 +52,7 @@ public class WebSocket extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        System.out.println("websocket连接成功！");
+        logger.info("websocket连接成功！");
         COUNTS.add(session);
         super.afterConnectionEstablished(session);
     }
@@ -99,7 +101,7 @@ public class WebSocket extends TextWebSocketHandler {
      */
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-        System.out.println("websocket连接失败！");
+        logger.info("websocket连接失败！");
         super.handleTransportError(session, exception);
         COUNTS.remove(session);
     }

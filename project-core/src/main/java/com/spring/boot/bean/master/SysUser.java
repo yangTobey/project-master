@@ -1,10 +1,12 @@
 package com.spring.boot.bean.master;
 
+import java.io.Serializable;
+
 /**
  * 用户基本信息实体类
  * Created by xiaoyang on 2018/1/25.
  */
-public class SysUser {
+public class SysUser implements Serializable {
 
     private Long userId;
     private String userName;

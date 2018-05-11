@@ -159,8 +159,8 @@ public class SysUserServiceImpl implements SysUserService {
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> addUser(String userAccount, String password, Long companyId, Long roleId, Long departmentId, String userName, String permsCompanyId) {
         Map<String, Object> map = new HashMap<String, Object>();
-        //根据用户提交的密码，利用md5加密得到加密后的原密码
-        password = new SimpleHash("md5", password, ByteSource.Util.bytes(userAccount), 2).toHex();
+        //根据用户提交的密码，利用md5加密得到加密后的原密码new SimpleHash("md5", password, ByteSource.Util.bytes(userAccount), 2).toHex();
+        password = new SimpleHash("md5", password, null, 2).toHex();
         map.put("account", userAccount);
         map.put("password", password);
         map.put("companyId", companyId);

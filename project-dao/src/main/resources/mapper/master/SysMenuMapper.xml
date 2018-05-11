@@ -29,9 +29,17 @@
         </if>
     </select>-->
     <!--查找目录和菜单，用于新增菜单时使用-->
-    <select id="queryCatalogAndMenu" resultMap="sysMenu" parameterType="map">
-        select <include refid="Base_Column_List"/> from sys_menu
-        where type!=2 and is_use!=3
+    <select id="queryCatalogAndMenu" resultMap="sysMenu" parameterType="Integer">
+        select <include refid="Base_Column_List"/> from sys_menu where 1=1
+        <choose>
+            <when test="menuType==0">
+                and type=0
+            </when>
+            <when test="menuType==1">
+                and type==0
+            </when>
+        </choose>
+         and is_use!=3
     </select>
     <select id="findMenuByParentId" resultMap="sysMenu" >
         select * from sys_menu where 1=1 and parent_id = #{parentId} and is_use=1
