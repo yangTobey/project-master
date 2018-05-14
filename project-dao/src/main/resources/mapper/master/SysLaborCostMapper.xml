@@ -25,7 +25,7 @@
         <result column="demission_total" property="demissionTotal"/>
         <result column="labor_cost_total" property="laborCostTotal"/>
         <result column="department_type" property="departmentType"/>
-        <result column="companyName" property="companyName"/>
+        <result column="company_name" property="companyName"/>
     </resultMap>
     <resultMap id="sysLaborCostDetails" type="com.spring.boot.bean.master.SysLaborCostDetails">
         <result column="details_id" property="detailsId"/>
