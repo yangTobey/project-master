@@ -126,6 +126,8 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/templates/**", "anon");
         //filterChainDefinitionMap.put("/mapper/**", "anon");
         filterChainDefinitionMap.put("/login/login", "anon");
+        filterChainDefinitionMap.put("/websocket/property", "anon");
+        filterChainDefinitionMap.put("/websocket/financial", "anon");
         filterChainDefinitionMap.put("/login/logout", "anon");
         filterChainDefinitionMap.put("/error", "anon");
         /*注：如果开通验证权限，则会出现跨域问题，后期需要修改配置*/

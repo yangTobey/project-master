@@ -17,7 +17,7 @@ public class SocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         //指定counterHandler处理路径为/websocket/{url} 的长连接请求
-        registry.addHandler(webSocket(), "/websocket/{url}").setAllowedOrigins("*");
+        registry.addHandler(webSocket(), "/websocket/").setAllowedOrigins("*");
     }
 
     @Bean

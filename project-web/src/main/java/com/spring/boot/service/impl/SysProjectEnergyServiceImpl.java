@@ -251,7 +251,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
             SysProject sysProjectForYear = sysProjectBusinessService.sysProjectEnergyAnalysisForYear(map);
 
             if (null != sysProjectForYear) {
-                sysProjectForYear.setYearProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProjectForYear.getYearProjectUnfinishedTotal(), sysProjectForYear.getYearProjectFinishedTotal())));
+                sysProjectForYear.setYearProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProjectForYear.getYearProjectFinishedTotal(),sysProjectForYear.getYearProjectUnfinishedTotal())));
                 //当月数据
                 SysProject sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year, month, sysUserCompanyIds);
                 if (null != sysProjectForMonth) {
