@@ -106,4 +106,8 @@ public interface SysContractBusinessService {
      * @return
      */
     int deleteSysContractFileByContractId(Long contractId);
+    /**
+     * 更新快到期的合同状态
+     */
+    void updateSysContractExpire();
 }

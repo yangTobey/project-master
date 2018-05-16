@@ -18,12 +18,20 @@ public class SysUtil {
      * @return
      */
     public static List<Long> getSysUserCompany() {
-        Session session = SecurityUtils.getSubject().getSession();
+        Session session = null;
         //公司id集合
-        List<Long> sysUserCompanyIds = (List<Long>) session.getAttribute("sysUserCompany");
-        if (null==sysUserCompanyIds)  {
-           sysUserCompanyIds =new ArrayList<>();
-             sysUserCompanyIds.add(0L);
+        List<Long> sysUserCompanyIds = null;
+        if (null == SecurityUtils.getSubject()) {
+            sysUserCompanyIds = new ArrayList<>();
+            sysUserCompanyIds.add(0L);
+        } else {
+            session = SecurityUtils.getSubject().getSession();
+            //公司id集合
+            sysUserCompanyIds = (List<Long>) session.getAttribute("sysUserCompany");
+        }
+        if (null == sysUserCompanyIds) {
+            sysUserCompanyIds = new ArrayList<>();
+            sysUserCompanyIds.add(0L);
         }
         return sysUserCompanyIds;
     }

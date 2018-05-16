@@ -99,4 +99,9 @@ public class SysContractBusinessServiceImpl implements SysContractBusinessServic
     public int deleteSysContractFileByContractId(Long contractId) {
         return sysContractDao.deleteSysContractFileByContractId(contractId);
     }
+
+    @Override
+    public void updateSysContractExpire() {
+        sysContractDao.updateSysContractExpire();
+    }
 }

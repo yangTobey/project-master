@@ -54,14 +54,14 @@ public interface SysContractService {
      * @return
      */
     Map<String, Object> addSysContract(String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime,
-                                       Integer contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName,String fileInfo);
+                                       Integer contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName,String fileInfo,Long companyId);
     /**
      * 更新合同
      * @param contractName
      * @return
      */
     Map<String, Object> updateSysContract(Long contractId,String contractName,String contractCode,String contractMoney,String contractStartTime, String contractEndTime,
-                       String contractTypeId,String firstPartyCompany,String secondPartyCompany,String personLiableName,String fileInfo);
+                       String contractTypeId,String firstPartyCompany,String secondPartyCompany,String personLiableName,String fileInfo,Long companyId);
     /**
      * 删除合同
      * @param contractId
@@ -85,5 +85,10 @@ public interface SysContractService {
      * @return
      */
     Map<String, Object> sysContractAnalysisData(Long companyId);
+
+    /**
+     * 更新快到期的合同状态
+     */
+    void updateSysContractExpire();
 
 }

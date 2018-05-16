@@ -166,7 +166,7 @@ public class SysContractServiceImpl implements SysContractService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> addSysContract(String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime, Integer contractTypeId
-            , String firstPartyCompany, String secondPartyCompany, String personLiableName, String fileInfo) {
+            , String firstPartyCompany, String secondPartyCompany, String personLiableName, String fileInfo,Long companyId) {
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -186,6 +186,7 @@ public class SysContractServiceImpl implements SysContractService {
                 sysContract.setSecondPartyCompany(secondPartyCompany);
                 sysContract.setPersonLiableName(personLiableName);
                 sysContract.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
+                sysContract.setCompanyId(companyId);
                 int count = sysContractBusinessService.addSysContract(sysContract);
                 if (count > 0) {
                     if (!UtilHelper.isEmpty(fileInfo)) {
@@ -222,7 +223,7 @@ public class SysContractServiceImpl implements SysContractService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> updateSysContract(Long contractId, String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime
-            , String contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName, String fileInfo) {
+            , String contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName, String fileInfo,Long companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         map.put("contractId", contractId);
@@ -236,7 +237,7 @@ public class SysContractServiceImpl implements SysContractService {
         map.put("secondPartyCompany", secondPartyCompany);
         map.put("personLiableName", personLiableName);
         map.put("createTime", Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-
+        map.put("companyId", companyId);
         try {
             SysContract sysContract = sysContractBusinessService.findSysContractByContractCode(contractCode);
             if (sysContract != null) {
@@ -304,10 +305,12 @@ public class SysContractServiceImpl implements SysContractService {
     public Map<String, Object> getSysContractExpireDataTotal(Long companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
+        //获取用户权限下可操作的小区信息
+        List<Long> sysUserCompanyIds = SysUtil.getSysUserCompany();
         /*组装请求参数数据*/
         //status_code为3时，表示即将过期
         map.put("statusCode", 3);
-        map.put("companyId", companyId);
+        map.put("sysUserCompanyIds", sysUserCompanyIds);
         /*组装结果数据*/
         try {
             resultMap.put("total", sysContractBusinessService.sysContractDataTotal(map));
@@ -373,5 +376,10 @@ public class SysContractServiceImpl implements SysContractService {
             logger.info("获取合同档案统计数据失败：" + e.getMessage());
             return R.error(500, "服务器异常！！");
         }
+    }
+
+    @Override
+    public void updateSysContractExpire() {
+
     }
 }

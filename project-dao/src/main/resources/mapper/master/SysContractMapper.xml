@@ -132,19 +132,12 @@
 			and contract.company_id=#{companyId}
 		</if>
 	</select>-->
-	<!--查询即将到期合同列表总数量（结束时间-当前时间<=31天）-->
-	<!--<select id="sysContractExpireDataTotal" resultType="int" >
-		SELECT
-		COUNT(contract_id)
-		from sys_contract as contract
-		where 1=1
-		and TO_DAYS( contract.contract_endTime )- TO_DAYS(NOW()) BETWEEN 0 and 30
-		and status_code!=2
-		<if test="companyId != 0">
-			and contract.company_id=#{companyId}
-		</if>
+	<!--更新快到期的合同状态（结束时间-当前时间<=31天）-->
+	<update id="updateSysContractExpire"  >
+		update sys_contract  set status_code = 3
+		where  TO_DAYS( contract.contract_endTime )- TO_DAYS(NOW()) BETWEEN 0 and 30
 
-	</select>-->
+	</update>
 	<select id="sysContractDataTotal" resultType="int" >
 		SELECT count(contract.contract_id)
 		from sys_contract as contract
@@ -207,13 +200,13 @@
 	<update id="updateSysContract" parameterType="map">
 		update sys_contract set contract_name = #{contractName},contract_code = #{contractCode},contract_money = #{contractMoney},contract_startTime = #{contractStartTime},
 		contract_endTime = #{contractEndTime},contract_type_id = #{contractTypeId},first_party_company = #{firstPartyCompany},second_party_company = #{secondPartyCompany},
-		person_liable_name = #{personLiableName}
+		person_liable_name = #{personLiableName},company_id = #{companyId}
 		where contract_id = #{contractId}
 	</update>
 	<insert id="save" parameterType="com.spring.boot.bean.master.SysContract" useGeneratedKeys="true" keyProperty="contractId">
 		INSERT INTO sys_contract  (contract_name, contract_code,contract_money,contract_startTime,contract_endTime,contract_type_id,first_party_company,second_party_company,person_liable_name,
-		 create_time)
-              VALUES   (#{contractName},#{contractCode},#{contractMoney},#{contractStartTime},#{contractEndTime},#{contractTypeId},#{firstPartyCompany},#{secondPartyCompany},#{personLiableName},#{createTime} )
+		 create_time,company_id)
+              VALUES   (#{contractName},#{contractCode},#{contractMoney},#{contractStartTime},#{contractEndTime},#{contractTypeId},#{firstPartyCompany},#{secondPartyCompany},#{personLiableName},#{createTime},#{companyId} )
 	</insert>
 	<update id="deleteSysContract" parameterType="map">
 		update sys_contract  set status_code = 5
