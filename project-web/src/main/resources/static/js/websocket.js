@@ -5,7 +5,7 @@ var websocket = null;
     var url = 'property';
     //判断当前浏览器是否支持WebSocket
     if ('WebSocket' in window) {
-        websocket = new WebSocket("ws://localhost:8080/project-web/websocket/"+url);
+        websocket = new WebSocket("ws://localhost:8080/project-web/websocket/");
     }
     else {
         alert('Not support websocket')

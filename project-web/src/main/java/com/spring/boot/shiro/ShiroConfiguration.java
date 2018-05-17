@@ -7,6 +7,7 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -84,7 +85,22 @@ public class ShiroConfiguration {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm());
         securityManager.setCacheManager(ehCacheManager());
+        //securityManager.setSessionManager(defaultWebSessionManager());
         return securityManager;
+    }
+    /**
+     * @see DefaultWebSessionManager
+     * @return
+     */
+    @Bean(name="sessionManager")
+    public DefaultWebSessionManager defaultWebSessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setCacheManager(ehCacheManager());
+        sessionManager.setGlobalSessionTimeout(1800000);
+        sessionManager.setDeleteInvalidSessions(true);
+        sessionManager.setSessionValidationSchedulerEnabled(true);
+        sessionManager.setDeleteInvalidSessions(true);
+        return sessionManager;
     }
 
     /**
@@ -94,11 +110,7 @@ public class ShiroConfiguration {
     @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilterFactoryBean() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-        shiroFilterFactoryBean.setLoginUrl("/sysPage/login");
-        shiroFilterFactoryBean.setSuccessUrl("/sysPage/index");
-        //用户访问未对其授权的资源时,所显示的连接
-        shiroFilterFactoryBean.setUnauthorizedUrl("/sysPage/login");
+
         shiroFilterFactoryBean.setSecurityManager(securityManager());
 
        /* Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
@@ -121,17 +133,24 @@ public class ShiroConfiguration {
 //        filterChainDefinitionManager.put("/user/edit/**", "authc,perms[user:edit]");// 这里为了测试，固定写死的值，也可以从数据库或其他配置中读取
         //filterChainDefinitionMap.put("/**", "anon");
 
-        filterChainDefinitionMap.put("/", "anon");
+        //filterChainDefinitionMap.put("/", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/templates/**", "anon");
         //filterChainDefinitionMap.put("/mapper/**", "anon");
         filterChainDefinitionMap.put("/login/login", "anon");
-        filterChainDefinitionMap.put("/websocket/property", "anon");
-        filterChainDefinitionMap.put("/websocket/financial", "anon");
-        filterChainDefinitionMap.put("/login/logout", "anon");
+        filterChainDefinitionMap.put("/websocket", "anon");
+        filterChainDefinitionMap.put("/websocket", "anon");
+        filterChainDefinitionMap.put("/login/logout", "logout");
         filterChainDefinitionMap.put("/error", "anon");
         /*注：如果开通验证权限，则会出现跨域问题，后期需要修改配置*/
         filterChainDefinitionMap.put("/**", "authc");
+
+        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
+        shiroFilterFactoryBean.setLoginUrl("/");
+        shiroFilterFactoryBean.setSuccessUrl("/sysPage/index");
+        //用户访问未对其授权的资源时,所显示的连接
+        shiroFilterFactoryBean.setUnauthorizedUrl("/sysPage/login");
+
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
 

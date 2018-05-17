@@ -4,6 +4,7 @@ import com.spring.boot.service.SysUserService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.ShiroUtils;
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
@@ -70,6 +71,11 @@ public class SysLoginController {
     public String logout() {
         //清除登录缓存
         ShiroUtils.logout();
-        return "views/login/login";
+        if (SecurityUtils.getSubject() != null) {
+            if (SecurityUtils.getSubject().getSession() != null) {
+                SecurityUtils.getSubject().getSession().removeAttribute("user");
+            }
+        }
+        return "redirect:/sysPage/login";
     }
 }
