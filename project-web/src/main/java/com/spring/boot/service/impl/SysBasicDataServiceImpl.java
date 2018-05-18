@@ -66,9 +66,14 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             map.put("type", 1);
             SysBasicDataEntity sysBasicDataEntity = sysBasicDataBusinessService.sysBasicDataAnalysisData(map);
             if (sysBasicDataEntity != null) {
-                int querySubsidiaryCount = sysCompanyBusinessService.querySubsidiaryCount(map);
-                //分公司总数
-                sysBasicDataEntity.setSubsidiaryCount(querySubsidiaryCount);
+                if (companyId == 0) {
+                    int querySubsidiaryCount = sysCompanyBusinessService.querySubsidiaryCount(map);
+                    //分公司总数
+                    sysBasicDataEntity.setSubsidiaryCount(querySubsidiaryCount);
+                } else {
+                    //分公司总数
+                    sysBasicDataEntity.setSubsidiaryCount(0);
+                }
                 //房屋装修率
                 sysBasicDataEntity.setDecorateHouseScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysBasicDataEntity.getDecorateHouseNumber(), sysBasicDataEntity.getHouseNumber())) * 100);
                 //车位空置率

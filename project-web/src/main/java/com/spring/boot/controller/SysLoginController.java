@@ -41,7 +41,7 @@ public class SysLoginController {
             //sha256加密
             //password = new Sha256Hash(password).toHex();
            // password= new SimpleHash("md5", password,  ByteSource.Util.bytes(userName), 2).toHex();
-            logger.info("密码："+new SimpleHash("md5", password,  null, 2).toHex());
+            //logger.info("密码："+new SimpleHash("md5", password,  null, 2).toHex());
             UsernamePasswordToken token = new UsernamePasswordToken(userAccount, password);
             subject.login(token);
             //验证是否通过
@@ -50,16 +50,12 @@ public class SysLoginController {
             }
         }catch (UnknownAccountException e) {
             return R.error(e.getMessage());
-           //return "views/login/login";
         }catch (IncorrectCredentialsException e) {
             return R.error(e.getMessage());
-            //return R.error(e.getMessage());
         }catch (LockedAccountException e) {
             return R.error(e.getMessage());
-            //return "views/login/login";
         }catch (AuthenticationException e) {
             return R.error(e.getMessage());
-            //return "views/login/login";
         }
         return R.ok(200,"成功！");
     }

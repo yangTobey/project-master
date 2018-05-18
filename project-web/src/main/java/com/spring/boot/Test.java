@@ -1,9 +1,12 @@
 package com.spring.boot;
 
 import com.spring.boot.util.UtilHelper;
+import org.apache.shiro.crypto.hash.Hash;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/3/19.
@@ -49,6 +52,18 @@ public class Test {
         System.out.println("af1111111111111111".matches(regex));
         System.out.println("a454545aaaaa".matches(regex));
         System.out.println("a_-1+".matches(regex));
+
+        Map<String,Object> map=new HashMap<String,Object>();
+        map.put("type",100);
+        map=new HashMap<String,Object>();
+        for(int i=0;i<=5;i++){
+            map.put("type"+i, i );
+        }
+        for(int i=0;i<=5;i++){
+            System.out.println(map.get("type"+i));
+        }
+
+        System.out.println(map.get("type"));
 
     }
 }
