@@ -57,6 +57,11 @@ public interface SysContractDao extends BaseDao<SysContract>{
      */
     List<SysContract> sysContractAnalysisData(Map<String, Object> map);
     /**
+     * 根据id获取信息
+     * @return
+     */
+    SysContract findSysContractById(Long contractId);
+    /**
      * 根据id获取附件文档信息
      * @return
      */
@@ -71,5 +76,5 @@ public interface SysContractDao extends BaseDao<SysContract>{
     /**
      * 更新快到期的合同状态
      */
-    void updateSysContractExpire();
+    void updateSysContractExpire(@Param("type")Integer type,@Param("nowTime")String nowTime);
 }

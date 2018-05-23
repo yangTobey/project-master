@@ -72,6 +72,7 @@ public class SysLoginController {
                 SecurityUtils.getSubject().getSession().removeAttribute("user");
             }
         }
-        return "redirect:/sysPage/login";
+        //重定向到初始地址，详细请见WebMvcConfig类
+        return "redirect:/";
     }
 }

@@ -256,7 +256,22 @@ public class SysContractController {
         return R.ok(map);
     }
     /**
-     * 根据公司id获取附件文档信息
+     * 根据主键id获取附件文档信息
+     *
+     * @param contractId
+     * @return
+     */
+    @RequestMapping(value = "/findSysContractById", method = RequestMethod.GET)
+    @ResponseBody
+    public R findSysContractById(@RequestParam(value = "contractId", required = false) String contractId) {
+        if (!UtilHelper.isNumer(contractId)) {
+            return R.error(400, "主键id格式不正确，请联系系统管理员！");
+        }
+        Map<String, Object> map = sysContractService.findSysContractById(Long.valueOf(contractId));
+        return R.ok(map);
+    }
+    /**
+     * 根据id获取附件文档信息
      *
      * @param contractId
      * @return

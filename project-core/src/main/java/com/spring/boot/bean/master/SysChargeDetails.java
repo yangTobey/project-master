@@ -2,6 +2,7 @@ package com.spring.boot.bean.master;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2018/3/2.
  */
-public class SysChargeDetails {
+public class SysChargeDetails implements Serializable {
 
     private Long chargeId;
     private Double chargeMoney;

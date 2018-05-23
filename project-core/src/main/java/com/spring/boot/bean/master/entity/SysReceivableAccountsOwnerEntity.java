@@ -1,5 +1,6 @@
 package com.spring.boot.bean.master.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.Map;
  * 小业主应收款详细信息
  * Created by Administrator on 2018/3/16.
  */
-public class SysReceivableAccountsOwnerEntity {
+public class SysReceivableAccountsOwnerEntity implements Serializable {
     //对应月份
     //private Integer month;
     //对应数据所在年份所在月份列表

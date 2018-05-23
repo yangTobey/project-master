@@ -12,7 +12,7 @@ public class SysMenu {
     private Long parentId;
     private String url;
     private String perms;
-    private Integer type;
+    private Integer menuType;
     private String icon;
     private Integer sort;
     private Integer isUse;
@@ -62,12 +62,12 @@ public class SysMenu {
         this.perms = perms;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getMenuType() {
+        return menuType;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setMenuType(Integer menuType) {
+        this.menuType = menuType;
     }
 
     public String getIcon() {

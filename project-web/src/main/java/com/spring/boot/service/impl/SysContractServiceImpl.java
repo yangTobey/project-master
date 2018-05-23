@@ -323,6 +323,24 @@ public class SysContractServiceImpl implements SysContractService {
     }
 
     @Override
+    public Map<String, Object> findSysContractById(Long contractId) {
+        try {
+            SysContract sysContract = sysContractBusinessService.findSysContractById(contractId);
+            if(null!=sysContract){
+                List<SysContractFile> sysContractFile=sysContractBusinessService.findSysContractFileById(contractId);
+                sysContract.setFileList(sysContractFile);
+                return R.ok().putData(200, sysContract, "根据id查找合同文档信息成功！");
+            }else{
+                return R.error(500, "根据id查找合同文档信息失败，服务器异常，请联系系统管理员！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("根据id查找合同文档信息失败：" + e.getMessage());
+            return R.error(500, "根据id查找合同文档信息失败，服务器异常，请联系系统管理员！");
+        }
+    }
+
+    @Override
     public Map<String, Object> findSysContractFileById(long contractId) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
@@ -380,6 +398,14 @@ public class SysContractServiceImpl implements SysContractService {
 
     @Override
     public void updateSysContractExpire() {
-
+        //（1：未执行，2：在执行，3：即将过期，4：已经过期，5：已经删除）
+        //1：未执行
+        sysContractBusinessService.updateSysContractExpire(1,UtilHelper.getNowTimeStr());
+        //2：在执行
+        sysContractBusinessService.updateSysContractExpire(2,UtilHelper.getNowTimeStr());
+        //3：即将过期
+        sysContractBusinessService.updateSysContractExpire(3,UtilHelper.getNowTimeStr());
+        //4：已经过期
+        sysContractBusinessService.updateSysContractExpire(4,UtilHelper.getNowTimeStr());
     }
 }

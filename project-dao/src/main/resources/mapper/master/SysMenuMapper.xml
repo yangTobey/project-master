@@ -7,7 +7,7 @@
         <result column="parent_id" property="parentId"/>
         <result column="url" property="url"/>
         <result column="perms" property="perms"/>
-        <result column="type" property="type"/>
+        <result column="menu_type" property="menuType"/>
         <result column="icon" property="icon"/>
         <result column="sort" property="sort"/>
         <result column="is_use" property="isUse"/>
@@ -17,7 +17,7 @@
     <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
 
     <sql id="Base_Column_List">
-		menu_id,menu_name,parent_id,url,perms,type,icon,sort,is_use,remark
+		menu_id,menu_name,parent_id,url,perms,menu_type,icon,sort,is_use,remark
 	</sql>
  <!--   <select id="queryList" resultMap="sysCompany" parameterType="map">
         select
@@ -32,11 +32,11 @@
     <select id="queryCatalogAndMenu" resultMap="sysMenu" parameterType="Integer">
         select <include refid="Base_Column_List"/> from sys_menu where 1=1
         <choose>
-            <when test="menuType==0">
+           <!-- <when test="menuType==0">
                 and type=0
-            </when>
+            </when>-->
             <when test="menuType==1">
-                and type==0
+                and menu_type=0
             </when>
         </choose>
          and is_use!=3
@@ -46,7 +46,7 @@
         <if test="selectType != null and selectType!=''">
 			<choose>
 				<when test="selectType==1">
-                    and type!=2
+                    and menu_type!=2
 				</when>
 				<!--<when test="selectType==2">
                     and type!=0
@@ -58,7 +58,7 @@
         </if>-->
     </select>
     <select id="findMenuAndModule" resultMap="sysMenu" >
-        select * from sys_menu where 1=1 and type =1 and is_use=1
+        select * from sys_menu where 1=1 and menu_type =1 and is_use=1
     </select>
 
     <!--获取菜单列表-->
@@ -66,6 +66,12 @@
         select <include refid="Base_Column_List"/>
         from sys_menu
         where is_use !=3
+        <if test="menuName != null and menuName !=''">
+            and menu_name  like concat('%', #{menuName}, '%')
+        </if>
+        <if test="menuUrl != null and menuUrl !=''">
+            and url like concat('%', #{menuUrl}, '%')
+        </if>
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
         </if>
@@ -77,11 +83,11 @@
         where is_use !=3
     </select>
     <update id="updateSysMenu" parameterType="map">
-		update sys_menu set menu_name = #{menuName},parent_id = #{parentId},url = #{menuUrl},perms = #{menuPerms},type = #{menuType},sort = #{sort},remark = #{remark},icon = #{icon}
+		update sys_menu set menu_name = #{menuName},parent_id = #{parentId},url = #{menuUrl},perms = #{menuPerms},menu_type = #{menuType},sort = #{sort},remark = #{remark},icon = #{icon}
 		where menu_id = #{menuId}
 	</update>
     <insert id="addSysMenu" parameterType="map">
-		INSERT INTO sys_menu (menu_name, parent_id, url,perms,type,icon,sort,remark)
+		INSERT INTO sys_menu (menu_name, parent_id, url,perms,menu_type,icon,sort,remark)
               VALUES   (#{menuName},#{parentId},#{menuUrl},#{menuPerms},#{menuType},#{icon},#{sort},#{remark})
 	</insert>
     <update id="deleteSysMenuById" parameterType="map">

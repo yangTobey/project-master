@@ -32,8 +32,8 @@
 		where department_id = #{departmentId}
 	</update>
 	<insert id="save" parameterType="map">
-		INSERT INTO sys_department (department_name, department_code, company_id)
-              VALUES   (#{departmentName},#{departmentCode},#{companyId})
+		INSERT INTO sys_department (department_name, department_code, company_id,create_time)
+              VALUES   (#{departmentName},#{departmentCode},#{companyId},#{createTime})
 	</insert>
 	<!-- 删除部门信息，只更新部门状态 -->
 	<update id="delete" parameterType="map">

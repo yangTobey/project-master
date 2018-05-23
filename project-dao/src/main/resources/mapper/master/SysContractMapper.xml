@@ -38,7 +38,7 @@
 		LEFT JOIN sys_contract_type as type on contract.contract_type_id=type.contractType_id
 		LEFT JOIN sys_contract_file as file on file.contract_id=contract.contract_id
 		where 1=1
-		<if test="statusCode != null and statusCode!=''">
+		<if test="statusCode != null and statusCode!='' or statusCode==0">
 			/*status_code状态（1：未执行，2：在执行，3：即将过期，4：已经过期，5：已经删除）*/
 			<choose>
 				<when test="statusCode==1">
@@ -108,6 +108,19 @@
 		</if>
 		GROUP BY contract.status_code
 	</select>
+
+	<!--根据id查找合同信息-->
+	<select id="findSysContractById" resultMap="sysContract" >
+		SELECT
+		contract.contract_id,contract.contract_name,contract.contract_code,contract.contract_money,contract.contract_startTime,contract.contract_endTime,contract.contract_type_id,
+		contract.first_party_company,contract.second_party_company,contract.person_liable_name,contract.status_code,contract.company_id,company.company_name,type.contractType_name
+		from sys_contract as contract LEFT JOIN sys_company as company on contract.company_id=company.company_id
+		LEFT JOIN sys_contract_type as type on contract.contract_type_id=type.contractType_id
+		where 1=1
+		and contract.contract_id = #{contractId}
+		and contract.status_code!=5
+	</select>
+
 	<!--根据id查找文档信息-->
 	<select id="findSysContractFileById" resultType="com.spring.boot.bean.master.SysContractFile" >
 		SELECT
@@ -134,15 +147,33 @@
 	</select>-->
 	<!--更新快到期的合同状态（结束时间-当前时间<=31天）-->
 	<update id="updateSysContractExpire"  >
-		update sys_contract  set status_code = 3
-		where  TO_DAYS( contract.contract_endTime )- TO_DAYS(NOW()) BETWEEN 0 and 30
+		update sys_contract  set
+		<choose>
+			<when test="type==1">
+				status_code=1
+				where  contract_startTime <![CDATA[ >= ]]>#{nowTime}
+			</when>
+			<when test="type==2">
+				status_code=2
+				where  contract_startTime <![CDATA[ <= ]]>#{nowTime} and contract_endTime <![CDATA[ >= ]]>#{nowTime}
+			</when>
+			<when test="type==3">
+				status_code=3
+				where  TO_DAYS( contract_endTime )- TO_DAYS(NOW()) BETWEEN 0 and 30
+			</when>
+			<when test="type==4">
+				status_code=4
+				where  contract_endTime <![CDATA[ >= ]]>#{nowTime}
+			</when>
+		</choose>
+
 
 	</update>
 	<select id="sysContractDataTotal" resultType="int" >
 		SELECT count(contract.contract_id)
 		from sys_contract as contract
 		where 1=1
-		<if test="statusCode != null and statusCode!=''">
+		<if test="statusCode != null and statusCode!='' or statusCode==0">
 			/*status_code状态（1：未执行，2：在执行，3：即将过期，4：已经过期，5：已经删除）*/
 			<choose>
 				<when test="statusCode==1">

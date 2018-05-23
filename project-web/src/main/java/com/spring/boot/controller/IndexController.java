@@ -16,6 +16,7 @@ public class IndexController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(){
+        System.out.println("登录进来哦！！");
         return "views/login/login";
     }
     /**
@@ -155,7 +156,7 @@ public class IndexController {
      */
     @RequestMapping(value = "/page401", method = RequestMethod.GET)
     public String page401(){
-        return "views/error/401";
+        return "views/error/pageError";
     }
     /**
      * 404错误界面跳转
@@ -163,7 +164,7 @@ public class IndexController {
      */
     @RequestMapping(value = "/page404", method = RequestMethod.GET)
     public String page404(){
-        return "views/error/404";
+        return "views/error/notFind";
     }
     /**
      * 500错误界面跳转
@@ -171,6 +172,11 @@ public class IndexController {
      */
     @RequestMapping(value = "/page500", method = RequestMethod.GET)
     public String page500(){
-        return "views/error/500";
+        return "views/error/serverError";
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String test(){
+        return "views/error/test";
     }
 }

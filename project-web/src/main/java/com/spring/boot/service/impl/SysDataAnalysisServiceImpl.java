@@ -210,8 +210,8 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             boolean sysReceivableAccountKey = redisTemplate.hasKey("sysReceivableAccount");
             if (sysReceivableAccountKey) {
                 Map<String, Object> resultMap = (Map<String, Object>) redisTemplate.opsForValue().get("sysReceivableAccount");
-                SysAccountsReceivable sysAccountsReceivable=(SysAccountsReceivable)resultMap.get("sysAccountsReceivableMonth");
-                SysReceivableAccountsOwnerEntity sysReceivableAccountsOwnerEntity=(SysReceivableAccountsOwnerEntity)resultMap.get("sysAccountsReceivable");
+                SysAccountsReceivable sysAccountsReceivable=(SysAccountsReceivable)resultMap.get("sysAccountsReceivable");
+                SysReceivableAccountsOwnerEntity sysReceivableAccountsOwnerEntity=(SysReceivableAccountsOwnerEntity)resultMap.get("sysAccountsReceivableMonth");
                 if(sysAccountsReceivable==null){
                     sysAccountsReceivable=new SysAccountsReceivable();
                 }

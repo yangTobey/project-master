@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/2.
@@ -14,8 +15,8 @@ public class SysContract {
     private String contractName;
     private String contractCode;
     private Double contractMoney;
-    private Timestamp contractStartTime;
-    private Timestamp contractEndTime;
+    private Date contractStartTime;
+    private Date contractEndTime;
     private Integer contractTypeId;
     private String firstPartyCompany;
     private String secondPartyCompany;
@@ -37,6 +38,8 @@ public class SysContract {
     private String contractTypeName;
     //附件文档数量
     private Integer fileNum;
+
+    List<SysContractFile> fileList;
 
     public Long getContractId() {
         return contractId;
@@ -69,20 +72,20 @@ public class SysContract {
     public void setContractMoney(Double contractMoney) {
         this.contractMoney = contractMoney;
     }
-
-    public Timestamp getContractStartTime() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    public Date getContractStartTime() {
         return contractStartTime;
     }
 
-    public void setContractStartTime(Timestamp contractStartTime) {
+    public void setContractStartTime(Date contractStartTime) {
         this.contractStartTime = contractStartTime;
     }
-
-    public Timestamp getContractEndTime() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    public Date getContractEndTime() {
         return contractEndTime;
     }
 
-    public void setContractEndTime(Timestamp contractEndTime) {
+    public void setContractEndTime(Date contractEndTime) {
         this.contractEndTime = contractEndTime;
     }
 
@@ -197,5 +200,13 @@ public class SysContract {
 
     public void setFileNum(Integer fileNum) {
         this.fileNum = fileNum;
+    }
+
+    public List<SysContractFile> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<SysContractFile> fileList) {
+        this.fileList = fileList;
     }
 }

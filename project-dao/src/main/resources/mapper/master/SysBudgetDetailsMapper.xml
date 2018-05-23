@@ -140,7 +140,7 @@
 		update sys_budget_details set year = #{year},month = #{month},budget_income = #{budgetIncome},real_income = #{realIncome},budget_profits = #{budgetProfits},real_profits = #{realProfits}
 		,budget_expenses = #{budgetExpenses},personnel_cost = #{personnelCost},administrative_cost = #{administrativeCost},material_cost = #{materialCost},energy_cost = #{energyCost}
 		,equipment_cost = #{equipmentCost},cleaning_cost = #{cleaningCost},afforest_cost = #{afforestCost},order_maintenance_cost = #{orderMaintenanceCost},community_activities_cost = #{communityActivitiesCost}
-		,other_cost = #{otherCost},real_expenses_total = #{realExpensesTotal},create_time = #{createTime},company_id = #{companyId}
+		,other_cost = #{otherCost},real_expenses_total = #{realExpensesTotal},company_id = #{companyId}
 		where budget_id = #{budgetId}
 	</update>
     <insert id="addSysBudgetDetails" parameterType="com.spring.boot.bean.master.SysBudgetDetails">

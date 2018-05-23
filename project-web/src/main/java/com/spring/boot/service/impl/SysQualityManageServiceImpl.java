@@ -257,14 +257,20 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     }
 
     @Override
-    public Map<String, Object> findSysQualityManageById(long qualityId) {
+    public Map<String, Object> findSysQualityManageById(Long qualityId) {
         map = new HashMap<String, Object>();
         resultMap = new HashMap<String, Object>();
         map.put("qualityId", qualityId);
         //SysQualityManage sysCompany = sysQualityManageBusinessService.findSysQualityManageById(map);
         try {
             SysQualityManage sysQualityManage = sysQualityManageBusinessService.findSysQualityManageById(map);
-            return R.ok().putData(200, sysQualityManage, "根据id查找品质管理数据成功！");
+            if(null!=sysQualityManage){
+                List<SysQualityManageFile> sysQualityManageFiles=sysQualityManageBusinessService.findSysQualityManageFileById(qualityId);
+                sysQualityManage.setFileList(sysQualityManageFiles);
+                return R.ok().putData(200, sysQualityManage, "根据id查找品质管理数据成功！");
+            }else{
+                return R.error(500, "根据id查找品质管理数据失败，服务器异常，请联系系统管理员！");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("根据id查找品质管理数据失败：" + e.getMessage());

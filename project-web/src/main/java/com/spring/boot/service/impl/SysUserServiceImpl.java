@@ -14,6 +14,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,12 +111,20 @@ public class SysUserServiceImpl implements SysUserService {
         if (ShiroUtils.getUserEntity().getAccount() == null) {
             return R.error(500, "请登录系统再进行操作功能！");
         }
-        String userAccount = ShiroUtils.getUserEntity().getAccount();
         Long userId=ShiroUtils.getUserEntity().getUserId();
+
         //根据用户提交的密码，利用md5加密得到加密后的原密码
-        password = new SimpleHash("md5", password, ByteSource.Util.bytes(userAccount), 2).toHex();
+        password = new SimpleHash("md5", password, null, 2).toHex();
         //根据用户提交的新密码，利用md5加密得到加密后的新密码
-        newPassword = new SimpleHash("md5", newPassword, ByteSource.Util.bytes(userAccount), 2).toHex();
+        newPassword = new SimpleHash("md5", newPassword, null, 2).toHex();
+        SysUser sysUser = sysUserBusinessService.sysUserInfo(userId);
+        if(null!=sysUser){
+            if(!password.equals(sysUser.getPassword())){
+                return R.error(500, "原密码错误，修改密码失败！");
+            }
+        }else{
+            return R.error(500, "修改失败，用户不存在，请联系管理员！");
+        }
         map.put("userId", userId);
         map.put("password", password);
         map.put("newPassword", newPassword);
@@ -171,6 +180,7 @@ public class SysUserServiceImpl implements SysUserService {
         sysUser.setUserName(userName);
         sysUser.setCompanyId(companyId);
         sysUser.setDepartmentId(departmentId);
+        sysUser.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
         try {
             Map<String, Object> userMap = new HashMap<String, Object>();
             userMap.put("account", userAccount);
@@ -218,6 +228,7 @@ public class SysUserServiceImpl implements SysUserService {
         map.put("companyId", companyId);
         map.put("roleId", roleId);
         map.put("departmentId", departmentId);
+        map.put("userName", userName);
         try {
             int count = sysUserBusinessService.updateUserInfo(map);
             if (count > 0) {

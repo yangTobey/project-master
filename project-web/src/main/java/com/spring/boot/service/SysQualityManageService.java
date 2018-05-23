@@ -56,7 +56,7 @@ public interface SysQualityManageService {
      * 根据id获取公司数据
      * @return
      */
-    Map<String,Object> findSysQualityManageById(long qualityId);
+    Map<String,Object> findSysQualityManageById(Long qualityId);
     /**
      * 根据id获取附件文档信息
      * @return

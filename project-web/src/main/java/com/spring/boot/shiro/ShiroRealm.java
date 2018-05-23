@@ -119,8 +119,8 @@ public class ShiroRealm extends AuthorizingRealm {
             throw new IncorrectCredentialsException("账号或密码不正确");
         }
         //账号锁定
-        if (user.getStatusCode() == 0) {
-            throw new LockedAccountException("账号已被锁定,请联系管理员");
+        if (user.getStatusCode() == 2||user.getStatusCode() == 3) {
+            throw new LockedAccountException("账号已被锁定或者无效,请联系管理员进行操作！！");
         }
 
         Session session = SecurityUtils.getSubject().getSession();

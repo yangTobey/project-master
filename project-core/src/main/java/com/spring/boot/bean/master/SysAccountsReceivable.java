@@ -2,12 +2,13 @@ package com.spring.boot.bean.master;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Administrator on 2018/3/2.
  */
-public class SysAccountsReceivable {
+public class SysAccountsReceivable implements Serializable {
     private Long accountsId;
     private Long companyId;
     private Integer year;

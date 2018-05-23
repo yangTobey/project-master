@@ -128,7 +128,7 @@
  </select>
  <update id="updateSysQualityManage" parameterType="map">
      update sys_quality_manage set company_id = #{companyId},year = #{year},month = #{month},quality_check = #{qualityCheck},quality_check_pass = #{qualityCheckPass}
-     ,quality_check_fail = #{qualityCheckFail},security_event = #{securityEvent},quality_check_unmodified = #{qualityCheckUnmodified},create_time = #{createTime}
+     ,quality_check_fail = #{qualityCheckFail},security_event = #{securityEvent},quality_check_unmodified = #{qualityCheckUnmodified}
      where quality_id = #{qualityId}
  </update>
  <insert id="addSysQualityManage" parameterType="com.spring.boot.bean.master.SysQualityManage" useGeneratedKeys="true" keyProperty="qualityId">
@@ -154,7 +154,7 @@
     </select>
 
     <!--根据id查找详细信息-->
-    <select id="findSysQualityManageById" resultType="com.spring.boot.bean.master.SysQualityManage" >
+    <select id="findSysQualityManageById" resultMap="sysQualityManage" >
         select
         <include refid="Base_Column_List"/>
         ,company.company_name as companyName,COUNT(file.file_id) AS fileNum

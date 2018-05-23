@@ -1,6 +1,9 @@
 package com.spring.boot.bean.master;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 用户基本信息实体类
@@ -23,6 +26,8 @@ public class SysUser implements Serializable {
     private String companyName;
     private String departmentName;
     private String roleName;
+
+    private Date createTime;
 
     public Long getUserId() {
         return userId;
@@ -134,5 +139,13 @@ public class SysUser implements Serializable {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

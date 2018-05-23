@@ -96,6 +96,11 @@ public interface SysContractBusinessService {
      */
     List<SysContract> sysContractAnalysisData(Map<String, Object> map);
     /**
+     * 根据id获取信息
+     * @return
+     */
+    SysContract findSysContractById(Long contractId);
+    /**
      * 根据id获取附件文档信息
      * @return
      */
@@ -109,5 +114,5 @@ public interface SysContractBusinessService {
     /**
      * 更新快到期的合同状态
      */
-    void updateSysContractExpire();
+    void updateSysContractExpire(Integer type,String nowTime);
 }

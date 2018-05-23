@@ -61,12 +61,31 @@ public class SysMenuServiceImpl implements SysMenuService {
     public Map<String, Object> queryCatalogAndMenu(Integer menuType) {
        try {
            //查询根菜单列表
-           List<SysMenu> menuList = sysMenuBusinessService.queryCatalogAndMenu(menuType);
-           if(null!=menuList&&menuList.size()>0){
-               return R.ok().putData(200, menuList, "获取成功！");
+           List<SysMenu> menuList=null;
+           //假如添加的是菜单或者目录，需要特别追加最外层菜单（添加目录或者和目录同级别的菜单时，需要获取添加的目录或者菜单的上级id）
+           if(menuType==0){
+               menuList=new ArrayList<SysMenu>();
+               SysMenu sysMenu=new SysMenu();
+               sysMenu.setMenuName("系统最外层菜单");
+               sysMenu.setMenuId(0L);
+               menuList.add(sysMenu);
            }else{
-               return R.error(500, "获取出错,服务器异常，请联系管理员！");
+               //查询根菜单列表
+               menuList = sysMenuBusinessService.queryCatalogAndMenu(menuType);
+               if(null!=menuList&&menuList.size()>0){
+                   //假如添加的是菜单或者目录，需要特别追加最外层菜单（添加目录或者和目录同级别的菜单时，需要获取添加的目录或者菜单的上级id）
+                   if(menuType==1){
+                       SysMenu sysMenu=new SysMenu();
+                       sysMenu.setMenuName("系统最外层菜单");
+                       sysMenu.setMenuId(0L);
+                       menuList.add(sysMenu);
+                   }
+               }else{
+                   return R.error(500, "获取出错,服务器异常，请联系管理员！");
+               }
            }
+           return R.ok().putData(200, menuList, "获取成功！");
+
        }catch (Exception e){
            e.printStackTrace();
            logger.info("获取出错：" + e.getMessage());
@@ -137,14 +156,14 @@ public class SysMenuServiceImpl implements SysMenuService {
         List<SysMenu> subMenuList = new ArrayList<SysMenu>();
         for (SysMenu sysMenu : menuList) {
             //*************************组装菜单列表**********************************/
-            if (sysMenu.getType() == Constant.MenuType.CATALOG.getValue()) {
+            if (sysMenu.getMenuType() == Constant.MenuType.CATALOG.getValue()) {
                 //两级菜单，需要判断时候有下级菜单，如果有，组装第一级菜单，如果没有，不组装
                 List<SysMenu> list = getMenuTreeList(queryListParentId(sysMenu.getMenuId(), menuIdList, selectType), menuIdList, selectType);
                 if (list != null && list.size() > 0) {
                     sysMenu.setList(list);
                     subMenuList.add(sysMenu);
                 }
-            } else if (sysMenu.getType() == Constant.MenuType.MENU.getValue()) {
+            } else if (sysMenu.getMenuType() == Constant.MenuType.MENU.getValue()) {
                 //一级菜单，直接判断权限信息内有没有数据，如果有，直接组装
                 if (menuIdList.contains(sysMenu.getMenuId())) {
                     subMenuList.add(sysMenu);
@@ -172,7 +191,7 @@ public class SysMenuServiceImpl implements SysMenuService {
             sysMenuAdd.setParentId(sysMenu.getParentId());
             sysMenuAdd.setPerms(sysMenu.getPerms());
             sysMenuAdd.setIsUse(sysMenu.getIsUse());
-            sysMenuAdd.setType(sysMenu.getType());
+            sysMenuAdd.setMenuType(sysMenu.getMenuType());
             sysMenuAdd.setMenuName("查看列表或者详情");
             //在更新操作中，假如该角色已授权该菜单查看功能，则给前端返回true值
             if (null != roleId && menuIdList != null) {
@@ -206,7 +225,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         for (SysMenu menu : menuList) {
             //权限内的菜单，或者目录菜单，将进行添加（目录菜单在授权时，不保存到数据库记录）
             if (selectType == 1) {
-                if (menuIdList.contains(menu.getMenuId()) || menu.getType() == 0) {
+                if (menuIdList.contains(menu.getMenuId()) || menu.getMenuType() == 0) {
                     userMenuList.add(menu);
                 }
             } else if (selectType == 2) {
@@ -220,11 +239,13 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public Map<String, Object> getSysMenuList(Integer limit, Integer offset) {
+    public Map<String, Object> getSysMenuList(Integer limit, Integer offset,String menuName,String menuUrl) {
         resultMap = new HashMap<String, Object>();
         map = new HashMap<String, Object>();
         map.put("limit", limit);
         map.put("offset", offset);
+        map.put("menuName", menuName);
+        map.put("menuUrl", menuUrl);
         try {
             resultMap.put("total", sysMenuBusinessService.getSysMenuListTotal(map));
             resultMap.put("list", sysMenuBusinessService.getSysMenuList(map));
@@ -308,10 +329,18 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     @Override
     public Map<String, Object> findSysMenuById(Long menuId) {
-        map = new HashMap<String, Object>();
-        resultMap = new HashMap<String, Object>();
-        map.put("menuId", menuId);
-        sysMenuBusinessService.findSysMenuById(menuId);
-        return resultMap;
+        sysMenuBusinessService.findSysMenuInfoByMenuId(menuId);
+        try {
+            SysMenu sysMenu = sysMenuBusinessService.findSysMenuInfoByMenuId(menuId);
+            if (null!=sysMenu) {
+                return R.ok().putData(200,sysMenu, "获取成功！");
+            } else {
+                return R.error(500, "获取失败，请联系管理员！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("获取菜单信息出错：" + e.getMessage());
+            return R.error(500, "获取信息失败，服务器异常，请联系管理员！");
+        }
     }
 }

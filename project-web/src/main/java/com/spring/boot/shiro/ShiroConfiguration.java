@@ -143,7 +143,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/login/logout", "logout");
         filterChainDefinitionMap.put("/error", "anon");
         /*注：如果开通验证权限，则会出现跨域问题，后期需要修改配置*/
-        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "anon");
 
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilterFactoryBean.setLoginUrl("/");

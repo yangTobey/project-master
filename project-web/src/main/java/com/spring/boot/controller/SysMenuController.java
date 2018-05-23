@@ -74,21 +74,22 @@ public class SysMenuController {
     }
 
     /**
-     * 查询公司信息
+     * 查询菜单列表信息
      *
      * @param limit  每页限制条数
      * @param offset 页码
      * @return
      */
     @RequestMapping(value = "/getSysMenuList", method = RequestMethod.GET)
-    public R getSysMenuList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
+    public R getSysMenuList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset
+            , @RequestParam(value = "menuName", required = false) String menuName, @RequestParam(value = "menuUrl", required = false) String menuUrl) {
         if (!UtilHelper.isNumer(limit)) {
             return R.error(400, "分页控制，每页条数limit只能为数字！");
         }
         if (!UtilHelper.isNumer(offset)) {
             return R.error(400, "分页控制，页码offset只能为数字！");
         }
-        Map<String, Object> map = sysMenuService.getSysMenuList(Integer.valueOf(limit), Integer.valueOf(offset));
+        Map<String, Object> map = sysMenuService.getSysMenuList(Integer.valueOf(limit), Integer.valueOf(offset),menuName,menuUrl);
         return R.ok().put(200, map, "获取成功！");
     }
 

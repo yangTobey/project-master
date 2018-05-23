@@ -187,6 +187,36 @@ public class FileManageController {
     }
 
     /**
+     * 文件下载相关代码(单个文件下载，不需要做压缩处理，用于更新时，点击单个文件下载)
+     * @param request
+     * @param response
+     * @param fileUrl 需要下载的文件路径
+     * @return
+     */
+    @RequestMapping(value = "/downloadFile",method = RequestMethod.GET)
+    public R downloadFile(HttpServletRequest request, HttpServletResponse response,@RequestParam("fileUrl") String fileUrl) {
+        /*//去掉最后那个逗号，在进行获取数据
+        String[]  fileInfoArray = fileIds.substring(0, fileIds.length() - 1).split(";");
+        for (String fileId : fileInfoArray) {
+            SysQualityManageFile sysQualityManageFile=sysFileService.fileSysQualityManageFileById(Long.valueOf(fileId));
+            if(sysQualityManageFile!=null){
+                try {
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }*/
+        String fileName=fileUrl.substring(fileUrl.lastIndexOf("/")+1, fileUrl.length());
+        try {
+            outputFile(request,response,fileUrl,fileName);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 输出需要下载的文件(单个文件下载)
      *
      * @param request

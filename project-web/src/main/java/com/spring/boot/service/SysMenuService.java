@@ -30,7 +30,7 @@ public interface SysMenuService {
      * 获取菜单列表数据
      * @return
      */
-    Map<String,Object> getSysMenuList(Integer limit, Integer offset);
+    Map<String,Object> getSysMenuList(Integer limit, Integer offset,String menuName,String menuUrl);
 
     /**
      * 新增菜单信息

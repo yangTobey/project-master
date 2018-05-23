@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/20.
@@ -24,6 +25,8 @@ public class SysQualityManage {
     private String companyName;
 
     private Integer fileNum;
+
+    List<SysQualityManageFile> fileList;
 
     public Long getQualityId() {
         return qualityId;
@@ -127,5 +130,13 @@ public class SysQualityManage {
 
     public void setFileNum(Integer fileNum) {
         this.fileNum = fileNum;
+    }
+
+    public List<SysQualityManageFile> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<SysQualityManageFile> fileList) {
+        this.fileList = fileList;
     }
 }

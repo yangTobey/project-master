@@ -91,6 +91,11 @@ public class SysContractBusinessServiceImpl implements SysContractBusinessServic
     }
 
     @Override
+    public SysContract findSysContractById(Long contractId) {
+        return sysContractDao.findSysContractById(contractId);
+    }
+
+    @Override
     public List<SysContractFile> findSysContractFileById(Long contractId) {
         return sysContractDao.findSysContractFileById(contractId);
     }
@@ -101,7 +106,7 @@ public class SysContractBusinessServiceImpl implements SysContractBusinessServic
     }
 
     @Override
-    public void updateSysContractExpire() {
-        sysContractDao.updateSysContractExpire();
+    public void updateSysContractExpire(Integer type,String nowTime) {
+        sysContractDao.updateSysContractExpire(type,nowTime);
     }
 }

@@ -45,7 +45,7 @@
 	<select id="sysUserTotal" resultType="int"  parameterType="map">
 		select count(user_id)
 		from sys_user
-		where status_code!=2
+		where status_code!=3
 	</select>
 
 	<select id="findByUserId" resultMap="sysUser" parameterType="map">
@@ -69,8 +69,8 @@
 		where user_id = #{userId}
 	</update>
 	<insert id="addUser" parameterType="com.spring.boot.bean.master.SysUser" useGeneratedKeys="true" keyProperty="userId">
-		INSERT INTO sys_user (user_account, user_password, company_id,department_id,user_name)
-		VALUES   (#{account},#{password},#{companyId},#{departmentId},#{userName})
+		INSERT INTO sys_user (user_account, user_password, company_id,department_id,user_name,create_time)
+		VALUES   (#{account},#{password},#{companyId},#{departmentId},#{userName},#{createTime})
 	</insert>
 
 	<update id="updateUserInfo" parameterType="map">
@@ -90,10 +90,10 @@
 		<if test="selectType != null and selectType!=''">
 			<choose>
 				<when test="selectType==1">
-					and type=1
+					and menu_type=1
 				</when>
 				<when test="selectType==2">
-					and type!=0
+					and menu_type!=0
 				</when>
 			</choose>
 		</if>
@@ -108,6 +108,7 @@
 		us.user_name,
 		us.user_account,
 		us.company_id,
+		us.user_password,
 		company.company_name
 		FROM
 			sys_user AS us

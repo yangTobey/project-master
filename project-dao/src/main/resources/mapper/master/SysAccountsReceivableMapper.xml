@@ -132,10 +132,10 @@
     <!--添加应收账款信息-->
     <insert id="addSysAccountsReceivable" parameterType="com.spring.boot.bean.master.SysAccountsReceivable">
 		INSERT INTO sys_accounts_receivable (year, month, receivable_accounts_owner, complete_accounts_owner,complete_coupon,receivable_coupon,complete_vacancy,receivable_vacancy,complete_subsidy,receivable_subsidy
-		,complete_sales,receivable_sales,receivable_open,complete_open,complete_property_subsidy,receivable_property_subsidy,complete_house_other,receivable_house_other,complete_house,receivable_house,company_id)
+		,complete_sales,receivable_sales,receivable_open,complete_open,complete_property_subsidy,receivable_property_subsidy,complete_house_other,receivable_house_other,complete_house,receivable_house,company_id,create_time)
               VALUES   (#{year},#{month},#{receivableAccountsOwner},#{completeAccountsOwner},#{completeCoupon},#{receivableCoupon},#{completeVacancy},#{receivableVacancy},#{completeSubsidy},#{receivableSubsidy}
               ,#{completeSales},#{receivableSales},#{receivableOpen},#{completeOpen},#{completePropertySubsidy},#{receivablePropertySubsidy},#{completeHouseOther},#{receivableHouseOther},#{completeHouse}
-              ,#{receivableHouse},#{companyId})
+              ,#{receivableHouse},#{companyId},#{createTime})
 	</insert>
     <!--删除应收账款信息，只更新状态，不作实际删除操作-->
     <update id="deleteSysAccountsReceivable">

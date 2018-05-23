@@ -75,11 +75,11 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
                     sysBasicDataEntity.setSubsidiaryCount(0);
                 }
                 //房屋装修率
-                sysBasicDataEntity.setDecorateHouseScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysBasicDataEntity.getDecorateHouseNumber(), sysBasicDataEntity.getHouseNumber())) * 100);
+                sysBasicDataEntity.setDecorateHouseScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysBasicDataEntity.getDecorateHouseNumber(), sysBasicDataEntity.getHouseNumber())));
                 //车位空置率
-                sysBasicDataEntity.setForSaleParkingSpaceScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysBasicDataEntity.getForSaleParkingSpace(), sysBasicDataEntity.getParkingSpace())) * 100);
+                sysBasicDataEntity.setForSaleParkingSpaceScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysBasicDataEntity.getForSaleParkingSpace(), sysBasicDataEntity.getParkingSpace())));
                 //房屋空置率
-                sysBasicDataEntity.setForSaleHouseScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysBasicDataEntity.getForSaleHouseNumber(), sysBasicDataEntity.getHouseNumber())) * 100);
+                sysBasicDataEntity.setForSaleHouseScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysBasicDataEntity.getForSaleHouseNumber(), sysBasicDataEntity.getHouseNumber())));
                 return R.ok().putData(200, sysBasicDataEntity, "获取成功！");
             } else {
                 sysBasicDataEntity=new SysBasicDataEntity();

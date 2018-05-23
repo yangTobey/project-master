@@ -66,6 +66,7 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
         map.put("departmentName", departmentName);
         map.put("companyId", companyId);
         map.put("departmentCode", departmentCode);
+        map.put("createTime", UtilHelper.getNowTimeStr());
         try {
             int count=sysDepartmentBusinessService.addSysDepartment(map);
             if(count>0){
