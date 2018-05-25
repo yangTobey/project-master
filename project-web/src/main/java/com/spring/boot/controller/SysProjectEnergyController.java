@@ -51,10 +51,10 @@ public class SysProjectEnergyController {
             return R.error(400, "工程遗留数量格式不合理！");
         } else if (!UtilHelper.isNumer(projectFinishedTotal)) {
             return R.error(400, "已处理工程遗留问题数量格式不合理！");
-        } else if (!UtilHelper.isNumer(monthConsumptionElectricity)) {
-            return R.error(400, "月耗电量格式不合理！");
-        } else if (!UtilHelper.isNumer(monthConsumptionWater)) {
-            return R.error(400, "月耗水量格式不合理！");
+        } else if (!UtilHelper.isDoubleNumer(monthConsumptionElectricity)) {
+            return R.error(400, "月耗电量格式不合理,只能保留两位小数！");
+        } else if (!UtilHelper.isDoubleNumer(monthConsumptionWater)) {
+            return R.error(400, "月耗水量格式不合理,只能保留两位小数！");
         }
         try {
             Map<String, Object> map = sysProjectEnergyService.addSysProjectEnergy(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(projectUnfinishedTotal)
@@ -97,10 +97,10 @@ public class SysProjectEnergyController {
             return R.error(400, "工程遗留数量格式不合理！");
         } else if (!UtilHelper.isNumer(projectFinishedTotal)) {
             return R.error(400, "已处理工程遗留问题数量格式不合理！");
-        } else if (!UtilHelper.isNumer(monthConsumptionElectricity)) {
-            return R.error(400, "月耗电量格式不合理！");
-        } else if (!UtilHelper.isNumer(monthConsumptionWater)) {
-            return R.error(400, "月耗水量格式不合理！");
+        } else if (!UtilHelper.isDoubleNumer(monthConsumptionElectricity)) {
+            return R.error(400, "月耗电量格式不合理,只能保留两位小数！");
+        } else if (!UtilHelper.isDoubleNumer(monthConsumptionWater)) {
+            return R.error(400, "月耗水量格式不合理,只能保留两位小数！");
         } else if (!UtilHelper.isNumer(projectId)) {
             return R.error(400, "主键id格式不正确！");
         }

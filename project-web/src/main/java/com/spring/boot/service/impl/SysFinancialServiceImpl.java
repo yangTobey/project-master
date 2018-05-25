@@ -611,7 +611,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             //当年数据，也可以封装成map传值
             SysAccountsReceivable sysAccountsReceivable = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(mapForYear);
             //当月数据
-            SysAccountsReceivable sysAccountsReceivableMonth = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(mapForYear);
+            SysAccountsReceivable sysAccountsReceivableMonth = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(mapForMonth);
 
             if (null != sysAccountsReceivable) {
                 sysAccountsReceivable.setCouponScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompleteCoupon(), sysAccountsReceivable.getReceivableCoupon())));
@@ -649,7 +649,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 sysAccountsReceivable.setReceivableAccountsOwner(sysAccountsReceivableMonth.getReceivableAccountsOwner());
                 sysAccountsReceivable.setCompleteAccountsOwner(sysAccountsReceivableMonth.getCompleteAccountsOwner());
                 sysAccountsReceivable.setCompleteHouse(sysAccountsReceivableMonth.getCompleteHouse());
-                sysAccountsReceivable.setCompleteHouse(sysAccountsReceivableMonth.getCompleteHouse());
+                sysAccountsReceivable.setReceivableHouse(sysAccountsReceivableMonth.getReceivableHouse());
             }
             sysReceivableAccountsOwnerEntity.setReceivableAccounts(receivableMap);
             sysReceivableAccountsOwnerEntity.setCompleteAccounts(completeMap);

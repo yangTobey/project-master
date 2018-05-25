@@ -31,7 +31,8 @@
         SUM(basic.decorate_house_number) AS decorateHouseNumber,
         SUM(basic.parking_space) AS parkingSpace,
         SUM(basic.for_sale_parking_space) AS forSaleParkingSpace,
-        SUM(basic.sales_distribution) AS salesDistribution
+        SUM(basic.sales_distribution) AS salesDistribution,
+        SUM(basic.city_number) AS cityNumber
     </sql>
 
     <select id="sysBasicDataAnalysisData" resultType="com.spring.boot.bean.master.entity.SysBasicDataEntity" parameterType="map">

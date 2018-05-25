@@ -211,6 +211,13 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/addSysAccountsReceivable", method = RequestMethod.GET)
     public R addSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
+        if(!UtilHelper.isNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
+            return R.error(400, "公司id格式不正确！！");
+        }else if(!UtilHelper.isNumer(String.valueOf(sysAccountsReceivable.getMonth()))){
+            return R.error(400, "月份格式不正确！！");
+        }else if(!UtilHelper.isNumer(String.valueOf(sysAccountsReceivable.getYear()))){
+            return R.error(400, "年份格式不正确！！");
+        }
         Double receivableHouse = sysAccountsReceivable.getReceivableCoupon() + sysAccountsReceivable.getReceivableVacancy() + sysAccountsReceivable.getReceivableSubsidy()
                 + sysAccountsReceivable.getReceivableSales() + sysAccountsReceivable.getReceivableOpen() + sysAccountsReceivable.getReceivablePropertySubsidy()
                 + sysAccountsReceivable.getReceivableHouseOther();
@@ -240,6 +247,13 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/updateSysAccountsReceivable", method = RequestMethod.GET)
     public R updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
+        if(!UtilHelper.isNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
+            return R.error(400, "公司id格式不正确！！");
+        }else if(!UtilHelper.isNumer(String.valueOf(sysAccountsReceivable.getMonth()))){
+            return R.error(400, "月份格式不正确！！");
+        }else if(!UtilHelper.isNumer(String.valueOf(sysAccountsReceivable.getYear()))){
+            return R.error(400, "年份格式不正确！！");
+        }
         Double receivableHouse = sysAccountsReceivable.getReceivableCoupon() + sysAccountsReceivable.getReceivableVacancy() + sysAccountsReceivable.getReceivableSubsidy()
                 + sysAccountsReceivable.getReceivableSales() + sysAccountsReceivable.getReceivableOpen() + sysAccountsReceivable.getReceivablePropertySubsidy()
                 + sysAccountsReceivable.getReceivableHouseOther();
@@ -343,6 +357,13 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/addSysBudgetDetails", method = RequestMethod.GET)
     public R addSysBudgetDetails(SysBudgetDetails sysBudgetDetails) {
+        if(!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getCompanyId()))){
+            return R.error(400, "公司id格式不正确！！");
+        }else if(!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getMonth()))){
+            return R.error(400, "月份格式不正确！！");
+        }else if(!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getYear()))){
+            return R.error(400, "年份格式不正确！！");
+        }
         Double realExpensesTotal = sysBudgetDetails.getPersonnelCost() + sysBudgetDetails.getAdministrativeCost() + sysBudgetDetails.getMaterialCost()
                 + sysBudgetDetails.getEnergyCost() + sysBudgetDetails.getEquipmentCost() + sysBudgetDetails.getCleaningCost()
                 + sysBudgetDetails.getAfforestCost() + sysBudgetDetails.getOrderMaintenanceCost() + sysBudgetDetails.getCommunityActivitiesCost() + sysBudgetDetails.getOtherCost();
@@ -367,6 +388,13 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/updateSysBudgetDetails", method = RequestMethod.GET)
     public R updateSysBudgetDetails(SysBudgetDetails sysBudgetDetails) {
+        if(!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getCompanyId()))){
+            return R.error(400, "公司id格式不正确！！");
+        }else if(!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getMonth()))){
+            return R.error(400, "月份格式不正确！！");
+        }else if(!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getYear()))){
+            return R.error(400, "年份格式不正确！！");
+        }
         Double realExpensesTotal = sysBudgetDetails.getPersonnelCost() + sysBudgetDetails.getAdministrativeCost() + sysBudgetDetails.getMaterialCost()
                 + sysBudgetDetails.getEnergyCost() + sysBudgetDetails.getEquipmentCost() + sysBudgetDetails.getCleaningCost()
                 + sysBudgetDetails.getAfforestCost() + sysBudgetDetails.getOrderMaintenanceCost() + sysBudgetDetails.getCommunityActivitiesCost() + sysBudgetDetails.getOtherCost();

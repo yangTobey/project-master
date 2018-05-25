@@ -107,7 +107,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
                 //流失率
                 sysLaborCostDetails.setSysDemissionScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getDemissionTotal() - sysLaborCostDetails.getEntryTotal(), sysLaborCostDetails.getEmployeeTotal())));
                 //缺编率
-                sysLaborCostDetails.setSysEmployeeScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getHeadcountTotal() - sysLaborCostDetails.getEmployeeTotal(), sysLaborCostDetails.getHeadcountTotal())));
+                sysLaborCostDetails.setSysEmployeeScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getEmployeeTotal()-sysLaborCostDetails.getHeadcountTotal(), sysLaborCostDetails.getHeadcountTotal())));
                 if (null != sysBudget) {
                     realExpensesTotal = sysBudget.getRealExpensesTotal();
                     personnelCost = sysBudget.getPersonnelCost();
@@ -378,7 +378,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             //流失率
             sysLaborCostDetails.setSysDemissionScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getDemissionTotal() - sysLaborCostDetails.getEntryTotal(), sysLaborCostDetails.getEmployeeTotal())));
             //缺编率
-            sysLaborCostDetails.setSysEmployeeScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getHeadcountTotal() - sysLaborCostDetails.getEmployeeTotal(), sysLaborCostDetails.getHeadcountTotal())));
+            sysLaborCostDetails.setSysEmployeeScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getEmployeeTotal()-sysLaborCostDetails.getHeadcountTotal() , sysLaborCostDetails.getHeadcountTotal())));
             if (null != sysBudget) {
                 realExpensesTotal = sysBudget.getRealExpensesTotal();
                 personnelCost = sysBudget.getPersonnelCost();

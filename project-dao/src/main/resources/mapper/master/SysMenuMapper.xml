@@ -53,6 +53,7 @@
 				</when>-->
 			</choose>
 		</if>
+        ORDER BY sort asc
         <!--<if test="selectType != null and selectType==1">
             and type=1 and type=0
         </if>-->

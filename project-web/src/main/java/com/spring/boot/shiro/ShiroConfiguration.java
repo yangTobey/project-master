@@ -138,12 +138,16 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/templates/**", "anon");
         //filterChainDefinitionMap.put("/mapper/**", "anon");
         filterChainDefinitionMap.put("/login/login", "anon");
+        //********物业大屏和财务大屏数据展示两个界面不拦截（后期为了数据查看功能限制，再配置进行拦截）*******//
+        //filterChainDefinitionMap.put("ws://localhost:8080/websocket", "anon");
         filterChainDefinitionMap.put("/websocket", "anon");
-        filterChainDefinitionMap.put("/websocket", "anon");
+        filterChainDefinitionMap.put("/sysPage/sysPropertyDetails", "anon");
+        filterChainDefinitionMap.put("/sysPage/sysfinancialDetails", "anon");
+        //***************************************************************************************//
         filterChainDefinitionMap.put("/login/logout", "logout");
         filterChainDefinitionMap.put("/error", "anon");
         /*注：如果开通验证权限，则会出现跨域问题，后期需要修改配置*/
-        filterChainDefinitionMap.put("/**", "anon");
+        filterChainDefinitionMap.put("/**", "authc");
 
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilterFactoryBean.setLoginUrl("/");

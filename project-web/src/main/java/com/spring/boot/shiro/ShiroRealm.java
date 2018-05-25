@@ -125,6 +125,8 @@ public class ShiroRealm extends AuthorizingRealm {
 
         Session session = SecurityUtils.getSubject().getSession();
         session.setAttribute("user", user);
+        //登录后，可以用如下方式取得session，半个钟
+        SecurityUtils.getSubject().getSession().setTimeout(1800000);
         /************************获取登录用户权限下可以操作的公司列表公司id******************/
         List<Long> sysUserCompanyIds = sysUserCompanyBusinessService.sysUserCompanyInfo(user.getUserId());
         if (null != sysUserCompanyIds) {

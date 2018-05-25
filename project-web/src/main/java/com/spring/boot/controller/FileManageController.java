@@ -93,9 +93,11 @@ public class FileManageController {
      */
     public Map<String, String> executeUpload(String uploadDir, MultipartFile file, String uploadUrl) {
         Map<String, String> map = new HashMap<String, String>();
+        //将原有文件名称中的逗号和分号替换成空格，避免在保存新增时，传入的文件路径根据逗号或者分号切分时出现问题（英文和中文两种状态）
+        String originalFilename=file.getOriginalFilename().replace(",","").replace(";","").replace("，","").replace("；","");
         //获取文件后缀名
-        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-        String fileName = file.getOriginalFilename().substring(0, file.getOriginalFilename().lastIndexOf("."));
+        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String fileName = originalFilename.substring(0, originalFilename.lastIndexOf("."));
         //修改上传文件的文件名，避免出现重复文件时覆盖原有文件
         String newFileName = fileName + "-" + UUID.randomUUID().toString().replace("-", "").substring(0, 10) + suffix;
         File saveFile = new File(uploadDir + newFileName);

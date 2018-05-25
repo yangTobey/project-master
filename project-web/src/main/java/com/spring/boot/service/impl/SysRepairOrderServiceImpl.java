@@ -50,7 +50,8 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
         Map<Integer, Double> monthToMonthRepairOrderMap = new HashMap<Integer, Double>();
         try {
             List<RepairOrder> list = sysRepairOrderBusinessService.getRepairOrderForMonth(map);
-            //RepairOrder repairOrderInfo = sysRepairOrderBusinessService.getRepairOrderFinish(map);
+            //年工单完成数量
+            RepairOrder repairOrderFinish = sysRepairOrderBusinessService.getRepairOrderFinish(map);
             RepairOrder repairOrderInfo = new RepairOrder();
             List<CityInfo> cityInfoList=sysRepairOrderBusinessService.getCityInfo();
 
@@ -64,7 +65,7 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
                 }else if(repairOrderLatest.getStatus()==1){
                     orderName="物业服务中心已确认接单，马上进行处理";
                 }else if(repairOrderLatest.getStatus()==2){
-                    orderName="物业服务中心已完成订单处理，代客服回访";
+                    orderName="物业服务中心已完成订单处理，待客服回访";
                 }else if(repairOrderLatest.getStatus()==4){
                     orderName="该订单为疑难工单，物业管理正在努力解决";
                 }
@@ -103,7 +104,7 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
                 //年工单总数
                 repairOrderInfo.setRepairTotal(repairTotal);
                 //工单完成率（年）
-                repairOrderInfo.setRepairOrderFinishScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(repairOrderInfo.getRepairTotal(), repairTotal)));
+                repairOrderInfo.setRepairOrderFinishScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(repairOrderFinish.getRepairTotal(), repairTotal)));
                 //当年每个月的工单数量
                 repairOrderInfo.setMonthRepairOrderMap(monthRepairOrderMap);
                 repairOrderInfo.setMonthToMonthRepairOrderMap(monthToMonthRepairOrderMap);

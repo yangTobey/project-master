@@ -72,13 +72,13 @@ public class SysFinancialDataAnalysisEntity implements Serializable {
     private Double completePropertySubsidy;
     //物业补贴（应收）
     private Double receivablePropertySubsidy;
-    //地产应付款（已收）
+    //其他地产应付款（已收）
     private Double completeHouseOther;
-    //地产应付款（应收）
+    //其他地产应付款（应收）
     private Double receivableHouseOther;
-    //地产已付款总数
+    //地产已收款总数
     private Double completeHouse;
-    //地产应付款总数
+    //地产应收款总数
     private Double receivableHouse;
     //礼券减免收缴率
     private Double couponScale;

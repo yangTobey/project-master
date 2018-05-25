@@ -377,7 +377,7 @@ public class SysContractServiceImpl implements SysContractService {
             int contractNumber = 0;
             int contractexpired = 0;
             for (SysContract sysContract : list) {
-                if (sysContract.getStatusCode() == 2) {
+                if (sysContract.getStatusCode() == 2||sysContract.getStatusCode() == 3) {
                     contractWorking += sysContract.getTotal();
                 } else if (sysContract.getStatusCode() == 4) {
                     contractexpired += sysContract.getTotal();
@@ -398,6 +398,7 @@ public class SysContractServiceImpl implements SysContractService {
 
     @Override
     public void updateSysContractExpire() {
+        System.out.println("定时器执行！！");
         //（1：未执行，2：在执行，3：即将过期，4：已经过期，5：已经删除）
         //1：未执行
         sysContractBusinessService.updateSysContractExpire(1,UtilHelper.getNowTimeStr());

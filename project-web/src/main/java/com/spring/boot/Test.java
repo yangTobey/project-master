@@ -65,5 +65,8 @@ public class Test {
 
         System.out.println(map.get("type"));
 
+        String mes="asas；；,adad;qeqeq;qeqe;,AAAqe";
+        System.out.println(mes.replace(",","").replace(";","").replace("，","").replace("；",""));
+
     }
 }

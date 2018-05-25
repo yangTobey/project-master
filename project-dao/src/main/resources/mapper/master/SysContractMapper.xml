@@ -45,7 +45,7 @@
 					and contract.status_code=1
 				</when>
 				<when test="statusCode==2">
-					and contract.status_code=2
+					and (contract.status_code=2 or contract.status_code=3)
 				</when>
 				<when test="statusCode==3">
 					and contract.status_code=3
@@ -155,7 +155,7 @@
 			</when>
 			<when test="type==2">
 				status_code=2
-				where  contract_startTime <![CDATA[ <= ]]>#{nowTime} and contract_endTime <![CDATA[ >= ]]>#{nowTime}
+				where  contract_startTime <![CDATA[ <= ]]>#{nowTime} and contract_endTime <![CDATA[ >= ]]>#{nowTime} and status_code!=3
 			</when>
 			<when test="type==3">
 				status_code=3
@@ -163,7 +163,7 @@
 			</when>
 			<when test="type==4">
 				status_code=4
-				where  contract_endTime <![CDATA[ >= ]]>#{nowTime}
+				where  contract_endTime <![CDATA[ <= ]]>#{nowTime}
 			</when>
 		</choose>
 
@@ -180,7 +180,7 @@
 					and contract.status_code=1
 				</when>
 				<when test="statusCode==2">
-					and contract.status_code=2
+					and (contract.status_code=2 or contract.status_code=3)
 				</when>
 				<when test="statusCode==3">
 					and contract.status_code=3
