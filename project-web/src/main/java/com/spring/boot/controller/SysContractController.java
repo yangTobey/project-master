@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -196,6 +198,16 @@ public class SysContractController {
         }else if(!UtilHelper.isNumer(companyId)){
             return R.error(400, "公司id格式不正确，请联系系统管理员！");
         }
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date startTime = format.parse(contractStartTime);
+            Date endTime = format.parse(contractEndTime);
+            if(startTime.getTime()-endTime.getTime()>0){
+                return R.error(400, "合同开始时间不能大于合同到期时间！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         Map<String, Object> map=sysContractService.addSysContract(contractName,contractCode,contractMoney,contractStartTime, contractEndTime,
                 Integer.valueOf(contractTypeId),firstPartyCompany,secondPartyCompany,personLiableName,fileInfo,Long.valueOf(companyId));
 
@@ -235,6 +247,16 @@ public class SysContractController {
             return R.error(400, "合同负责人不能为空！");
         }else if(!UtilHelper.isNumer(companyId)){
             return R.error(400, "公司id格式不正确，请联系系统管理员！");
+        }
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date startTime = format.parse(contractStartTime);
+            Date endTime = format.parse(contractEndTime);
+            if(startTime.getTime()-endTime.getTime()>0){
+                return R.error(400, "合同开始时间不能大于合同到期时间！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         Map<String, Object> map=sysContractService.updateSysContract(Long.valueOf(contractId),contractName,contractCode,contractMoney,contractStartTime, contractEndTime,
                 contractTypeId,firstPartyCompany,secondPartyCompany,personLiableName,fileInfo,Long.valueOf(companyId));

@@ -16,10 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Administrator on 2018/1/25.
@@ -175,6 +173,22 @@ public class SysContractServiceImpl implements SysContractService {
             return R.error(500, "添加合同失败，系统已存在相同编号的合同，请重新添加或者联系系统管理员！！");
         } else {
             try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String now=format.format(new Date());
+                Date startTime = format.parse(contractStartTime);
+                Date endTime = format.parse(contractEndTime);
+                Date nowTime=format.parse(now);
+                //算两个日期间隔多少天
+                int day = (int) ((endTime.getTime() - startTime.getTime()) / (1000*3600*24));
+                if(nowTime.getTime()-endTime.getTime()>0){//到期：指的是当前日期大于合同结束时间
+                    sysContract.setStatusCode(4);
+                }else if(startTime.getTime()-nowTime.getTime()>0){//未开始：当前日期小于开始时间
+                    sysContract.setStatusCode(1);
+                }else if(day<31){//即将到期：结束日期-当前日期<31天
+                    sysContract.setStatusCode(3);
+                }else if(nowTime.getTime()-startTime.getTime()>0&&endTime.getTime()-nowTime.getTime()>0){
+                    sysContract.setStatusCode(2);
+                }
                 sysContract = new SysContract();
                 sysContract.setContractCode(contractCode);
                 sysContract.setContractName(contractName);
@@ -239,6 +253,22 @@ public class SysContractServiceImpl implements SysContractService {
         map.put("createTime", Timestamp.valueOf(UtilHelper.getNowTimeStr()));
         map.put("companyId", companyId);
         try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String now=format.format(new Date());
+            Date startTime = format.parse(contractStartTime);
+            Date endTime = format.parse(contractEndTime);
+            Date nowTime=format.parse(now);
+            //算两个日期间隔多少天
+            int day = (int) ((endTime.getTime() - startTime.getTime()) / (1000*3600*24));
+            if(nowTime.getTime()-endTime.getTime()>0){//到期：指的是当前日期大于合同结束时间
+                map.put("statusCode", 4);
+            }else if(startTime.getTime()-nowTime.getTime()>0){//未开始：当前日期小于开始时间
+                map.put("statusCode", 1);
+            }else if(day<31){//即将到期：结束日期-当前日期<31天
+                map.put("statusCode", 3);
+            }else if(nowTime.getTime()-startTime.getTime()>0&&endTime.getTime()-nowTime.getTime()>0){
+                map.put("statusCode", 2);
+            }
             SysContract sysContract = sysContractBusinessService.findSysContractByContractCode(contractCode);
             if (sysContract != null) {
                 //判断是否已存在该编号的合同
@@ -246,7 +276,6 @@ public class SysContractServiceImpl implements SysContractService {
                     return R.error(500, "更新合同失败，系统已存在相同编号的合同，请重新添加或者联系系统管理员！！");
                 }
             }
-
             int count = sysContractBusinessService.updateSysContract(map);
             if (count > 0) {
                 if (!UtilHelper.isEmpty(fileInfo)) {
