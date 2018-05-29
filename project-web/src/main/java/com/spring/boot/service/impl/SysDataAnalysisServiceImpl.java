@@ -101,6 +101,7 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
                 sysPropertyDataAnalysisEntity.setModifiedPassPercent(sysQualityManageEntityForMonth.getModifiedPassScale());
                 sysPropertyDataAnalysisEntity.setCheckPassScaleMap(sysQualityManageEntityForMonth.getCheckPassScaleMap());
                 sysPropertyDataAnalysisEntity.setModifiedPassScaleMap(sysQualityManageEntityForMonth.getModifiedPassScaleMap());
+                sysPropertyDataAnalysisEntity.setSecurityEvent(sysQualityManageEntityForMonth.getSecurityEvent());
 
             }
             /***********************************工程能耗管理数据缓存******************************/

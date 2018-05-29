@@ -66,8 +66,8 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             if (sysBasicDataEntity != null) {
                 if (companyId == 0) {
                     int querySubsidiaryCount = sysCompanyBusinessService.querySubsidiaryCount(map);
-                    //分公司总数（全部公司数量-1，总公司不算分公司）
-                    sysBasicDataEntity.setSubsidiaryCount(querySubsidiaryCount-1);
+                    //分公司总数（全部公司数量，总公司算分公司）
+                    sysBasicDataEntity.setSubsidiaryCount(querySubsidiaryCount);
                 } else {
                     //分公司总数
                     sysBasicDataEntity.setSubsidiaryCount(0);
@@ -246,8 +246,8 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         SysBasicDataEntity sysBasicDataEntity = sysBasicDataBusinessService.sysBasicDataAnalysisData(analysisMap);
         if (sysBasicDataEntity != null) {
             int querySubsidiaryCount = sysCompanyBusinessService.querySubsidiaryCount(analysisMap);
-            //分公司总数（全部公司数量-1，总公司不算分公司）
-            sysBasicDataEntity.setSubsidiaryCount(querySubsidiaryCount-1);
+            //分公司总数（全部公司数量，总公司算分公司）
+            sysBasicDataEntity.setSubsidiaryCount(querySubsidiaryCount);
             //房屋装修率
             sysBasicDataEntity.setDecorateHouseScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysBasicDataEntity.getDecorateHouseNumber(), sysBasicDataEntity.getHouseNumber())));
             //车位空置率

@@ -2,10 +2,12 @@ package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.SysQualityManage;
 import com.spring.boot.bean.master.SysQualityManageFile;
+import com.spring.boot.bean.master.SysUpdateDataRules;
 import com.spring.boot.bean.master.entity.SysQualityManageEntity;
 import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysQualityManageService;
 import com.spring.boot.service.web.SysQualityManageBusinessService;
+import com.spring.boot.service.web.SysUpdateDataRulesBusinessService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.SysUtil;
 import com.spring.boot.util.UtilHelper;
@@ -35,6 +37,9 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     private SysDataAnalysisService sysDataAnalysisService;
 
     @Autowired
+    private SysUpdateDataRulesBusinessService sysUpdateDataRulesBusinessService;
+
+    @Autowired
     private StringRedisTemplate stringRedisTemplate;
     //对象
     @Resource
@@ -44,7 +49,8 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     public Map<String, Object> sysQualityManageAnalysis(long companyId) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> mapForYear = new HashMap<String, Object>();
+        Map<String, Object> mapForMonth = new HashMap<String, Object>();
         SysQualityManageEntity sysQualityManageEntityForYear = null;
         SysQualityManageEntity sysQualityManageEntityForMonth = null;
         try {
@@ -55,13 +61,24 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                 sysUserCompanyIds = new ArrayList<Long>();
                 sysUserCompanyIds.add(companyId);
             }
-            map.put("sysUserCompanyIds", sysUserCompanyIds);
-            map.put("year", UtilHelper.getYear());
-            map.put("month", UtilHelper.getMonth());
+            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+            //获取需要查询的年份和月份
+            Map<String,Integer> yearAndMonthMap=SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
+            //***************************查询年数据条件************************************//
+            mapForYear.put("sysUserCompanyIds", sysUserCompanyIds);
+            mapForYear.put("year", UtilHelper.getYear());
+            mapForYear.put("month", UtilHelper.getMonth());
             /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
-            map.put("type", 1);
+            mapForYear.put("type", 1);
+
+            //***************************查询月份数据条件************************************//
+            mapForMonth.put("sysUserCompanyIds", sysUserCompanyIds);
+            mapForMonth.put("year", yearAndMonthMap.get("year"));
+            mapForMonth.put("month", yearAndMonthMap.get("month"));
+            /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
+            mapForMonth.put("type", 1);
             //查找年度报表数据
-            sysQualityManageEntityForYear = sysQualityManageBusinessService.sysQualityManageAnalysisForYear(map);
+            sysQualityManageEntityForYear = sysQualityManageBusinessService.sysQualityManageAnalysisForYear(mapForYear);
             if (sysQualityManageEntityForYear != null) {
                 sysQualityManageEntityForYear.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckPass(), sysQualityManageEntityForYear.getQualityCheck())));
                 sysQualityManageEntityForYear.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckUnmodified(), sysQualityManageEntityForYear.getQualityCheckFail())));
@@ -72,9 +89,9 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
             }
             resultMap.put("qualityManageYear", sysQualityManageEntityForYear);
             //查找月度报表数据
-            sysQualityManageEntityForMonth = sysQualityManageBusinessService.sysQualityManageAnalysisForMonth(map);
+            sysQualityManageEntityForMonth = sysQualityManageBusinessService.sysQualityManageAnalysisForMonth(mapForMonth);
             if (sysQualityManageEntityForMonth != null) {
-                List<SysQualityManage> list = sysQualityManageBusinessService.sysQualityManageAnalysisList(map);
+                List<SysQualityManage> list = sysQualityManageBusinessService.sysQualityManageAnalysisList(mapForYear);
                 //月度品质合格率
                 double qualityCheckPassScale = 0;
                 //月度品质整改合格率
@@ -178,8 +195,12 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                     sysQualityManageBusinessService.addSysQualityManageFile(sysQualityManageFile);
                 }
             }
-            //添加统计信息到redis缓存（包含年度统计信息和月度统计信息）
-            setDataToRedis();
+            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
+            if(updateToRedis){
+                //添加统计信息到redis缓存（包含年度统计信息和月度统计信息）
+               setDataToRedis();
+            }
             return R.ok(200, "新增数据成功！");
         } else {
             return R.error(500, "获取数据失败，服务器异常！");
@@ -228,8 +249,12 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                     sysQualityManageBusinessService.addSysQualityManageFile(sysQualityManageFile);
                 }
             }
-            //添加统计信息到redis缓存（包含年度统计信息和月度统计信息）
-            setDataToRedis();
+            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
+            if(updateToRedis){
+                //添加统计信息到redis缓存（包含年度统计信息和月度统计信息）
+                setDataToRedis();
+            }
             return R.ok(200, "更新数据成功！");
         } else {
             return R.error(500, "更新数据失败，服务器异常！");
@@ -244,8 +269,15 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         map.put("qualityId", qualityId);
         int count = sysQualityManageBusinessService.deleteSysQualityManageById(map);
         if (count > 0) {
-            //添加统计信息到redis缓存（包含年度统计信息和月度统计信息）
-            setDataToRedis();
+            SysQualityManage sysQualityManage = sysQualityManageBusinessService.findSysQualityManageById(map);
+            if(null!=sysQualityManage){
+                SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+                boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysQualityManage.getYear(),sysQualityManage.getMonth());
+                if(updateToRedis){
+                    //添加统计信息到redis缓存（包含年度统计信息和月度统计信息）
+                    setDataToRedis();
+                }
+            }
             return R.ok(200, "删除数据成功！");
         } else {
             return R.error(500, "删除数据失败，服务器异常！");
@@ -299,14 +331,27 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         SysQualityManageEntity sysQualityManageEntityForYear = null;
         SysQualityManageEntity sysQualityManageEntityForMonth = null;
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("sysUserCompanyIds", null);
-        map.put("year", UtilHelper.getYear());
-        map.put("month", UtilHelper.getMonth());
-        /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
-        map.put("type", 2);
+        Map<String, Object> mapForYear = new HashMap<String, Object>();
+        Map<String, Object> mapForMonth = new HashMap<String, Object>();
+        SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+        //获取需要查询的年份和月份
+        Map<String,Integer> yearAndMonthMap=SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
+        //***************************查询年数据条件************************************//
+        mapForYear.put("sysUserCompanyIds", null);
+        mapForYear.put("year", UtilHelper.getYear());
+        mapForYear.put("month", UtilHelper.getMonth());
+            /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
+        mapForYear.put("type", 2);
+
+        //***************************查询月份数据条件************************************//
+        mapForMonth.put("sysUserCompanyIds", null);
+        mapForMonth.put("year", yearAndMonthMap.get("year"));
+        mapForMonth.put("month", yearAndMonthMap.get("month"));
+            /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
+        mapForMonth.put("type", 2);
+
         //查找年度报表数据
-        sysQualityManageEntityForYear = sysQualityManageBusinessService.sysQualityManageAnalysisForYear(map);
+        sysQualityManageEntityForYear = sysQualityManageBusinessService.sysQualityManageAnalysisForYear(mapForYear);
         if (sysQualityManageEntityForYear != null) {
             sysQualityManageEntityForYear.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckPass(), sysQualityManageEntityForYear.getQualityCheck())));
             sysQualityManageEntityForYear.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckUnmodified(), sysQualityManageEntityForYear.getQualityCheckFail())));
@@ -317,9 +362,9 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         redisTemplate.opsForValue().set("qualityManageYear", sysQualityManageEntityForYear);
         //resultMap.put("qualityManageYear", sysQualityManageEntityForYear);
         //查找月度报表数据
-        sysQualityManageEntityForMonth = sysQualityManageBusinessService.sysQualityManageAnalysisForMonth(map);
+        sysQualityManageEntityForMonth = sysQualityManageBusinessService.sysQualityManageAnalysisForMonth(mapForMonth);
         if (sysQualityManageEntityForMonth != null) {
-            List<SysQualityManage> list = sysQualityManageBusinessService.sysQualityManageAnalysisList(map);
+            List<SysQualityManage> list = sysQualityManageBusinessService.sysQualityManageAnalysisList(mapForYear);
             //月度品质合格率
             double qualityCheckPassScale = 0;
             //月度品质整改合格率

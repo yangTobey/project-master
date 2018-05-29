@@ -48,6 +48,12 @@
         from sys_company
         where status_code!=2
     </select>
+    <!--获取全部公司的id-->
+    <select id="getAllSysCompanyId" resultType="Long" parameterType="map">
+        select company_id
+        from sys_company
+        where status_code!=2
+    </select>
     <!--根据公司id查找子公司总数-->
     <select id="querySubsidiaryCount" resultType="int" parameterType="map">
         SELECT COUNT(company_id) FROM sys_company WHERE 1=1

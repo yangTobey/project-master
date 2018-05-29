@@ -89,6 +89,13 @@ public class UtilHelper {
     public static int getMonth(){
         return calendar.get(Calendar.MONTH) + 1;
     }
+    /**
+     * 获取当前月份天数
+     * @return
+     */
+    public static int getDayOfMonth(){
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
 
     public static Date toDate(String strDate) {
         try {

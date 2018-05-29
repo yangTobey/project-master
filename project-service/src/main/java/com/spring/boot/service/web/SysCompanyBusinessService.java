@@ -64,4 +64,10 @@ public interface SysCompanyBusinessService {
      * @return
      */
     List<SysCompany> getAllSysCompany();
+
+    /**
+     * 获取全部公司的主键id
+     * @return
+     */
+    List<Long> getAllSysCompanyId();
 }

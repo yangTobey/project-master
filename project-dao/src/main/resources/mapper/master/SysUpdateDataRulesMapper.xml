@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.boot.dao.web.master.SysUpdataDataRulesDao">
+
+
+    <select id="findSysUpdateDataRules" resultType="com.spring.boot.bean.master.SysUpdateDataRules" >
+       SELECT id,`day`,update_time as updateTime from sys_updateData_rules
+    </select>
+
+</mapper>

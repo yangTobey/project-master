@@ -303,6 +303,10 @@ public class SysUserServiceImpl implements SysUserService {
                 return R.error(500, "请登录系统再进行操作功能！");
             }
             Long userId = ShiroUtils.getUserEntity().getUserId();
+            List<Long> sysCompanyList = sysCompanyBusinessService.getAllSysCompanyId();
+            /*for(SysCompany sysCompany:sysCompanyList){
+                sysCompany.getCompanyId()
+            }*/
             List<SysUserCompany> list = sysUserCompanyBusinessService.sysUserCompany(userId);
             resultMap.put("list", list);
             return R.ok().putData(200, resultMap, "获取成功！");

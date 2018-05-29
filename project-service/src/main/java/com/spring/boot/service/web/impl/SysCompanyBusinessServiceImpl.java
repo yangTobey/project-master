@@ -60,4 +60,9 @@ public class SysCompanyBusinessServiceImpl implements SysCompanyBusinessService 
     public List<SysCompany> getAllSysCompany() {
         return sysCompanyDao.getAllSysCompany();
     }
+
+    @Override
+    public List<Long> getAllSysCompanyId() {
+        return sysCompanyDao.getAllSysCompanyId();
+    }
 }

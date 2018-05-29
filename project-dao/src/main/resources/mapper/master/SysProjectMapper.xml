@@ -126,8 +126,8 @@
 	</update>-->
 	<!--新增附件文档信息-->
 	<insert id="addSysProjectEnergyFile" parameterType="com.spring.boot.bean.master.SysProject" useGeneratedKeys="true" keyProperty="projectId">
-		INSERT INTO sys_project_energy_file  (file_url, file_size,project_id,upload_time)
-		VALUES   (#{fileUrl},#{fileSize},#{projectId},#{uploadTime})
+		INSERT INTO sys_project_energy_file  (file_url, file_size,project_id,upload_time,file_name)
+		VALUES   (#{fileUrl},#{fileSize},#{projectId},#{uploadTime},#{fileName})
 	</insert>
 	<!--查找年度工程能耗分析信息-->
 	<select id="sysProjectEnergyAnalysisForYear" resultMap="sysProject" >

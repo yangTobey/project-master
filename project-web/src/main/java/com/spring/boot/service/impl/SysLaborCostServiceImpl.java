@@ -3,11 +3,13 @@ package com.spring.boot.service.impl;
 import com.spring.boot.bean.master.SysBudgetDetails;
 import com.spring.boot.bean.master.SysLaborCost;
 import com.spring.boot.bean.master.SysLaborCostDetails;
+import com.spring.boot.bean.master.SysUpdateDataRules;
 import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
 import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysLaborCostService;
 import com.spring.boot.service.web.SysBudgetDetailsBusinessService;
 import com.spring.boot.service.web.SysLaborCostBusinessService;
+import com.spring.boot.service.web.SysUpdateDataRulesBusinessService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.SysUtil;
 import com.spring.boot.util.UtilHelper;
@@ -37,6 +39,8 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
     private SysBudgetDetailsBusinessService sysBudgetDetailsBusinessService;
     @Autowired
     private SysDataAnalysisService sysDataAnalysisService;
+    @Autowired
+    private SysUpdateDataRulesBusinessService sysUpdateDataRulesBusinessService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -48,8 +52,8 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
     public Map<String, Object> getSysLaborCostAnalysis(Long companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        int month = UtilHelper.getMonth();
-        int year = UtilHelper.getYear();
+        int month = 0;
+        int year = 0;
         SysLaborCostDetailsEntity sysLaborCostDetails = null;
         List<SysLaborCostDetails> sysLaborCostDepartmentList = null;
         List<Long> sysUserCompanyIds = null;
@@ -60,9 +64,12 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             sysUserCompanyIds = new ArrayList<Long>();
             sysUserCompanyIds.add(companyId);
         }
+        SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+        //获取需要查询的年份和月份
+        Map<String,Integer> yearAndMonthMap=SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
         map.put("sysUserCompanyIds", sysUserCompanyIds);
-        map.put("year", year);
-        map.put("month", month);
+        map.put("year", yearAndMonthMap.get("year"));
+        map.put("month", yearAndMonthMap.get("month"));
         try {
             sysLaborCostDetails = sysLaborCostBusinessService.getSysLaborCostTotal(map);
             if (null != sysLaborCostDetails) {
@@ -90,14 +97,15 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
                 //人工费用
                 Double personnelCostLastMonth = 0.00;
                 //根据年份跟月份查找系统预算记录
-                SysBudgetDetails sysBudget = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(year, month, sysUserCompanyIds);
+                SysBudgetDetails sysBudget = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year"), yearAndMonthMap.get("month"), sysUserCompanyIds);
                 //根据年份跟月份查找系统预算记录
                 SysBudgetDetails sysBudgetLastMonth = null;
-                if (month == 1) {
-                    year = year - 1;
+                if (yearAndMonthMap.get("month") == 1) {
                     month = 12;
+                    year = yearAndMonthMap.get("year") - 1;
                 } else {
-                    month = month - 1;
+                    month = yearAndMonthMap.get("month") - 1;
+                    year = yearAndMonthMap.get("year");
                 }
                 sysBudgetLastMonth = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(year, month, sysUserCompanyIds);
                 if (null != sysBudgetLastMonth && sysBudgetLastMonth.getRealProfits() != null) {
@@ -217,8 +225,13 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             saleSysLaborCostDetails.setLaborCostId(laborCostId);
             saleSysLaborCostDetails.setLaborCostTotal(saleLaborCost);
             sysLaborCostBusinessService.addSysLaborCostDetails(saleSysLaborCostDetails);
-            //将统计信息存储到redis缓存中
-            setDateToRedis();
+
+            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
+            if(updateToRedis){
+                //将统计信息存储到redis缓存中
+                setDateToRedis();
+            }
             return R.ok(200, "添加人员成本信息成功！！");
         } else {
             return R.error(500, "添加人员成本信息失败，请联系系统管理员！！");
@@ -275,8 +288,14 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             saleSysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
             saleSysLaborCostDetails.setLaborCostTotal(saleLaborCost);
             sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(saleSysLaborCostDetails);
-            //将统计信息存储到redis缓存中
-            setDateToRedis();
+
+            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
+            if(updateToRedis){
+                //将统计信息存储到redis缓存中
+                setDateToRedis();
+            }
+
         } else {
             return R.error(500, "更新失败，系统不存在该记录信息，请联系系统管理员进行处理！！");
         }
@@ -313,8 +332,15 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
 
         int count = sysLaborCostBusinessService.deleteSysLaborCostInfo(map);
         if (count > 0) {
-            //将统计信息存储到redis缓存中
-            setDateToRedis();
+            SysLaborCost sysLaborCost = sysLaborCostBusinessService.findSysLaborCostByLaborCostId(laborCostId);
+            if (null != sysLaborCost) {
+                SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+                boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysLaborCost.getYear(),sysLaborCost.getMonth());
+                if(updateToRedis){
+                    //将统计信息存储到redis缓存中
+                    setDateToRedis();
+                }
+            }
             return R.ok(200, "删除成功！");
         } else {
             return R.error(500, "删除失败，请联系管理员！");
@@ -327,14 +353,17 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
      */
     public void setDateToRedis() {
         Map<String, Object> map = new HashMap<String, Object>();
-        int month = UtilHelper.getMonth();
-        int year = UtilHelper.getYear();
+        int month = 0;
+        int year = 0;
         SysLaborCostDetailsEntity sysLaborCostDetails = null;
         List<SysLaborCostDetails> sysLaborCostDepartmentList = null;
         List<Long> sysUserCompanyIds = null;
+        SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+        //获取需要查询的年份和月份
+        Map<String,Integer> yearAndMonthMap=SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
         map.put("sysUserCompanyIds", null);
-        map.put("year", year);
-        map.put("month", month);
+        map.put("year", yearAndMonthMap.get("year"));
+        map.put("month", yearAndMonthMap.get("month"));
         sysLaborCostDetails = sysLaborCostBusinessService.getSysLaborCostTotal(map);
         if (null != sysLaborCostDetails) {
             Double laborCostTotal = sysLaborCostDetails.getLaborCostTotal();
@@ -361,14 +390,16 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             //人工费用
             Double personnelCostLastMonth = 0.00;
             //根据年份跟月份查找系统预算记录
-            SysBudgetDetails sysBudget = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(year, month, sysUserCompanyIds);
+            SysBudgetDetails sysBudget = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year"), yearAndMonthMap.get("month"), sysUserCompanyIds);
             //根据年份跟月份查找系统预算记录
             SysBudgetDetails sysBudgetLastMonth = null;
-            if (month == 1) {
-                year = year - 1;
+
+            if (yearAndMonthMap.get("month") == 1) {
                 month = 12;
+                year = yearAndMonthMap.get("year") - 1;
             } else {
-                month = month - 1;
+                month = yearAndMonthMap.get("month") - 1;
+                year = yearAndMonthMap.get("year");
             }
             sysBudgetLastMonth = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(year, month, sysUserCompanyIds);
             if (null != sysBudgetLastMonth && sysBudgetLastMonth.getRealProfits() != null) {
