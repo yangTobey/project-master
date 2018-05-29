@@ -42,5 +42,5 @@ public interface SysRoleService {
      * @param roleId 角色id
      * @return
      */
-    Map<String, Object> deleteSysRole(String roleId);
+    Map<String, Object> deleteSysRole(Long roleId);
 }

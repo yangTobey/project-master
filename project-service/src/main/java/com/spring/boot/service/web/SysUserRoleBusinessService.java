@@ -29,4 +29,11 @@ public interface SysUserRoleBusinessService {
      * @return
      */
     int deleteUserRoleByUserId(Long userId);
+
+    /**
+     * 根据角色id查找用户权限列表信息（用于删除时做判断）
+     * @param roleId
+     * @return
+     */
+    List<SysUserRole> findRoleByRoleId(Long roleId);
 }

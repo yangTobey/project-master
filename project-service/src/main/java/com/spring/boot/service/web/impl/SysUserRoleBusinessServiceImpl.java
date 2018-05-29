@@ -34,4 +34,9 @@ public class SysUserRoleBusinessServiceImpl implements SysUserRoleBusinessServic
     public int deleteUserRoleByUserId(Long userId) {
         return sysUserRoleDao.deleteUserRoleByUserId(userId);
     }
+
+    @Override
+    public List<SysUserRole> findRoleByRoleId(Long roleId) {
+        return sysUserRoleDao.findRoleByRoleId(roleId);
+    }
 }

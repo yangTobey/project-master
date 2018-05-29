@@ -89,4 +89,16 @@ public interface SysUserDao {
      * 查询用户的所有菜单和功能按钮ID
      */
     List<Long> queryUserAllModuleId(Long userId);
+    /**
+     * 根据公司id查找用户信息
+     * @param companyId
+     * @return
+     */
+    List<SysUser> findSysUserByCompanyId(Long companyId);
+    /**
+     * 根据部门id查找用户信息
+     * @param departmentId
+     * @return
+     */
+    List<SysUser> findSysUserByDepartmentd(Long departmentId);
 }

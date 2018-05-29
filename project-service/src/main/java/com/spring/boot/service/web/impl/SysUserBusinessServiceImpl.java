@@ -79,6 +79,16 @@ public class SysUserBusinessServiceImpl implements SysUserBusinessService {
     }
 
     @Override
+    public List<SysUser> findSysUserByCompanyId(Long companyId) {
+        return sysUserDao.findSysUserByCompanyId(companyId);
+    }
+
+    @Override
+    public List<SysUser> findSysUserByDepartmentd(Long departmentId) {
+        return sysUserDao.findSysUserByDepartmentd(departmentId);
+    }
+
+    @Override
     public List<Long> queryUserAllModuleId(Long userId) {
         return null;
     }

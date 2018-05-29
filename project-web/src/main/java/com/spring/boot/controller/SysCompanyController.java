@@ -90,7 +90,7 @@ public class SysCompanyController {
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司编号格式不正确，请联系系统管理员！");
         }
-        Map<String, Object> map = sysCompanyService.deleteSysCompanyById(companyId);
+        Map<String, Object> map = sysCompanyService.deleteSysCompanyById(Long.valueOf(companyId));
         return R.ok(map);
     }
 

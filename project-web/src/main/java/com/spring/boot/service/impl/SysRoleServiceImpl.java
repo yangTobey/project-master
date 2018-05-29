@@ -1,8 +1,11 @@
 package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.SysRole;
+import com.spring.boot.bean.master.SysUserRole;
 import com.spring.boot.service.SysRoleService;
 import com.spring.boot.service.web.SysRoleBusinessService;
+import com.spring.boot.service.web.SysUserBusinessService;
+import com.spring.boot.service.web.SysUserRoleBusinessService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
 import org.apache.log4j.Logger;
@@ -13,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +27,10 @@ public class SysRoleServiceImpl implements SysRoleService {
     private static final Logger logger = Logger.getLogger(SysRoleServiceImpl.class);
     @Autowired
     private SysRoleBusinessService sysRoleBusinessService;
+    @Autowired
+    private SysUserBusinessService sysUserBusinessService;
+    @Autowired
+    private SysUserRoleBusinessService sysUserRoleBusinessService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -113,10 +121,14 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public Map<String, Object> deleteSysRole(String roleId) {
+    public Map<String, Object> deleteSysRole(Long roleId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("roleId", roleId);
         try {
+            List<SysUserRole> sysUserRoleList= sysUserRoleBusinessService.findRoleByRoleId(roleId);
+            if(sysUserRoleList.size()>0){
+                return R.error(500, "删除失败，该角色下还有用户，不能删除！！");
+            }
             int count = sysRoleBusinessService.deleteSysRole(map);
             if (count > 0) {
                 return R.ok(200, "删除成功！");

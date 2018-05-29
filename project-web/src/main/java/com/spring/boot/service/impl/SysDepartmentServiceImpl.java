@@ -1,7 +1,9 @@
 package com.spring.boot.service.impl;
 
+import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.service.SysDepartmentService;
 import com.spring.boot.service.web.SysDepartmentBusinessService;
+import com.spring.boot.service.web.SysUserBusinessService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
 import org.apache.commons.lang.math.RandomUtils;
@@ -11,6 +13,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +24,8 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
     private static final Logger logger = Logger.getLogger(SysDepartmentServiceImpl.class);
     @Autowired
     private SysDepartmentBusinessService sysDepartmentBusinessService;
+    @Autowired
+    private SysUserBusinessService sysUserBusinessService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -107,6 +112,10 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("departmentId", departmentId);
         try {
+            List<SysUser> sysUserList=sysUserBusinessService.findSysUserByDepartmentd(departmentId);
+            if(sysUserList.size()>0){
+                return R.error(500,"删除失败，该部门下还有用户，不能删除！");
+            }
             int count=sysDepartmentBusinessService.deleteSysDepartment(map);
             if(count>0){
                 return R.ok(200,"删除成功！");

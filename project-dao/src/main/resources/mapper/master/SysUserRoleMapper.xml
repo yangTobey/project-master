@@ -15,4 +15,8 @@
 	<select id="findRoleByUserId" resultType="com.spring.boot.bean.master.SysUserRole"  parameterType="map">
 		SELECT id,user_id as userId,role_id as roleId from sys_user_role where user_id=#{userId}
 	</select>
+	<!--根据角色id查找用户权限列表信息（用于删除时做判断）-->
+	<select id="findRoleByRoleId" resultType="com.spring.boot.bean.master.SysUserRole"  parameterType="map">
+		SELECT id,user_id as userId,role_id as roleId from sys_user_role where role_id=#{roleId}
+	</select>
 </mapper>

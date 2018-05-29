@@ -36,7 +36,7 @@ public interface SysCompanyService {
      * @param companyId 公司id
      * @return
      */
-    Map<String,Object> deleteSysCompanyById(String companyId);
+    Map<String,Object> deleteSysCompanyById(Long companyId);
     /**
      * 根据公司id获取公司数据
      * @return

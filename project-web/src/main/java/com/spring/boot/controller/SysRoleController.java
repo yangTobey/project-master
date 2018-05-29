@@ -92,7 +92,7 @@ public class SysRoleController {
         if(!UtilHelper.isNumer(roleId)){
             return R.error(400, "角色编号格式不正确，请联系系统管理员！");
         }
-        Map<String, Object> map= sysRoleService.deleteSysRole(roleId);
+        Map<String, Object> map= sysRoleService.deleteSysRole(Long.valueOf(roleId));
         return R.ok(map);
 
     }

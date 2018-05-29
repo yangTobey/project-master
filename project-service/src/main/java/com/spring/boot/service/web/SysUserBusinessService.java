@@ -87,5 +87,18 @@ public interface SysUserBusinessService {
      */
     List<Long> queryUserAllModuleId(Long userId);
 
+    /**
+     * 根据公司id查找用户信息
+     * @param companyId
+     * @return
+     */
+    List<SysUser> findSysUserByCompanyId(Long companyId);
+    /**
+     * 根据部门id查找用户信息
+     * @param departmentId
+     * @return
+     */
+    List<SysUser> findSysUserByDepartmentd(Long departmentId);
+
 
 }

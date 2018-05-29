@@ -30,6 +30,8 @@ public class SysCompanyServiceImpl implements SysCompanyService {
     private static final Logger logger = Logger.getLogger(SysCompanyServiceImpl.class);
     @Autowired
     private SysCompanyBusinessService sysCompanyBusinessService;
+    @Autowired
+    private SysUserBusinessService sysUserBusinessService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -100,10 +102,14 @@ public class SysCompanyServiceImpl implements SysCompanyService {
     }
 
     @Override
-    public Map<String,Object> deleteSysCompanyById(String companyId) {
+    public Map<String,Object> deleteSysCompanyById(Long companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("companyId", companyId);
         try {
+            List<SysUser> sysUserList=sysUserBusinessService.findSysUserByCompanyId(companyId);
+            if(sysUserList.size()>0){
+                return R.error(500,"删除失败，该公司下还有用户，不能删除！");
+            }
             int count=sysCompanyBusinessService.deleteSysCompanyById(map);
             if(count>0){
                 return R.ok(200,"删除成功！");

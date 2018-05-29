@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Administrator on 2018/1/25.
@@ -308,6 +309,23 @@ public class SysUserServiceImpl implements SysUserService {
                 sysCompany.getCompanyId()
             }*/
             List<SysUserCompany> list = sysUserCompanyBusinessService.sysUserCompany(userId);
+            //2.提取出list对象中的一个属性并去重(jdk1.8)
+            List<Long> sysUserCompanyIdList = list.stream().map(SysUserCompany::getCompanyId).distinct().collect(Collectors.toList());
+            boolean isAllCompany=true;
+            //判断该用户是否拥有全国公司的权限
+            for(Long companyId:sysCompanyList){
+                if(!sysUserCompanyIdList.contains(companyId)){
+                    isAllCompany=false;
+                    break;
+                }
+            }
+            //如果包含全国公司权限，list追加一条信息
+            if(isAllCompany){
+                SysUserCompany sysUserCompany=new SysUserCompany();
+                sysUserCompany.setCompanyId(0L);
+                sysUserCompany.setCompanyName("全国");
+                list.add(0,sysUserCompany);
+            }
             resultMap.put("list", list);
             return R.ok().putData(200, resultMap, "获取成功！");
         } catch (Exception e) {
