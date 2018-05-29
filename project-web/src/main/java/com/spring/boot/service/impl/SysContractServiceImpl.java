@@ -178,17 +178,7 @@ public class SysContractServiceImpl implements SysContractService {
                 Date startTime = format.parse(contractStartTime);
                 Date endTime = format.parse(contractEndTime);
                 Date nowTime=format.parse(now);
-                //算两个日期间隔多少天
-                int day = (int) ((endTime.getTime() - startTime.getTime()) / (1000*3600*24));
-                if(nowTime.getTime()-endTime.getTime()>0){//到期：指的是当前日期大于合同结束时间
-                    sysContract.setStatusCode(4);
-                }else if(startTime.getTime()-nowTime.getTime()>0){//未开始：当前日期小于开始时间
-                    sysContract.setStatusCode(1);
-                }else if(day<31){//即将到期：结束日期-当前日期<31天
-                    sysContract.setStatusCode(3);
-                }else if(nowTime.getTime()-startTime.getTime()>0&&endTime.getTime()-nowTime.getTime()>0){
-                    sysContract.setStatusCode(2);
-                }
+
                 sysContract = new SysContract();
                 sysContract.setContractCode(contractCode);
                 sysContract.setContractName(contractName);
@@ -201,6 +191,17 @@ public class SysContractServiceImpl implements SysContractService {
                 sysContract.setPersonLiableName(personLiableName);
                 sysContract.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
                 sysContract.setCompanyId(companyId);
+                //算两个日期间隔多少天
+                int day = (int) ((endTime.getTime() - startTime.getTime()) / (1000*3600*24));
+                if(nowTime.getTime()-endTime.getTime()>0){//到期：指的是当前日期大于合同结束时间
+                    sysContract.setStatusCode(4);
+                }else if(startTime.getTime()-nowTime.getTime()>0){//未开始：当前日期小于开始时间
+                    sysContract.setStatusCode(1);
+                }else if(day<31){//即将到期：结束日期-当前日期<31天
+                    sysContract.setStatusCode(3);
+                }else if(nowTime.getTime()-startTime.getTime()>0&&endTime.getTime()-nowTime.getTime()>0){
+                    sysContract.setStatusCode(2);
+                }
                 int count = sysContractBusinessService.addSysContract(sysContract);
                 if (count > 0) {
                     if (!UtilHelper.isEmpty(fileInfo)) {

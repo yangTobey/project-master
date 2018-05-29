@@ -79,12 +79,17 @@
         LEFT JOIN sys_labor_cost_details AS details ON laborCost.labor_cost_id = details.labor_cost_id
         LEFT JOIN sys_company as company on company.company_id=laborCost.company_id
         where 1=1
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND laborCost.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND laborCost.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND laborCost.company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
         and laborCost.year=#{year}
         and laborCost.month=#{month}
         and laborCost.status_code!=2
@@ -97,14 +102,20 @@
         FROM sys_labor_cost AS laborCost
         right JOIN sys_labor_cost_details AS details ON laborCost.labor_cost_id = details.labor_cost_id
         where 1=1
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND laborCost.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND laborCost.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND laborCost.company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
         and laborCost.year=#{year}
         and laborCost.month=#{month}
+        and laborCost.status_code!=2
         GROUP BY details.department_type
     </select>
     <!--查找列表数据-->
@@ -114,12 +125,17 @@
         from sys_labor_cost as laborCost LEFT JOIN sys_labor_cost_details as details on laborCost.labor_cost_id=details.labor_cost_id
         LEFT JOIN sys_company as company on company.company_id=laborCost.company_id
         where 1=1
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND laborCost.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND laborCost.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND laborCost.company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
         and laborCost.year=#{year}
         and laborCost.status_code!=2
         GROUP BY  laborCost.labor_cost_id
@@ -135,12 +151,18 @@
         from sys_labor_cost as laborCost LEFT JOIN sys_labor_cost_details as details on laborCost.labor_cost_id=details.labor_cost_id
         LEFT JOIN sys_company as company on company.company_id=laborCost.company_id
         where 1=1
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND laborCost.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND laborCost.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND laborCost.company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
+
         and laborCost.year=#{year}
         and laborCost.status_code!=2
         GROUP BY  laborCost.labor_cost_id) as a

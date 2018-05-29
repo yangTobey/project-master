@@ -34,12 +34,17 @@
     <select id="sysChargeDetails" resultMap="sysChargeDetails" parameterType="map">
         SELECT charge_id,SUM(charge_money) AS charge_money,SUM(charge_money_now) AS charge_money_now,SUM(charge_debt) AS charge_debt,SUM(charge_debt_return) AS charge_debt_return from sys_charge_details where 1=1
         and status_code!=2 and week_of_year = #{weekOfYear} and year=#{year}
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
     </select>
     <!--查找当年全年数据，为大屏财务数据页面展示提供服务-->
     <select id="sysChargeDetailsForYear" resultMap="sysChargeDetails" parameterType="map">

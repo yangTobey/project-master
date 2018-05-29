@@ -42,12 +42,17 @@
         where 1=1
         /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
         <if test="type == 1">
-            <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-                AND basic.company_id IN
-                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                    #{item}
-                </foreach>
-            </if>
+            <choose>
+                <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                    AND basic.company_id IN
+                    <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                        #{item}
+                    </foreach>
+                </when>
+                <otherwise>
+                    AND basic.company_id IN(SELECT company_id from sys_company where status_code!=2)
+                </otherwise>
+            </choose>
         </if>
         and basic.year = #{year}
         and basic.month = #{month}
@@ -57,12 +62,17 @@
     <select id="sysBasicDataAnalysisListTotal" resultType="int"  parameterType="map">
         select count(basic_id)
         from sys_basic_data where 1=1
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
         and year = #{year}
         and status_code!=2
     </select>
@@ -71,12 +81,17 @@
         <include refid="Base_Column_List"/>
         from sys_basic_data  as basic LEFT JOIN sys_company AS company ON basic.company_id = company.company_id
         where 1=1
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND basic.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND basic.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND basic.company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
         and basic.year = #{year}
         and basic.status_code!=2
         ORDER BY basic.create_time DESC

@@ -34,8 +34,6 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
-    Map<String, Object> resultMap = null;
-    Map<String, Object> map = null;
 
     @Override
     public Map<String, Object> getSysMenu() {
@@ -240,8 +238,8 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     @Override
     public Map<String, Object> getSysMenuList(Integer limit, Integer offset,String menuName,String menuUrl) {
-        resultMap = new HashMap<String, Object>();
-        map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object>  map = new HashMap<String, Object>();
         map.put("limit", limit);
         map.put("offset", offset);
         map.put("menuName", menuName);
@@ -259,7 +257,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     @Override
     public Map<String, Object> addSysMenu(String menuName, String menuUrl, String menuPerms, String icon, Long parentId, String sort, Integer menuType, String remark) {
-        map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("menuName", menuName);
         map.put("menuUrl", menuUrl);
         map.put("menuPerms", menuPerms);
@@ -284,7 +282,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     @Override
     public Map<String, Object> updateSysMenu(String menuName, String menuUrl, String menuPerms, String icon, Long parentId, String sort, Integer menuType, String remark, Long menuId) {
-        map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("menuName", menuName);
         map.put("menuUrl", menuUrl);
         map.put("menuPerms", menuPerms);
@@ -310,7 +308,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     @Override
     public Map<String, Object> deleteSysMenuById(Long menuId) {
-        map = new HashMap<String, Object>();
+        Map<String, Object>  map = new HashMap<String, Object>();
         map.put("menuId", menuId);
 
         try {

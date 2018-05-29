@@ -69,12 +69,13 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
                 }else if(repairOrderLatest.getStatus()==4){
                     orderName="该订单为疑难工单，物业管理正在努力解决";
                 }
+                //以小区id作为key存储数据，一个小区可能存在多条信息，如果key存在，直接追加数据
                 if(cityOrderMap.containsKey(repairOrderLatest.getCityId())){
                     cityOrderMap.get(repairOrderLatest.getCityId()).add(repairOrderLatest.getCommunityName()+"--"+orderName);
                 }else{
                     if(repairOrderLatest.getCityId()!=null){
                         List<String> listData=new ArrayList<String>();
-                        listData.add(repairOrderLatest.getCommunityName()+repairOrderLatest.getUserName()+"--"+orderName);
+                        listData.add(repairOrderLatest.getCommunityName()+"--"+orderName);
                         cityOrderMap.put(repairOrderLatest.getCityId(),listData);
                     }
                 }

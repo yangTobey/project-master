@@ -43,13 +43,11 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
-    Map<String, Object> map = null;
-    Map<String, Object> resultMap = null;
 
     @Override
     public Map<String, Object> sysBasicDataAnalysisData(long companyId, int year, int month) {
-        resultMap = new HashMap<String, Object>();
-        map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
         try {
             if (companyId == 0) {
@@ -68,8 +66,8 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             if (sysBasicDataEntity != null) {
                 if (companyId == 0) {
                     int querySubsidiaryCount = sysCompanyBusinessService.querySubsidiaryCount(map);
-                    //分公司总数
-                    sysBasicDataEntity.setSubsidiaryCount(querySubsidiaryCount);
+                    //分公司总数（全部公司数量-1，总公司不算分公司）
+                    sysBasicDataEntity.setSubsidiaryCount(querySubsidiaryCount-1);
                 } else {
                     //分公司总数
                     sysBasicDataEntity.setSubsidiaryCount(0);
@@ -97,7 +95,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     @Override
     public Map<String, Object> sysBasicDataAnalysisList(long companyId, int limit, int offset, int year) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
         try {
             if (companyId == 0) {
@@ -129,7 +127,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         if (null != sysBasicData) {
             return R.error(500, "新增失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
         }
-        map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("year", year);
         map.put("month", month);
         map.put("constructionArea", constructionArea);
@@ -148,8 +146,10 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
 
         int count = sysBasicDataBusinessService.addSysBasicData(map);
         if (count > 0) {
-            //将基础信息放进redis缓存
-            setBasicDataAnalysisDataToRedis();
+            //将基础信息放进redis缓存(更新本月数据，才将信息存入redis缓存中)
+            if(UtilHelper.getMonth()==month){
+                setBasicDataAnalysisDataToRedis();
+            }
             return R.ok(200, "新增成功！");
         } else {
             return R.error(500, "新增失败！");
@@ -166,7 +166,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
                 return R.error(500, "更新失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
             }
         }
-        map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("basicId", basicId);
         map.put("year", year);
         map.put("month", month);
@@ -185,8 +185,10 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
 
         int count = sysBasicDataBusinessService.updateSysBasicData(map);
         if (count > 0) {
-            //将基础信息放进redis缓存
-            setBasicDataAnalysisDataToRedis();
+            //将基础信息放进redis缓存(更新本月数据，才将信息存入redis缓存中)
+            if(UtilHelper.getMonth()==month){
+                setBasicDataAnalysisDataToRedis();
+            }
             return R.ok(200, "更新成功！");
         } else {
             return R.error(500, "更新失败！");
@@ -198,10 +200,15 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     public Map<String, Object> deleteSysBasicData(int basicId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("basicId", basicId);
+        SysBasicDataEntity sysBasicDataEntity = sysBasicDataBusinessService.findSysBasicDataById(map);
         int count = sysBasicDataBusinessService.deleteSysBasicData(map);
         if (count > 0) {
-            //将基础信息放进redis缓存
-            setBasicDataAnalysisDataToRedis();
+            if (null != sysBasicDataEntity) {
+                //将基础信息放进redis缓存
+                if(UtilHelper.getMonth()==sysBasicDataEntity.getMonth()){
+                    setBasicDataAnalysisDataToRedis();
+                }
+            }
             return R.ok(200, "删除成功！");
         } else {
             return R.error(500, "删除失败！");
@@ -239,8 +246,8 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         SysBasicDataEntity sysBasicDataEntity = sysBasicDataBusinessService.sysBasicDataAnalysisData(analysisMap);
         if (sysBasicDataEntity != null) {
             int querySubsidiaryCount = sysCompanyBusinessService.querySubsidiaryCount(analysisMap);
-            //分公司总数
-            sysBasicDataEntity.setSubsidiaryCount(querySubsidiaryCount);
+            //分公司总数（全部公司数量-1，总公司不算分公司）
+            sysBasicDataEntity.setSubsidiaryCount(querySubsidiaryCount-1);
             //房屋装修率
             sysBasicDataEntity.setDecorateHouseScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysBasicDataEntity.getDecorateHouseNumber(), sysBasicDataEntity.getHouseNumber())));
             //车位空置率

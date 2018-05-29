@@ -181,7 +181,7 @@ public class SysContractController {
             return R.error(400, "合同名称不能为空！");
         }else if(UtilHelper.isEmpty(contractCode)){
             return R.error(400, "合同编号不能为空！");
-        }else if(UtilHelper.isDoubleNumer(contractMoney)){
+        }else if(!UtilHelper.isDoubleNumer(contractMoney)){
             return R.error(400, "合同金额格式不正确！");
         }else if(UtilHelper.isEmpty(contractStartTime)){
             return R.error(400, "合同开始时间不能为空！");
@@ -231,7 +231,7 @@ public class SysContractController {
             return R.error(400, "合同名称不能为空！");
         }else if(UtilHelper.isEmpty(contractCode)){
             return R.error(400, "合同编号不能为空！");
-        }else if(UtilHelper.isDoubleNumer(contractMoney)){
+        }else if(!UtilHelper.isDoubleNumer(contractMoney)){
             return R.error(400, "合同金额格式不正确！");
         }else if(UtilHelper.isEmpty(contractStartTime)){
             return R.error(400, "合同开始时间不能为空！");

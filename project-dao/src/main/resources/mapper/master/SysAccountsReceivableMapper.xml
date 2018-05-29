@@ -56,25 +56,35 @@
         <if test="month != null and month!=''">
             and month = #{month}
         </if>
-
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
     </select>
     <!--获取当年每月的数据-->
     <select id="sysAccountsReceivableAnalysisForMonth" resultMap="sysAccountsReceivable">
         SELECT SUM(receivable_accounts_owner) as receivable_accounts_owner,SUM(complete_accounts_owner) as
         complete_accounts_owner,month
         from sys_accounts_receivable where 1=1 and status_code!=2
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
+
         and year = #{year}
         GROUP BY `month` ORDER BY `month` asc
     </select>
@@ -88,12 +98,17 @@
         sys_accounts_receivable AS accountsRe LEFT JOIN sys_company AS company ON accountsRe.company_id =
         company.company_id
         WHERE 1 = 1 AND accountsRe.status_code != 2
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND accountsRe.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND accountsRe.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND accountsRe.company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
         and accountsRe.year = #{year} ORDER BY accountsRe.create_time desc
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
@@ -103,12 +118,17 @@
     <select id="sysAccountsReceivableListTotal" resultType="int" parameterType="map">
         SELECT count(accounts_id)
         from sys_accounts_receivable as accountsRe where 1=1 and accountsRe.status_code!=2
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND accountsRe.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND accountsRe.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND accountsRe.company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
         and accountsRe.year = #{year}
     </select>
     <select id="findSysAccountsReceivableById" resultMap="sysAccountsReceivable" parameterType="map">

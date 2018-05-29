@@ -56,12 +56,17 @@
 			LEFT JOIN sys_company AS company ON company.company_id = project.company_id
 			where 1=1 and project.status_code!=2
 			and project.year=#{year}
-			<if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-				AND project.company_id IN
-				<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-					#{item}
-				</foreach>
-			</if>
+			<choose>
+				<when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+					AND project.company_id IN
+					<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+						#{item}
+					</foreach>
+				</when>
+				<otherwise>
+					AND project.company_id IN(SELECT company_id from sys_company where status_code!=2)
+				</otherwise>
+			</choose>
 
 			GROUP BY project.project_id
 			order by project.create_time desc
@@ -75,12 +80,17 @@
 		FROM
 		sys_project AS project
 		where 1=1
-		<if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-			AND project.company_id IN
-			<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-				#{item}
-			</foreach>
-		</if>
+		<choose>
+			<when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+				AND project.company_id IN
+				<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</when>
+			<otherwise>
+				AND project.company_id IN(SELECT company_id from sys_company where status_code!=2)
+			</otherwise>
+		</choose>
 		and project.status_code!=2
 		and project.year=#{year}
 	</select>
@@ -131,12 +141,17 @@
 		WHERE 1=1
 		/*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
 		<if test="type == 1">
-			<if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-				AND project.company_id IN
-				<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-					#{item}
-				</foreach>
-			</if>
+			<choose>
+				<when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+					AND project.company_id IN
+					<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+						#{item}
+					</foreach>
+				</when>
+				<otherwise>
+					AND project.company_id IN(SELECT company_id from sys_company where status_code!=2)
+				</otherwise>
+			</choose>
 		</if>
 		and project.year=#{year} and project.status_code!=2
 	</select>
@@ -150,12 +165,17 @@
 		FROM sys_project AS project
 		LEFT JOIN sys_energy AS energy ON project.project_id = energy.project_id
 		WHERE 1=1
-		<if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-			AND project.company_id IN
-			<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-				#{item}
-			</foreach>
-		</if>
+		<choose>
+			<when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+				AND project.company_id IN
+				<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</when>
+			<otherwise>
+				AND project.company_id IN(SELECT company_id from sys_company where status_code!=2)
+			</otherwise>
+		</choose>
 		and project.year=#{year} and project.month=#{month} and project.status_code!=2
 	</select>
 	<!--根据年份、公司id查找年度工程能耗分析信息-->
@@ -169,12 +189,17 @@
 		WHERE 1=1
 		/*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
 		<if test="type == 1">
-			<if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-				AND project.company_id IN
-				<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-					#{item}
-				</foreach>
-			</if>
+			<choose>
+				<when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+					AND project.company_id IN
+					<foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+						#{item}
+					</foreach>
+				</when>
+				<otherwise>
+					AND project.company_id IN(SELECT company_id from sys_company where status_code!=2)
+				</otherwise>
+			</choose>
 		</if>
 		and project.year=#{year}  and project.status_code!=2 GROUP BY project.month
 	</select>

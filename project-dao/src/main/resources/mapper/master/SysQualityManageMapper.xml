@@ -30,12 +30,17 @@
         from sys_quality_manage as quality LEFT JOIN sys_company as company on quality.company_id=company.company_id
         LEFT JOIN sys_quality_manage_file AS file ON quality.quality_id = file.quality_id
         where 1=1
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND quality.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND quality.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND quality.company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
         and quality.year = #{year}
         and quality.status_code!=2
         GROUP BY
@@ -59,12 +64,17 @@
         WHERE 1 = 1
         /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
         <if test="type == 1">
-            <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-                AND quality.company_id IN
-                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                    #{item}
-                </foreach>
-            </if>
+            <choose>
+                <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                    AND quality.company_id IN
+                    <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                        #{item}
+                    </foreach>
+                </when>
+                <otherwise>
+                    AND quality.company_id IN(SELECT company_id from sys_company where status_code!=2)
+                </otherwise>
+            </choose>
         </if>
         and quality.year = #{year}
         and quality.status_code!=2
@@ -83,12 +93,17 @@
         WHERE 1 = 1
         /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
         <if test="type == 1">
-            <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-                AND  quality.company_id IN
-                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                    #{item}
-                </foreach>
-            </if>
+            <choose>
+                <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                    AND  quality.company_id IN
+                    <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                        #{item}
+                    </foreach>
+                </when>
+                <otherwise>
+                    AND quality.company_id IN(SELECT company_id from sys_company where status_code!=2)
+                </otherwise>
+            </choose>
         </if>
         and quality.year = #{year}
         and quality.month = #{month}
@@ -97,32 +112,50 @@
     <!--根据公司id、年份、月份查找品质管理分析列表情况-->
     <select id="sysQualityManageAnalysisList" resultMap="sysQualityManage" parameterType="map">
         SELECT
-        <include refid="Base_Column_List"/>
+        quality.month as month,
+        SUM(quality.quality_check) as qualityCheck,
+        SUM(quality.quality_check_pass) as qualityCheckPass,
+        SUM(quality.quality_check_fail) as qualityCheckFail,
+        SUM(
+        quality.quality_check_unmodified
+        ) as qualityCheckUnmodified,
+        SUM(quality.security_event) as securityEvent
         FROM sys_quality_manage AS quality
         WHERE 1 = 1
         /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
         <if test="type == 1">
-            <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-                AND  quality.company_id IN
-                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                    #{item}
-                </foreach>
-            </if>
+            <choose>
+                <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                    AND  quality.company_id IN
+                    <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                        #{item}
+                    </foreach>
+                </when>
+                <otherwise>
+                    AND quality.company_id IN(SELECT company_id from sys_company where status_code!=2)
+                </otherwise>
+            </choose>
         </if>
         and quality.year = #{year}
     <!-- /*and quality.month = #{month}*/-->
      and quality.status_code!=2
+      GROUP BY `month`
  </select>
  <select id="getSysQualityManageListTotal" resultType="int"  parameterType="map">
      select count(quality_id)
      from sys_quality_manage
      where 1=1
-     <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-         AND  company_id IN
-         <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-             #{item}
-         </foreach>
-     </if>
+     <choose>
+         <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+             AND  company_id IN
+             <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                 #{item}
+             </foreach>
+         </when>
+         <otherwise>
+             AND company_id IN(SELECT company_id from sys_company where status_code!=2)
+         </otherwise>
+     </choose>
      and year = #{year}
      and status_code!=2
  </select>

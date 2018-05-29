@@ -40,15 +40,11 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
-
-    Map<String, Object> resultMap = null;
-    Map<String, Object> map = null;
-
     @Override
     public Map<String, Object> sysQualityManageAnalysis(long companyId) {
-        resultMap = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
-        map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         SysQualityManageEntity sysQualityManageEntityForYear = null;
         SysQualityManageEntity sysQualityManageEntityForMonth = null;
         try {
@@ -85,7 +81,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                 double modifiedPassScale = 0;
                 //合格率(月)
                 Map<Integer, Double> checkPassScaleMap = null;
-                //不合格率(月)
+                //整改合格率(月)
                 Map<Integer, Double> modifiedPassScaleMap = null;
                 if (list.size() > 0) {
                     checkPassScaleMap = new HashMap<Integer, Double>();
@@ -119,8 +115,8 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
 
     @Override
     public Map<String, Object> getSysQualityManageList(long companyId, int year, int limit, int offset) {
-        resultMap = new HashMap<String, Object>();
-        map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
         try {
             if (companyId == 0) {
@@ -147,14 +143,14 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addSysQualityManage(Long companyId, Integer year, Integer month, Integer qualityCheck, Integer qualityCheckPass, Integer qualityCheckFail, Integer securityEvent, Integer qualityCheckUnmodified, String fileInfo) {
+    public Map<String, Object> addSysQualityManage(Long companyId, Integer year, Integer month, Integer qualityCheck, Integer qualityCheckPass, Integer securityEvent, Integer qualityCheckUnmodified, String fileInfo) {
         SysQualityManage sysQualityManage = new SysQualityManage();
         sysQualityManage.setCompanyId(companyId);
         sysQualityManage.setYear(year);
         sysQualityManage.setMonth(month);
         sysQualityManage.setQualityCheck(qualityCheck);
         sysQualityManage.setQualityCheckPass(qualityCheckPass);
-        sysQualityManage.setQualityCheckFail(qualityCheckFail);
+        sysQualityManage.setQualityCheckFail(qualityCheck-qualityCheckPass);
         sysQualityManage.setSecurityEvent(securityEvent);
         sysQualityManage.setQualityCheckUnmodified(qualityCheckUnmodified);
         sysQualityManage.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
@@ -193,15 +189,15 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> updateSysQualityManage(Long qualityId, Long companyId, Integer year, Integer month, Integer qualityCheck, Integer qualityCheckPass
-            , Integer qualityCheckFail, Integer securityEvent, Integer qualityCheckUnmodified, String fileInfo) {
-        map = new HashMap<String, Object>();
+            ,  Integer securityEvent, Integer qualityCheckUnmodified, String fileInfo) {
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("qualityId", qualityId);
         map.put("companyId", companyId);
         map.put("year", year);
         map.put("month", month);
         map.put("qualityCheck", qualityCheck);
         map.put("qualityCheckPass", qualityCheckPass);
-        map.put("qualityCheckFail", qualityCheckFail);
+        map.put("qualityCheckFail", qualityCheck-qualityCheckPass);
         map.put("securityEvent", securityEvent);
         map.put("qualityCheckUnmodified", qualityCheckUnmodified);
         SysQualityManage record=sysQualityManageBusinessService.sysQualityManageRecord(companyId,year,month);
@@ -244,7 +240,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> deleteSysQualityManageById(long qualityId) {
-        map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("qualityId", qualityId);
         int count = sysQualityManageBusinessService.deleteSysQualityManageById(map);
         if (count > 0) {
@@ -258,8 +254,8 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
 
     @Override
     public Map<String, Object> findSysQualityManageById(Long qualityId) {
-        map = new HashMap<String, Object>();
-        resultMap = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
         map.put("qualityId", qualityId);
         //SysQualityManage sysCompany = sysQualityManageBusinessService.findSysQualityManageById(map);
         try {
@@ -330,7 +326,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
             double modifiedPassScale = 0;
             //合格率(月)
             Map<Integer, Double> checkPassScaleMap = null;
-            //不合格率(月)
+            //整改合格率(月)
             Map<Integer, Double> modifiedPassScaleMap = null;
             if (list.size() > 0) {
                 checkPassScaleMap = new HashMap<Integer, Double>();

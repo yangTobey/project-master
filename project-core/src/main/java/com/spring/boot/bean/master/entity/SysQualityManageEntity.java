@@ -21,7 +21,7 @@ public class SysQualityManageEntity implements Serializable {
 
     //合格率(月)
     private  Map<Integer, Double> checkPassScaleMap;
-    //不合格率(月)
+    //整改合格率(月)
     private  Map<Integer, Double> modifiedPassScaleMap;
 
 

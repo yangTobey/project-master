@@ -33,13 +33,11 @@ public class SysCompanyServiceImpl implements SysCompanyService {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
-    Map<String, Object> resultMap = null;
-    Map<String, Object> map = null;
 
     @Override
     public Map<String, Object> getSysCompanyList(Integer limit, Integer offset) {
-        resultMap = new HashMap<String, Object>();
-        map = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("limit", limit);
         map.put("offset", offset);
         try {
@@ -56,7 +54,7 @@ public class SysCompanyServiceImpl implements SysCompanyService {
 
     @Override
     public Map<String,Object> addSysCompany(String companyName, String companyPhone, String companyAddress) {
-        map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         //公司编码（服务识别号）
         String companyCode = "C" + RandomUtils.nextInt(10) + RandomUtils.nextInt(10) + String.valueOf(System.currentTimeMillis()).substring(5, 12) + UtilHelper.chars.charAt((int) (Math.random() * 52));
         map.put("companyName", companyName);
@@ -81,7 +79,7 @@ public class SysCompanyServiceImpl implements SysCompanyService {
 
     @Override
     public Map<String,Object> updateSysCompanyInfo(String companyId, String companyName, String companyPhone, String companyAddress) {
-        map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("companyId", companyId);
         map.put("companyName", companyName);
         map.put("companyPhone", companyPhone);
@@ -103,7 +101,7 @@ public class SysCompanyServiceImpl implements SysCompanyService {
 
     @Override
     public Map<String,Object> deleteSysCompanyById(String companyId) {
-        map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("companyId", companyId);
         try {
             int count=sysCompanyBusinessService.deleteSysCompanyById(map);
@@ -121,8 +119,8 @@ public class SysCompanyServiceImpl implements SysCompanyService {
 
     @Override
     public Map<String, Object> findSysCompanyByCompanyId(long companyId) {
-        map = new HashMap<String, Object>();
-        resultMap = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object>  resultMap = new HashMap<String, Object>();
         map.put("companyId", companyId);
         SysCompany sysCompany = sysCompanyBusinessService.findSysCompanyByCompanyId(map);
         resultMap.put("data", sysCompanyBusinessService.findSysCompanyByCompanyId(map));

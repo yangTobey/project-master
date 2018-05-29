@@ -156,7 +156,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
         map.put("sysUserCompanyIds", sysUserCompanyIds);
         map.put("limit", limit);
         map.put("offset", offset);
-        map.put("year", UtilHelper.getYear());
+        map.put("year", year);
         //resultMap.put("sysLaborCostDetailsList", list);
         try {
             resultMap.put("total", sysLaborCostBusinessService.getSysLaborCostListTotal(map));
@@ -219,7 +219,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             sysLaborCostBusinessService.addSysLaborCostDetails(saleSysLaborCostDetails);
             //将统计信息存储到redis缓存中
             setDateToRedis();
-            return R.ok(200, "添加人员成本信息！！");
+            return R.ok(200, "添加人员成本信息成功！！");
         } else {
             return R.error(500, "添加人员成本信息失败，请联系系统管理员！！");
         }

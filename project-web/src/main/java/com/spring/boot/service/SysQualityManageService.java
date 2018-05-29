@@ -25,12 +25,11 @@ public interface SysQualityManageService {
      * @param month
      * @param qualityCheck
      * @param qualityCheckPass
-     * @param qualityCheckFail
      * @param securityEvent
      * @param qualityCheckUnmodified
      * @return
      */
-    Map<String,Object> addSysQualityManage(Long companyId, Integer year, Integer month,Integer qualityCheck,Integer qualityCheckPass,Integer qualityCheckFail,Integer securityEvent,Integer qualityCheckUnmodified,String fileInfo);
+    Map<String,Object> addSysQualityManage(Long companyId, Integer year, Integer month,Integer qualityCheck,Integer qualityCheckPass,Integer securityEvent,Integer qualityCheckUnmodified,String fileInfo);
 
     /**
      * 更新信息
@@ -40,12 +39,11 @@ public interface SysQualityManageService {
      * @param month
      * @param qualityCheck
      * @param qualityCheckPass
-     * @param qualityCheckFail
      * @param securityEvent
      * @param qualityCheckUnmodified
      * @return
      */
-    Map<String,Object> updateSysQualityManage(Long qualityId,Long companyId, Integer year, Integer month,Integer qualityCheck,Integer qualityCheckPass,Integer qualityCheckFail,Integer securityEvent,Integer qualityCheckUnmodified, String fileInfo);
+    Map<String,Object> updateSysQualityManage(Long qualityId,Long companyId, Integer year, Integer month,Integer qualityCheck,Integer qualityCheckPass,Integer securityEvent,Integer qualityCheckUnmodified, String fileInfo);
     /**
      * 删除信息
      * @param qualityId id

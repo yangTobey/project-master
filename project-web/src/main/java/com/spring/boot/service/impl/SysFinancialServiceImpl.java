@@ -384,9 +384,10 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 //实际利润环比
                 Map<Integer, Object> realProfitsScaleMap = null;
                 if (null != sysBudgetDetailsList) {
-                    //获取上年12月份数据
-                    SysBudgetDetails lastYearDetailis = null;
-                    Double lastYearRealProfits = 0.00;
+                    //获取环比月份数据
+                    SysBudgetDetails lastMonthDetailis = null;
+                    //上个月利润
+                    Double lastMonthRealProfits = 0.00;
 
                     realIncomeMap = new HashMap<Integer, Object>();
                     budgetIncomeMap = new HashMap<Integer, Object>();
@@ -402,8 +403,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                         Double realProfits = getNum(sysBudgetDetailsMonth.getRealProfits());
                         Integer month = sysBudgetDetailsMonth.getMonth();
 
-                        lastYearDetailis = null;
-                        lastYearRealProfits = 0.00;
+                        lastMonthDetailis = null;
+                        lastMonthRealProfits = 0.00;
                         if (null != month) {
                             realIncomeMap.put(month, realIncome);
                             budgetIncomeMap.put(month, budgetIncome);
@@ -411,17 +412,17 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                             budgetExpensesMap.put(month, budgetExpenses);
                             realProfitsMap.put(month, realProfits);
                             if (month == 1) {
-                                lastYearDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(thisYear - 1, 12, sysUserCompanyIds);
-                                if (null != lastYearDetailis && lastYearDetailis.getRealProfits() != null) {
-                                    lastYearRealProfits = getNum(lastYearDetailis.getRealProfits());
+                                lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(thisYear - 1, 12, sysUserCompanyIds);
+                                if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null) {
+                                    lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits());
                                 }
-                                realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastYearRealProfits), lastYearRealProfits)));
+                                realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastMonthRealProfits), lastMonthRealProfits)));
                             } else {
-                                lastYearDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(thisYear, month - 1, sysUserCompanyIds);
-                                if (null != lastYearDetailis && lastYearDetailis.getRealProfits() != null) {
-                                    lastYearRealProfits = getNum(lastYearDetailis.getRealProfits());
+                                lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(thisYear, month - 1, sysUserCompanyIds);
+                                if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null) {
+                                    lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits());
                                 }
-                                realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastYearRealProfits), lastYearRealProfits)));
+                                realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastMonthRealProfits), lastMonthRealProfits)));
                             }
                         }
                     }
@@ -701,9 +702,10 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 //实际利润环比
                 Map<Integer, Object> realProfitsScaleMap = null;
                 if (null != sysBudgetDetailsList) {
-                    //获取上年12月份数据
-                    SysBudgetDetails lastYearDetailis = null;
-                    Double lastYearRealProfits = 0.00;
+                    //获取环比月份数据
+                    SysBudgetDetails lastMonthDetailis = null;
+                    //上个月利润
+                    Double lastMonthRealProfits = 0.00;
                     realIncomeMap = new HashMap<Integer, Object>();
                     budgetIncomeMap = new HashMap<Integer, Object>();
                     realExpensesTotalMap = new HashMap<Integer, Object>();
@@ -717,8 +719,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                         Double budgetExpenses = getNum(sysBudgetDetailsMonth.getBudgetExpenses());
                         Double realProfits = getNum(sysBudgetDetailsMonth.getRealProfits());
                         Integer month = sysBudgetDetailsMonth.getMonth();
-                        lastYearDetailis = null;
-                        lastYearRealProfits = 0.00;
+                        lastMonthDetailis = null;
+                        lastMonthRealProfits = 0.00;
                         if (null != month) {
                             realIncomeMap.put(month, realIncome);
                             budgetIncomeMap.put(month, budgetIncome);
@@ -726,17 +728,17 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                             budgetExpensesMap.put(month, budgetExpenses);
                             realProfitsMap.put(month, realProfits);
                             if (month == 1) {
-                                lastYearDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(thisYear - 1, 12, null);
-                                if (null != lastYearDetailis && lastYearDetailis.getRealProfits() != null) {
-                                    lastYearRealProfits = getNum(lastYearDetailis.getRealProfits());
+                                lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(thisYear - 1, 12, null);
+                                if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null) {
+                                    lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits());
                                 }
-                                realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastYearRealProfits), lastYearRealProfits)));
+                                realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastMonthRealProfits), lastMonthRealProfits)));
                             } else {
-                                lastYearDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(thisYear, month - 1, null);
-                                if (null != lastYearDetailis && lastYearDetailis.getRealProfits() != null) {
-                                    lastYearRealProfits = getNum(lastYearDetailis.getRealProfits());
+                                lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(thisYear, month - 1, null);
+                                if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null) {
+                                    lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits());
                                 }
-                                realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastYearRealProfits), lastYearRealProfits)));
+                                realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastMonthRealProfits), lastMonthRealProfits)));
                             }
                         }
                     }

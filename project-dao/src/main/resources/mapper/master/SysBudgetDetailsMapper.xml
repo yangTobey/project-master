@@ -38,12 +38,17 @@
         ,budget.create_time,budget.status_code,company.company_name as companyName
         from sys_budget_details as budget left JOIN sys_company as company on budget.company_id=company.company_id
         where 1=1 and budget.status_code!=2 and budget.year = #{year}
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND budget.company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND budget.company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND budget.company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
         order by budget.create_time desc
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
@@ -62,12 +67,18 @@
         select count(budget_id)
         from sys_budget_details
         where 1=1 and status_code!=2 and year = #{year}
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
+
     </select>
 
     <select id="findRecordByYearAndMonth" resultMap="sysBudgetDetails" >
@@ -87,12 +98,17 @@
         <if test="month != null and month!=''">
             and month = #{month}
         </if>
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
     </select>
     <!--（当区域选择一个小区时，调用）-->
    <!-- <select id="sysBudgetAnalysisByCompanyId" resultMap="sysAccountsReceivable" parameterType="map">
@@ -110,12 +126,17 @@
     <select id="sysBudgetDetailsIncomeForMonth" resultMap="sysBudgetDetails" >
         SELECT SUM(budget_income) as budget_income,SUM(real_income) as real_income,SUM(budget_expenses) as budget_expenses,SUM(real_expenses_total) as real_expenses_total,SUM(real_profits) as real_profits,month
         from sys_budget_details where 1=1 and status_code!=2
-        <if test="list != null and list.size>0">
-            AND company_id IN
-            <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
         and year = #{year}
         GROUP BY `month` ORDER BY `month` asc
     </select>
@@ -123,12 +144,17 @@
     <select id="sysBudgetRealProfitsByMonth" resultMap="sysBudgetDetails" >
         SELECT SUM(real_profits) as real_profits,SUM(real_expenses_total) as real_expenses_total,SUM(personnel_cost) as personnel_cost,month
         from sys_budget_details where 1=1 and status_code!=2
-        <if test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
-            AND company_id IN
-            <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-        </if>
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND company_id IN(SELECT company_id from sys_company where status_code!=2)
+            </otherwise>
+        </choose>
         and year = #{year}
         and month = #{month}
     </select>

@@ -40,8 +40,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
     @Resource
     private RedisTemplate redisTemplate;
 
-    Map<String, Object> map = null;
-    Map<String, Object> resultMap = null;
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
