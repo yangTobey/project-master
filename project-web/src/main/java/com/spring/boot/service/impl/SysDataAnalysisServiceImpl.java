@@ -67,6 +67,7 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
                 sysPropertyDataAnalysisEntity.setParkingSpace(sysBasicDataEntity.getParkingSpace());
                 sysPropertyDataAnalysisEntity.setForSaleParkingSpace(sysBasicDataEntity.getForSaleParkingSpace());
                 sysPropertyDataAnalysisEntity.setForSaleHouseScale(sysBasicDataEntity.getForSaleHouseScale());
+                sysPropertyDataAnalysisEntity.setAcceptHouseNumberScale(sysBasicDataEntity.getAcceptHouseNumberScale());
                 sysPropertyDataAnalysisEntity.setDecorateHouseScale(sysBasicDataEntity.getDecorateHouseScale());
                 sysPropertyDataAnalysisEntity.setForSaleParkingSpaceScale(sysBasicDataEntity.getForSaleParkingSpaceScale());
             }

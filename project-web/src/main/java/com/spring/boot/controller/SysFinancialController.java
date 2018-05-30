@@ -224,10 +224,10 @@ public class SysFinancialController {
         Double completeHouse = sysAccountsReceivable.getCompleteCoupon() + sysAccountsReceivable.getCompleteVacancy() + sysAccountsReceivable.getCompleteSubsidy()
                 + sysAccountsReceivable.getCompleteSales() + sysAccountsReceivable.getCompleteOpen() + sysAccountsReceivable.getCompletePropertySubsidy()
                 + sysAccountsReceivable.getCompleteHouseOther();
-        if (!receivableHouse.equals(sysAccountsReceivable.getReceivableHouse())) {
-            return R.error(400, "地产 已 收款总数不对，请联系管理员进行处理！");
-        } else if (!completeHouse.equals(sysAccountsReceivable.getCompleteHouse())) {
-            return R.error(400, "地产 应 收款总数不对，请联系管理员进行处理！");
+        if (!UtilHelper.DecimalFormatForDouble(String.valueOf(receivableHouse)).equals(sysAccountsReceivable.getReceivableHouse())) {
+            return R.error(400, "地产应收款总数不对，请联系管理员进行处理！");
+        } else if (!UtilHelper.DecimalFormatForDouble(String.valueOf(completeHouse)).equals(sysAccountsReceivable.getCompleteHouse())) {
+            return R.error(400, "地产已收款总数不对，请联系管理员进行处理！");
         }
         try {
             Map<String, Object> map = sysFinancialService.addSysAccountsReceivable(sysAccountsReceivable);
@@ -260,10 +260,11 @@ public class SysFinancialController {
         Double completeHouse = sysAccountsReceivable.getCompleteCoupon() + sysAccountsReceivable.getCompleteVacancy() + sysAccountsReceivable.getCompleteSubsidy()
                 + sysAccountsReceivable.getCompleteSales() + sysAccountsReceivable.getCompleteOpen() + sysAccountsReceivable.getCompletePropertySubsidy()
                 + sysAccountsReceivable.getCompleteHouseOther();
-        if (!receivableHouse.equals(sysAccountsReceivable.getReceivableHouse())) {
-            return R.error(400, "地产 已 收款总数不对，请联系管理员进行处理！");
-        } else if (!completeHouse.equals(sysAccountsReceivable.getCompleteHouse())) {
-            return R.error(400, "地产 应 收款总数不对，请联系管理员进行处理！");
+        
+        if (!UtilHelper.DecimalFormatForDouble(String.valueOf(receivableHouse)).equals(sysAccountsReceivable.getReceivableHouse())) {
+            return R.error(400, "地产应收款总数不对，请联系管理员进行处理！");
+        } else if (!UtilHelper.DecimalFormatForDouble(String.valueOf(completeHouse)).equals(sysAccountsReceivable.getCompleteHouse())) {
+            return R.error(400, "地产已收款总数不对，请联系管理员进行处理！");
         }
         try {
             Map<String, Object> map = sysFinancialService.updateSysAccountsReceivable(sysAccountsReceivable);

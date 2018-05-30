@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,6 +190,13 @@ public class SysUserServiceImpl implements SysUserService {
             if (user != null) {
                 return R.error(400, "该账号已存在，不能再次添加！！");
             }
+            //将权限公司的id组合字符串转换为list
+            List<String> permsCompanyList= Arrays.asList(permsCompanyId.split(","));
+            if(permsCompanyList.size()>0){
+                if(!permsCompanyList.contains(String.valueOf(companyId))){
+                    return R.error(400, "必须选择与用户所在公司对应的权限公司！！");
+                }
+            }
             int count = sysUserBusinessService.addUser(sysUser);
             if (count > 0) {
                 SysUserRole sysUserRole = new SysUserRole();
@@ -231,6 +239,13 @@ public class SysUserServiceImpl implements SysUserService {
         map.put("departmentId", departmentId);
         map.put("userName", userName);
         try {
+            //将权限公司的id组合字符串转换为list
+            List<String> permsCompanyList= Arrays.asList(permsCompanyId.split(","));
+            if(permsCompanyList.size()>0){
+                if(!permsCompanyList.contains(String.valueOf(companyId))){
+                    return R.error(400, "必须选择与用户所在公司对应的权限公司！！");
+                }
+            }
             int count = sysUserBusinessService.updateUserInfo(map);
             if (count > 0) {
                 sysUserRoleBusinessService.deleteUserRoleByUserId(userId);

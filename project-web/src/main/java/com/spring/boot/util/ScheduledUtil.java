@@ -18,7 +18,7 @@ public class ScheduledUtil {
      * 定时任务，每一分钟执行一次
      * @return
      */
-    @Scheduled(cron = "0/30 * * * * ?")
+    @Scheduled(cron = "0 0/30 * * * ?")
     public void ScheduledTask(){
         sysContractService.updateSysContractExpire();
     }

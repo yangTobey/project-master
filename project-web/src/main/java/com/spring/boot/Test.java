@@ -5,7 +5,9 @@ import org.apache.shiro.crypto.hash.Hash;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -67,6 +69,12 @@ public class Test {
 
         String mes="asas；；,adad;qeqeq;qeqe;,AAAqe";
         System.out.println(mes.replace(",","").replace(";","").replace("，","").replace("；",""));
+
+        String str="11;2;3";
+        boolean status = str.contains("1;");
+        List<String> list= Arrays.asList(str.split(";"));
+
+        System.out.println(list.contains(String.valueOf(11L)));
 
     }
 }

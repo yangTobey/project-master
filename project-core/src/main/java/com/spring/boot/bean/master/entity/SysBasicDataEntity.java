@@ -11,6 +11,8 @@ import java.sql.Timestamp;
  */
 public class SysBasicDataEntity implements Serializable {
 
+    private static final long serialVersionUID = 7117841154335878387L;
+
     private Long basicId;
     private Long companyId;
     private Integer year;
@@ -31,6 +33,8 @@ public class SysBasicDataEntity implements Serializable {
     private Integer subsidiaryCount;//分公司总数
 
     private Double forSaleHouseScale;//房屋空置率(转化后保留两位小数)
+    //已售房屋数（入住）率(转化后保留两位小数)
+    private Double acceptHouseNumberScale;
     private Double decorateHouseScale;//房屋装修率(转化后保留两位小数)
     private Double forSaleParkingSpaceScale;//车位空置率(转化后保留两位小数)
     private String companyName;
@@ -178,6 +182,14 @@ public class SysBasicDataEntity implements Serializable {
 
     public void setSubsidiaryCount(Integer subsidiaryCount) {
         this.subsidiaryCount = subsidiaryCount;
+    }
+
+    public Double getAcceptHouseNumberScale() {
+        return acceptHouseNumberScale;
+    }
+
+    public void setAcceptHouseNumberScale(Double acceptHouseNumberScale) {
+        this.acceptHouseNumberScale = acceptHouseNumberScale;
     }
 
     public Double getForSaleHouseScale() {

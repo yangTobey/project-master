@@ -81,7 +81,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
             sysQualityManageEntityForYear = sysQualityManageBusinessService.sysQualityManageAnalysisForYear(mapForYear);
             if (sysQualityManageEntityForYear != null) {
                 sysQualityManageEntityForYear.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckPass(), sysQualityManageEntityForYear.getQualityCheck())));
-                sysQualityManageEntityForYear.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckUnmodified(), sysQualityManageEntityForYear.getQualityCheckFail())));
+                sysQualityManageEntityForYear.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber((sysQualityManageEntityForYear.getQualityCheckFail()-sysQualityManageEntityForYear.getQualityCheckUnmodified()), sysQualityManageEntityForYear.getQualityCheckFail())));
             } else {
                 sysQualityManageEntityForYear=new SysQualityManageEntity();
                 //resultMap.put("qualityManageYear", null);
@@ -354,7 +354,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         sysQualityManageEntityForYear = sysQualityManageBusinessService.sysQualityManageAnalysisForYear(mapForYear);
         if (sysQualityManageEntityForYear != null) {
             sysQualityManageEntityForYear.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckPass(), sysQualityManageEntityForYear.getQualityCheck())));
-            sysQualityManageEntityForYear.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForYear.getQualityCheckUnmodified(), sysQualityManageEntityForYear.getQualityCheckFail())));
+            sysQualityManageEntityForYear.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber((sysQualityManageEntityForYear.getQualityCheckFail()-sysQualityManageEntityForYear.getQualityCheckUnmodified()), sysQualityManageEntityForYear.getQualityCheckFail())));
         }else{
             sysQualityManageEntityForYear=new SysQualityManageEntity();
         }

@@ -76,6 +76,8 @@ public class SysPropertyDataAnalysisEntity implements Serializable {
     private Integer forSaleParkingSpace;
     //房屋空置率(转化后保留两位小数)
     private Double forSaleHouseScale;
+    //已售房屋数（入住）率(转化后保留两位小数)
+    private Double acceptHouseNumberScale;
     //房屋装修率(转化后保留两位小数)
     private Double decorateHouseScale;
     //车位空置率(转化后保留两位小数)
@@ -371,6 +373,14 @@ public class SysPropertyDataAnalysisEntity implements Serializable {
 
     public void setForSaleHouseScale(Double forSaleHouseScale) {
         this.forSaleHouseScale = forSaleHouseScale;
+    }
+
+    public Double getAcceptHouseNumberScale() {
+        return acceptHouseNumberScale;
+    }
+
+    public void setAcceptHouseNumberScale(Double acceptHouseNumberScale) {
+        this.acceptHouseNumberScale = acceptHouseNumberScale;
     }
 
     public Double getDecorateHouseScale() {

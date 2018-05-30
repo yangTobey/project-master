@@ -118,6 +118,8 @@ public class SysUserController {
             return R.error(400, "角色id格式不正确！");
         } else if (!UtilHelper.isNumer(departmentId)) {
             return R.error(400, "部门id格式不正确！");
+        }else if (UtilHelper.isEmpty(permsCompanyId)) {
+            return R.error(400, "权限公司不能为空！！");
         }
         Map<String, Object> map = sysUserService.addUser(account, password, Long.valueOf(companyId), Long.valueOf(roleId), Long.valueOf(departmentId), userName, permsCompanyId);
         return R.ok(map);
@@ -164,6 +166,8 @@ public class SysUserController {
             return R.error(400, "角色id格式不正确！");
         } else if (!UtilHelper.isNumer(departmentId)) {
             return R.error(400, "部门id格式不正确！");
+        }else if (UtilHelper.isEmpty(permsCompanyId)) {
+            return R.error(400, "权限公司不能为空！！");
         }
         Map<String, Object> map = sysUserService.updateUserInfo(Long.valueOf(userId), Long.valueOf(companyId), Long.valueOf(roleId), Long.valueOf(departmentId), userName, permsCompanyId);
         return R.ok(map);

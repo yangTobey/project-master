@@ -336,7 +336,14 @@ public class SysContractServiceImpl implements SysContractService {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         //获取用户权限下可操作的小区信息
-        List<Long> sysUserCompanyIds = SysUtil.getSysUserCompany();
+        List<Long> sysUserCompanyIds = null;
+        if (companyId == 0) {
+            //获取用户权限下可操作的小区信息
+            sysUserCompanyIds = SysUtil.getSysUserCompany();
+        } else {
+            sysUserCompanyIds = new ArrayList<Long>();
+            sysUserCompanyIds.add(companyId);
+        }
         /*组装请求参数数据*/
         //status_code为3时，表示即将过期
         map.put("statusCode", 3);
