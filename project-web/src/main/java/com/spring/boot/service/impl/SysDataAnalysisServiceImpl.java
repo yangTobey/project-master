@@ -255,42 +255,42 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
             //执行预算统计信息
             boolean sysBudgetDetailsKey = redisTemplate.hasKey("sysBudgetDetails");
             if (sysBudgetDetailsKey) {
-                SysBudgetDetailsEntity sysBudgetDetailsEntity = (SysBudgetDetailsEntity) redisTemplate.opsForValue().get("sysBudgetDetails");
-                if(sysBudgetDetailsEntity==null){
-                    sysBudgetDetailsEntity=new SysBudgetDetailsEntity();
+                SysBudgetDetails sysBudgetDetails = (SysBudgetDetails) redisTemplate.opsForValue().get("sysBudgetDetails");
+                if(sysBudgetDetails==null){
+                    sysBudgetDetails=new SysBudgetDetails();
                 }
-                SysBudgetDetails sysBudgetDetailsForMonth=sysBudgetDetailsEntity.getSysBudgetDetailsForMonth();
+                /*SysBudgetDetails sysBudgetDetailsForMonth=sysBudgetDetailsEntity.getSysBudgetDetailsForMonth();
                 if(sysBudgetDetailsForMonth==null){
                     sysBudgetDetailsForMonth=new SysBudgetDetails();
                 }
                 SysBudgetDetails sysBudgetDetailsForYear=sysBudgetDetailsEntity.getSysBudgetDetailsForYear();
                 if(sysBudgetDetailsForYear==null){
                     sysBudgetDetailsForYear=new SysBudgetDetails();
-                }
-                //月度信息
-                sysFinancialDataAnalysisEntity.setBudgetIncome(sysBudgetDetailsForMonth.getBudgetIncome());
-                sysFinancialDataAnalysisEntity.setRealIncome(sysBudgetDetailsForMonth.getRealIncome());
-                sysFinancialDataAnalysisEntity.setBudgetProfits(sysBudgetDetailsForMonth.getBudgetProfits());
-                sysFinancialDataAnalysisEntity.setRealProfits(sysBudgetDetailsForMonth.getRealProfits());
+                }*/
+                //注:原需求为月度信息，后改为年度信息
+                sysFinancialDataAnalysisEntity.setBudgetIncome(sysBudgetDetails.getBudgetIncome());
+                sysFinancialDataAnalysisEntity.setRealIncome(sysBudgetDetails.getRealIncome());
+                sysFinancialDataAnalysisEntity.setBudgetProfits(sysBudgetDetails.getBudgetProfits());
+                sysFinancialDataAnalysisEntity.setRealProfits(sysBudgetDetails.getRealProfits());
                 //年度信息
-                sysFinancialDataAnalysisEntity.setBudgetExpenses(sysBudgetDetailsForYear.getBudgetExpenses());
-                sysFinancialDataAnalysisEntity.setPersonnelCost(sysBudgetDetailsForYear.getPersonnelCost());
-                sysFinancialDataAnalysisEntity.setAdministrativeCost(sysBudgetDetailsForYear.getAdministrativeCost());
-                sysFinancialDataAnalysisEntity.setMaterialCost(sysBudgetDetailsForYear.getMaterialCost());
-                sysFinancialDataAnalysisEntity.setEnergyCost(sysBudgetDetailsForYear.getEnergyCost());
-                sysFinancialDataAnalysisEntity.setEquipmentCost(sysBudgetDetailsForYear.getEquipmentCost());
-                sysFinancialDataAnalysisEntity.setCleaningCost(sysBudgetDetailsForYear.getCleaningCost());
-                sysFinancialDataAnalysisEntity.setAfforestCost(sysBudgetDetailsForYear.getAfforestCost());
-                sysFinancialDataAnalysisEntity.setOrderMaintenanceCost(sysBudgetDetailsForYear.getOrderMaintenanceCost());
-                sysFinancialDataAnalysisEntity.setCommunityActivitiesCost(sysBudgetDetailsForYear.getCommunityActivitiesCost());
-                sysFinancialDataAnalysisEntity.setOtherCost(sysBudgetDetailsForYear.getOtherCost());
-                sysFinancialDataAnalysisEntity.setRealExpensesTotal(sysBudgetDetailsForYear.getRealExpensesTotal());
-                sysFinancialDataAnalysisEntity.setBudgetIncomeMap(sysBudgetDetailsForYear.getBudgetIncomeMap());
-                sysFinancialDataAnalysisEntity.setRealIncomeMap(sysBudgetDetailsForYear.getRealIncomeMap());
-                sysFinancialDataAnalysisEntity.setRealExpensesTotalMap(sysBudgetDetailsForYear.getRealExpensesTotalMap());
-                sysFinancialDataAnalysisEntity.setBudgetExpensesMap(sysBudgetDetailsForYear.getBudgetExpensesMap());
-                sysFinancialDataAnalysisEntity.setRealProfitsMap(sysBudgetDetailsForYear.getRealProfitsMap());
-                sysFinancialDataAnalysisEntity.setRealProfitsScaleMap(sysBudgetDetailsForYear.getRealProfitsScaleMap());
+                sysFinancialDataAnalysisEntity.setBudgetExpenses(sysBudgetDetails.getBudgetExpenses());
+                sysFinancialDataAnalysisEntity.setPersonnelCost(sysBudgetDetails.getPersonnelCost());
+                sysFinancialDataAnalysisEntity.setAdministrativeCost(sysBudgetDetails.getAdministrativeCost());
+                sysFinancialDataAnalysisEntity.setMaterialCost(sysBudgetDetails.getMaterialCost());
+                sysFinancialDataAnalysisEntity.setEnergyCost(sysBudgetDetails.getEnergyCost());
+                sysFinancialDataAnalysisEntity.setEquipmentCost(sysBudgetDetails.getEquipmentCost());
+                sysFinancialDataAnalysisEntity.setCleaningCost(sysBudgetDetails.getCleaningCost());
+                sysFinancialDataAnalysisEntity.setAfforestCost(sysBudgetDetails.getAfforestCost());
+                sysFinancialDataAnalysisEntity.setOrderMaintenanceCost(sysBudgetDetails.getOrderMaintenanceCost());
+                sysFinancialDataAnalysisEntity.setCommunityActivitiesCost(sysBudgetDetails.getCommunityActivitiesCost());
+                sysFinancialDataAnalysisEntity.setOtherCost(sysBudgetDetails.getOtherCost());
+                sysFinancialDataAnalysisEntity.setRealExpensesTotal(sysBudgetDetails.getRealExpensesTotal());
+                sysFinancialDataAnalysisEntity.setBudgetIncomeMap(sysBudgetDetails.getBudgetIncomeMap());
+                sysFinancialDataAnalysisEntity.setRealIncomeMap(sysBudgetDetails.getRealIncomeMap());
+                sysFinancialDataAnalysisEntity.setRealExpensesTotalMap(sysBudgetDetails.getRealExpensesTotalMap());
+                sysFinancialDataAnalysisEntity.setBudgetExpensesMap(sysBudgetDetails.getBudgetExpensesMap());
+                sysFinancialDataAnalysisEntity.setRealProfitsMap(sysBudgetDetails.getRealProfitsMap());
+                sysFinancialDataAnalysisEntity.setRealProfitsScaleMap(sysBudgetDetails.getRealProfitsScaleMap());
             }
             map.put("financial",sysFinancialDataAnalysisEntity);
             WebSocket.sendInfo(JsonUtils.obj2JsonString(R.ok().putData(200, map, "获取成功！！")));

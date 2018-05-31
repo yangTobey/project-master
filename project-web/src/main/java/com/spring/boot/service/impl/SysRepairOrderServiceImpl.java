@@ -91,12 +91,12 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
                     if (monthInfo == 1) {
                         repairOrderLastMonth = sysRepairOrderBusinessService.getRepairOrderForLastMonth(year - 1, 12);
                     } else {
-                        repairOrderLastMonth = sysRepairOrderBusinessService.getRepairOrderForLastMonth(year, month - 1);
+                        repairOrderLastMonth = sysRepairOrderBusinessService.getRepairOrderForLastMonth(year, monthInfo - 1);
                     }
                     monthRepairOrderMap.put(monthInfo, repairOrder.getMonthRepairTotal());
                     if (null != repairOrderLastMonth) {
                         //工单环比增长率(月)
-                        monthToMonthRepairOrderMap.put(monthInfo, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(repairOrder.getMonthRepairTotal(), repairOrderLastMonth.getMonthRepairTotal())));
+                        monthToMonthRepairOrderMap.put(monthInfo, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(repairOrder.getMonthRepairTotal()-repairOrderLastMonth.getMonthRepairTotal(), repairOrderLastMonth.getMonthRepairTotal())));
                     }
                     //将每个月的工单数量相加为全年的工单数量，避免数据量大时，单独查询
                     repairTotal += repairOrder.getMonthRepairTotal();

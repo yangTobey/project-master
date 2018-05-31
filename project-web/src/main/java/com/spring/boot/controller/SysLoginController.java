@@ -33,7 +33,7 @@ public class SysLoginController {
      * @param password 密码
      * @return
      */
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public R login(@RequestParam(value = "userAccount", required = false)String userAccount,@RequestParam(value = "password", required = false) String password){
         try{

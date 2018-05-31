@@ -195,12 +195,10 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                     sysQualityManageBusinessService.addSysQualityManageFile(sysQualityManageFile);
                 }
             }
-            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
-            if(updateToRedis){
-                //添加统计信息到redis缓存（包含年度统计信息和月度统计信息）
-               setDataToRedis();
-            }
+
+            //添加统计信息到redis缓存（包含年度统计信息和月度统计信息）
+            setDataToRedis();
+
             return R.ok(200, "新增数据成功！");
         } else {
             return R.error(500, "获取数据失败，服务器异常！");
@@ -231,7 +229,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         if (count > 0) {
             if (!UtilHelper.isEmpty(fileInfo)) {
                 //先删除原有数据库记录
-                sysQualityManageBusinessService.deleteSysQualityManageFileByQualityId(qualityId);
+                //sysQualityManageBusinessService.deleteSysQualityManageFileByQualityId(qualityId);
                 String[] fileInfoArray;
                 //去掉最后那个逗号，在进行获取数据
                 fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
@@ -249,12 +247,10 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                     sysQualityManageBusinessService.addSysQualityManageFile(sysQualityManageFile);
                 }
             }
-            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
-            if(updateToRedis){
-                //添加统计信息到redis缓存（包含年度统计信息和月度统计信息）
-                setDataToRedis();
-            }
+
+            //添加统计信息到redis缓存（包含年度统计信息和月度统计信息）
+            setDataToRedis();
+
             return R.ok(200, "更新数据成功！");
         } else {
             return R.error(500, "更新数据失败，服务器异常！");
@@ -269,15 +265,11 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         map.put("qualityId", qualityId);
         int count = sysQualityManageBusinessService.deleteSysQualityManageById(map);
         if (count > 0) {
-            SysQualityManage sysQualityManage = sysQualityManageBusinessService.findSysQualityManageById(map);
-            if(null!=sysQualityManage){
-                SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-                boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysQualityManage.getYear(),sysQualityManage.getMonth());
-                if(updateToRedis){
-                    //添加统计信息到redis缓存（包含年度统计信息和月度统计信息）
-                    setDataToRedis();
-                }
-            }
+            //SysQualityManage sysQualityManage = sysQualityManageBusinessService.findSysQualityManageById(map);
+
+            //添加统计信息到redis缓存（包含年度统计信息和月度统计信息）
+            setDataToRedis();
+
             return R.ok(200, "删除数据成功！");
         } else {
             return R.error(500, "删除数据失败，服务器异常！");

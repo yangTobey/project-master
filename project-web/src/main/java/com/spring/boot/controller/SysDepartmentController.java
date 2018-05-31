@@ -29,7 +29,7 @@ public class SysDepartmentController {
      * 获取部门列表
      * @return
      */
-    @RequestMapping(value = "/getSysDepartmentInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/getSysDepartmentInfo", method = RequestMethod.POST)
     @ResponseBody
     public R getSysDepartmentInfo(@RequestParam(value = "limit", required = false)String limit,@RequestParam(value = "offset", required = false) String offset){
         if (!UtilHelper.isNumer(limit)) {
@@ -44,7 +44,7 @@ public class SysDepartmentController {
      * 获取系统全部部门
      * @return
      */
-    @RequestMapping(value = "/getAllSysDepartment", method = RequestMethod.GET)
+    @RequestMapping(value = "/getAllSysDepartment", method = RequestMethod.POST)
     @ResponseBody
     public R getAllSysDepartment(){
         Map<String, Object> map=sysDepartmentService.getAllSysDepartment();
@@ -55,7 +55,7 @@ public class SysDepartmentController {
      * 添加部门
      * @return
      */
-    @RequestMapping(value = "/addSysDepartment", method = RequestMethod.GET)
+    @RequestMapping(value = "/addSysDepartment", method = RequestMethod.POST)
     @ResponseBody
     public R addSysDepartment(@RequestParam(value = "departmentName", required = false)String departmentName,@RequestParam(value = "companyId", required = false)String companyId) {
         if (!UtilHelper.isNumer(companyId)) {
@@ -70,7 +70,7 @@ public class SysDepartmentController {
      * 更新部门信息
      * @return
      */
-    @RequestMapping(value = "/updateSysDepartmentInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateSysDepartmentInfo", method = RequestMethod.POST)
     @ResponseBody
     public R updateSysDepartmentInfo(@RequestParam(value = "departmentId", required = false)String departmentId, @RequestParam(value = "departmentName", required = false)String departmentName
             ,@RequestParam(value = "companyId", required = false)String companyId) {
@@ -88,7 +88,7 @@ public class SysDepartmentController {
      * 添加部门
      * @return
      */
-    @RequestMapping(value = "/deleteSysDepartment", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteSysDepartment", method = RequestMethod.POST)
     @ResponseBody
     public R deleteSysDepartment(@RequestParam(value = "departmentId", required = false)String departmentId) {
         if (!UtilHelper.isNumer(departmentId)) {

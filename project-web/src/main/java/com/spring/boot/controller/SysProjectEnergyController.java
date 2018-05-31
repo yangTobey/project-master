@@ -36,7 +36,7 @@ public class SysProjectEnergyController {
      * @param fileInfo
      * @return
      */
-    @RequestMapping(value = "/addSysProjectEnergy", method = RequestMethod.GET)
+    @RequestMapping(value = "/addSysProjectEnergy", method = RequestMethod.POST)
     public R addSysProjectEnergy(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
             , @RequestParam(value = "month", required = false) String month, @RequestParam(value = "projectUnfinishedTotal", required = false) String projectUnfinishedTotal
             , @RequestParam(value = "projectFinishedTotal", required = false) String projectFinishedTotal, @RequestParam(value = "monthConsumptionElectricity", required = false) String monthConsumptionElectricity
@@ -81,7 +81,7 @@ public class SysProjectEnergyController {
      * @param projectId  主键id
      * @return
      */
-    @RequestMapping(value = "/updateSysProjectEnergy", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateSysProjectEnergy", method = RequestMethod.POST)
     public R updateSysProjectEnergy(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
             , @RequestParam(value = "month", required = false) String month, @RequestParam(value = "projectUnfinishedTotal", required = false) String projectUnfinishedTotal
             , @RequestParam(value = "projectFinishedTotal", required = false) String projectFinishedTotal, @RequestParam(value = "monthConsumptionElectricity", required = false) String monthConsumptionElectricity
@@ -120,7 +120,7 @@ public class SysProjectEnergyController {
      * @param projectId
      * @return
      */
-    @RequestMapping(value = "/deleteSysProject", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteSysProject", method = RequestMethod.POST)
     public R deleteSysProject(@RequestParam(value = "projectId", required = false) String projectId) {
         if (!UtilHelper.isNumer(projectId)) {
             return R.error(400, "主键id格式不合理！");
@@ -140,7 +140,7 @@ public class SysProjectEnergyController {
      * @param projectId
      * @return
      */
-    @RequestMapping(value = "/findSysProjectEnergyById", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSysProjectEnergyById", method = RequestMethod.POST)
     public R findSysProjectEnergyById(@RequestParam(value = "projectId", required = false) String projectId) {
         if (!UtilHelper.isNumer(projectId)) {
             return R.error(400, "主键id格式不合理！");
@@ -155,7 +155,7 @@ public class SysProjectEnergyController {
      * @param year
      * @return
      */
-    @RequestMapping(value = "/sysProjectEnergyList", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysProjectEnergyList", method = RequestMethod.POST)
     public R sysProjectEnergyList(@RequestParam(value = "companyId", required = false) String companyId,@RequestParam(value = "year", required = false) String year
     ,@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
         if (!UtilHelper.isNumer(limit)) {
@@ -175,7 +175,7 @@ public class SysProjectEnergyController {
      * @param companyId
      * @return
      */
-    @RequestMapping(value = "/sysProjectEnergyAnalysis", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysProjectEnergyAnalysis", method = RequestMethod.POST)
     public R sysProjectEnergyAnalysis(@RequestParam(value = "companyId", required = false) String companyId) {
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不合理！");
@@ -188,7 +188,7 @@ public class SysProjectEnergyController {
      * @param companyId
      * @return
      */
-    @RequestMapping(value = "/sysProjectEnergyAnalysisForMonth", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysProjectEnergyAnalysisForMonth", method = RequestMethod.POST)
     public R sysProjectEnergyAnalysisForMonth(@RequestParam(value = "companyId", required = false) String companyId) {
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不合理！");
@@ -202,7 +202,7 @@ public class SysProjectEnergyController {
      * @param projectId
      * @return
      */
-    @RequestMapping(value = "/findSysProjectFileById", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSysProjectFileById", method = RequestMethod.POST)
     public R findSysProjectFileById(@RequestParam(value = "projectId", required = false) String projectId) {
         if (!UtilHelper.isNumer(projectId)) {
             return R.error(400, "主键ID格式不正确，请联系系统管理员！");

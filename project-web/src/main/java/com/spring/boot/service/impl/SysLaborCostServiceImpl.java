@@ -74,7 +74,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             sysLaborCostDetails = sysLaborCostBusinessService.getSysLaborCostTotal(map);
             if (null != sysLaborCostDetails) {
                 Double laborCostTotal = sysLaborCostDetails.getLaborCostTotal();
-                sysLaborCostDetails.setAverageLaborCost(UtilHelper.DecimalFormatForDouble(UtilHelper.DecimalFormatDoubleNumber(laborCostTotal, sysLaborCostDetails.getEmployeeTotal())));
+                sysLaborCostDetails.setAverageLaborCost(UtilHelper.DecimalFormatForDouble(UtilHelper.DecimalFormatDoubleNumber(laborCostTotal, sysLaborCostDetails.getPayPeopleTotal())));
                 //(成本构成)获取和计算物业常态、电商、销配每月的人工成本支出占公司人工成本支出的百分比
                 sysLaborCostDepartmentList = sysLaborCostBusinessService.getSysLaborCostDepartmentTotal(map);
                 if (null != sysLaborCostDepartmentList) {
@@ -113,9 +113,9 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
                     personnelCostLastMonth = sysBudgetLastMonth.getPersonnelCost();
                 }
                 //流失率
-                sysLaborCostDetails.setSysDemissionScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getDemissionTotal() - sysLaborCostDetails.getEntryTotal(), sysLaborCostDetails.getEmployeeTotal())));
+                sysLaborCostDetails.setSysDemissionScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getDemissionTotal(),sysLaborCostDetails.getBeginMonthPeople()+sysLaborCostDetails.getEntryTotal()+sysLaborCostDetails.getMonthDeploy())));
                 //缺编率
-                sysLaborCostDetails.setSysEmployeeScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getEmployeeTotal()-sysLaborCostDetails.getHeadcountTotal(), sysLaborCostDetails.getHeadcountTotal())));
+                sysLaborCostDetails.setSysEmployeeScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getHeadcountTotal()-sysLaborCostDetails.getEmployeeTotal(), sysLaborCostDetails.getHeadcountTotal())));
                 if (null != sysBudget) {
                     realExpensesTotal = sysBudget.getRealExpensesTotal();
                     personnelCost = sysBudget.getPersonnelCost();
@@ -165,6 +165,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
         map.put("limit", limit);
         map.put("offset", offset);
         map.put("year", year);
+        //map.put("year", month);
         //resultMap.put("sysLaborCostDetailsList", list);
         try {
             resultMap.put("total", sysLaborCostBusinessService.getSysLaborCostListTotal(map));
@@ -181,7 +182,8 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> addSysLaborCost(Long companyId, Integer year, Integer month, Double propertyLaborCost, Integer propertyHeadcountTotal, Integer propertyEmployeeTotal, Integer propertyEntryTotal, Integer propertyDemissionTotal,
                                                Double eBusinessLaborCost, Integer eBusinessHeadcountTotal, Integer eBusinessEmployeeTotal, Integer eBusinessEntryTotal, Integer eBusinessDemissionTotal,
-                                               Double saleLaborCost, Integer saleHeadcountTotal, Integer saleEmployeeTotal, Integer saleEntryTotal, Integer saleDemissionTotal) {
+                                               Double saleLaborCost, Integer saleHeadcountTotal, Integer saleEmployeeTotal, Integer saleEntryTotal, Integer saleDemissionTotal
+            , Integer propertyPayPeopleTotal, Integer propertyBeginMonthPeople, Integer propertyMonthDeploy, Integer eBusinessPayPeopleTotal, Integer eBusinessBeginMonthPeople, Integer eBusinessMonthDeploy, Integer salePayPeopleTotal, Integer saleBeginMonthPeople, Integer saleMonthDeploy) {
 
         SysLaborCost sysLaborCost = sysLaborCostBusinessService.findRecordByYearAndMonthAndCompanyId(companyId, year, month);
         if (null != sysLaborCost) {
@@ -204,6 +206,9 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             propertySysLaborCostDetails.setHeadcountTotal(propertyHeadcountTotal);
             propertySysLaborCostDetails.setLaborCostId(laborCostId);
             propertySysLaborCostDetails.setLaborCostTotal(propertyLaborCost);
+            propertySysLaborCostDetails.setPayPeopleTotal(propertyPayPeopleTotal);
+            propertySysLaborCostDetails.setBeginMonthPeople(propertyBeginMonthPeople);
+            propertySysLaborCostDetails.setMonthDeploy(propertyMonthDeploy);
             int propertyCount = sysLaborCostBusinessService.addSysLaborCostDetails(propertySysLaborCostDetails);
 
             SysLaborCostDetails eBusinessSysLaborCostDetails = new SysLaborCostDetails();
@@ -214,6 +219,9 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             eBusinessSysLaborCostDetails.setHeadcountTotal(eBusinessHeadcountTotal);
             eBusinessSysLaborCostDetails.setLaborCostId(laborCostId);
             eBusinessSysLaborCostDetails.setLaborCostTotal(eBusinessLaborCost);
+            eBusinessSysLaborCostDetails.setPayPeopleTotal(eBusinessPayPeopleTotal);
+            eBusinessSysLaborCostDetails.setBeginMonthPeople(eBusinessBeginMonthPeople);
+            eBusinessSysLaborCostDetails.setMonthDeploy(eBusinessMonthDeploy);
             int eBusinessCount = sysLaborCostBusinessService.addSysLaborCostDetails(eBusinessSysLaborCostDetails);
 
             SysLaborCostDetails saleSysLaborCostDetails = new SysLaborCostDetails();
@@ -224,14 +232,15 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             saleSysLaborCostDetails.setHeadcountTotal(saleHeadcountTotal);
             saleSysLaborCostDetails.setLaborCostId(laborCostId);
             saleSysLaborCostDetails.setLaborCostTotal(saleLaborCost);
+            saleSysLaborCostDetails.setPayPeopleTotal(salePayPeopleTotal);
+            saleSysLaborCostDetails.setBeginMonthPeople(saleBeginMonthPeople);
+            saleSysLaborCostDetails.setMonthDeploy(saleMonthDeploy);
             sysLaborCostBusinessService.addSysLaborCostDetails(saleSysLaborCostDetails);
 
-            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
-            if(updateToRedis){
-                //将统计信息存储到redis缓存中
-                setDateToRedis();
-            }
+
+            //将统计信息存储到redis缓存中
+            setDateToRedis();
+
             return R.ok(200, "添加人员成本信息成功！！");
         } else {
             return R.error(500, "添加人员成本信息失败，请联系系统管理员！！");
@@ -241,10 +250,11 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> updateSysLaborCostInfo(Long laborCostId, Long companyId, Integer year, Integer month, Double propertyLaborCost, Integer propertyHeadcountTotal, Integer propertyEmployeeTotal,
-                                                      Integer propertyEntryTotal, Integer propertyDemissionTotal, Double eBusinessLaborCost, Integer eBusinessHeadcountTotal, Integer eBusinessEmployeeTotal,
-                                                      Integer eBusinessEntryTotal, Integer eBusinessDemissionTotal, Double saleLaborCost, Integer saleHeadcountTotal, Integer saleEmployeeTotal,
-                                                      Integer saleEntryTotal, Integer saleDemissionTotal) {
+    public Map<String, Object> updateSysLaborCostInfo(Long laborCostId, Long companyId, Integer year, Integer month, Double propertyLaborCost, Integer propertyHeadcountTotal, Integer propertyEmployeeTotal
+            , Integer propertyEntryTotal, Integer propertyDemissionTotal, Double eBusinessLaborCost, Integer eBusinessHeadcountTotal, Integer eBusinessEmployeeTotal
+            , Integer eBusinessEntryTotal, Integer eBusinessDemissionTotal, Double saleLaborCost, Integer saleHeadcountTotal, Integer saleEmployeeTotal
+            , Integer saleEntryTotal, Integer saleDemissionTotal
+            ,Integer propertyPayPeopleTotal, Integer propertyBeginMonthPeople, Integer propertyMonthDeploy, Integer eBusinessPayPeopleTotal, Integer eBusinessBeginMonthPeople, Integer eBusinessMonthDeploy, Integer salePayPeopleTotal, Integer saleBeginMonthPeople, Integer saleMonthDeploy) {
         SysLaborCost sysLaborCost = sysLaborCostBusinessService.findRecordByYearAndMonthAndCompanyId(companyId, year, month);
         if (null != sysLaborCost) {
             if (!laborCostId.equals(sysLaborCost.getLaborCostId())) {
@@ -267,6 +277,9 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             propertySysLaborCostDetails.setHeadcountTotal(propertyHeadcountTotal);
             propertySysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
             propertySysLaborCostDetails.setLaborCostTotal(propertyLaborCost);
+            propertySysLaborCostDetails.setPayPeopleTotal(propertyPayPeopleTotal);
+            propertySysLaborCostDetails.setBeginMonthPeople(propertyBeginMonthPeople);
+            propertySysLaborCostDetails.setMonthDeploy(propertyMonthDeploy);
             int propertyCount = sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(propertySysLaborCostDetails);
 
             SysLaborCostDetails eBusinessSysLaborCostDetails = new SysLaborCostDetails();
@@ -277,6 +290,9 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             eBusinessSysLaborCostDetails.setHeadcountTotal(eBusinessHeadcountTotal);
             eBusinessSysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
             eBusinessSysLaborCostDetails.setLaborCostTotal(eBusinessLaborCost);
+            eBusinessSysLaborCostDetails.setPayPeopleTotal(eBusinessPayPeopleTotal);
+            eBusinessSysLaborCostDetails.setBeginMonthPeople(eBusinessBeginMonthPeople);
+            eBusinessSysLaborCostDetails.setMonthDeploy(eBusinessMonthDeploy);
             int eBusinessCount = sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(eBusinessSysLaborCostDetails);
 
             SysLaborCostDetails saleSysLaborCostDetails = new SysLaborCostDetails();
@@ -287,14 +303,13 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
             saleSysLaborCostDetails.setHeadcountTotal(saleHeadcountTotal);
             saleSysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
             saleSysLaborCostDetails.setLaborCostTotal(saleLaborCost);
+            saleSysLaborCostDetails.setPayPeopleTotal(salePayPeopleTotal);
+            saleSysLaborCostDetails.setBeginMonthPeople(saleBeginMonthPeople);
+            saleSysLaborCostDetails.setMonthDeploy(saleMonthDeploy);
             sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(saleSysLaborCostDetails);
 
-            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
-            if(updateToRedis){
-                //将统计信息存储到redis缓存中
-                setDateToRedis();
-            }
+            //将统计信息存储到redis缓存中
+            setDateToRedis();
 
         } else {
             return R.error(500, "更新失败，系统不存在该记录信息，请联系系统管理员进行处理！！");
@@ -334,12 +349,12 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
         if (count > 0) {
             SysLaborCost sysLaborCost = sysLaborCostBusinessService.findSysLaborCostByLaborCostId(laborCostId);
             if (null != sysLaborCost) {
-                SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-                boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysLaborCost.getYear(),sysLaborCost.getMonth());
-                if(updateToRedis){
-                    //将统计信息存储到redis缓存中
-                    setDateToRedis();
-                }
+                //SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+                //boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysLaborCost.getYear(),sysLaborCost.getMonth());
+
+                //将统计信息存储到redis缓存中
+                setDateToRedis();
+
             }
             return R.ok(200, "删除成功！");
         } else {
@@ -367,7 +382,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
         sysLaborCostDetails = sysLaborCostBusinessService.getSysLaborCostTotal(map);
         if (null != sysLaborCostDetails) {
             Double laborCostTotal = sysLaborCostDetails.getLaborCostTotal();
-            sysLaborCostDetails.setAverageLaborCost(UtilHelper.DecimalFormatForDouble(UtilHelper.DecimalFormatDoubleNumber(laborCostTotal, sysLaborCostDetails.getEmployeeTotal())));
+            sysLaborCostDetails.setAverageLaborCost(UtilHelper.DecimalFormatForDouble(UtilHelper.DecimalFormatDoubleNumber(laborCostTotal, sysLaborCostDetails.getPayPeopleTotal())));
             //(成本构成)获取和计算物业常态、电商、销配每月的人工成本支出占公司人工成本支出的百分比
             sysLaborCostDepartmentList = sysLaborCostBusinessService.getSysLaborCostDepartmentTotal(map);
             if (null != sysLaborCostDepartmentList) {
@@ -407,9 +422,9 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
                 personnelCostLastMonth = sysBudgetLastMonth.getPersonnelCost();
             }
             //流失率
-            sysLaborCostDetails.setSysDemissionScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getDemissionTotal() - sysLaborCostDetails.getEntryTotal(), sysLaborCostDetails.getEmployeeTotal())));
+            sysLaborCostDetails.setSysDemissionScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getDemissionTotal(),sysLaborCostDetails.getBeginMonthPeople()+sysLaborCostDetails.getEntryTotal()+sysLaborCostDetails.getMonthDeploy())));
             //缺编率
-            sysLaborCostDetails.setSysEmployeeScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getEmployeeTotal()-sysLaborCostDetails.getHeadcountTotal() , sysLaborCostDetails.getHeadcountTotal())));
+            sysLaborCostDetails.setSysEmployeeScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysLaborCostDetails.getHeadcountTotal()-sysLaborCostDetails.getEmployeeTotal(), sysLaborCostDetails.getHeadcountTotal())));
             if (null != sysBudget) {
                 realExpensesTotal = sysBudget.getRealExpensesTotal();
                 personnelCost = sysBudget.getPersonnelCost();

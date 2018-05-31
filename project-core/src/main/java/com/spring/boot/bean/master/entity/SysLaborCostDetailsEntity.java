@@ -11,6 +11,7 @@ import java.util.zip.DeflaterOutputStream;
  * Created by Administrator on 2018/3/12.
  */
 public class SysLaborCostDetailsEntity implements Serializable {
+    private static final long serialVersionUID = -8303200830193138974L;
 
     private Long  laborCostId;
     private Integer year;
@@ -27,6 +28,10 @@ public class SysLaborCostDetailsEntity implements Serializable {
     private Double laborCostTotal;
     private Integer departmentType;
     private String companyName;
+
+    private Integer payPeopleTotal;
+    private Integer beginMonthPeople;
+    private Integer monthDeploy;
 
     private Double averageLaborCost;
     //人工支出占比
@@ -219,5 +224,29 @@ public class SysLaborCostDetailsEntity implements Serializable {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public Integer getPayPeopleTotal() {
+        return payPeopleTotal;
+    }
+
+    public void setPayPeopleTotal(Integer payPeopleTotal) {
+        this.payPeopleTotal = payPeopleTotal;
+    }
+
+    public Integer getBeginMonthPeople() {
+        return beginMonthPeople;
+    }
+
+    public void setBeginMonthPeople(Integer beginMonthPeople) {
+        this.beginMonthPeople = beginMonthPeople;
+    }
+
+    public Integer getMonthDeploy() {
+        return monthDeploy;
+    }
+
+    public void setMonthDeploy(Integer monthDeploy) {
+        this.monthDeploy = monthDeploy;
     }
 }

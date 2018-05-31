@@ -24,7 +24,7 @@ public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(value = "/index", method = RequestMethod.POST)
     public String index() {
         System.out.println("hello world!");
         return "views/main/index";
@@ -36,7 +36,7 @@ public class SysUserController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/sysUserInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysUserInfo", method = RequestMethod.POST)
     public R sysUserInfo(@RequestParam(value = "id", required = false) String id) {
 
         Map<String, Object> map = sysUserService.sysUserInfo();
@@ -50,7 +50,7 @@ public class SysUserController {
      * @param newPassword
      * @return
      */
-    @RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
     public R updatePassword(@RequestParam(value = "password", required = false) String password, @RequestParam(value = "newPassword", required = false) String newPassword
             , @RequestParam(value = "comPassword", required = false) String comPassword) {
 
@@ -75,7 +75,7 @@ public class SysUserController {
      * @param userId
      * @return
      */
-    @RequestMapping(value = "/resetSysUserPassword", method = RequestMethod.GET)
+    @RequestMapping(value = "/resetSysUserPassword", method = RequestMethod.POST)
     public R resetSysUserPassword(@RequestParam(value = "userId", required = false) String userId) {
         if (!UtilHelper.isNumer(userId)) {
             return R.error(400, "用户id格式不正确！");
@@ -95,7 +95,7 @@ public class SysUserController {
      * @param permsCompanyId 权限公司id
      * @return
      */
-    @RequestMapping(value = "/addSysUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/addSysUser", method = RequestMethod.POST)
     public R addUser(@RequestParam(value = "account", required = false) String account, @RequestParam(value = "password", required = false) String password
             , @RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "roleId", required = false) String roleId
             , @RequestParam(value = "departmentId", required = false) String departmentId, @RequestParam(value = "userName", required = false) String userName
@@ -133,7 +133,7 @@ public class SysUserController {
      * @param offset
      * @return
      */
-    @RequestMapping(value = "/sysUserList", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysUserList", method = RequestMethod.POST)
     public R sysUserList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
         if (!UtilHelper.isNumer(limit)) {
             return R.error(400, "分页控制，每页条数limit只能为数字！");
@@ -154,7 +154,7 @@ public class SysUserController {
      * @param departmentId
      * @return
      */
-    @RequestMapping(value = "/updateSysUserInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateSysUserInfo", method = RequestMethod.POST)
     public R updateUserInfo(@RequestParam(value = "userId", required = false) String userId, @RequestParam(value = "companyId", required = false) String companyId
             , @RequestParam(value = "roleId", required = false) String roleId, @RequestParam(value = "departmentId", required = false) String departmentId
             , @RequestParam(value = "userName", required = false) String userName, @RequestParam(value = "permsCompanyId", required = false) String permsCompanyId) {
@@ -180,7 +180,7 @@ public class SysUserController {
      * @param userId
      * @return
      */
-    @RequestMapping(value = "/deleteSysUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteSysUser", method = RequestMethod.POST)
     public R deleteUser(@RequestParam(value = "userId", required = false) String userId) {
         if (!UtilHelper.isNumer(userId)) {
             return R.error(400, "用户编号不能为空，请联系系统管理员！");
@@ -196,7 +196,7 @@ public class SysUserController {
      * @param userId
      * @return
      */
-    @RequestMapping(value = "/closeSysUserAccount", method = RequestMethod.GET)
+    @RequestMapping(value = "/closeSysUserAccount", method = RequestMethod.POST)
     public R closeSysUserAccount(@RequestParam(value = "userId", required = false) String userId,@RequestParam(value = "type", required = false) String type) {
         if (!UtilHelper.isNumer(userId)) {
             return R.error(400, "用户编号不能为空，请联系系统管理员！");
@@ -213,7 +213,7 @@ public class SysUserController {
      *
      * @return
      */
-    @RequestMapping(value = "/sysUserCompany", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysUserCompany", method = RequestMethod.POST)
     public R sysUserCompany() {
         Map<String, Object> map = sysUserService.sysUserCompany();
         return R.ok(map);
@@ -224,7 +224,7 @@ public class SysUserController {
      *
      * @return
      */
-    @RequestMapping(value = "/sysUserCompanyAuthority", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysUserCompanyAuthority", method = RequestMethod.POST)
     public R sysUserCompanyAuthority(@RequestParam(value = "userId", required = false) String userId) {
         if (!UtilHelper.isNumer(userId)) {
             return R.error(400, "用户编号不能为空，请联系系统管理员！");
@@ -238,7 +238,7 @@ public class SysUserController {
      *
      * @return
      */
-    @RequestMapping(value = "/getUserRole", method = RequestMethod.GET)
+    @RequestMapping(value = "/getUserRole", method = RequestMethod.POST)
     public R getUserRole() {
         Map<String, Object> map = sysUserService.getUserRole();
         return R.ok(map);

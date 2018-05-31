@@ -27,7 +27,7 @@ public class SysQualityManageController {
      * @param companyId 公司id
      * @return
      */
-    @RequestMapping(value = "/sysQualityManageAnalysis", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysQualityManageAnalysis", method = RequestMethod.POST)
     public R sysQualityManageAnalysisForYear(@RequestParam(value = "companyId", required = false) String companyId) {
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不正确！");
@@ -45,7 +45,7 @@ public class SysQualityManageController {
      * @param offset    页码
      * @return
      */
-    @RequestMapping(value = "/getSysQualityManageList", method = RequestMethod.GET)
+    @RequestMapping(value = "/getSysQualityManageList", method = RequestMethod.POST)
     public R getSysQualityManageList(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
             , @RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
         if (!UtilHelper.isNumer(companyId)) {
@@ -73,7 +73,7 @@ public class SysQualityManageController {
      * @param qualityCheckUnmodified
      * @return
      */
-    @RequestMapping(value = "/addSysQualityManage", method = RequestMethod.GET)
+    @RequestMapping(value = "/addSysQualityManage", method = RequestMethod.POST)
     public R addSysQualityManage(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
             , @RequestParam(value = "month", required = false) String month, @RequestParam(value = "qualityCheck", required = false) String qualityCheck
             , @RequestParam(value = "qualityCheckPass", required = false) String qualityCheckPass
@@ -120,7 +120,7 @@ public class SysQualityManageController {
      * @param qualityCheckUnmodified
      * @return
      */
-    @RequestMapping(value = "/updateSysQualityManage", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateSysQualityManage", method = RequestMethod.POST)
     public R updateSysQualityManage(@RequestParam(value = "qualityId", required = false) String qualityId, @RequestParam(value = "companyId", required = false) String companyId
             , @RequestParam(value = "year", required = false) String year, @RequestParam(value = "month", required = false) String month
             , @RequestParam(value = "qualityCheck", required = false) String qualityCheck, @RequestParam(value = "qualityCheckPass", required = false) String qualityCheckPass
@@ -163,7 +163,7 @@ public class SysQualityManageController {
      * @param qualityId
      * @return
      */
-    @RequestMapping(value = "/deleteSysQualityManageById", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteSysQualityManageById", method = RequestMethod.POST)
     public R deleteSysQualityManageById(@RequestParam(value = "qualityId", required = false) String qualityId) {
         if (!UtilHelper.isNumer(qualityId)) {
             return R.error(400, "质量管理编号格式不正确，请联系系统管理员！");
@@ -184,7 +184,7 @@ public class SysQualityManageController {
      * @param qualityId
      * @return
      */
-    @RequestMapping(value = "/findSysQualityManageById", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSysQualityManageById", method = RequestMethod.POST)
     public R findSysQualityManageById(@RequestParam(value = "qualityId", required = false) String qualityId) {
         if (!UtilHelper.isNumer(qualityId)) {
             return R.error(400, "主键ID格式不正确，请联系系统管理员！");
@@ -199,7 +199,7 @@ public class SysQualityManageController {
      * @param qualityId
      * @return
      */
-    @RequestMapping(value = "/findSysQualityManageFileById", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSysQualityManageFileById", method = RequestMethod.POST)
     public R findSysQualityManageFileById(@RequestParam(value = "qualityId", required = false) String qualityId) {
         if (!UtilHelper.isNumer(qualityId)) {
             return R.error(400, "主键ID格式不正确，请联系系统管理员！");

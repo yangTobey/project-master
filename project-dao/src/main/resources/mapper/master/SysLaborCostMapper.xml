@@ -26,6 +26,9 @@
         <result column="labor_cost_total" property="laborCostTotal"/>
         <result column="department_type" property="departmentType"/>
         <result column="company_name" property="companyName"/>
+        <result column="pay_people_total" property="payPeopleTotal"/>
+        <result column="begin_month_people" property="beginMonthPeople"/>
+        <result column="month_deploy" property="monthDeploy"/>
     </resultMap>
     <resultMap id="sysLaborCostDetails" type="com.spring.boot.bean.master.SysLaborCostDetails">
         <result column="details_id" property="detailsId"/>
@@ -36,6 +39,9 @@
         <result column="labor_cost_total" property="laborCostTotal"/>
         <result column="labor_cost_id" property="laborCostId"/>
         <result column="department_type" property="departmentType"/>
+        <result column="pay_people_total" property="payPeopleTotal"/>
+        <result column="begin_month_people" property="beginMonthPeople"/>
+        <result column="month_deploy" property="monthDeploy"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -69,12 +75,18 @@
     <!--获取 全国分公司 物业、电商、销配当月在职总人数、编制总人数、入职总人数、离职总人数、人工总成本-->
     <select id="getSysLaborCostTotal" resultMap="sysLaborCostDetailsEntity" parameterType="map">
         SELECT SUM(sum.demission_total) as demission_total,SUM(sum.headcount_total)as headcount_total,SUM(sum.employee_total) as employee_total,
-        SUM(sum.entry_total) AS entry_total,SUM(sum.labor_cost_total) AS labor_cost_total
+        SUM(sum.entry_total) AS entry_total,SUM(sum.labor_cost_total) AS labor_cost_total,SUM(sum.pay_people_total) AS pay_people_total,SUM(sum.begin_month_people) AS begin_month_people
+        ,SUM(sum.month_deploy) AS month_deploy
         from (SELECT
         IFNULL(SUM(details.demission_total), 0) AS demission_total,
         IFNULL(SUM(details.headcount_total), 0) AS headcount_total,
         IFNULL(SUM(details.employee_total), 0) AS employee_total,
         IFNULL(SUM(details.entry_total), 0) AS entry_total,
+
+        IFNULL(SUM(details.pay_people_total), 0) AS pay_people_total,
+        IFNULL(SUM(details.begin_month_people), 0) AS begin_month_people,
+        IFNULL(SUM(details.month_deploy), 0) AS month_deploy,
+
         IFNULL(SUM(details.labor_cost_total), 0) AS labor_cost_total FROM sys_labor_cost AS laborCost
         LEFT JOIN sys_labor_cost_details AS details ON laborCost.labor_cost_id = details.labor_cost_id
         LEFT JOIN sys_company as company on company.company_id=laborCost.company_id
@@ -137,6 +149,9 @@
             </otherwise>
         </choose>
         and laborCost.year=#{year}
+        <if test="month != null and month != ''">
+            and laborCost.month=#{month}
+        </if>
         and laborCost.status_code!=2
         GROUP BY  laborCost.labor_cost_id
         order by laborCost.create_time desc
@@ -164,6 +179,9 @@
         </choose>
 
         and laborCost.year=#{year}
+        <if test="month != null and month != ''">
+            and laborCost.month=#{month}
+        </if>
         and laborCost.status_code!=2
         GROUP BY  laborCost.labor_cost_id) as a
     </select>
@@ -192,7 +210,7 @@
     <!--更新人员成本详细信息-->
     <update id="updateSysLaborCostDetailsInfo" parameterType="com.spring.boot.bean.master.SysLaborCostDetails">
         update sys_labor_cost_details set employee_total = #{employeeTotal},headcount_total = #{headcountTotal},entry_total = #{entryTotal},demission_total = #{demissionTotal},
-        labor_cost_total = #{laborCostTotal}
+        labor_cost_total = #{laborCostTotal},pay_people_total = #{payPeopleTotal},begin_month_people = #{beginMonthPeople},month_deploy = #{monthDeploy}
         where labor_cost_id = #{laborCostId} and department_type=#{departmentType}
     </update>
 
@@ -201,8 +219,8 @@
               VALUES   (#{year},#{month},#{companyId},#{createTime})
 	</insert>
     <insert id="addSysLaborCostDetails" parameterType="map">
-        INSERT INTO sys_labor_cost_details (employee_total, headcount_total, entry_total, demission_total,labor_cost_total,department_type,labor_cost_id )
-        VALUES   (#{employeeTotal},#{headcountTotal},#{entryTotal},#{demissionTotal},#{laborCostTotal},#{departmentType},#{laborCostId})
+        INSERT INTO sys_labor_cost_details (employee_total, headcount_total, entry_total, demission_total,labor_cost_total,department_type,labor_cost_id,pay_people_total,begin_month_people,month_deploy )
+        VALUES   (#{employeeTotal},#{headcountTotal},#{entryTotal},#{demissionTotal},#{laborCostTotal},#{departmentType},#{laborCostId},#{payPeopleTotal},#{beginMonthPeople},#{monthDeploy})
     </insert>
     <update id="delete" parameterType="map">
 		update sys_labor_cost set status_code = 2

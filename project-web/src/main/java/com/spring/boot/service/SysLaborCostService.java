@@ -45,7 +45,8 @@ public interface SysLaborCostService {
      */
     Map<String,Object> addSysLaborCost(Long companyId, Integer year, Integer month,Double propertyLaborCost,Integer propertyHeadcountTotal,Integer propertyEmployeeTotal,Integer propertyEntryTotal,Integer propertyDemissionTotal,
                                        Double eBusinessLaborCost,Integer eBusinessHeadcountTotal,Integer eBusinessEmployeeTotal,Integer eBusinessEntryTotal,Integer eBusinessDemissionTotal,
-                                       Double saleLaborCost,Integer saleHeadcountTotal,Integer saleEmployeeTotal,Integer saleEntryTotal,Integer saleDemissionTotal);
+                                       Double saleLaborCost,Integer saleHeadcountTotal,Integer saleEmployeeTotal,Integer saleEntryTotal,Integer saleDemissionTotal
+            , Integer propertyPayPeopleTotal, Integer propertyBeginMonthPeople, Integer propertyMonthDeploy, Integer eBusinessPayPeopleTotal, Integer eBusinessBeginMonthPeople, Integer eBusinessMonthDeploy, Integer salePayPeopleTotal, Integer saleBeginMonthPeople, Integer saleMonthDeploy);
 
     /**
      * 更新人员成本信息
@@ -72,7 +73,8 @@ public interface SysLaborCostService {
      */
     Map<String,Object> updateSysLaborCostInfo(Long laborCostId,Long companyId, Integer year, Integer month,Double propertyLaborCost,Integer propertyHeadcountTotal,Integer propertyEmployeeTotal,Integer propertyEntryTotal,Integer propertyDemissionTotal,
                                               Double eBusinessLaborCost,Integer eBusinessHeadcountTotal,Integer eBusinessEmployeeTotal,Integer eBusinessEntryTotal,Integer eBusinessDemissionTotal,
-                                              Double saleLaborCost,Integer saleHeadcountTotal,Integer saleEmployeeTotal,Integer saleEntryTotal,Integer saleDemissionTotal);
+                                              Double saleLaborCost,Integer saleHeadcountTotal,Integer saleEmployeeTotal,Integer saleEntryTotal,Integer saleDemissionTotal
+            , Integer propertyPayPeopleTotal, Integer propertyBeginMonthPeople, Integer propertyMonthDeploy, Integer eBusinessPayPeopleTotal, Integer eBusinessBeginMonthPeople, Integer eBusinessMonthDeploy, Integer salePayPeopleTotal, Integer saleBeginMonthPeople, Integer saleMonthDeploy);
     /**
      * 删除人员成本信息
      * @param laborCostId 人员成本主表id

@@ -1,11 +1,13 @@
 package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.SysBasicData;
+import com.spring.boot.bean.master.SysUpdateDataRules;
 import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 import com.spring.boot.service.SysBasicDataService;
 import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.web.SysBasicDataBusinessService;
 import com.spring.boot.service.web.SysCompanyBusinessService;
+import com.spring.boot.service.web.SysUpdateDataRulesBusinessService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.SysUtil;
 import com.spring.boot.util.UtilHelper;
@@ -35,6 +37,8 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     private SysCompanyBusinessService sysCompanyBusinessService;
     @Autowired
     private SysDataAnalysisService sysDataAnalysisService;
+    @Autowired
+    private SysUpdateDataRulesBusinessService sysUpdateDataRulesBusinessService;
 
     //字符串
     @Autowired
@@ -148,8 +152,10 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
 
         int count = sysBasicDataBusinessService.addSysBasicData(map);
         if (count > 0) {
-            //将基础信息放进redis缓存(更新本月数据，才将信息存入redis缓存中)
-            if(UtilHelper.getMonth()==month){
+            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
+            if(updateToRedis){
+                //存储统计信息到redis缓存
                 setBasicDataAnalysisDataToRedis();
             }
             return R.ok(200, "新增成功！");
@@ -187,8 +193,10 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
 
         int count = sysBasicDataBusinessService.updateSysBasicData(map);
         if (count > 0) {
-            //将基础信息放进redis缓存(更新本月数据，才将信息存入redis缓存中)
-            if(UtilHelper.getMonth()==month){
+            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
+            if(updateToRedis){
+                //存储统计信息到redis缓存
                 setBasicDataAnalysisDataToRedis();
             }
             return R.ok(200, "更新成功！");
@@ -206,8 +214,10 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         int count = sysBasicDataBusinessService.deleteSysBasicData(map);
         if (count > 0) {
             if (null != sysBasicDataEntity) {
-                //将基础信息放进redis缓存
-                if(UtilHelper.getMonth()==sysBasicDataEntity.getMonth()){
+                SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+                boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysBasicDataEntity.getYear(),sysBasicDataEntity.getMonth());
+                if(updateToRedis){
+                    //存储统计信息到redis缓存
                     setBasicDataAnalysisDataToRedis();
                 }
             }
@@ -240,9 +250,12 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
      */
     public void setBasicDataAnalysisDataToRedis() {
         Map<String, Object> analysisMap = new HashMap<String, Object>();
+        SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+        //获取需要查询的年份和月份
+        Map<String,Integer> yearAndMonthMap=SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
         analysisMap.put("sysUserCompanyIds", null);
-        analysisMap.put("year", UtilHelper.getYear());
-        analysisMap.put("month", UtilHelper.getMonth());
+        analysisMap.put("year", yearAndMonthMap.get("year"));
+        analysisMap.put("month", yearAndMonthMap.get("month"));
         /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
         analysisMap.put("type", 2);
         SysBasicDataEntity sysBasicDataEntity = sysBasicDataBusinessService.sysBasicDataAnalysisData(analysisMap);

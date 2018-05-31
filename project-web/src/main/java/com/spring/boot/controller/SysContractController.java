@@ -33,7 +33,7 @@ public class SysContractController {
      * @param offset 页码
      * @return
      */
-    @RequestMapping(value = "/sysContractTypeList", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysContractTypeList", method = RequestMethod.POST)
     @ResponseBody
     public R sysContractTypeList(@RequestParam(value = "limit", required = false) String limit
             ,@RequestParam(value = "offset", required = false) String offset){
@@ -50,7 +50,7 @@ public class SysContractController {
      * 获取系统全部合同类型
      * @return
      */
-    @RequestMapping(value = "/sysAllContractType", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysAllContractType", method = RequestMethod.POST)
     @ResponseBody
     public R sysAllContractType(){
         Map<String, Object> map=sysContractService.sysAllContractType();
@@ -62,7 +62,7 @@ public class SysContractController {
      * 添加合同分类
      * @return
      */
-    @RequestMapping(value = "/addSysContractType", method = RequestMethod.GET)
+    @RequestMapping(value = "/addSysContractType", method = RequestMethod.POST)
     @ResponseBody
     public R addSysContractType(@RequestParam(value = "contractTypeName", required = false)String contractTypeName,@RequestParam(value = "companyId", required = false)String companyId) {
         if(!UtilHelper.isNumer(companyId)){
@@ -77,7 +77,7 @@ public class SysContractController {
      * 更新合同分类信息
      * @return
      */
-    @RequestMapping(value = "/updateSysContractType", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateSysContractType", method = RequestMethod.POST)
     @ResponseBody
     public R updateSysContractType(@RequestParam(value = "contractTypeId", required = false)String contractTypeId,@RequestParam(value = "contractTypeName", required = false) String contractTypeName) {
         if(!UtilHelper.isNumer(contractTypeId)){
@@ -92,7 +92,7 @@ public class SysContractController {
      * 删除合同分类
      * @return
      */
-    @RequestMapping(value = "/deleteSysContractType", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteSysContractType", method = RequestMethod.POST)
     @ResponseBody
     public R deleteSysContractType(@RequestParam(value = "contractTypeId", required = false)String contractTypeId) {
         if(!UtilHelper.isNumer(contractTypeId)){
@@ -105,7 +105,7 @@ public class SysContractController {
      * 获取合同报表统计数据
      * @return
      */
-    @RequestMapping(value = "/sysContractAnalysisData", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysContractAnalysisData", method = RequestMethod.POST)
     @ResponseBody
     public R sysContractAnalysisData(@RequestParam(value = "companyId", required = false) String companyId) {
         if(!UtilHelper.isNumer(companyId)){
@@ -130,7 +130,7 @@ public class SysContractController {
      * @param companyId
      * @return
      */
-    @RequestMapping(value = "/sysContractDataList", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysContractDataList", method = RequestMethod.POST)
     @ResponseBody
     public R sysContractDataList(@RequestParam(value = "contractName", required = false)String contractName,@RequestParam(value = "contractCode", required = false) String contractCode
             ,@RequestParam(value = "statusCode", required = false) String statusCode,  @RequestParam(value = "contractStartTime", required = false)String contractStartTime,@RequestParam(value = "contractEndTime", required = false)String contractEndTime
@@ -169,7 +169,7 @@ public class SysContractController {
      * 添加合同
      * @return
      */
-    @RequestMapping(value = "/addSysContract", method = RequestMethod.GET)
+    @RequestMapping(value = "/addSysContract", method = RequestMethod.POST)
     @ResponseBody
     public R addSysContract(@RequestParam(value = "contractName", required = false)String contractName,@RequestParam(value = "contractCode", required = false) String contractCode
             ,@RequestParam(value = "contractMoney", required = false) String contractMoney, @RequestParam(value = "contractStartTime", required = false)String contractStartTime
@@ -217,7 +217,7 @@ public class SysContractController {
      * 更新合同
      * @return
      */
-    @RequestMapping(value = "/updateSysContract", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateSysContract", method = RequestMethod.POST)
     @ResponseBody
     public R updateSysContract(@RequestParam(value = "contractId", required = false)String contractId,@RequestParam(value = "contractName", required = false)String contractName
             ,@RequestParam(value = "contractCode", required = false) String contractCode,@RequestParam(value = "contractMoney", required = false) String contractMoney
@@ -267,7 +267,7 @@ public class SysContractController {
      * 删除合同
      * @return
      */
-    @RequestMapping(value = "/deleteSysContract", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteSysContract", method = RequestMethod.POST)
     @ResponseBody
     public R  deleteSysContract(@RequestParam(value = "contractId", required = false)String contractId) {
         if (!UtilHelper.isNumer(contractId)) {
@@ -283,7 +283,7 @@ public class SysContractController {
      * @param contractId
      * @return
      */
-    @RequestMapping(value = "/findSysContractById", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSysContractById", method = RequestMethod.POST)
     @ResponseBody
     public R findSysContractById(@RequestParam(value = "contractId", required = false) String contractId) {
         if (!UtilHelper.isNumer(contractId)) {
@@ -298,7 +298,7 @@ public class SysContractController {
      * @param contractId
      * @return
      */
-    @RequestMapping(value = "/findSysContractFileById", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSysContractFileById", method = RequestMethod.POST)
     @ResponseBody
     public R findSysContractFileById(@RequestParam(value = "contractId", required = false) String contractId) {
         if (!UtilHelper.isNumer(contractId)) {
@@ -313,7 +313,7 @@ public class SysContractController {
      * @param companyId
      * @return
      */
-    @RequestMapping(value = "/getSysContractExpireDataTotal", method = RequestMethod.GET)
+    @RequestMapping(value = "/getSysContractExpireDataTotal", method = RequestMethod.POST)
     @ResponseBody
     public R getSysContractExpireDataTotal(@RequestParam(value = "companyId", required = false) String companyId){
         if (!UtilHelper.isNumer(companyId)) {

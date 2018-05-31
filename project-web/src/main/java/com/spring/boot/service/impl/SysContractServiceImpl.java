@@ -281,7 +281,7 @@ public class SysContractServiceImpl implements SysContractService {
             if (count > 0) {
                 if (!UtilHelper.isEmpty(fileInfo)) {
                     //先删除原有数据库记录
-                    sysContractBusinessService.deleteSysContractFileByContractId(contractId);
+                    //sysContractBusinessService.deleteSysContractFileByContractId(contractId);
                     String[] fileInfoArray;
                     //去掉最后那个逗号，在进行获取数据
                     fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");

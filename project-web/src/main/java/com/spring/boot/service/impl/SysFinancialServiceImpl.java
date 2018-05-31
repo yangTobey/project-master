@@ -297,12 +297,12 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         int count = sysAccountsReceivableBusinessService.addSysAccountsReceivable(sysAccountsReceivable);
         if (count > 0) {
 
-            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysAccountsReceivable.getYear(),sysAccountsReceivable.getMonth());
-            if(updateToRedis){
-                //将信息放进redis缓存
-                setSysAccountsReceivableToRedis();
-            }
+            //SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+            //boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysAccountsReceivable.getYear(),sysAccountsReceivable.getMonth());
+
+            //将信息放进redis缓存
+            setSysAccountsReceivableToRedis();
+
             return R.ok(200, "新增成功！");
         } else {
             return R.error(500, "新增失败，请联系管理员！");
@@ -323,12 +323,10 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         }
         int count = sysAccountsReceivableBusinessService.updateSysAccountsReceivable(sysAccountsReceivable);
         if (count > 0) {
-            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysAccountsReceivable.getYear(),sysAccountsReceivable.getMonth());
-            if(updateToRedis){
-                //将信息放进redis缓存
-                setSysAccountsReceivableToRedis();
-            }
+
+            //将信息放进redis缓存
+            setSysAccountsReceivableToRedis();
+
             return R.ok(200, "更新成功！");
         } else {
             return R.error(500, "更新失败，请联系管理员！");
@@ -341,17 +339,12 @@ public class SysFinancialServiceImpl implements SysFinancialService {
 
         int count = sysAccountsReceivableBusinessService.deleteSysAccountsReceivable(accountsId);
         if (count > 0) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("accountsId", accountsId);
-            SysAccountsReceivable accountsReceivable = sysAccountsReceivableBusinessService.findSysAccountsReceivableById(map);
-            if (null != accountsReceivable) {
-                SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-                boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),accountsReceivable.getYear(),accountsReceivable.getMonth());
-                if(updateToRedis){
-                    //将信息放进redis缓存
-                    setSysAccountsReceivableToRedis();
-                }
-            }
+            //Map<String, Object> map = new HashMap<String, Object>();
+            //map.put("accountsId", accountsId);
+            //SysAccountsReceivable accountsReceivable = sysAccountsReceivableBusinessService.findSysAccountsReceivableById(map);
+            //将信息放进redis缓存
+            setSysAccountsReceivableToRedis();
+
             return R.ok(200, "删除成功！");
         } else {
             return R.error(500, "删除失败，请联系管理员！");
@@ -524,12 +517,9 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         sysBudgetDetails.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
         int count = sysBudgetDetailsBusinessService.addSysBudgetDetails(sysBudgetDetails);
         if (count > 0) {
-            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysBudgetDetails.getYear(),sysBudgetDetails.getMonth());
-            if(updateToRedis){
-                //将信息放进redis缓存
-                setsysBudgetDetailsToRedis();
-            }
+            //将信息放进redis缓存
+            setsysBudgetDetailsToRedis();
+
             return R.ok(200, "新增成功！");
         } else {
             return R.error(500, "新增失败，请联系管理员！");
@@ -550,12 +540,9 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         }
         int count = sysBudgetDetailsBusinessService.updateSysBudgetDetails(sysBudgetDetails);
         if (count > 0) {
-            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysBudgetDetails.getYear(),sysBudgetDetails.getMonth());
-            if(updateToRedis){
-                //将信息放进redis缓存
-                setsysBudgetDetailsToRedis();
-            }
+
+            //将信息放进redis缓存
+            setsysBudgetDetailsToRedis();
 
             return R.ok(200, "更新成功！");
         } else {
@@ -569,17 +556,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
     public Map<String, Object> deleteSysBudgetDetails(Long budgetId) {
         int count = sysBudgetDetailsBusinessService.deleteSysBudgetDetails(budgetId);
         if (count > 0) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("budgetId", budgetId);
-            SysBudgetDetails sysBudgetDetails = sysBudgetDetailsBusinessService.findSysBudgetDetailsById(map);
-            if(null!=sysBudgetDetails){
-                SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-                boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysBudgetDetails.getYear(),sysBudgetDetails.getMonth());
-                if(updateToRedis){
-                    //将信息放进redis缓存
-                    setsysBudgetDetailsToRedis();
-                }
-            }
+            //将信息放进redis缓存
+            setsysBudgetDetailsToRedis();
             return R.ok(200, "删除成功！");
         } else {
             return R.error(500, "删除失败，请联系管理员！");
@@ -606,14 +584,15 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 if (null != sysChargeDetails.getChargeDebtReturn() && null != sysChargeDetails.getChargeDebt()) {
                     sysChargeDetails.setChargeDebtScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysChargeDetails.getChargeDebtReturn(), sysChargeDetails.getChargeDebt())));
                 }
+                //注：原为查找一年12个月的数据，现在修改为查找最近12周的数据
                 List<SysChargeDetails> list = sysChargeBusinessService.sysChargeDetailsForYear(map);
                 //一年当期收缴率（针对大屏数据展示页面）
                  Map<Integer,Double> yearChargeMoneyScale=new HashMap<Integer,Double>();
                 //一年清欠收缴率（针对大屏数据展示页面）
                  Map<Integer,Double> yearChargeDebtScale=new HashMap<Integer,Double>();;
-                for(SysChargeDetails data:list){
-                    yearChargeMoneyScale.put(data.getMonth(),UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(data.getChargeMoneyNow(),data.getChargeMoney())));
-                    yearChargeDebtScale.put(data.getMonth(),UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(data.getChargeDebtReturn(),data.getChargeDebt())));
+                for(int i=0;i<list.size();i++){
+                    yearChargeMoneyScale.put(i+1,UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(list.get(i).getChargeMoneyNow(),list.get(i).getChargeMoney())));
+                    yearChargeDebtScale.put(i+1,UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(list.get(i).getChargeDebtReturn(),list.get(i).getChargeDebt())));
                 }
                 sysChargeDetails.setYearChargeMoneyScale(yearChargeMoneyScale);
                 sysChargeDetails.setYearChargeDebtScale(yearChargeDebtScale);
@@ -653,7 +632,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             //当年数据，也可以封装成map传值
             SysAccountsReceivable sysAccountsReceivable = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(mapForYear);
             //当月数据
-            SysAccountsReceivable sysAccountsReceivableMonth = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(mapForMonth);
+            //SysAccountsReceivable sysAccountsReceivableMonth = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(mapForMonth);
 
             if (null != sysAccountsReceivable) {
                 sysAccountsReceivable.setCouponScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysAccountsReceivable.getCompleteCoupon(), sysAccountsReceivable.getReceivableCoupon())));
@@ -687,12 +666,12 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 }
             }
             //注：因财务统计界面需求，业主应收款、业主已收款、地产应收款、地产已收款为月度信息，需要将这几个字段的数据切换为月度数据
-            if(sysAccountsReceivableMonth!=null){
+           /* if(sysAccountsReceivableMonth!=null){
                 sysAccountsReceivable.setReceivableAccountsOwner(sysAccountsReceivableMonth.getReceivableAccountsOwner());
                 sysAccountsReceivable.setCompleteAccountsOwner(sysAccountsReceivableMonth.getCompleteAccountsOwner());
                 sysAccountsReceivable.setCompleteHouse(sysAccountsReceivableMonth.getCompleteHouse());
                 sysAccountsReceivable.setReceivableHouse(sysAccountsReceivableMonth.getReceivableHouse());
-            }
+            }*/
             sysReceivableAccountsOwnerEntity.setReceivableAccounts(receivableMap);
             sysReceivableAccountsOwnerEntity.setCompleteAccounts(completeMap);
             resultMap.put("sysAccountsReceivable", sysAccountsReceivable);
@@ -730,7 +709,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             //mybatis涉及到in查询的，传参数时，可以一个或者多个，也可以封装成map进行传值
             SysBudgetDetails sysBudgetDetailsForyear = sysBudgetDetailsBusinessService.sysBudgetDetailsAnalysis(mapForYear);
             //mybatis涉及到in查询的，传参数时，可以一个或者多个，也可以封装成map进行传值
-            SysBudgetDetails sysBudgetDetailsForMonth = sysBudgetDetailsBusinessService.sysBudgetDetailsAnalysis(mapForMonth);
+            //注：原需求实际收入、实际利润等为月度数据，后改为年度信息
+            //SysBudgetDetails sysBudgetDetailsForMonth = sysBudgetDetailsBusinessService.sysBudgetDetailsAnalysis(mapForMonth);
             if (null != sysBudgetDetailsForyear) {
                 List<SysBudgetDetails> sysBudgetDetailsList = sysBudgetDetailsBusinessService.sysBudgetDetailsIncomeForMonth(mapForYear);
                 //实际收入
@@ -794,10 +774,10 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 sysBudgetDetailsForyear.setRealProfitsMap(realProfitsMap);
                 sysBudgetDetailsForyear.setRealProfitsScaleMap(realProfitsScaleMap);
             }
-            sysBudgetDetailsEntity.setSysBudgetDetailsForMonth(sysBudgetDetailsForMonth);
-            sysBudgetDetailsEntity.setSysBudgetDetailsForYear(sysBudgetDetailsForyear);
+            //sysBudgetDetailsEntity.setSysBudgetDetailsForMonth(sysBudgetDetailsForMonth);
+            //sysBudgetDetailsEntity.setSysBudgetDetailsForYear(sysBudgetDetailsForyear);
             //存储到redis缓存，为大屏财务数据页面展示提供服务
-            redisTemplate.opsForValue().set("sysBudgetDetails", sysBudgetDetailsEntity);
+            redisTemplate.opsForValue().set("sysBudgetDetails", sysBudgetDetailsForyear);
             //调取财务大屏数据接口
             sysDataAnalysisService.sysFinancialDataAnalysis();
             // return R.ok().putData(200, sysBudgetDetails, "获取成功！");

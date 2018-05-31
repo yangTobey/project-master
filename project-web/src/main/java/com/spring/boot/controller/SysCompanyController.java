@@ -27,7 +27,7 @@ public class SysCompanyController {
      * @param offset 页码
      * @return
      */
-    @RequestMapping(value = "/getSysCompanyList", method = RequestMethod.GET)
+    @RequestMapping(value = "/getSysCompanyList", method = RequestMethod.POST)
     public R getSysCompanyList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
         if (!UtilHelper.isNumer(limit)) {
             return R.error(400, "分页控制，每页条数limit只能为数字！");
@@ -46,7 +46,7 @@ public class SysCompanyController {
      * @param companyAddress
      * @return
      */
-    @RequestMapping(value = "/addSysCompany", method = RequestMethod.GET)
+    @RequestMapping(value = "/addSysCompany", method = RequestMethod.POST)
     public R addSysCompany(@RequestParam(value = "companyName", required = false) String companyName, @RequestParam(value = "companyPhone", required = false) String companyPhone
             , @RequestParam(value = "companyAddress", required = false) String companyAddress) {
         if (UtilHelper.isEmpty(companyName)) {
@@ -65,7 +65,7 @@ public class SysCompanyController {
      * @param companyAddress 公司地址
      * @return
      */
-    @RequestMapping(value = "/updateSysCompanyInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateSysCompanyInfo", method = RequestMethod.POST)
     public R updateSysCompanyInfo(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "companyName", required = false) String companyName
             , @RequestParam(value = "companyPhone", required = false) String companyPhone, @RequestParam(value = "companyAddress", required = false) String companyAddress) {
         logger.info("公司信息更新操作！");
@@ -85,7 +85,7 @@ public class SysCompanyController {
      * @param companyId
      * @return
      */
-    @RequestMapping(value = "/deleteSysCompanyById", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteSysCompanyById", method = RequestMethod.POST)
     public R deleteSysCompanyById(@RequestParam(value = "companyId", required = false) String companyId) {
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司编号格式不正确，请联系系统管理员！");
@@ -100,7 +100,7 @@ public class SysCompanyController {
      * @param companyId
      * @return
      */
-    @RequestMapping(value = "/findSysCompanyByCompanyId", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSysCompanyByCompanyId", method = RequestMethod.POST)
     public R findSysCompanyByCompanyId(@RequestParam(value = "companyId", required = false) String companyId) {
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司编号格式不正确，请联系系统管理员！");
@@ -114,7 +114,7 @@ public class SysCompanyController {
      *
      * @return
      */
-    @RequestMapping(value = "/getAllSysCompany", method = RequestMethod.GET)
+    @RequestMapping(value = "/getAllSysCompany", method = RequestMethod.POST)
     public R getAllSysCompany() {
         Map<String, Object> map = sysCompanyService.getAllSysCompany();
         return R.ok().put(200, map, "获取成功！");

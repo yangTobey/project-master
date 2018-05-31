@@ -26,13 +26,13 @@ public class SysRoleController {
     @Autowired
     private SysRoleService sysRoleService;
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(value = "/index", method = RequestMethod.POST)
     public String index(){
         System.out.println("hello world!");
         return "views/main/index";
     }
 
-    @RequestMapping(value = "/getSysRoleList", method = RequestMethod.GET)
+    @RequestMapping(value = "/getSysRoleList", method = RequestMethod.POST)
     public R getSysRoleList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
         if (!UtilHelper.isNumer(limit)) {
             return R.error(400, "分页控制，每页条数limit只能为数字！");
@@ -43,7 +43,7 @@ public class SysRoleController {
         return R.ok(map);
 
     }
-    @RequestMapping(value = "/getAllSysRole", method = RequestMethod.GET)
+    @RequestMapping(value = "/getAllSysRole", method = RequestMethod.POST)
     public R getAllSysRole() {
         Map<String, Object> map=sysRoleService.getAllSysRole();
         return R.ok(map);
@@ -56,7 +56,7 @@ public class SysRoleController {
      * @param remark
      * @return
      */
-    @RequestMapping(value = "/addSysRole", method = RequestMethod.GET)
+    @RequestMapping(value = "/addSysRole", method = RequestMethod.POST)
     public R addSysRole(@RequestParam(value = "roleName", required = false)String roleName,@RequestParam(value = "moduleIds", required = false) String moduleIds
             ,@RequestParam(value = "remark", required = false)String remark) {
         if(UtilHelper.isEmpty(roleName)){
@@ -72,7 +72,7 @@ public class SysRoleController {
         }
     }
 
-    @RequestMapping(value = "/updateSysRole", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateSysRole", method = RequestMethod.POST)
     public R updateSysRole(@RequestParam(value = "roleId", required = false)String roleId,@RequestParam(value = "roleName", required = false)String roleName
             ,@RequestParam(value = "remark", required = false)String remark,@RequestParam(value = "moduleIds", required = false) String moduleIds) {
         if(!UtilHelper.isNumer(roleId)){
@@ -87,7 +87,7 @@ public class SysRoleController {
             return R.error(500, "更新角色信息失败，服务器异常，请联系系统管理员！");
         }
     }
-    @RequestMapping(value = "/deleteSysRole", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteSysRole", method = RequestMethod.POST)
     public R  deleteSysRole(@RequestParam(value = "roleId", required = false)String roleId) {
         if(!UtilHelper.isNumer(roleId)){
             return R.error(400, "角色编号格式不正确，请联系系统管理员！");

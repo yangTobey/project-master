@@ -26,7 +26,7 @@ public class SysDataAnalysisController {
      *
      * @return
      */
-    @RequestMapping(value = "/sysPropertyDataAnalysis", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysPropertyDataAnalysis", method = RequestMethod.POST)
     public R sysPropertyDataAnalysis() {
         Map<String, Object> map = sysDataAnalysisService.sysPropertyDataAnalysis();
         return R.ok().put(200, map, "获取成功！");
@@ -37,7 +37,7 @@ public class SysDataAnalysisController {
      *
      * @return
      */
-    @RequestMapping(value = "/sysFinancialDataAnalysis", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysFinancialDataAnalysis", method = RequestMethod.POST)
     public R sysFinancialDataAnalysis() {
         Map<String, Object> map = sysDataAnalysisService.sysFinancialDataAnalysis();
         return R.ok().put(200, map, "获取成功！");
@@ -48,7 +48,7 @@ public class SysDataAnalysisController {
      *
      * @return
      */
-    @RequestMapping(value = "/sysRepairOrder", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysRepairOrder", method = RequestMethod.POST)
     public R sysRepairOrder() {
         Map<String, Object> map = sysDataAnalysisService.sysRepairOrder();
         return R.ok().put(200, map, "获取成功！");

@@ -31,7 +31,7 @@ public class SysBasicDataController {
      * @param month     月份
      * @return
      */
-    @RequestMapping(value = "/sysBasicDataAnalysisData", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysBasicDataAnalysisData", method = RequestMethod.POST)
     public R sysBasicDataAnalysisData(@RequestParam(value = "companyId", required = false) String companyId,
                                       @RequestParam(value = "year", required = false) String year,
                                       @RequestParam(value = "month", required = false) String month) {
@@ -53,7 +53,7 @@ public class SysBasicDataController {
      * @param offset 页码
      * @return
      */
-    @RequestMapping(value = "/sysBasicDataAnalysisList", method = RequestMethod.GET)
+    @RequestMapping(value = "/sysBasicDataAnalysisList", method = RequestMethod.POST)
     public R sysBasicDataAnalysisList(@RequestParam(value = "companyId", required = false) String companyId,
             @RequestParam(value = "limit", required = false) String limit,
             @RequestParam(value = "offset", required = false) String offset,
@@ -90,7 +90,7 @@ public class SysBasicDataController {
      * @param companyId           公司id
      * @return
      */
-    @RequestMapping(value = "/addSysBasicData", method = RequestMethod.GET)
+    @RequestMapping(value = "/addSysBasicData", method = RequestMethod.POST)
     public R addSysBasicData(@RequestParam(value = "year", required = false) String year, @RequestParam(value = "month", required = false) String month
             , @RequestParam(value = "constructionArea", required = false) String constructionArea, @RequestParam(value = "chargeArea", required = false) String chargeArea
             , @RequestParam(value = "cityNumber", required = false) String cityNumber, @RequestParam(value = "projectNumber", required = false) String projectNumber
@@ -161,7 +161,7 @@ public class SysBasicDataController {
      * @param companyId           公司id
      * @return
      */
-    @RequestMapping(value = "/updateSysBasicData", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateSysBasicData", method = RequestMethod.POST)
     public R updateSysBasicData(@RequestParam(value = "basicId", required = false) String basicId, @RequestParam(value = "year", required = false) String year, @RequestParam(value = "month", required = false) String month
             , @RequestParam(value = "constructionArea", required = false) String constructionArea, @RequestParam(value = "chargeArea", required = false) String chargeArea
             , @RequestParam(value = "cityNumber", required = false) String cityNumber, @RequestParam(value = "projectNumber", required = false) String projectNumber
@@ -219,7 +219,7 @@ public class SysBasicDataController {
      * @param basicId 主键id
      * @return
      */
-    @RequestMapping(value = "/deleteSysBasicData", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteSysBasicData", method = RequestMethod.POST)
     public R deleteSysBasicData(@RequestParam(value = "basicId", required = false) String basicId) {
         if (UtilHelper.isEmpty(basicId)) {
             return R.error(400, "基础信息id编号不能为空，请联系系统管理员！");
@@ -239,7 +239,7 @@ public class SysBasicDataController {
      * @param basicId 主键id
      * @return
      */
-    @RequestMapping(value = "/findSysBasicDataById", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSysBasicDataById", method = RequestMethod.POST)
     public R findSysBasicDataById(@RequestParam(value = "basicId", required = false) String basicId) {
         if (UtilHelper.isEmpty(basicId)) {
             return R.error(400, "基础信息id编号不能为空，请联系系统管理员！");

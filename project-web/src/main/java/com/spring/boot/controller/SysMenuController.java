@@ -29,7 +29,7 @@ public class SysMenuController {
      *
      * @return
      */
-    @RequestMapping(value = "/getSysMenu", method = RequestMethod.GET)
+    @RequestMapping(value = "/getSysMenu", method = RequestMethod.POST)
     public R getSysMenu() {
         Map<String, Object> map = sysMenuService.getSysMenu();
         return R.ok(map);
@@ -41,7 +41,7 @@ public class SysMenuController {
      * @param menuType 新增菜单类型（0：目录，1：菜单，2：按钮）
      * @return
      */
-    @RequestMapping(value = "/queryCatalogAndMenu", method = RequestMethod.GET)
+    @RequestMapping(value = "/queryCatalogAndMenu", method = RequestMethod.POST)
     public R queryCatalogAndMenu(@RequestParam(value = "menuType", required = false) String menuType) {
         if (UtilHelper.isEmpty(menuType)) {
             return R.error(400, "操作类型不能为空！！");
@@ -55,7 +55,7 @@ public class SysMenuController {
      *
      * @return
      */
-    @RequestMapping(value = "/getSysModule", method = RequestMethod.GET)
+    @RequestMapping(value = "/getSysModule", method = RequestMethod.POST)
     public R getSysModule(@RequestParam(value = "type", required = false) String type, @RequestParam(value = "roleId", required = false) String roleId) {
         if (UtilHelper.isEmpty(type)) {
             return R.error(400, "操作类型不能为空！！");
@@ -80,7 +80,7 @@ public class SysMenuController {
      * @param offset 页码
      * @return
      */
-    @RequestMapping(value = "/getSysMenuList", method = RequestMethod.GET)
+    @RequestMapping(value = "/getSysMenuList", method = RequestMethod.POST)
     public R getSysMenuList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset
             , @RequestParam(value = "menuName", required = false) String menuName, @RequestParam(value = "menuUrl", required = false) String menuUrl) {
         if (!UtilHelper.isNumer(limit)) {
@@ -106,7 +106,7 @@ public class SysMenuController {
      * @param remark    备注信息
      * @return
      */
-    @RequestMapping(value = "/addSysMenu", method = RequestMethod.GET)
+    @RequestMapping(value = "/addSysMenu", method = RequestMethod.POST)
     public R addSysCompany(@RequestParam(value = "menuName", required = false) String menuName, @RequestParam(value = "menuUrl", required = false) String menuUrl
             , @RequestParam(value = "menuPerms", required = false) String menuPerms, @RequestParam(value = "icon", required = false) String icon
             , @RequestParam(value = "parentId", required = false) String parentId, @RequestParam(value = "sort", required = false) String sort
@@ -128,7 +128,7 @@ public class SysMenuController {
      * @param menuId    菜单id
      * @return
      */
-    @RequestMapping(value = "/updateSysMenu", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateSysMenu", method = RequestMethod.POST)
     public R updateSysMenu(@RequestParam(value = "menuName", required = false) String menuName, @RequestParam(value = "menuUrl", required = false) String menuUrl
             , @RequestParam(value = "menuPerms", required = false) String menuPerms, @RequestParam(value = "icon", required = false) String icon
             , @RequestParam(value = "parentId", required = false) String parentId, @RequestParam(value = "sort", required = false) String sort
@@ -148,7 +148,7 @@ public class SysMenuController {
      * @param menuId
      * @return
      */
-    @RequestMapping(value = "/deleteSysMenuById", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteSysMenuById", method = RequestMethod.POST)
     public R deleteSysMenuById(@RequestParam(value = "menuId", required = false) String menuId) {
         if (!UtilHelper.isNumer(menuId)) {
             return R.error(400, "菜单编号格式不正确，请联系系统管理员！");
@@ -163,7 +163,7 @@ public class SysMenuController {
      * @param menuId
      * @return
      */
-    @RequestMapping(value = "/findSysMenuById", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSysMenuById", method = RequestMethod.POST)
     public R findSysMenuById(@RequestParam(value = "menuId", required = false) String menuId) {
         if (!UtilHelper.isNumer(menuId)) {
             return R.error(400, "菜单编号格式不正确，请联系系统管理员！");

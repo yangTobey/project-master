@@ -13,6 +13,10 @@ public class SysLaborCostDetails {
     private Long laborCostId;
     private Integer departmentType;
 
+    private Integer payPeopleTotal;
+    private Integer beginMonthPeople;
+    private Integer monthDeploy;
+
     public Long getDetailsId() {
         return detailsId;
     }
@@ -75,5 +79,29 @@ public class SysLaborCostDetails {
 
     public void setDepartmentType(Integer departmentType) {
         this.departmentType = departmentType;
+    }
+
+    public Integer getPayPeopleTotal() {
+        return payPeopleTotal;
+    }
+
+    public void setPayPeopleTotal(Integer payPeopleTotal) {
+        this.payPeopleTotal = payPeopleTotal;
+    }
+
+    public Integer getBeginMonthPeople() {
+        return beginMonthPeople;
+    }
+
+    public void setBeginMonthPeople(Integer beginMonthPeople) {
+        this.beginMonthPeople = beginMonthPeople;
+    }
+
+    public Integer getMonthDeploy() {
+        return monthDeploy;
+    }
+
+    public void setMonthDeploy(Integer monthDeploy) {
+        this.monthDeploy = monthDeploy;
     }
 }

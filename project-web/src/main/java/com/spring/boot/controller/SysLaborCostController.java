@@ -29,7 +29,7 @@ public class SysLaborCostController {
      * @param companyId 公司id
      * @return
      */
-    @RequestMapping(value = "/getSysLaborCostAnalysis", method = RequestMethod.GET)
+    @RequestMapping(value = "/getSysLaborCostAnalysis", method = RequestMethod.POST)
     public R getSysLaborCostAnalysis(@RequestParam(value = "companyId", required = false) String companyId) {
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不合理！");
@@ -45,9 +45,10 @@ public class SysLaborCostController {
      * @param year      年份
      * @return
      */
-    @RequestMapping(value = "/getSysLaborCostList", method = RequestMethod.GET)
+    @RequestMapping(value = "/getSysLaborCostList", method = RequestMethod.POST)
     public R getSysLaborCostList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset,
-                                 @RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year) {
+                                 @RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
+            , @RequestParam(value = "month", required = false) String month) {
         if (!UtilHelper.isNumer(limit)) {
             return R.error(400, "分页控制，每页条数limit只能为数字！");
         } else if (!UtilHelper.isNumer(offset)) {
@@ -56,6 +57,12 @@ public class SysLaborCostController {
             return R.error(400, "年份格式不合理！");
         } else if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不合理！");
+        }
+
+        if (!UtilHelper.isEmpty(month)) {
+            if(!UtilHelper.isNumer(month)){
+                return R.error(400, "月份格式不合理！");
+            }
         }
         Map<String, Object> map = sysLaborCostService.getSysLaborCostList(Integer.valueOf(limit), Integer.valueOf(offset), Long.valueOf(companyId), Integer.valueOf(year));
         return R.ok(map);
@@ -84,7 +91,7 @@ public class SysLaborCostController {
      * @param saleDemissionTotal      销配月离职人数
      * @return
      */
-    @RequestMapping(value = "/addSysLaborCost", method = RequestMethod.GET)
+    @RequestMapping(value = "/addSysLaborCost", method = RequestMethod.POST)
     public R addSysLaborCost(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
             , @RequestParam(value = "month", required = false) String month, @RequestParam(value = "propertyLaborCost", required = false) String propertyLaborCost
             , @RequestParam(value = "propertyHeadcountTotal", required = false) String propertyHeadcountTotal, @RequestParam(value = "propertyEmployeeTotal", required = false) String propertyEmployeeTotal
@@ -93,7 +100,14 @@ public class SysLaborCostController {
             , @RequestParam(value = "eBusinessEmployeeTotal", required = false) String eBusinessEmployeeTotal, @RequestParam(value = "eBusinessEntryTotal", required = false) String eBusinessEntryTotal
             , @RequestParam(value = "eBusinessDemissionTotal", required = false) String eBusinessDemissionTotal, @RequestParam(value = "saleLaborCost", required = false) String saleLaborCost
             , @RequestParam(value = "saleHeadcountTotal", required = false) String saleHeadcountTotal, @RequestParam(value = "saleEmployeeTotal", required = false) String saleEmployeeTotal
-            , @RequestParam(value = "saleEntryTotal", required = false) String saleEntryTotal, @RequestParam(value = "saleDemissionTotal", required = false) String saleDemissionTotal) {
+            , @RequestParam(value = "saleEntryTotal", required = false) String saleEntryTotal, @RequestParam(value = "saleDemissionTotal", required = false) String saleDemissionTotal
+
+            , @RequestParam(value = "propertyPayPeopleTotal", required = false) String propertyPayPeopleTotal, @RequestParam(value = "propertyBeginMonthPeople", required = false) String propertyBeginMonthPeople
+            , @RequestParam(value = "propertyMonthDeploy", required = false) String propertyMonthDeploy
+            , @RequestParam(value = "eBusinessPayPeopleTotal", required = false) String eBusinessPayPeopleTotal, @RequestParam(value = "eBusinessBeginMonthPeople", required = false) String eBusinessBeginMonthPeople
+            , @RequestParam(value = "eBusinessMonthDeploy", required = false) String eBusinessMonthDeploy
+            , @RequestParam(value = "salePayPeopleTotal", required = false) String salePayPeopleTotal, @RequestParam(value = "saleBeginMonthPeople", required = false) String saleBeginMonthPeople
+            , @RequestParam(value = "saleMonthDeploy", required = false) String saleMonthDeploy) {
         if (!UtilHelper.isNumer(companyId)) {
             return R.error(400, "公司id格式不合理！");
         } else if (!UtilHelper.isNumer(year)) {
@@ -110,13 +124,21 @@ public class SysLaborCostController {
             return R.error(400, "物业月入职人数格式不正确！");
         } else if (!UtilHelper.isNumer(propertyDemissionTotal)) {
             return R.error(400, "物业月离职人数格式不正确！");
+        }else if (!UtilHelper.isNumer(propertyPayPeopleTotal)) {
+            return R.error(400, "物业月发薪人数格式不正确！");
+        }else if (!UtilHelper.isNumer(propertyBeginMonthPeople)) {
+            return R.error(400, "物业月期初人数格式不正确！");
+        }else if (!UtilHelper.isNumer(propertyMonthDeploy)) {
+            return R.error(400, "物业月调入人数格式不正确！");
         }
 
         try {
             Map<String, Object> map = sysLaborCostService.addSysLaborCost(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(propertyLaborCost), Integer.valueOf(propertyHeadcountTotal)
                     , Integer.valueOf(propertyEmployeeTotal), Integer.valueOf(propertyEntryTotal), Integer.valueOf(propertyDemissionTotal),
                     UtilHelper.toDoubleNum(eBusinessLaborCost), UtilHelper.toIntegerNum(eBusinessHeadcountTotal), UtilHelper.toIntegerNum(eBusinessEmployeeTotal), UtilHelper.toIntegerNum(eBusinessEntryTotal), UtilHelper.toIntegerNum(eBusinessDemissionTotal),
-                    UtilHelper.toDoubleNum(saleLaborCost), UtilHelper.toIntegerNum(saleHeadcountTotal), UtilHelper.toIntegerNum(saleEmployeeTotal), UtilHelper.toIntegerNum(saleEntryTotal), UtilHelper.toIntegerNum(saleDemissionTotal));
+                    UtilHelper.toDoubleNum(saleLaborCost), UtilHelper.toIntegerNum(saleHeadcountTotal), UtilHelper.toIntegerNum(saleEmployeeTotal), UtilHelper.toIntegerNum(saleEntryTotal), UtilHelper.toIntegerNum(saleDemissionTotal)
+            , Integer.valueOf(propertyPayPeopleTotal) , Integer.valueOf(propertyBeginMonthPeople) , Integer.valueOf(propertyMonthDeploy), UtilHelper.toIntegerNum(eBusinessPayPeopleTotal) , UtilHelper.toIntegerNum(eBusinessBeginMonthPeople) , UtilHelper.toIntegerNum(eBusinessMonthDeploy)
+                    , UtilHelper.toIntegerNum(salePayPeopleTotal) , UtilHelper.toIntegerNum(saleBeginMonthPeople) , UtilHelper.toIntegerNum(saleMonthDeploy));
             return R.ok(map);
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,7 +171,7 @@ public class SysLaborCostController {
      * @param saleDemissionTotal      销配月离职人数
      * @return
      */
-    @RequestMapping(value = "/updateSysLaborCost", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateSysLaborCost", method = RequestMethod.POST)
     public R updateSysLaborCost(@RequestParam(value = "laborCostId", required = false) String laborCostId, @RequestParam(value = "companyId", required = false) String companyId
             , @RequestParam(value = "year", required = false) String year, @RequestParam(value = "month", required = false) String month
             , @RequestParam(value = "propertyLaborCost", required = false) String propertyLaborCost, @RequestParam(value = "propertyHeadcountTotal", required = false) String propertyHeadcountTotal
@@ -159,7 +181,13 @@ public class SysLaborCostController {
             , @RequestParam(value = "eBusinessEntryTotal", required = false) String eBusinessEntryTotal, @RequestParam(value = "eBusinessDemissionTotal", required = false) String eBusinessDemissionTotal
             , @RequestParam(value = "saleLaborCost", required = false) String saleLaborCost, @RequestParam(value = "saleHeadcountTotal", required = false) String saleHeadcountTotal
             , @RequestParam(value = "saleEmployeeTotal", required = false) String saleEmployeeTotal, @RequestParam(value = "saleEntryTotal", required = false) String saleEntryTotal
-            , @RequestParam(value = "saleDemissionTotal", required = false) String saleDemissionTotal) {
+            , @RequestParam(value = "saleDemissionTotal", required = false) String saleDemissionTotal
+            , @RequestParam(value = "propertyPayPeopleTotal", required = false) String propertyPayPeopleTotal, @RequestParam(value = "propertyBeginMonthPeople", required = false) String propertyBeginMonthPeople
+            , @RequestParam(value = "propertyMonthDeploy", required = false) String propertyMonthDeploy
+            , @RequestParam(value = "eBusinessPayPeopleTotal", required = false) String eBusinessPayPeopleTotal, @RequestParam(value = "eBusinessBeginMonthPeople", required = false) String eBusinessBeginMonthPeople
+            , @RequestParam(value = "eBusinessMonthDeploy", required = false) String eBusinessMonthDeploy
+            , @RequestParam(value = "salePayPeopleTotal", required = false) String salePayPeopleTotal, @RequestParam(value = "saleBeginMonthPeople", required = false) String saleBeginMonthPeople
+            , @RequestParam(value = "saleMonthDeploy", required = false) String saleMonthDeploy) {
         if (UtilHelper.isEmpty(laborCostId)) {
             return R.error(400, "人员成本id不能为空，请联系系统管理员进行修改！");
         } else if (!UtilHelper.isNumer(companyId)) {
@@ -178,11 +206,19 @@ public class SysLaborCostController {
             return R.error(400, "物业月入职人数格式不正确！");
         } else if (!UtilHelper.isNumer(propertyDemissionTotal)) {
             return R.error(400, "物业月离职人数格式不正确！");
+        }else if (!UtilHelper.isNumer(propertyPayPeopleTotal)) {
+            return R.error(400, "物业月发薪人数格式不正确！");
+        }else if (!UtilHelper.isNumer(propertyBeginMonthPeople)) {
+            return R.error(400, "物业月期初人数格式不正确！");
+        }else if (!UtilHelper.isNumer(propertyMonthDeploy)) {
+            return R.error(400, "物业月调入人数格式不正确！");
         }
         try {
             Map<String, Object> map = sysLaborCostService.updateSysLaborCostInfo(Long.valueOf(laborCostId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(propertyLaborCost), Integer.valueOf(propertyHeadcountTotal), Integer.valueOf(propertyEmployeeTotal), Integer.valueOf(propertyEntryTotal), Integer.valueOf(propertyDemissionTotal),
                     UtilHelper.toDoubleNum(eBusinessLaborCost), UtilHelper.toIntegerNum(eBusinessHeadcountTotal), UtilHelper.toIntegerNum(eBusinessEmployeeTotal), UtilHelper.toIntegerNum(eBusinessEntryTotal), UtilHelper.toIntegerNum(eBusinessDemissionTotal),
-                    UtilHelper.toDoubleNum(saleLaborCost), UtilHelper.toIntegerNum(saleHeadcountTotal), UtilHelper.toIntegerNum(saleEmployeeTotal), UtilHelper.toIntegerNum(saleEntryTotal), UtilHelper.toIntegerNum(saleDemissionTotal));
+                    UtilHelper.toDoubleNum(saleLaborCost), UtilHelper.toIntegerNum(saleHeadcountTotal), UtilHelper.toIntegerNum(saleEmployeeTotal), UtilHelper.toIntegerNum(saleEntryTotal), UtilHelper.toIntegerNum(saleDemissionTotal)
+                    , Integer.valueOf(propertyPayPeopleTotal) , Integer.valueOf(propertyBeginMonthPeople) , Integer.valueOf(propertyMonthDeploy), UtilHelper.toIntegerNum(eBusinessPayPeopleTotal) , UtilHelper.toIntegerNum(eBusinessBeginMonthPeople) , UtilHelper.toIntegerNum(eBusinessMonthDeploy)
+                    , UtilHelper.toIntegerNum(salePayPeopleTotal) , UtilHelper.toIntegerNum(saleBeginMonthPeople) , UtilHelper.toIntegerNum(saleMonthDeploy));
             return R.ok(map);
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,7 +233,7 @@ public class SysLaborCostController {
      * @param laborCostId
      * @return
      */
-    @RequestMapping(value = "/findSysLaborCostById", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSysLaborCostById", method = RequestMethod.POST)
     public R findSysLaborCostById(@RequestParam(value = "laborCostId", required = false) String laborCostId) {
         if (!UtilHelper.isNumer(laborCostId)) {
             return R.error(400, "人员成本id编号不能为空，请联系系统管理员！");
@@ -213,7 +249,7 @@ public class SysLaborCostController {
      * @param laborCostId
      * @return
      */
-    @RequestMapping(value = "/deleteSysLaborCost", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteSysLaborCost", method = RequestMethod.POST)
     public R deleteSysLaborCost(@RequestParam(value = "laborCostId", required = false) String laborCostId) {
         if (!UtilHelper.isNumer(laborCostId)) {
             return R.error(400, "人员成本id编号不能为空，请联系系统管理员！");

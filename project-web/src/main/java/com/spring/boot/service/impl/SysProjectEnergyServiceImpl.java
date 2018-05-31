@@ -91,12 +91,10 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                         sysProjectBusinessService.addSysProjectEnergyFile(sysProjectEnergyFile);
                     }
                 }
-                SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-                boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
-                if(updateToRedis){
-                    //存储统计信息到redis缓存
-                    setDataToRedis();
-                }
+
+                //存储统计信息到redis缓存
+                setDataToRedis();
+
                 return R.ok(200, "添加信息成功！！");
             }
         }
@@ -144,12 +142,10 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                 sysProjectBusinessService.addSysProjectEnergyFile(sysProjectEnergyFile);
             }
         }
-        SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-        boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
-        if(updateToRedis){
-            //存储统计信息到redis缓存
-            setDataToRedis();
-        }
+
+        //存储统计信息到redis缓存
+        setDataToRedis();
+
         return R.ok(200, "更新成功！！");
 
     }
@@ -159,15 +155,14 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
     public Map<String, Object> deleteSysProject(Long projectId) {
         int count = sysProjectBusinessService.deleteSysProject(projectId);
         if (count > 0) {
-            SysProject sysProject = sysProjectBusinessService.findSysProjectEnergyById(projectId);
-            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-            if(null!=sysUpdateDataRules){
-                boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysProject.getYear(),sysProject.getMonth());
-                if(updateToRedis){
-                    //存储统计信息到redis缓存
-                    setDataToRedis();
-                }
-            }
+            //SysProject sysProject = sysProjectBusinessService.findSysProjectEnergyById(projectId);
+            //SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+            //boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysProject.getYear(),sysProject.getMonth());
+
+            //存储统计信息到redis缓存
+            setDataToRedis();
+
+
             return R.ok(200, "删除成功！！");
         } else {
             return R.error(500, "删除失败，服务器异常，请联系管理员！");
