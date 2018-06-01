@@ -53,7 +53,7 @@ public class SysUtil {
                 year=UtilHelper.getYear()-1;
                 month=12-2+UtilHelper.getMonth();
             }else{
-                year=UtilHelper.getYear()-1;
+                year=UtilHelper.getYear();
                 month=UtilHelper.getMonth()-2;
             }
         }else{

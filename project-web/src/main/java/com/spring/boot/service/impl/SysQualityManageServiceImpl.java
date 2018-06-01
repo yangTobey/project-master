@@ -106,7 +106,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                     Integer month = 0;
                     for (SysQualityManage sysQualityManage : list) {
                         qualityCheckPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckPass(), sysQualityManage.getQualityCheck()));
-                        modifiedPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckUnmodified(), sysQualityManage.getQualityCheckFail()));
+                        modifiedPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckFail()-sysQualityManage.getQualityCheckUnmodified(), sysQualityManage.getQualityCheckFail()));
                         month = sysQualityManage.getMonth();
                         checkPassScaleMap.put(month, qualityCheckPassScale);
                         modifiedPassScaleMap.put(month, modifiedPassScale);
@@ -115,7 +115,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                 sysQualityManageEntityForMonth.setCheckPassScaleMap(checkPassScaleMap);
                 sysQualityManageEntityForMonth.setModifiedPassScaleMap(modifiedPassScaleMap);
                 sysQualityManageEntityForMonth.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckPass(), sysQualityManageEntityForMonth.getQualityCheck())));
-                sysQualityManageEntityForMonth.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckUnmodified(), sysQualityManageEntityForMonth.getQualityCheckFail())));
+                sysQualityManageEntityForMonth.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckFail()-sysQualityManageEntityForMonth.getQualityCheckUnmodified(), sysQualityManageEntityForMonth.getQualityCheckFail())));
                 //resultMap.put("qualityManageMonth", sysQualityManageEntityForMonth);
             } else {
                 sysQualityManageEntityForMonth=new SysQualityManageEntity();
@@ -371,7 +371,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                 Integer month = 0;
                 for (SysQualityManage sysQualityManage : list) {
                     qualityCheckPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckPass(), sysQualityManage.getQualityCheck()));
-                    modifiedPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckUnmodified(), sysQualityManage.getQualityCheckFail()));
+                    modifiedPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckFail()-sysQualityManage.getQualityCheckUnmodified(), sysQualityManage.getQualityCheckFail()));
                     month = sysQualityManage.getMonth();
                     checkPassScaleMap.put(month, qualityCheckPassScale);
                     modifiedPassScaleMap.put(month, modifiedPassScale);
@@ -380,7 +380,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
             sysQualityManageEntityForMonth.setCheckPassScaleMap(checkPassScaleMap);
             sysQualityManageEntityForMonth.setModifiedPassScaleMap(modifiedPassScaleMap);
             sysQualityManageEntityForMonth.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckPass(), sysQualityManageEntityForMonth.getQualityCheck())));
-            sysQualityManageEntityForMonth.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckUnmodified(), sysQualityManageEntityForMonth.getQualityCheckFail())));
+            sysQualityManageEntityForMonth.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckFail()-sysQualityManageEntityForMonth.getQualityCheckUnmodified(), sysQualityManageEntityForMonth.getQualityCheckFail())));
         }else{
             sysQualityManageEntityForMonth=new SysQualityManageEntity();
         }

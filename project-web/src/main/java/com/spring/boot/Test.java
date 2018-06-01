@@ -5,10 +5,8 @@ import org.apache.shiro.crypto.hash.Hash;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Administrator on 2018/3/19.
@@ -76,5 +74,45 @@ public class Test {
 
         System.out.println(list.contains(String.valueOf(11L)));
 
+
+
+        int year=0;
+        int month=0;
+        int day=10;
+        Date startTime=null;
+        try {
+            SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+             startTime = sDateFormat.parse("2018-02-10 10:10:10");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        //获取当前月的天数
+        int dayOfMonth=startTime.getDate();
+        int nowYear=startTime.getYear()+1900;
+        int nowMonth=startTime.getMonth()+1;
+        //每月10号到下个月10号显示上一个月的数据，即5月10号到6月10号显示4月份数据。
+        if(dayOfMonth<day){
+            if(nowMonth<=2){
+                year=nowYear-1;
+                month=12-2+nowMonth;
+            }else{
+                year=nowYear;
+                month=nowMonth-2;
+            }
+        }else{
+            if(nowMonth<=1){
+                year=nowYear-1;
+                month=12;
+            }else{
+                year=nowYear;
+                month=nowMonth-1;
+            }
+        }
+
+        System.out.println("year:"+year);
+
+        System.out.println("month:"+month);
+
+        System.out.println(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(Double.valueOf(131) - Double.valueOf(465), Double.valueOf(465))));
     }
 }

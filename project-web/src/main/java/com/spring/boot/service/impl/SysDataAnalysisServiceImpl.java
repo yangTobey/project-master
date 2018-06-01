@@ -115,9 +115,9 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
                 if(sysProject==null){
                     sysProject=new SysProject();
                 }
-                sysPropertyDataAnalysisEntity.setProjectUnfinishedTotal(sysProject.getProjectUnfinishedTotal());
-                sysPropertyDataAnalysisEntity.setProjectFinishedTotal(sysProject.getProjectFinishedTotal());
-                sysPropertyDataAnalysisEntity.setMonthProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProject.getProjectFinishedTotal(),sysProject.getProjectUnfinishedTotal())));
+                sysPropertyDataAnalysisEntity.setProjectUnfinishedTotal(sysProject.getYearProjectUnfinishedTotal());
+                sysPropertyDataAnalysisEntity.setProjectFinishedTotal(sysProject.getYearProjectFinishedTotal());
+                sysPropertyDataAnalysisEntity.setMonthProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProject.getYearProjectFinishedTotal(),sysProject.getYearProjectUnfinishedTotal())));
                 sysPropertyDataAnalysisEntity.setYearConsumptionElectricity(sysProject.getYearConsumptionElectricity());
                 sysPropertyDataAnalysisEntity.setYearConsumptionWater(sysProject.getYearConsumptionWater());
                 sysPropertyDataAnalysisEntity.setMonthConsumptionElectricity(sysProject.getMonthConsumptionElectricity());

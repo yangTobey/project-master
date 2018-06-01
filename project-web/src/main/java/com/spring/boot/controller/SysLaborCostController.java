@@ -143,7 +143,7 @@ public class SysLaborCostController {
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("新增人员成本信息信息出错：" + e.getMessage());
-            return R.error(500, "删除信息失败，服务器异常，请联系管理员！");
+            return R.error(500, "新增信息失败，服务器异常，请联系管理员！");
         }
     }
 
@@ -223,7 +223,7 @@ public class SysLaborCostController {
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("更新人员成本信息出错：" + e.getMessage());
-            return R.error(500, "删除信息失败，服务器异常，请联系管理员！");
+            return R.error(500, "更新信息失败，服务器异常，请联系管理员！");
         }
     }
 
