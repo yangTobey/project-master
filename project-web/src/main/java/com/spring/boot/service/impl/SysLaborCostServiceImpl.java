@@ -81,10 +81,13 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
                     for (SysLaborCostDetails sysLaborCostDepartment : sysLaborCostDepartmentList) {
                         if (sysLaborCostDepartment.getDepartmentType() == 1) {
                             sysLaborCostDetails.setPropertyLaborCostScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysLaborCostDepartment.getLaborCostTotal(), laborCostTotal)));
+                            sysLaborCostDetails.setPropertyLaborCost(sysLaborCostDepartment.getLaborCostTotal());
                         } else if (sysLaborCostDepartment.getDepartmentType() == 2) {
                             sysLaborCostDetails.seteBusinessScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysLaborCostDepartment.getLaborCostTotal(), laborCostTotal)));
+                            sysLaborCostDetails.seteBusinessCost(sysLaborCostDepartment.getLaborCostTotal());
                         } else if (sysLaborCostDepartment.getDepartmentType() == 3) {
                             sysLaborCostDetails.setSaleLaborCostScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysLaborCostDepartment.getLaborCostTotal(), laborCostTotal)));
+                            sysLaborCostDetails.setSaleLaborCost(sysLaborCostDepartment.getLaborCostTotal());
                         }
                     }
                 }
@@ -389,10 +392,13 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
                 for (SysLaborCostDetails sysLaborCostDepartment : sysLaborCostDepartmentList) {
                     if (sysLaborCostDepartment.getDepartmentType() == 1) {
                         sysLaborCostDetails.setPropertyLaborCostScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysLaborCostDepartment.getLaborCostTotal(), laborCostTotal)));
+                        sysLaborCostDetails.setPropertyLaborCost(sysLaborCostDepartment.getLaborCostTotal());
                     } else if (sysLaborCostDepartment.getDepartmentType() == 2) {
                         sysLaborCostDetails.seteBusinessScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysLaborCostDepartment.getLaborCostTotal(), laborCostTotal)));
+                        sysLaborCostDetails.seteBusinessCost(sysLaborCostDepartment.getLaborCostTotal());
                     } else if (sysLaborCostDepartment.getDepartmentType() == 3) {
                         sysLaborCostDetails.setSaleLaborCostScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysLaborCostDepartment.getLaborCostTotal(), laborCostTotal)));
+                        sysLaborCostDetails.setSaleLaborCost(sysLaborCostDepartment.getLaborCostTotal());
                     }
                 }
             }

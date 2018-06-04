@@ -215,9 +215,9 @@ public class SysContractServiceImpl implements SysContractService {
                             //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
                             fileData = fileUrl.substring(0, fileUrl.length()).split(",");
                             sysContractFile.setContractId(sysContract.getContractId());
-                            sysContractFile.setFileName(fileData[0].substring(fileData[0].lastIndexOf("/") + 1, fileData[0].lastIndexOf(".")));
-                            sysContractFile.setFileSize(Double.valueOf(fileData[1]));
-                            sysContractFile.setFileUrl(fileData[0]);
+                            sysContractFile.setFileName(fileData[0]);
+                            sysContractFile.setFileSize(Double.valueOf(fileData[2]));
+                            sysContractFile.setFileUrl(fileData[1]);
                             sysContractFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
                             sysContractBusinessService.addSysContractFile(sysContractFile);
                         }
@@ -292,9 +292,9 @@ public class SysContractServiceImpl implements SysContractService {
                         //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
                         fileData = fileUrl.substring(0, fileUrl.length()).split(",");
                         sysContractFile.setContractId(contractId);
-                        sysContractFile.setFileName(fileData[0].substring(fileData[0].lastIndexOf("/") + 1, fileData[0].lastIndexOf(".")));
-                        sysContractFile.setFileSize(Double.valueOf(fileData[1]));
-                        sysContractFile.setFileUrl(fileData[0]);
+                        sysContractFile.setFileName(fileData[0]);
+                        sysContractFile.setFileSize(Double.valueOf(fileData[2]));
+                        sysContractFile.setFileUrl(fileData[1]);
                         sysContractFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
                         sysContractBusinessService.addSysContractFile(sysContractFile);
                     }

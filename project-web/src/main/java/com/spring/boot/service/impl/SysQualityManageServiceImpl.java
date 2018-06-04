@@ -188,9 +188,9 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                     //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
                     fileData = fileUrl.substring(0, fileUrl.length()).split(",");
                     sysQualityManageFile.setQualityId(sysQualityManage.getQualityId());
-                    sysQualityManageFile.setFileName(fileData[0].substring(fileData[0].lastIndexOf("/") + 1, fileData[0].lastIndexOf(".")));
-                    sysQualityManageFile.setFileSize(Double.valueOf(fileData[1]));
-                    sysQualityManageFile.setFileUrl(fileData[0]);
+                    sysQualityManageFile.setFileName(fileData[0]);
+                    sysQualityManageFile.setFileSize(Double.valueOf(fileData[2]));
+                    sysQualityManageFile.setFileUrl(fileData[1]);
                     sysQualityManageFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
                     sysQualityManageBusinessService.addSysQualityManageFile(sysQualityManageFile);
                 }
@@ -240,9 +240,9 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                     //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
                     fileData = fileUrl.substring(0, fileUrl.length()).split(",");
                     sysQualityManageFile.setQualityId(qualityId);
-                    sysQualityManageFile.setFileName(fileData[0].substring(fileData[0].lastIndexOf("/") + 1, fileData[0].lastIndexOf(".")));
-                    sysQualityManageFile.setFileSize(Double.valueOf(fileData[1]));
-                    sysQualityManageFile.setFileUrl(fileData[0]);
+                    sysQualityManageFile.setFileName(fileData[0]);
+                    sysQualityManageFile.setFileSize(Double.valueOf(fileData[2]));
+                    sysQualityManageFile.setFileUrl(fileData[1]);
                     sysQualityManageFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
                     sysQualityManageBusinessService.addSysQualityManageFile(sysQualityManageFile);
                 }

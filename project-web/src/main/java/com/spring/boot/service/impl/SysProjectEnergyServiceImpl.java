@@ -84,9 +84,9 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                         //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
                         fileData = fileUrl.substring(0, fileUrl.length()).split(",");
                         sysProjectEnergyFile.setProjectId(sysProject.getProjectId());
-                        sysProjectEnergyFile.setFileName(fileData[0].substring(fileData[0].lastIndexOf("/") + 1, fileData[0].lastIndexOf(".")));
-                        sysProjectEnergyFile.setFileSize(Double.valueOf(fileData[1]));
-                        sysProjectEnergyFile.setFileUrl(fileData[0]);
+                        sysProjectEnergyFile.setFileName(fileData[0]);
+                        sysProjectEnergyFile.setFileSize(Double.valueOf(fileData[2]));
+                        sysProjectEnergyFile.setFileUrl(fileData[1]);
                         sysProjectEnergyFile.setUploadTime(date);
                         sysProjectBusinessService.addSysProjectEnergyFile(sysProjectEnergyFile);
                     }
@@ -135,9 +135,9 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                 //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
                 fileData = fileUrl.substring(0, fileUrl.length()).split(",");
                 sysProjectEnergyFile.setProjectId(projectId);
-                sysProjectEnergyFile.setFileName(fileData[0].substring(fileData[0].lastIndexOf("/") + 1, fileData[0].lastIndexOf(".")));
-                sysProjectEnergyFile.setFileSize(Double.valueOf(fileData[1]));
-                sysProjectEnergyFile.setFileUrl(fileData[0]);
+                sysProjectEnergyFile.setFileName(fileData[0]);
+                sysProjectEnergyFile.setFileSize(Double.valueOf(fileData[2]));
+                sysProjectEnergyFile.setFileUrl(fileData[1]);
                 sysProjectEnergyFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
                 sysProjectBusinessService.addSysProjectEnergyFile(sysProjectEnergyFile);
             }

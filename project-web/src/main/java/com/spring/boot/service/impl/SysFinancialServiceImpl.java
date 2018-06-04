@@ -591,8 +591,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 //一年清欠收缴率（针对大屏数据展示页面）
                  Map<Integer,Double> yearChargeDebtScale=new HashMap<Integer,Double>();;
                 for(int i=0;i<list.size();i++){
-                    yearChargeMoneyScale.put(i+1,UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(list.get(i).getChargeMoneyNow(),list.get(i).getChargeMoney())));
-                    yearChargeDebtScale.put(i+1,UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(list.get(i).getChargeDebtReturn(),list.get(i).getChargeDebt())));
+                    yearChargeMoneyScale.put(i+1,list.get(i).getChargeMoneyNow());
+                    yearChargeDebtScale.put(i+1,list.get(i).getChargeDebtReturn());
                 }
                 sysChargeDetails.setYearChargeMoneyScale(yearChargeMoneyScale);
                 sysChargeDetails.setYearChargeDebtScale(yearChargeDebtScale);

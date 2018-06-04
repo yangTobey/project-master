@@ -99,12 +99,12 @@ public class FileManageController {
         String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
         String fileName = originalFilename.substring(0, originalFilename.lastIndexOf("."));
         //修改上传文件的文件名，避免出现重复文件时覆盖原有文件
-        String newFileName = fileName + "-" + UUID.randomUUID().toString().replace("-", "").substring(0, 10) + suffix;
+        String newFileName = UUID.randomUUID().toString().replace("-", "").substring(0, 15) + suffix;
         File saveFile = new File(uploadDir + newFileName);
         try {
             file.transferTo(saveFile);
             //返回上传文件的文件名和文件大小，文件大小转化为MB格式
-            map.put("success", uploadUrl + newFileName + "," + UtilHelper.decimalNumber((int)file.getSize(),1024));
+            map.put("success", fileName+","+uploadUrl + newFileName + "," + UtilHelper.decimalNumber((int)file.getSize(),1024));
         } catch (Exception e) {
             e.printStackTrace();
             map.put("error", "上传失败！");

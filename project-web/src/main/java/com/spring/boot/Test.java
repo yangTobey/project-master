@@ -114,5 +114,34 @@ public class Test {
         System.out.println("month:"+month);
 
         System.out.println(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(Double.valueOf(131) - Double.valueOf(465), Double.valueOf(465))));
+
+        Calendar cal = Calendar.getInstance();
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        cal.set(Calendar.YEAR, 2017);
+        /*cal.set(Calendar.MONTH, 11);//11表示的是12月
+        cal.set(Calendar.DATE, 31);*/
+        //53
+        System.out.println(cal.get(Calendar.WEEK_OF_YEAR));
+
+        System.out.println("2018年周数："+getMaxWeekNumOfYear(2018));
+
+        System.out.println(UUID.randomUUID().toString());
+
+    }
+    // 获取当前时间所在年的最大周数
+    public static int getMaxWeekNumOfYear(int year) {
+        Calendar c = new GregorianCalendar();
+        c.set(year, Calendar.DECEMBER, 31, 23, 59, 59);
+
+        return getWeekOfYear(c.getTime());
+    }
+    // 获取当前时间所在年的周数
+    public static int getWeekOfYear(Date date) {
+        Calendar c = new GregorianCalendar();
+        c.setFirstDayOfWeek(Calendar.MONDAY);
+        c.setMinimalDaysInFirstWeek(7);
+        c.setTime(date);
+
+        return c.get(Calendar.WEEK_OF_YEAR);
     }
 }

@@ -16,6 +16,12 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.SessionCookieConfig;
+import javax.servlet.SessionTrackingMode;
+import java.util.Collections;
+
 /**
  * Spring Boot 应用启动类
  * <p>
@@ -52,6 +58,19 @@ public class Application extends SpringBootServletInitializer {
         corsConfiguration.addExposedHeader("x-total-count");
         //corsConfiguration.addExposedHeader("*");
         return corsConfiguration;
+    }
+
+    /**
+     * 解决spring boot项目中链接多出jsessionid的问题
+     * @param servletContext
+     * @throws ServletException
+     */
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
+        servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
+        SessionCookieConfig sessionCookieConfig = servletContext.getSessionCookieConfig();
+        sessionCookieConfig.setHttpOnly(true);
     }
 
 

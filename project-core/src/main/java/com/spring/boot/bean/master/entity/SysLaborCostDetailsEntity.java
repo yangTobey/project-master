@@ -49,6 +49,12 @@ public class SysLaborCostDetailsEntity implements Serializable {
     private Double eBusinessScale;
     //销配成本占比
     private Double saleLaborCostScale;
+    //常态物业成本
+    private Double propertyLaborCost;
+    //电商成本
+    private Double eBusinessCost;
+    //销配成本
+    private Double saleLaborCost;
 
     public Long getLaborCostId() {
         return laborCostId;
@@ -248,5 +254,29 @@ public class SysLaborCostDetailsEntity implements Serializable {
 
     public void setMonthDeploy(Integer monthDeploy) {
         this.monthDeploy = monthDeploy;
+    }
+
+    public Double getPropertyLaborCost() {
+        return propertyLaborCost;
+    }
+
+    public void setPropertyLaborCost(Double propertyLaborCost) {
+        this.propertyLaborCost = propertyLaborCost;
+    }
+
+    public Double geteBusinessCost() {
+        return eBusinessCost;
+    }
+
+    public void seteBusinessCost(Double eBusinessCost) {
+        this.eBusinessCost = eBusinessCost;
+    }
+
+    public Double getSaleLaborCost() {
+        return saleLaborCost;
+    }
+
+    public void setSaleLaborCost(Double saleLaborCost) {
+        this.saleLaborCost = saleLaborCost;
     }
 }
