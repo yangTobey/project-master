@@ -368,7 +368,7 @@ public class SysFinancialController {
         Double realExpensesTotal = sysBudgetDetails.getPersonnelCost() + sysBudgetDetails.getAdministrativeCost() + sysBudgetDetails.getMaterialCost()
                 + sysBudgetDetails.getEnergyCost() + sysBudgetDetails.getEquipmentCost() + sysBudgetDetails.getCleaningCost()
                 + sysBudgetDetails.getAfforestCost() + sysBudgetDetails.getOrderMaintenanceCost() + sysBudgetDetails.getCommunityActivitiesCost() + sysBudgetDetails.getOtherCost();
-        if (!realExpensesTotal.equals(sysBudgetDetails.getRealExpensesTotal())) {
+        if (!UtilHelper.DecimalFormatForDouble(String.valueOf(realExpensesTotal)).equals(sysBudgetDetails.getRealExpensesTotal())) {
             return R.error(400, "实际总支出与详细数据合计总数不对，请联系管理员进行处理！");
         }
         try {
@@ -401,7 +401,7 @@ public class SysFinancialController {
                 + sysBudgetDetails.getAfforestCost() + sysBudgetDetails.getOrderMaintenanceCost() + sysBudgetDetails.getCommunityActivitiesCost() + sysBudgetDetails.getOtherCost();
         if (!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getBudgetId()))) {
             return R.error(400, "主键id格式不正确，请联系系统管理员进行处理！");
-        } else if (!realExpensesTotal.equals(sysBudgetDetails.getRealExpensesTotal())) {
+        } else if (!UtilHelper.DecimalFormatForDouble(String.valueOf(realExpensesTotal)).equals(sysBudgetDetails.getRealExpensesTotal())) {
             return R.error(400, "实际总支出与详细数据合计总数不对，请联系管理员进行处理！");
         }
         try {

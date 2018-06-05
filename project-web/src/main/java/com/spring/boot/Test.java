@@ -115,13 +115,16 @@ public class Test {
 
         System.out.println(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(Double.valueOf(131) - Double.valueOf(465), Double.valueOf(465))));
 
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
         cal.setFirstDayOfWeek(Calendar.MONDAY);
-        cal.set(Calendar.YEAR, 2017);
+        cal.set(Calendar.YEAR, 2018);
         /*cal.set(Calendar.MONTH, 11);//11表示的是12月
         cal.set(Calendar.DATE, 31);*/
         //53
         System.out.println(cal.get(Calendar.WEEK_OF_YEAR));
+        System.out.println(new Date());
+        System.out.println(new GregorianCalendar().getTime());
+        System.out.println(Calendar.getInstance().getTime());
 
         System.out.println("2018年周数："+getMaxWeekNumOfYear(2018));
 

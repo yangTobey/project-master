@@ -9,10 +9,7 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -95,6 +92,32 @@ public class UtilHelper {
      */
     public static int getDayOfMonth(){
         return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * 获取当前时间所在年的最大周数
+     * @param year
+     * @return
+     */
+    public static int getMaxWeekNumOfYear(int year) {
+        Calendar c = new GregorianCalendar();
+        c.set(year, Calendar.DECEMBER, 31, 23, 59, 59);
+
+        return getWeekOfYear(c.getTime());
+    }
+
+    /**
+     * 获取当前时间所在年的周数
+     * @param date
+     * @return
+     */
+    public static int getWeekOfYear(java.util.Date date) {
+        Calendar c = new GregorianCalendar();
+        c.setFirstDayOfWeek(Calendar.MONDAY);
+        c.setMinimalDaysInFirstWeek(7);
+        c.setTime(date);
+
+        return c.get(Calendar.WEEK_OF_YEAR);
     }
 
     public static Date toDate(String strDate) {

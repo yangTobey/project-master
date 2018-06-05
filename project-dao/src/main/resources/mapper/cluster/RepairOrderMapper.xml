@@ -28,7 +28,7 @@
 	</select>
 	<!--查找上个月的数据信息-->
 	<select id="getRepairOrderForLastMonth" resultMap="repairOrder" parameterType="map">
-		SELECT COUNT(repair_id) as monthRepairTotal from `repair` WHERE DATE_FORMAT(repair_time, '%Y') = #{year} and DATE_FORMAT(repair_time, '%m') = #{month}
+		SELECT COUNT(repair_id) as monthRepairTotal from `repair` WHERE DATE_FORMAT(commit_time, '%Y') = #{year} and DATE_FORMAT(commit_time, '%m') = #{month}
 		and status!=-1 and status!=3
 	</select>
 
@@ -36,8 +36,8 @@
 	<select id="getRepairOrderForMonth" resultMap="repairOrder" parameterType="map">
 		SELECT MONTH, COUNT(*) AS monthRepairTotal
 		FROM
-		( SELECT DATE_FORMAT(repair_time, '%m') MONTH FROM `repair`
-		WHERE DATE_FORMAT(repair_time, '%Y') = #{year}
+		( SELECT DATE_FORMAT(commit_time, '%m') MONTH FROM `repair`
+		WHERE DATE_FORMAT(commit_time, '%Y') = #{year}
 		and status!=-1 and status!=3
 		) a
 		GROUP BY MONTH
@@ -74,6 +74,6 @@
 		LEFT JOIN worker_branchCommunity AS wocom ON wocom.community = co.community_id
 		LEFT JOIN worker_branchCompany AS company ON company.id = wocom.branchCompanyId
 		WHERE re.`status`!=-1 and re.`status`!=3 and wocom.type=1 and company.`status`!=2
-		ORDER BY re.repair_time DESC LIMIT 0, 30
+		ORDER BY re.commit_time DESC LIMIT 0, 30
 	</select>
 </mapper>
