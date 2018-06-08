@@ -61,8 +61,8 @@ public class SysMenuController {
             return R.error(400, "操作类型不能为空！！");
         } else {
             if ("update".equals(type)) {
-                if (!UtilHelper.isNumer(roleId)) {
-                    return R.error(400, "角色id格式不正确！！");
+                if (!UtilHelper.isLongNumer(roleId)) {
+                    return R.error(400, "角色id格式不正确，或者不符合常理！！");
                 }
             } else {
                 //赋值roleId为0,避免类型转化出错，不实际查询操作
@@ -83,11 +83,11 @@ public class SysMenuController {
     @RequestMapping(value = "/getSysMenuList", method = RequestMethod.POST)
     public R getSysMenuList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset
             , @RequestParam(value = "menuName", required = false) String menuName, @RequestParam(value = "menuUrl", required = false) String menuUrl) {
-        if (!UtilHelper.isNumer(limit)) {
-            return R.error(400, "分页控制，每页条数limit只能为数字！");
+        if (!UtilHelper.isIntegerNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
         }
-        if (!UtilHelper.isNumer(offset)) {
-            return R.error(400, "分页控制，页码offset只能为数字！");
+        if (!UtilHelper.isIntegerNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
         }
         Map<String, Object> map = sysMenuService.getSysMenuList(Integer.valueOf(limit), Integer.valueOf(offset),menuName,menuUrl);
         return R.ok().put(200, map, "获取成功！");
@@ -134,8 +134,8 @@ public class SysMenuController {
             , @RequestParam(value = "parentId", required = false) String parentId, @RequestParam(value = "sort", required = false) String sort
             , @RequestParam(value = "menuType", required = false) String menuType, @RequestParam(value = "remark", required = false) String remark
             , @RequestParam(value = "menuId", required = false) String menuId) {
-        if (!UtilHelper.isNumer(menuId)) {
-            return R.error(400, "菜单编号格式不正确，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(menuId)) {
+            return R.error(400, "菜单编号格式不正确，或者不符合常理，请联系系统管理员！");
         }
         Map<String, Object> map = sysMenuService.updateSysMenu(menuName, menuUrl, menuPerms, icon, Long.valueOf(parentId), sort, Integer.valueOf(menuType), remark, Long.valueOf(menuId));
         return R.ok(map);
@@ -150,8 +150,8 @@ public class SysMenuController {
      */
     @RequestMapping(value = "/deleteSysMenuById", method = RequestMethod.POST)
     public R deleteSysMenuById(@RequestParam(value = "menuId", required = false) String menuId) {
-        if (!UtilHelper.isNumer(menuId)) {
-            return R.error(400, "菜单编号格式不正确，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(menuId)) {
+            return R.error(400, "菜单编号格式不正确，或者不符合常理，请联系系统管理员！");
         }
         Map<String, Object> map = sysMenuService.deleteSysMenuById(Long.valueOf(menuId));
         return R.ok(map);
@@ -165,8 +165,8 @@ public class SysMenuController {
      */
     @RequestMapping(value = "/findSysMenuById", method = RequestMethod.POST)
     public R findSysMenuById(@RequestParam(value = "menuId", required = false) String menuId) {
-        if (!UtilHelper.isNumer(menuId)) {
-            return R.error(400, "菜单编号格式不正确，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(menuId)) {
+            return R.error(400, "菜单编号格式不正确，或者不符合常理，请联系系统管理员！");
         }
         Map<String, Object> map = sysMenuService.findSysMenuById(Long.valueOf(menuId));
         return R.ok().put(200, map, "获取成功！");

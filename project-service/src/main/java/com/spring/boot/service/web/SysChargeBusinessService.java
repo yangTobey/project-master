@@ -45,5 +45,22 @@ public interface SysChargeBusinessService {
      */
     int updateSysCharge(Map<String, Object> map);
 
+    /**
+     * 根据公司id、年份查找数据库当年周数最大的记录
+     * @param companyId 公司id
+     * @param year 年份
+     * @return
+     */
+    SysChargeDetails findMaxweekOfYearByYear(Long companyId,Integer year);
+
+    /**
+     * 根据公司id、年份、周数查找数据库当年周数最大的记录（针对2018年6月第22周系统刚上线时，周数填写要求修改时使用，保证22周后数据要填写完整）
+     * @param companyId 公司id
+     * @param year 年份
+     * @param weekOfYear 周数
+     * @return
+     */
+    SysChargeDetails findWeekOfYearRecord(Long companyId,Integer year,Integer weekOfYear);
+
 
 }

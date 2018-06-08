@@ -31,8 +31,8 @@ public class SysLaborCostController {
      */
     @RequestMapping(value = "/getSysLaborCostAnalysis", method = RequestMethod.POST)
     public R getSysLaborCostAnalysis(@RequestParam(value = "companyId", required = false) String companyId) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不合理！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不合理，或者不符合常理！");
         }
         Map<String, Object> map = sysLaborCostService.getSysLaborCostAnalysis(Long.valueOf(companyId));
         return R.ok(map);
@@ -49,19 +49,19 @@ public class SysLaborCostController {
     public R getSysLaborCostList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset,
                                  @RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
             , @RequestParam(value = "month", required = false) String month) {
-        if (!UtilHelper.isNumer(limit)) {
-            return R.error(400, "分页控制，每页条数limit只能为数字！");
-        } else if (!UtilHelper.isNumer(offset)) {
-            return R.error(400, "分页控制，页码offset只能为数字！");
-        } else if (!UtilHelper.isNumer(year)) {
-            return R.error(400, "年份格式不合理！");
-        } else if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不合理！");
+        if (!UtilHelper.isIntegerNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不合理，或者不符合常理！");
         }
 
         if (!UtilHelper.isEmpty(month)) {
-            if(!UtilHelper.isNumer(month)){
-                return R.error(400, "月份格式不合理！");
+            if(!UtilHelper.isIntegerNumer(month)){
+                return R.error(400, "月份格式不合理，或者不符合常理！");
             }
         }
         Map<String, Object> map = sysLaborCostService.getSysLaborCostList(Integer.valueOf(limit), Integer.valueOf(offset), Long.valueOf(companyId), Integer.valueOf(year));
@@ -108,28 +108,28 @@ public class SysLaborCostController {
             , @RequestParam(value = "eBusinessMonthDeploy", required = false) String eBusinessMonthDeploy
             , @RequestParam(value = "salePayPeopleTotal", required = false) String salePayPeopleTotal, @RequestParam(value = "saleBeginMonthPeople", required = false) String saleBeginMonthPeople
             , @RequestParam(value = "saleMonthDeploy", required = false) String saleMonthDeploy) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不合理！");
-        } else if (!UtilHelper.isNumer(year)) {
-            return R.error(400, "年份格式不合理！");
-        } else if (!UtilHelper.isNumer(month)) {
-            return R.error(400, "月份格式不合理！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不合理，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(propertyLaborCost)) {
-            return R.error(400, "物业月人工成本支出格式不正确！");
-        } else if (!UtilHelper.isNumer(propertyHeadcountTotal)) {
-            return R.error(400, "物业月编制人数格式不正确！");
-        } else if (!UtilHelper.isNumer(propertyEmployeeTotal)) {
-            return R.error(400, "物业月在职人数格式不正确！");
-        } else if (!UtilHelper.isNumer(propertyEntryTotal)) {
-            return R.error(400, "物业月入职人数格式不正确！");
-        } else if (!UtilHelper.isNumer(propertyDemissionTotal)) {
-            return R.error(400, "物业月离职人数格式不正确！");
-        }else if (!UtilHelper.isNumer(propertyPayPeopleTotal)) {
-            return R.error(400, "物业月发薪人数格式不正确！");
-        }else if (!UtilHelper.isNumer(propertyBeginMonthPeople)) {
-            return R.error(400, "物业月期初人数格式不正确！");
-        }else if (!UtilHelper.isNumer(propertyMonthDeploy)) {
-            return R.error(400, "物业月调入人数格式不正确！");
+            return R.error(400, "物业月人工成本支出格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(propertyHeadcountTotal)) {
+            return R.error(400, "物业月编制人数格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(propertyEmployeeTotal)) {
+            return R.error(400, "物业月在职人数格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(propertyEntryTotal)) {
+            return R.error(400, "物业月入职人数格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(propertyDemissionTotal)) {
+            return R.error(400, "物业月离职人数格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(propertyPayPeopleTotal)) {
+            return R.error(400, "物业月发薪人数格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(propertyBeginMonthPeople)) {
+            return R.error(400, "物业月期初人数格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(propertyMonthDeploy)) {
+            return R.error(400, "物业月调入人数格式不正确，或者不符合常理！");
         }
 
         try {
@@ -188,30 +188,30 @@ public class SysLaborCostController {
             , @RequestParam(value = "eBusinessMonthDeploy", required = false) String eBusinessMonthDeploy
             , @RequestParam(value = "salePayPeopleTotal", required = false) String salePayPeopleTotal, @RequestParam(value = "saleBeginMonthPeople", required = false) String saleBeginMonthPeople
             , @RequestParam(value = "saleMonthDeploy", required = false) String saleMonthDeploy) {
-        if (UtilHelper.isEmpty(laborCostId)) {
-            return R.error(400, "人员成本id不能为空，请联系系统管理员进行修改！");
-        } else if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不合理！");
-        } else if (!UtilHelper.isNumer(year)) {
-            return R.error(400, "年份格式不合理！");
-        } else if (!UtilHelper.isNumer(month)) {
-            return R.error(400, "月份格式不合理！");
+        if (!UtilHelper.isLongNumer(laborCostId)) {
+            return R.error(400, "人员成本格式不正确，或者不符合常理，请联系系统管理员进行修改！");
+        } else if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不合理，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(propertyLaborCost)) {
-            return R.error(400, "物业月人工成本支出格式不正确！");
-        } else if (!UtilHelper.isNumer(propertyHeadcountTotal)) {
-            return R.error(400, "物业月编制人数格式不正确！");
-        } else if (!UtilHelper.isNumer(propertyEmployeeTotal)) {
-            return R.error(400, "物业月在职人数格式不正确！");
-        } else if (!UtilHelper.isNumer(propertyEntryTotal)) {
-            return R.error(400, "物业月入职人数格式不正确！");
-        } else if (!UtilHelper.isNumer(propertyDemissionTotal)) {
-            return R.error(400, "物业月离职人数格式不正确！");
-        }else if (!UtilHelper.isNumer(propertyPayPeopleTotal)) {
-            return R.error(400, "物业月发薪人数格式不正确！");
-        }else if (!UtilHelper.isNumer(propertyBeginMonthPeople)) {
-            return R.error(400, "物业月期初人数格式不正确！");
-        }else if (!UtilHelper.isNumer(propertyMonthDeploy)) {
-            return R.error(400, "物业月调入人数格式不正确！");
+            return R.error(400, "物业月人工成本支出格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(propertyHeadcountTotal)) {
+            return R.error(400, "物业月编制人数格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(propertyEmployeeTotal)) {
+            return R.error(400, "物业月在职人数格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(propertyEntryTotal)) {
+            return R.error(400, "物业月入职人数格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(propertyDemissionTotal)) {
+            return R.error(400, "物业月离职人数格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(propertyPayPeopleTotal)) {
+            return R.error(400, "物业月发薪人数格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(propertyBeginMonthPeople)) {
+            return R.error(400, "物业月期初人数格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(propertyMonthDeploy)) {
+            return R.error(400, "物业月调入人数格式不正确，或者不符合常理！");
         }
         try {
             Map<String, Object> map = sysLaborCostService.updateSysLaborCostInfo(Long.valueOf(laborCostId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(propertyLaborCost), Integer.valueOf(propertyHeadcountTotal), Integer.valueOf(propertyEmployeeTotal), Integer.valueOf(propertyEntryTotal), Integer.valueOf(propertyDemissionTotal),
@@ -235,8 +235,8 @@ public class SysLaborCostController {
      */
     @RequestMapping(value = "/findSysLaborCostById", method = RequestMethod.POST)
     public R findSysLaborCostById(@RequestParam(value = "laborCostId", required = false) String laborCostId) {
-        if (!UtilHelper.isNumer(laborCostId)) {
-            return R.error(400, "人员成本id编号不能为空，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(laborCostId)) {
+            return R.error(400, "人员成本id编号不能为空，或者不符合常理，请联系系统管理员！");
         }
         Map<String, Object> map = sysLaborCostService.findSysLaborCostById(Long.valueOf(laborCostId));
         return R.ok(map);
@@ -251,8 +251,8 @@ public class SysLaborCostController {
      */
     @RequestMapping(value = "/deleteSysLaborCost", method = RequestMethod.POST)
     public R deleteSysLaborCost(@RequestParam(value = "laborCostId", required = false) String laborCostId) {
-        if (!UtilHelper.isNumer(laborCostId)) {
-            return R.error(400, "人员成本id编号不能为空，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(laborCostId)) {
+            return R.error(400, "人员成本id编号不能为空，或者不符合常理，请联系系统管理员！");
         }
         try {
             Map<String, Object> map = sysLaborCostService.deleteSysLaborCostInfo(Long.valueOf(laborCostId));

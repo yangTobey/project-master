@@ -60,4 +60,9 @@ public interface SysQualityManageService {
      * @return
      */
     Map<String,Object> findSysQualityManageFileById(long qualityId);
+
+    /**
+     * 将品质年度、月度统计报表信息放进redis缓存
+     */
+    void setDataToRedis();
 }

@@ -29,7 +29,7 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
     private SysRepairOrderBusinessService sysRepairOrderBusinessService;
 
     /**
-     * 定时任务，每一分钟执行一次
+     * 定时任务，每30分钟执行一次
      * @return
      */
     @Scheduled(cron = "0 0/30 * * * ?")
@@ -60,14 +60,15 @@ public class SysRepairOrderServiceImpl implements SysRepairOrderService {
             Map<Long,List<String>> cityOrderMap=new HashMap<Long,List<String>>();
             for(RepairOrderLatest repairOrderLatest:repairOrderLatestList){
                 String orderName="";
+                //报修单状态（0：待处理，1：受理，2：完成，-1：取消，3：已删除）
                 if(repairOrderLatest.getStatus()==0){
-                    orderName="新发布了一条"+repairOrderLatest.getUserName()+repairOrderLatest.getLevelName()+"工单";
+                    orderName=repairOrderLatest.getUserName()+"新发布了一条"+repairOrderLatest.getLevelName()+"工单";
                 }else if(repairOrderLatest.getStatus()==1){
-                    orderName="物业服务中心已确认接单，马上进行处理";
+                    orderName=repairOrderLatest.getUserName()+"发布的工单已接单，马上进行处理";
                 }else if(repairOrderLatest.getStatus()==2){
-                    orderName="物业服务中心已完成订单处理，待客服回访";
+                    orderName=repairOrderLatest.getUserName()+"发布的工单已完成，待客服回访";
                 }else if(repairOrderLatest.getStatus()==4){
-                    orderName="该订单为疑难工单，物业管理正在努力解决";
+                    orderName=repairOrderLatest.getUserName()+"发布的订单为疑难工单，物业管理正在努力解决";
                 }
                 //以小区id作为key存储数据，一个小区可能存在多条信息，如果key存在，直接追加数据
                 if(cityOrderMap.containsKey(repairOrderLatest.getCityId())){

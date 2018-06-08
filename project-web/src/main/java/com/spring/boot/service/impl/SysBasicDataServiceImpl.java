@@ -248,6 +248,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     /**
      * 将基础信息放进redis缓存
      */
+    @Override
     public void setBasicDataAnalysisDataToRedis() {
         Map<String, Object> analysisMap = new HashMap<String, Object>();
         SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();

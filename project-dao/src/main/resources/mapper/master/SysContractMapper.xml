@@ -269,5 +269,11 @@
 	<delete id="deleteSysContractFileByContractId" >
 		DELETE FROM sys_contract_file WHERE contract_id = #{contractId}
 	</delete>
+	<!--根据合同类型id和合同状态获取合同信息-->
+	<select id="findSysContractByTypeId" resultMap="sysContract" parameterType="map">
+		select *
+		from sys_contract
+		where contract_type_id = #{contractTypeId} and status_code != #{statusCode}
+	</select>
 
 </mapper>

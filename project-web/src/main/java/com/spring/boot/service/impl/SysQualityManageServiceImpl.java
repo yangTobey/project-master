@@ -319,6 +319,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     /**
      * 将年度、月度统计报表信息放进redis缓存
      */
+    @Override
     public void setDataToRedis() {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         SysQualityManageEntity sysQualityManageEntityForYear = null;

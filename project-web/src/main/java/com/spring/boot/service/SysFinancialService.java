@@ -21,12 +21,19 @@ public interface SysFinancialService {
      * @return
      */
     Map<String, Object> findSysChargeDetailsById(Long chargeId);
+
+    /**
+     * 根据公司id、年份查找当前系统需要添加的周数记录
+     * @param companyId
+     * @return
+     */
+    Map<String, Object> sysChargeAddWeekOfYearByCompanyId(Long companyId);
     /**
      * 新增收费请款详细信息
      *
      * @return
      */
-    Map<String, Object> addSysCharge(Long companyId, Double chargeMoney, Double chargeMoneyNow, Double chargeDebt, Double chargeDebtReturn);
+    Map<String, Object> addSysCharge(Long companyId, Double chargeMoney, Double chargeMoneyNow, Double chargeDebt, Double chargeDebtReturn,Integer year,Integer weekOfYear);
     /**
      * 更新收费请款详细信息
      *
@@ -112,6 +119,22 @@ public interface SysFinancialService {
      * @return
      */
     Map<String, Object> deleteSysBudgetDetails(Long budgetId);
+
+    /**
+     * 保存收费情况详细信息到redis缓存
+     */
+    void setSysChargeToRedis();
+
+    /**
+     * 保存应收账款到redis缓存
+     */
+    void setSysAccountsReceivableToRedis();
+
+    /**
+     * 保存预算信息到redis缓存
+     */
+    void setSysBudgetDetailsToRedis();
+
 
 
 }

@@ -76,7 +76,10 @@ public class UtilHelper {
      * @return
      */
     public static int getWeekOfYear(){
-        return calendar.get(Calendar.WEEK_OF_YEAR);
+        Calendar ca = Calendar.getInstance();
+        ca.setFirstDayOfWeek(Calendar.MONDAY);
+        ca.setMinimalDaysInFirstWeek(7);
+        return ca.get(Calendar.WEEK_OF_YEAR);
     }
 
     /**
@@ -252,7 +255,7 @@ public class UtilHelper {
      * @param str
      * @return
      */
-    public static boolean isNumer(String str){
+    public static boolean isIntegerNumer(String str){
         if (UtilHelper.isEmpty(str)) {
             return false;
         }else{
@@ -261,9 +264,40 @@ public class UtilHelper {
             if( !isNum.matches() ){
                 return false;
             }
+            //拦截不符合常理数字填入，捕捉类型转换错误（因无法保证用户输入的数据完全符合常理，需要增加该操作）
+            try{
+                Integer i = Integer.parseInt(str);
+            }catch(Exception e){
+                return false;
+            }
             return true;
         }
     }
+
+    /**
+     * 利用正则表达式判断字符串是否是数字（不包含小数点）
+     * @param str
+     * @return
+     */
+    public static boolean isLongNumer(String str){
+        if (UtilHelper.isEmpty(str)) {
+            return false;
+        }else{
+            Pattern pattern = Pattern.compile("[0-9]*");
+            Matcher isNum = pattern.matcher(str);
+            if( !isNum.matches() ){
+                return false;
+            }
+            //拦截不符合常理数字填入，捕捉类型转换错误（因无法保证用户输入的数据完全符合常理，需要增加该操作）
+            try{
+                Long i = Long.parseLong(str);
+            }catch(Exception e){
+                return false;
+            }
+            return true;
+        }
+    }
+
     /**
      * 利用正则表达式判断字符串是否是两位小数(正整数、一位小数、两位小数)数字
      * @param str
@@ -276,6 +310,12 @@ public class UtilHelper {
             Pattern pattern = Pattern.compile("^[0-9]+(.[0-9]{0,2})?$");
             Matcher isNum = pattern.matcher(str);
             if( !isNum.matches() ){
+                return false;
+            }
+            //拦截不符合常理数字填入，捕捉类型转换错误（因无法保证用户输入的数据完全符合常理，需要增加该操作）
+            try{
+                Double i = Double.parseDouble(str);
+            }catch(Exception e){
                 return false;
             }
             return true;

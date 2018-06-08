@@ -109,4 +109,9 @@ public class SysContractBusinessServiceImpl implements SysContractBusinessServic
     public void updateSysContractExpire(Integer type,String nowTime) {
         sysContractDao.updateSysContractExpire(type,nowTime);
     }
+
+    @Override
+    public List<SysContract> findSysContractByTypeId(Long contractTypeId,Integer statusCode) {
+        return sysContractDao.findSysContractByTypeId(contractTypeId,statusCode);
+    }
 }

@@ -34,9 +34,9 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/getSysAccountsList", method = RequestMethod.POST)
     public R getSysCompanyList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
-        if (!UtilHelper.isNumer(limit)) {
+        if (!UtilHelper.isIntegerNumer(limit)) {
             return R.error(400, "分页控制，每页条数limit只能为数字！");
-        } else if (!UtilHelper.isNumer(offset)) {
+        } else if (!UtilHelper.isIntegerNumer(offset)) {
             return R.error(400, "分页控制，页码offset只能为数字！");
         }
         Map<String, Object> map = null;
@@ -51,8 +51,8 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/sysChargeDetails", method = RequestMethod.POST)
     public R sysChargeDetails(@RequestParam(value = "companyId", required = false) String companyId) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确,或者公司id不符合常理！");
         }
         Map<String, Object> map = sysFinancialService.sysChargeDetails(Long.valueOf(companyId));
         return R.ok(map);
@@ -66,10 +66,25 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/findSysChargeDetailsById", method = RequestMethod.POST)
     public R findSysChargeDetailsById(@RequestParam(value = "chargeId", required = false) String chargeId) {
-        if (!UtilHelper.isNumer(chargeId)) {
-            return R.error(400, "主键id格式不正确！");
+        if (!UtilHelper.isLongNumer(chargeId)) {
+            return R.error(400, "主键id格式不正确，或者不符合常理！");
         }
         Map<String, Object> map = sysFinancialService.findSysChargeDetailsById(Long.valueOf(chargeId));
+        return R.ok(map);
+    }
+
+    /**
+     * 根据公司id、年份查找当前系统需要添加的周数记录
+     *
+     * @param companyId 公司id
+     * @return
+     */
+    @RequestMapping(value = "/sysChargeAddWeekOfYearByCompanyId", method = RequestMethod.POST)
+    public R sysChargeAddWeekOfYearByCompanyId(@RequestParam(value = "companyId", required = false) String companyId) {
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
+        }
+        Map<String, Object> map = sysFinancialService.sysChargeAddWeekOfYearByCompanyId(Long.valueOf(companyId));
         return R.ok(map);
     }
 
@@ -86,21 +101,26 @@ public class SysFinancialController {
     @RequestMapping(value = "/addSysCharge", method = RequestMethod.POST)
     public R addSysCharge(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "chargeMoney", required = false) String chargeMoney
             , @RequestParam(value = "chargeMoneyNow", required = false) String chargeMoneyNow, @RequestParam(value = "chargeDebt", required = false) String chargeDebt
-            , @RequestParam(value = "chargeDebtReturn", required = false) String chargeDebtReturn) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
+            , @RequestParam(value = "chargeDebtReturn", required = false) String chargeDebtReturn, @RequestParam(value = "year", required = false) String year
+            , @RequestParam(value = "weekOfYear", required = false) String weekOfYear) {
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(chargeMoney)) {
-            return R.error(400, "收费任务额格式不正确，只能保留两位小数！");
+            return R.error(400, "收费任务额格式不正确，只能保留两位小数，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(chargeMoneyNow)) {
-            return R.error(400, "当期收费格式不正确，只能保留两位小数！");
+            return R.error(400, "当期收费格式不正确，只能保留两位小数，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(chargeDebt)) {
-            return R.error(400, "清欠任务额格式不正确，只能保留两位小数！");
+            return R.error(400, "清欠任务额格式不正确，只能保留两位小数，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(chargeDebtReturn)) {
-            return R.error(400, "清欠回款格式不正确，只能保留两位小数！");
+            return R.error(400, "清欠回款格式不正确，只能保留两位小数，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(weekOfYear)) {
+            return R.error(400, "周数格式不正确，或者不符合常理！");
         }
         try {
             Map<String, Object> map = sysFinancialService.addSysCharge(Long.valueOf(companyId), Double.valueOf(chargeMoney), Double.valueOf(chargeMoneyNow)
-                    , Double.valueOf(chargeDebt), Double.valueOf(chargeDebtReturn));
+                    , Double.valueOf(chargeDebt), Double.valueOf(chargeDebtReturn),Integer.valueOf(year) ,Integer.valueOf(weekOfYear));
             return R.ok(map);
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,22 +143,22 @@ public class SysFinancialController {
     public R updateSysCharge(@RequestParam(value = "chargeId", required = false) String chargeId, @RequestParam(value = "companyId", required = false) String companyId
             , @RequestParam(value = "chargeMoney", required = false) String chargeMoney, @RequestParam(value = "chargeMoneyNow", required = false) String chargeMoneyNow
             , @RequestParam(value = "chargeDebt", required = false) String chargeDebt, @RequestParam(value = "chargeDebtReturn", required = false) String chargeDebtReturn) {
-        if (!UtilHelper.isNumer(chargeId)) {
-            return R.error(400, "主键id格式不正确！");
-        } else if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
+        if (!UtilHelper.isLongNumer(chargeId)) {
+            return R.error(400, "主键id格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(chargeMoney)) {
-            return R.error(400, "收费任务额格式不正确，只能保留两位小数！");
+            return R.error(400, "收费任务额格式不正确，只能保留两位小数，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(chargeMoneyNow)) {
-            return R.error(400, "当期收费格式不正确，只能保留两位小数！");
+            return R.error(400, "当期收费格式不正确，只能保留两位小数，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(chargeDebt)) {
-            return R.error(400, "清欠任务额格式不正确，只能保留两位小数！");
+            return R.error(400, "清欠任务额格式不正确，只能保留两位小数，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(chargeDebtReturn)) {
-            return R.error(400, "清欠回款格式不正确，只能保留两位小数！");
+            return R.error(400, "清欠回款格式不正确，只能保留两位小数，或者不符合常理！");
         }
         try {
             Map<String, Object> map = sysFinancialService.updateSysCharge(Long.valueOf(chargeId), Long.valueOf(companyId), Double.valueOf(chargeMoney), Double.valueOf(chargeMoneyNow)
-                    , Double.valueOf(chargeDebt), Double.valueOf(chargeDebtReturn));
+                    , Double.valueOf(chargeDebt), Double.valueOf(chargeDebtReturn) );
             return R.ok(map);
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,8 +176,8 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/sysAccountsReceivableAnalysis", method = RequestMethod.POST)
     public R sysAccountsReceivableAnalysis(@RequestParam(value = "companyId", required = false) String companyId) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
         }
         Map<String, Object> map = sysFinancialService.sysAccountsReceivableAnalysis(Long.valueOf(companyId));
         return R.ok(map);
@@ -175,14 +195,14 @@ public class SysFinancialController {
     @RequestMapping(value = "/sysAccountsReceivableList", method = RequestMethod.POST)
     public R sysAccountsReceivableList(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
             , @RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
-        } else if (!UtilHelper.isNumer(year)) {
-            return R.error(400, "年份格式不正确！");
-        } else if (!UtilHelper.isNumer(limit)) {
-            return R.error(400, "分页控制，每页条数limit只能为数字！");
-        } else if (!UtilHelper.isNumer(offset)) {
-            return R.error(400, "分页控制，页码offset只能为数字！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
         }
         Map<String, Object> map = sysFinancialService.sysAccountsReceivableList(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(limit), Integer.valueOf(offset));
         return R.ok(map);
@@ -196,8 +216,8 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/findSysAccountsReceivableById", method = RequestMethod.POST)
     public R findSysAccountsReceivableById(@RequestParam(value = "accountsId", required = false) String accountsId) {
-        if (!UtilHelper.isNumer(accountsId)) {
-            return R.error(400, "主键id格式不正确！");
+        if (!UtilHelper.isLongNumer(accountsId)) {
+            return R.error(400, "主键id格式不正确，或者不符合常理！");
         }
         Map<String, Object> map = sysFinancialService.findSysAccountsReceivableById(Long.valueOf(accountsId));
         return R.ok(map);
@@ -211,12 +231,12 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/addSysAccountsReceivable", method = RequestMethod.POST)
     public R addSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
-        if(!UtilHelper.isNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
-            return R.error(400, "公司id格式不正确！！");
-        }else if(!UtilHelper.isNumer(String.valueOf(sysAccountsReceivable.getMonth()))){
-            return R.error(400, "月份格式不正确！！");
-        }else if(!UtilHelper.isNumer(String.valueOf(sysAccountsReceivable.getYear()))){
-            return R.error(400, "年份格式不正确！！");
+        if(!UtilHelper.isLongNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
+            return R.error(400, "公司id格式不正确，或者不符合常理！！");
+        }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysAccountsReceivable.getMonth()))){
+            return R.error(400, "月份格式不正确，或者不符合常理！！");
+        }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysAccountsReceivable.getYear()))){
+            return R.error(400, "年份格式不正确，或者不符合常理！！");
         }
         Double receivableHouse = sysAccountsReceivable.getReceivableCoupon() + sysAccountsReceivable.getReceivableVacancy() + sysAccountsReceivable.getReceivableSubsidy()
                 + sysAccountsReceivable.getReceivableSales() + sysAccountsReceivable.getReceivableOpen() + sysAccountsReceivable.getReceivablePropertySubsidy()
@@ -247,12 +267,12 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/updateSysAccountsReceivable", method = RequestMethod.POST)
     public R updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
-        if(!UtilHelper.isNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
-            return R.error(400, "公司id格式不正确！！");
-        }else if(!UtilHelper.isNumer(String.valueOf(sysAccountsReceivable.getMonth()))){
-            return R.error(400, "月份格式不正确！！");
-        }else if(!UtilHelper.isNumer(String.valueOf(sysAccountsReceivable.getYear()))){
-            return R.error(400, "年份格式不正确！！");
+        if(!UtilHelper.isLongNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
+            return R.error(400, "公司id格式不正确，或者不符合常理！！");
+        }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysAccountsReceivable.getMonth()))){
+            return R.error(400, "月份格式不正确，或者不符合常理！！");
+        }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysAccountsReceivable.getYear()))){
+            return R.error(400, "年份格式不正确，或者不符合常理！！");
         }
         Double receivableHouse = sysAccountsReceivable.getReceivableCoupon() + sysAccountsReceivable.getReceivableVacancy() + sysAccountsReceivable.getReceivableSubsidy()
                 + sysAccountsReceivable.getReceivableSales() + sysAccountsReceivable.getReceivableOpen() + sysAccountsReceivable.getReceivablePropertySubsidy()
@@ -284,8 +304,8 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/deleteSysAccountsReceivable", method = RequestMethod.POST)
     public R deleteSysAccountsReceivable(@RequestParam(value = "accountsId", required = false) String accountsId) {
-        if (!UtilHelper.isNumer(accountsId)) {
-            return R.error(400, "主键id格式不正确，请联系系统管理员进行处理！");
+        if (!UtilHelper.isLongNumer(accountsId)) {
+            return R.error(400, "主键id格式不正确，或者不符合常理，请联系系统管理员进行处理！");
         }
         Map<String, Object> map = sysFinancialService.deleteSysAccountsReceivable(Long.valueOf(accountsId));
         return R.ok(map);
@@ -300,8 +320,8 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/sysBudgetDetailsAnalysis", method = RequestMethod.POST)
     public R sysBudgetDetailsAnalysis(@RequestParam(value = "companyId", required = false) String companyId) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
         }
         try {
             Map<String, Object> map = sysFinancialService.sysBudgetDetailsAnalysis(Long.valueOf(companyId));
@@ -322,14 +342,14 @@ public class SysFinancialController {
     @RequestMapping(value = "/sysBudgetDetailsList", method = RequestMethod.POST)
     public R sysBudgetDetailsList(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
             , @RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
-        } else if (!UtilHelper.isNumer(year)) {
-            return R.error(400, "年份格式不正确！");
-        } else if (!UtilHelper.isNumer(limit)) {
-            return R.error(400, "分页控制，每页条数limit只能为数字！");
-        } else if (!UtilHelper.isNumer(offset)) {
-            return R.error(400, "分页控制，页码offset只能为数字！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
         }
         Map<String, Object> map = sysFinancialService.sysBudgetDetailsList(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(limit), Integer.valueOf(offset));
         return R.ok(map);
@@ -343,8 +363,8 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/findSysBudgetDetailsById", method = RequestMethod.POST)
     public R findSysBudgetDetailsById(@RequestParam(value = "budgetId", required = false) String budgetId) {
-        if (!UtilHelper.isNumer(budgetId)) {
-            return R.error(400, "主键id格式不正确！");
+        if (!UtilHelper.isLongNumer(budgetId)) {
+            return R.error(400, "主键id格式不正确，或者不符合常理！");
         }
         Map<String, Object> map = sysFinancialService.findSysBudgetDetailsById(Long.valueOf(budgetId));
         return R.ok(map);
@@ -358,12 +378,12 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/addSysBudgetDetails", method = RequestMethod.POST)
     public R addSysBudgetDetails(SysBudgetDetails sysBudgetDetails) {
-        if(!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getCompanyId()))){
-            return R.error(400, "公司id格式不正确！！");
-        }else if(!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getMonth()))){
-            return R.error(400, "月份格式不正确！！");
-        }else if(!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getYear()))){
-            return R.error(400, "年份格式不正确！！");
+        if(!UtilHelper.isLongNumer(String.valueOf(sysBudgetDetails.getCompanyId()))){
+            return R.error(400, "公司id格式不正确，或者不符合常理！！");
+        }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysBudgetDetails.getMonth()))){
+            return R.error(400, "月份格式不正确，或者不符合常理！！");
+        }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysBudgetDetails.getYear()))){
+            return R.error(400, "年份格式不正确，或者不符合常理！！");
         }
         Double realExpensesTotal = sysBudgetDetails.getPersonnelCost() + sysBudgetDetails.getAdministrativeCost() + sysBudgetDetails.getMaterialCost()
                 + sysBudgetDetails.getEnergyCost() + sysBudgetDetails.getEquipmentCost() + sysBudgetDetails.getCleaningCost()
@@ -389,18 +409,18 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/updateSysBudgetDetails", method = RequestMethod.POST)
     public R updateSysBudgetDetails(SysBudgetDetails sysBudgetDetails) {
-        if(!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getCompanyId()))){
-            return R.error(400, "公司id格式不正确！！");
-        }else if(!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getMonth()))){
-            return R.error(400, "月份格式不正确！！");
-        }else if(!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getYear()))){
-            return R.error(400, "年份格式不正确！！");
+        if(!UtilHelper.isLongNumer(String.valueOf(sysBudgetDetails.getCompanyId()))){
+            return R.error(400, "公司id格式不正确，或者不符合常理！！");
+        }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysBudgetDetails.getMonth()))){
+            return R.error(400, "月份格式不正确，或者不符合常理！！");
+        }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysBudgetDetails.getYear()))){
+            return R.error(400, "年份格式不正确，或者不符合常理！！");
         }
         Double realExpensesTotal = sysBudgetDetails.getPersonnelCost() + sysBudgetDetails.getAdministrativeCost() + sysBudgetDetails.getMaterialCost()
                 + sysBudgetDetails.getEnergyCost() + sysBudgetDetails.getEquipmentCost() + sysBudgetDetails.getCleaningCost()
                 + sysBudgetDetails.getAfforestCost() + sysBudgetDetails.getOrderMaintenanceCost() + sysBudgetDetails.getCommunityActivitiesCost() + sysBudgetDetails.getOtherCost();
-        if (!UtilHelper.isNumer(String.valueOf(sysBudgetDetails.getBudgetId()))) {
-            return R.error(400, "主键id格式不正确，请联系系统管理员进行处理！");
+        if (!UtilHelper.isLongNumer(String.valueOf(sysBudgetDetails.getBudgetId()))) {
+            return R.error(400, "主键id格式不正确，或者不符合常理，请联系系统管理员进行处理！");
         } else if (!UtilHelper.DecimalFormatForDouble(String.valueOf(realExpensesTotal)).equals(sysBudgetDetails.getRealExpensesTotal())) {
             return R.error(400, "实际总支出与详细数据合计总数不对，请联系管理员进行处理！");
         }
@@ -423,8 +443,8 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/deleteSysBudgetDetails", method = RequestMethod.POST)
     public R deleteSysBudgetDetails(@RequestParam(value = "budgetId", required = false) String budgetId) {
-        if (!UtilHelper.isNumer(budgetId)) {
-            return R.error(400, "主键id格式不正确，请联系系统管理员进行处理！");
+        if (!UtilHelper.isLongNumer(budgetId)) {
+            return R.error(400, "主键id格式不正确，或者不符合常理，请联系系统管理员进行处理！");
         }
         try {
             Map<String, Object> map = sysFinancialService.deleteSysBudgetDetails(Long.valueOf(budgetId));

@@ -34,9 +34,9 @@ public class SysRoleController {
 
     @RequestMapping(value = "/getSysRoleList", method = RequestMethod.POST)
     public R getSysRoleList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
-        if (!UtilHelper.isNumer(limit)) {
+        if (!UtilHelper.isIntegerNumer(limit)) {
             return R.error(400, "分页控制，每页条数limit只能为数字！");
-        } else if (!UtilHelper.isNumer(offset)) {
+        } else if (!UtilHelper.isIntegerNumer(offset)) {
             return R.error(400, "分页控制，页码offset只能为数字！");
         }
         Map<String, Object> map=sysRoleService.getSysRoleList(Integer.valueOf(limit), Integer.valueOf(offset));
@@ -75,7 +75,7 @@ public class SysRoleController {
     @RequestMapping(value = "/updateSysRole", method = RequestMethod.POST)
     public R updateSysRole(@RequestParam(value = "roleId", required = false)String roleId,@RequestParam(value = "roleName", required = false)String roleName
             ,@RequestParam(value = "remark", required = false)String remark,@RequestParam(value = "moduleIds", required = false) String moduleIds) {
-        if(!UtilHelper.isNumer(roleId)){
+        if(!UtilHelper.isLongNumer(roleId)){
             return R.error(400, "角色编号格式不正确，请联系系统管理员！");
         }
         try {
@@ -89,7 +89,7 @@ public class SysRoleController {
     }
     @RequestMapping(value = "/deleteSysRole", method = RequestMethod.POST)
     public R  deleteSysRole(@RequestParam(value = "roleId", required = false)String roleId) {
-        if(!UtilHelper.isNumer(roleId)){
+        if(!UtilHelper.isLongNumer(roleId)){
             return R.error(400, "角色编号格式不正确，请联系系统管理员！");
         }
         Map<String, Object> map= sysRoleService.deleteSysRole(Long.valueOf(roleId));

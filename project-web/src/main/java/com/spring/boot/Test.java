@@ -116,15 +116,26 @@ public class Test {
         System.out.println(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(Double.valueOf(131) - Double.valueOf(465), Double.valueOf(465))));
 
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
+        Date data=null;
+        try {
+            SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            data = sDateFormat.parse("2018-12-31 00:00:00");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         cal.setFirstDayOfWeek(Calendar.MONDAY);
-        cal.set(Calendar.YEAR, 2018);
+        cal.setMinimalDaysInFirstWeek(7);
+        //cal.set(Calendar.YEAR, 2018);
         /*cal.set(Calendar.MONTH, 11);//11表示的是12月
         cal.set(Calendar.DATE, 31);*/
+        cal.setTime(data);
         //53
-        System.out.println(cal.get(Calendar.WEEK_OF_YEAR));
+        System.out.println("年："+cal.get(Calendar.YEAR));
+        System.out.println("月："+cal.get(Calendar.MONTH));
+        System.out.println("周数："+cal.get(Calendar.WEEK_OF_YEAR));
         System.out.println(new Date());
         System.out.println(new GregorianCalendar().getTime());
-        System.out.println(Calendar.getInstance().getTime());
+        System.out.println("周：："+Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
 
         System.out.println("2018年周数："+getMaxWeekNumOfYear(2018));
 

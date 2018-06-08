@@ -41,16 +41,16 @@ public class SysProjectEnergyController {
             , @RequestParam(value = "month", required = false) String month, @RequestParam(value = "projectUnfinishedTotal", required = false) String projectUnfinishedTotal
             , @RequestParam(value = "projectFinishedTotal", required = false) String projectFinishedTotal, @RequestParam(value = "monthConsumptionElectricity", required = false) String monthConsumptionElectricity
             , @RequestParam(value = "monthConsumptionWater", required = false) String monthConsumptionWater, @RequestParam(value = "fileInfo", required = false) String fileInfo) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不合理！");
-        } else if (!UtilHelper.isNumer(year)) {
-            return R.error(400, "年份格式不合理！");
-        } else if (!UtilHelper.isNumer(month)) {
-            return R.error(400, "月份格式不合理！");
-        } else if (!UtilHelper.isNumer(projectUnfinishedTotal)) {
-            return R.error(400, "工程遗留数量格式不合理！");
-        } else if (!UtilHelper.isNumer(projectFinishedTotal)) {
-            return R.error(400, "已处理工程遗留问题数量格式不合理！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(projectUnfinishedTotal)) {
+            return R.error(400, "工程遗留数量格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(projectFinishedTotal)) {
+            return R.error(400, "已处理工程遗留问题数量格式不合理，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(monthConsumptionElectricity)) {
             return R.error(400, "月耗电量格式不合理,只能保留两位小数！");
         } else if (!UtilHelper.isDoubleNumer(monthConsumptionWater)) {
@@ -87,22 +87,22 @@ public class SysProjectEnergyController {
             , @RequestParam(value = "projectFinishedTotal", required = false) String projectFinishedTotal, @RequestParam(value = "monthConsumptionElectricity", required = false) String monthConsumptionElectricity
             , @RequestParam(value = "monthConsumptionWater", required = false) String monthConsumptionWater, @RequestParam(value = "fileInfo", required = false) String fileInfo
             , @RequestParam(value = "projectId", required = false) String projectId) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不合理！");
-        } else if (!UtilHelper.isNumer(year)) {
-            return R.error(400, "年份格式不合理！");
-        } else if (!UtilHelper.isNumer(month)) {
-            return R.error(400, "月份格式不合理！");
-        } else if (!UtilHelper.isNumer(projectUnfinishedTotal)) {
-            return R.error(400, "工程遗留数量格式不合理！");
-        } else if (!UtilHelper.isNumer(projectFinishedTotal)) {
-            return R.error(400, "已处理工程遗留问题数量格式不合理！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(projectUnfinishedTotal)) {
+            return R.error(400, "工程遗留数量格式不合理，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(projectFinishedTotal)) {
+            return R.error(400, "已处理工程遗留问题数量格式不合理，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(monthConsumptionElectricity)) {
             return R.error(400, "月耗电量格式不合理,只能保留两位小数！");
         } else if (!UtilHelper.isDoubleNumer(monthConsumptionWater)) {
             return R.error(400, "月耗水量格式不合理,只能保留两位小数！");
-        } else if (!UtilHelper.isNumer(projectId)) {
-            return R.error(400, "主键id格式不正确！");
+        } else if (!UtilHelper.isLongNumer(projectId)) {
+            return R.error(400, "主键id格式不正确，或者不符合常理！");
         }
         try {
             Map<String, Object> map = sysProjectEnergyService.updateSysProjectEnergy(Long.valueOf(projectId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(projectUnfinishedTotal)
@@ -122,8 +122,8 @@ public class SysProjectEnergyController {
      */
     @RequestMapping(value = "/deleteSysProject", method = RequestMethod.POST)
     public R deleteSysProject(@RequestParam(value = "projectId", required = false) String projectId) {
-        if (!UtilHelper.isNumer(projectId)) {
-            return R.error(400, "主键id格式不合理！");
+        if (!UtilHelper.isLongNumer(projectId)) {
+            return R.error(400, "主键id格式不合理，或者不符合常理！");
         }
         try {
             Map<String, Object> map = sysProjectEnergyService.deleteSysProject(Long.valueOf(projectId));
@@ -142,8 +142,8 @@ public class SysProjectEnergyController {
      */
     @RequestMapping(value = "/findSysProjectEnergyById", method = RequestMethod.POST)
     public R findSysProjectEnergyById(@RequestParam(value = "projectId", required = false) String projectId) {
-        if (!UtilHelper.isNumer(projectId)) {
-            return R.error(400, "主键id格式不合理！");
+        if (!UtilHelper.isLongNumer(projectId)) {
+            return R.error(400, "主键id格式不合理，或者不符合常理！");
         }
         Map<String, Object> map = sysProjectEnergyService.findSysProjectEnergyById(Long.valueOf(projectId));
         return R.ok(map);
@@ -158,14 +158,14 @@ public class SysProjectEnergyController {
     @RequestMapping(value = "/sysProjectEnergyList", method = RequestMethod.POST)
     public R sysProjectEnergyList(@RequestParam(value = "companyId", required = false) String companyId,@RequestParam(value = "year", required = false) String year
     ,@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
-        if (!UtilHelper.isNumer(limit)) {
-            return R.error(400, "分页控制，每页条数limit只能为数字！");
-        } else if (!UtilHelper.isNumer(offset)) {
-            return R.error(400, "分页控制，页码offset只能为数字！");
-        }else if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不合理！");
-        }else if (!UtilHelper.isNumer(year)) {
-            return R.error(400, "年份格式不合理！");
+        if (!UtilHelper.isIntegerNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
+        }else if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不合理，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不合理，或者不符合常理！");
         }
         Map<String, Object> map = sysProjectEnergyService.sysProjectEnergyList(Long.valueOf(companyId),Integer.valueOf(year),Integer.valueOf(limit),Integer.valueOf(offset));
         return R.ok(map);
@@ -177,8 +177,8 @@ public class SysProjectEnergyController {
      */
     @RequestMapping(value = "/sysProjectEnergyAnalysis", method = RequestMethod.POST)
     public R sysProjectEnergyAnalysis(@RequestParam(value = "companyId", required = false) String companyId) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不合理！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不合理，或者不符合常理！");
         }
         Map<String, Object> map = sysProjectEnergyService.sysProjectEnergyAnalysis(Long.valueOf(companyId));
         return R.ok(map);
@@ -190,8 +190,8 @@ public class SysProjectEnergyController {
      */
     @RequestMapping(value = "/sysProjectEnergyAnalysisForMonth", method = RequestMethod.POST)
     public R sysProjectEnergyAnalysisForMonth(@RequestParam(value = "companyId", required = false) String companyId) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不合理！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不合理，或者不符合常理！");
         }
         Map<String, Object> map = sysProjectEnergyService.sysProjectEnergyAnalysisForMonth(Long.valueOf(companyId));
         return R.ok(map);
@@ -204,8 +204,8 @@ public class SysProjectEnergyController {
      */
     @RequestMapping(value = "/findSysProjectFileById", method = RequestMethod.POST)
     public R findSysProjectFileById(@RequestParam(value = "projectId", required = false) String projectId) {
-        if (!UtilHelper.isNumer(projectId)) {
-            return R.error(400, "主键ID格式不正确，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(projectId)) {
+            return R.error(400, "主键ID格式不正确，或者不符合常理，请联系系统管理员！");
         }
         Map<String, Object> map = sysProjectEnergyService.findSysProjectFileById(Long.valueOf(projectId));
         return R.ok(map);

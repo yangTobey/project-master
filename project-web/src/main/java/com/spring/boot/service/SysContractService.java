@@ -39,7 +39,7 @@ public interface SysContractService {
      * @param contractTypeId
      * @return
      */
-    Map<String, Object> deleteSysContractType(String contractTypeId);
+    Map<String, Object> deleteSysContractType(Long contractTypeId);
 
     /**
      * 添加合同

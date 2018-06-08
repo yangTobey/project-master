@@ -372,6 +372,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
     /**
      * 存储统计报表信息到redis缓存
      */
+    @Override
     public void setDataToRedis() {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();

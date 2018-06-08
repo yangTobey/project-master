@@ -115,4 +115,10 @@ public interface SysContractBusinessService {
      * 更新快到期的合同状态
      */
     void updateSysContractExpire(Integer type,String nowTime);
+
+    /**
+     * 根据合同类型id和合同状态获取合同信息
+     * @return
+     */
+    List<SysContract> findSysContractByTypeId(Long contractTypeId,Integer statusCode);
 }

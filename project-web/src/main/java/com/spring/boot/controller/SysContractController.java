@@ -37,10 +37,10 @@ public class SysContractController {
     @ResponseBody
     public R sysContractTypeList(@RequestParam(value = "limit", required = false) String limit
             ,@RequestParam(value = "offset", required = false) String offset){
-        if (!UtilHelper.isNumer(limit)) {
-            return R.error(400, "分页控制，每页条数limit只能为数字！");
-        }else if (!UtilHelper.isNumer(offset)) {
-            return R.error(400, "分页控制，页码offset只能为数字！");
+        if (!UtilHelper.isIntegerNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
         }
         Map<String, Object> map=sysContractService.sysContractTypeList(Integer.valueOf(limit),Integer.valueOf(offset));
 
@@ -65,8 +65,8 @@ public class SysContractController {
     @RequestMapping(value = "/addSysContractType", method = RequestMethod.POST)
     @ResponseBody
     public R addSysContractType(@RequestParam(value = "contractTypeName", required = false)String contractTypeName,@RequestParam(value = "companyId", required = false)String companyId) {
-        if(!UtilHelper.isNumer(companyId)){
-            return R.error(400, "公司id格式不正确！");
+        if(!UtilHelper.isLongNumer(companyId)){
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
         }else if(UtilHelper.isEmpty(contractTypeName)){
             return R.error(400, "合同类型名称不能为空！");
         }
@@ -80,8 +80,8 @@ public class SysContractController {
     @RequestMapping(value = "/updateSysContractType", method = RequestMethod.POST)
     @ResponseBody
     public R updateSysContractType(@RequestParam(value = "contractTypeId", required = false)String contractTypeId,@RequestParam(value = "contractTypeName", required = false) String contractTypeName) {
-        if(!UtilHelper.isNumer(contractTypeId)){
-            return R.error(400, "合同类型id格式不正确！");
+        if(!UtilHelper.isLongNumer(contractTypeId)){
+            return R.error(400, "合同类型id格式不正确，或者不符合常理！");
         }else if(UtilHelper.isEmpty(contractTypeName)){
             return R.error(400, "合同类型名称不能为空！");
         }
@@ -95,10 +95,10 @@ public class SysContractController {
     @RequestMapping(value = "/deleteSysContractType", method = RequestMethod.POST)
     @ResponseBody
     public R deleteSysContractType(@RequestParam(value = "contractTypeId", required = false)String contractTypeId) {
-        if(!UtilHelper.isNumer(contractTypeId)){
-            return R.error(400, "合同类型id格式不正确！");
+        if(!UtilHelper.isLongNumer(contractTypeId)){
+            return R.error(400, "合同类型id格式不正确，或者不符合常理！");
         }
-        Map<String, Object> map=sysContractService.deleteSysContractType(contractTypeId);
+        Map<String, Object> map=sysContractService.deleteSysContractType(Long.valueOf(contractTypeId));
         return R.ok(map);
     }
     /**
@@ -108,8 +108,8 @@ public class SysContractController {
     @RequestMapping(value = "/sysContractAnalysisData", method = RequestMethod.POST)
     @ResponseBody
     public R sysContractAnalysisData(@RequestParam(value = "companyId", required = false) String companyId) {
-        if(!UtilHelper.isNumer(companyId)){
-            return R.error(400, "公司id格式不正确！");
+        if(!UtilHelper.isLongNumer(companyId)){
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
         }
         Map<String, Object> map=sysContractService.sysContractAnalysisData(Long.valueOf(companyId));
 
@@ -149,16 +149,16 @@ public class SysContractController {
             return R.error(400, "合同乙方名称不能为空！");
         }*/
 
-        if(!UtilHelper.isNumer(contractTypeId)){
-            return R.error(400, "合同类型id格式不正确！");
-        }else if(!UtilHelper.isNumer(companyId)){
-            return R.error(400, "公司id格式不正确！");
-        }else if(!UtilHelper.isNumer(statusCode)){
-            return R.error(400, "合同状态格式不正确！");
-        }else if (!UtilHelper.isNumer(limit)) {
-            return R.error(400, "分页控制，每页条数limit只能为数字！");
-        }else if (!UtilHelper.isNumer(offset)) {
-            return R.error(400, "分页控制，页码offset只能为数字！");
+        if(!UtilHelper.isLongNumer(contractTypeId)){
+            return R.error(400, "合同类型id格式不正确，或者不符合常理！");
+        }else if(!UtilHelper.isLongNumer(companyId)){
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
+        }else if(!UtilHelper.isIntegerNumer(statusCode)){
+            return R.error(400, "合同状态格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
         }
         Map<String, Object> map=sysContractService.sysContractDataList(contractName,contractCode,Integer.valueOf(statusCode),contractStartTime, contractEndTime,
                 contractTypeId,firstPartyCompany,secondPartyCompany,Integer.valueOf(limit),Integer.valueOf(offset),Long.valueOf(companyId));
@@ -187,16 +187,16 @@ public class SysContractController {
             return R.error(400, "合同开始时间不能为空！");
         }else if(UtilHelper.isEmpty(contractEndTime)){
             return R.error(400, "合同到期时间不能为空！");
-        }else if(!UtilHelper.isNumer(contractTypeId)){
-            return R.error(400, "合同类型id格式不正确！");
+        }else if(!UtilHelper.isIntegerNumer(contractTypeId)){
+            return R.error(400, "合同类型id格式不正确，或者不符合常理！");
         }else if(UtilHelper.isEmpty(firstPartyCompany)){
             return R.error(400, "合同甲方名称不能为空！");
         }else if(UtilHelper.isEmpty(secondPartyCompany)){
             return R.error(400, "合同乙方名称不能为空！");
         }else if(UtilHelper.isEmpty(personLiableName)){
             return R.error(400, "合同负责人不能为空！");
-        }else if(!UtilHelper.isNumer(companyId)){
-            return R.error(400, "公司id格式不正确，请联系系统管理员！");
+        }else if(!UtilHelper.isLongNumer(companyId)){
+            return R.error(400, "公司id格式不正确，或者不符合常理，请联系系统管理员！");
         }
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -225,8 +225,8 @@ public class SysContractController {
             ,@RequestParam(value = "contractTypeId", required = false)String contractTypeId,@RequestParam(value = "firstPartyCompany", required = false) String firstPartyCompany
             ,@RequestParam(value = "secondPartyCompany", required = false) String secondPartyCompany, @RequestParam(value = "personLiableName", required = false)String personLiableName
             , @RequestParam(value = "fileInfo", required = false) String fileInfo, @RequestParam(value = "companyId", required = false) String companyId) {
-        if (!UtilHelper.isNumer(contractId)) {
-            return R.error(400, "合同id格式不正确！");
+        if (!UtilHelper.isLongNumer(contractId)) {
+            return R.error(400, "合同id格式不正确，或者不符合常理！");
         }else if(UtilHelper.isEmpty(contractName)){
             return R.error(400, "合同名称不能为空！");
         }else if(UtilHelper.isEmpty(contractCode)){
@@ -237,16 +237,16 @@ public class SysContractController {
             return R.error(400, "合同开始时间不能为空！");
         }else if(UtilHelper.isEmpty(contractEndTime)){
             return R.error(400, "合同到期时间不能为空！");
-        }else if(!UtilHelper.isNumer(contractTypeId)){
-            return R.error(400, "合同类型id格式不正确！");
+        }else if(!UtilHelper.isLongNumer(contractTypeId)){
+            return R.error(400, "合同类型id格式不正确，或者不符合常理！");
         }else if(UtilHelper.isEmpty(firstPartyCompany)){
             return R.error(400, "合同甲方名称不能为空！");
         }else if(UtilHelper.isEmpty(secondPartyCompany)){
             return R.error(400, "合同乙方名称不能为空！");
         }else if(UtilHelper.isEmpty(personLiableName)){
             return R.error(400, "合同负责人不能为空！");
-        }else if(!UtilHelper.isNumer(companyId)){
-            return R.error(400, "公司id格式不正确，请联系系统管理员！");
+        }else if(!UtilHelper.isLongNumer(companyId)){
+            return R.error(400, "公司id格式不正确，或者不符合常理，请联系系统管理员！");
         }
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -270,8 +270,8 @@ public class SysContractController {
     @RequestMapping(value = "/deleteSysContract", method = RequestMethod.POST)
     @ResponseBody
     public R  deleteSysContract(@RequestParam(value = "contractId", required = false)String contractId) {
-        if (!UtilHelper.isNumer(contractId)) {
-            return R.error(400, "合同id格式不正确！");
+        if (!UtilHelper.isLongNumer(contractId)) {
+            return R.error(400, "合同id格式不正确，或者不符合常理！");
         }
         Map<String, Object> map=sysContractService.deleteSysContract(Long.valueOf(contractId));
 
@@ -286,8 +286,8 @@ public class SysContractController {
     @RequestMapping(value = "/findSysContractById", method = RequestMethod.POST)
     @ResponseBody
     public R findSysContractById(@RequestParam(value = "contractId", required = false) String contractId) {
-        if (!UtilHelper.isNumer(contractId)) {
-            return R.error(400, "主键id格式不正确，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(contractId)) {
+            return R.error(400, "主键id格式不正确，或者不符合常理，请联系系统管理员！");
         }
         Map<String, Object> map = sysContractService.findSysContractById(Long.valueOf(contractId));
         return R.ok(map);
@@ -301,8 +301,8 @@ public class SysContractController {
     @RequestMapping(value = "/findSysContractFileById", method = RequestMethod.POST)
     @ResponseBody
     public R findSysContractFileById(@RequestParam(value = "contractId", required = false) String contractId) {
-        if (!UtilHelper.isNumer(contractId)) {
-            return R.error(400, "主键id格式不正确，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(contractId)) {
+            return R.error(400, "主键id格式不正确，或者不符合常理，请联系系统管理员！");
         }
         Map<String, Object> map = sysContractService.findSysContractFileById(Long.valueOf(contractId));
         return R.ok(map);
@@ -316,8 +316,8 @@ public class SysContractController {
     @RequestMapping(value = "/getSysContractExpireDataTotal", method = RequestMethod.POST)
     @ResponseBody
     public R getSysContractExpireDataTotal(@RequestParam(value = "companyId", required = false) String companyId){
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
         }
         Map<String,Object> map=sysContractService.getSysContractExpireDataTotal(Long.valueOf(companyId));
         return R.ok(map);

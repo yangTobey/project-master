@@ -369,6 +369,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
     /**
      * 将统计信息存储到redis缓存中
      */
+    @Override
     public void setDateToRedis() {
         Map<String, Object> map = new HashMap<String, Object>();
         int month = 0;

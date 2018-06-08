@@ -107,9 +107,14 @@ public class SysContractServiceImpl implements SysContractService {
     }
 
     @Override
-    public Map<String, Object> deleteSysContractType(String contractTypeId) {
+    public Map<String, Object> deleteSysContractType(Long contractTypeId) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
+        //合同状态（1：未执行，2：在执行，3：即将过期，4：已经过期，5：已经删除）
+        List<SysContract> list = sysContractBusinessService.findSysContractByTypeId(contractTypeId,5);
+        if(list.size()>0){
+            return R.error(500, "删除失败,该合同分类下还有合同信息，不能删除！");
+        }
         map.put("contractTypeId", contractTypeId);
         int count = sysContractBusinessService.deleteSysContractType(map);
         if (count > 0) {

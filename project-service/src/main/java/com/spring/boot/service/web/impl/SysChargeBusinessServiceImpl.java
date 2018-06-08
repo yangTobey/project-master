@@ -51,4 +51,14 @@ public class SysChargeBusinessServiceImpl implements SysChargeBusinessService {
     public int updateSysCharge(Map<String, Object> map) {
         return sysChargeDao.update(map);
     }
+
+    @Override
+    public SysChargeDetails findMaxweekOfYearByYear(Long companyId, Integer year) {
+        return sysChargeDao.findMaxweekOfYearByYear(companyId,year);
+    }
+
+    @Override
+    public SysChargeDetails findWeekOfYearRecord(Long companyId, Integer year, Integer weekOfYear) {
+        return sysChargeDao.findWeekOfYearRecord(companyId,year,weekOfYear);
+    }
 }

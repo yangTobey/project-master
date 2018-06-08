@@ -35,12 +35,12 @@ public class SysBasicDataController {
     public R sysBasicDataAnalysisData(@RequestParam(value = "companyId", required = false) String companyId,
                                       @RequestParam(value = "year", required = false) String year,
                                       @RequestParam(value = "month", required = false) String month) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
-        } else if (!UtilHelper.isNumer(year)) {
-            return R.error(400, "年份格式不正确！");
-        } else if (!UtilHelper.isNumer(month)) {
-            return R.error(400, "月份格式不正确！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         }
         Map<String, Object> map = sysBasicDataService.sysBasicDataAnalysisData(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month));
         return R.ok( map);
@@ -58,14 +58,14 @@ public class SysBasicDataController {
             @RequestParam(value = "limit", required = false) String limit,
             @RequestParam(value = "offset", required = false) String offset,
             @RequestParam(value = "year", required = false) String year) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
-        }else if (!UtilHelper.isNumer(limit)) {
-            return R.error(400, "分页控制，每页条数limit只能为数字！");
-        } else if (!UtilHelper.isNumer(offset)) {
-            return R.error(400, "分页控制，页码offset只能为数字！");
-        } else if (!UtilHelper.isNumer(year)) {
-            return R.error(400, "年份格式不正确！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不正确，或者不符合常理！");
         }
         Map<String, Object> map = sysBasicDataService.sysBasicDataAnalysisList(Long.valueOf(companyId),Integer.valueOf(limit), Integer.valueOf(offset), Integer.valueOf(year));
         return R.ok().put(200, map,"获取成功！");
@@ -99,34 +99,34 @@ public class SysBasicDataController {
             , @RequestParam(value = "parkingSpace", required = false) String parkingSpace, @RequestParam(value = "forSaleParkingSpace", required = false) String forSaleParkingSpace
             , @RequestParam(value = "salesDistribution", required = false) String salesDistribution, @RequestParam(value = "companyId", required = false) String companyId) {
 
-        if (!UtilHelper.isNumer(year)) {
-            return R.error(400, "年份格式不正确！");
-        } else if (!UtilHelper.isNumer(month)) {
-            return R.error(400, "月份格式不正确！");
+        if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(constructionArea)) {
-            return R.error(400, " 建筑面积格式不正确，只能保留两位小数！");
+            return R.error(400, " 建筑面积格式不正确，只能保留两位小数，或者不符合常理！");
         }else if (!UtilHelper.isDoubleNumer(chargeArea)) {
-            return R.error(400, "建筑收费面积格式不正确,只能保留两位小数！");
-        }else if (!UtilHelper.isNumer(cityNumber)) {
-            return R.error(400, "城市数量格式不正确！");
-        }else if (!UtilHelper.isNumer(projectNumber)) {
-            return R.error(400, "项目数量格式不正确！");
-        }else if (!UtilHelper.isNumer(houseNumber)) {
-            return R.error(400, "房屋数量格式不正确！");
-        }else if (!UtilHelper.isNumer(acceptHouseNumber)) {
-            return R.error(400, "已收房屋数量格式不正确！");
-        }else if (!UtilHelper.isNumer(forSaleHouseNumber)) {
-            return R.error(400, "待售房屋数量（空置）格式不正确！");
-        }else if (!UtilHelper.isNumer(decorateHouseNumber)) {
-            return R.error(400, "装修房屋数量格式不正确！");
-        }else if (!UtilHelper.isNumer(parkingSpace)) {
-            return R.error(400, "停车位总数量格式不正确！");
-        }else if (!UtilHelper.isNumer(forSaleParkingSpace)) {
-            return R.error(400, "待售车位数量格式不正确！");
-        }else if (!UtilHelper.isNumer(salesDistribution)) {
-            return R.error(400, "销配格式不正确！");
-        }else if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
+            return R.error(400, "建筑收费面积格式不正确,只能保留两位小数，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(cityNumber)) {
+            return R.error(400, "城市数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(projectNumber)) {
+            return R.error(400, "项目数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(houseNumber)) {
+            return R.error(400, "房屋数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(acceptHouseNumber)) {
+            return R.error(400, "已收房屋数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(forSaleHouseNumber)) {
+            return R.error(400, "待售房屋数量（空置）格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(decorateHouseNumber)) {
+            return R.error(400, "装修房屋数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(parkingSpace)) {
+            return R.error(400, "停车位总数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(forSaleParkingSpace)) {
+            return R.error(400, "待售车位数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(salesDistribution)) {
+            return R.error(400, "销配格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
         }
         //异常捕捉，service层做事物管理回滚
         try{
@@ -170,36 +170,36 @@ public class SysBasicDataController {
             , @RequestParam(value = "parkingSpace", required = false) String parkingSpace, @RequestParam(value = "forSaleParkingSpace", required = false) String forSaleParkingSpace
             , @RequestParam(value = "salesDistribution", required = false) String salesDistribution, @RequestParam(value = "companyId", required = false) String companyId) {
         logger.info("更新基础信息！");
-        if (!UtilHelper.isNumer(basicId)) {
-            return R.error(400, "基础信息id格式不正确！");
-        } else if (!UtilHelper.isNumer(year)) {
-            return R.error(400, "年份格式不正确！");
-        } else if (!UtilHelper.isNumer(month)) {
-            return R.error(400, "月份格式不正确！");
+        if (!UtilHelper.isLongNumer(basicId)) {
+            return R.error(400, "基础信息id格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isDoubleNumer(constructionArea)) {
-            return R.error(400, " 建筑面积格式不正确，只能保留两位小数！");
+            return R.error(400, " 建筑面积格式不正确，只能保留两位小数，或者不符合常理！");
         }else if (!UtilHelper.isDoubleNumer(chargeArea)) {
-            return R.error(400, "建筑收费面积格式不正确，只能保留两位小数！");
-        }else if (!UtilHelper.isNumer(cityNumber)) {
-            return R.error(400, "城市数量格式不正确！");
-        }else if (!UtilHelper.isNumer(projectNumber)) {
-            return R.error(400, "项目数量格式不正确！");
-        }else if (!UtilHelper.isNumer(houseNumber)) {
-            return R.error(400, "房屋数量格式不正确！");
-        }else if (!UtilHelper.isNumer(acceptHouseNumber)) {
-            return R.error(400, "已收房屋数量格式不正确！");
-        }else if (!UtilHelper.isNumer(forSaleHouseNumber)) {
-            return R.error(400, "待售房屋数量（空置）格式不正确！");
-        }else if (!UtilHelper.isNumer(decorateHouseNumber)) {
-            return R.error(400, "装修房屋数量格式不正确！");
-        }else if (!UtilHelper.isNumer(parkingSpace)) {
-            return R.error(400, "停车位总数量格式不正确！");
-        }else if (!UtilHelper.isNumer(forSaleParkingSpace)) {
-            return R.error(400, "待售车位数量格式不正确！");
-        }else if (!UtilHelper.isNumer(salesDistribution)) {
-            return R.error(400, "销配格式不正确！");
-        }else if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
+            return R.error(400, "建筑收费面积格式不正确，只能保留两位小数，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(cityNumber)) {
+            return R.error(400, "城市数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(projectNumber)) {
+            return R.error(400, "项目数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(houseNumber)) {
+            return R.error(400, "房屋数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(acceptHouseNumber)) {
+            return R.error(400, "已收房屋数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(forSaleHouseNumber)) {
+            return R.error(400, "待售房屋数量（空置）格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(decorateHouseNumber)) {
+            return R.error(400, "装修房屋数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(parkingSpace)) {
+            return R.error(400, "停车位总数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(forSaleParkingSpace)) {
+            return R.error(400, "待售车位数量格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(salesDistribution)) {
+            return R.error(400, "销配格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
         }
         try {
             Map<String, Object> map = sysBasicDataService.updateSysBasicData(Long.valueOf(basicId), Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
@@ -221,8 +221,8 @@ public class SysBasicDataController {
      */
     @RequestMapping(value = "/deleteSysBasicData", method = RequestMethod.POST)
     public R deleteSysBasicData(@RequestParam(value = "basicId", required = false) String basicId) {
-        if (UtilHelper.isEmpty(basicId)) {
-            return R.error(400, "基础信息id编号不能为空，请联系系统管理员！");
+        if (!UtilHelper.isIntegerNumer(basicId)) {
+            return R.error(400, "基础信息id格式不正确，或者不符合常理，请联系系统管理员！");
         }
         try {
             Map<String, Object> map = sysBasicDataService.deleteSysBasicData(Integer.valueOf(basicId));
@@ -241,8 +241,8 @@ public class SysBasicDataController {
      */
     @RequestMapping(value = "/findSysBasicDataById", method = RequestMethod.POST)
     public R findSysBasicDataById(@RequestParam(value = "basicId", required = false) String basicId) {
-        if (UtilHelper.isEmpty(basicId)) {
-            return R.error(400, "基础信息id编号不能为空，请联系系统管理员！");
+        if (!UtilHelper.isIntegerNumer(basicId)) {
+            return R.error(400, "基础信息id格式不正确，或者不符合常理，请联系系统管理员！");
         }
         Map<String, Object> map = sysBasicDataService.findSysBasicDataById(Integer.valueOf(basicId));
         return R.ok(map);

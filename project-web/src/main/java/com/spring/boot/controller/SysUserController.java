@@ -77,8 +77,8 @@ public class SysUserController {
      */
     @RequestMapping(value = "/resetSysUserPassword", method = RequestMethod.POST)
     public R resetSysUserPassword(@RequestParam(value = "userId", required = false) String userId) {
-        if (!UtilHelper.isNumer(userId)) {
-            return R.error(400, "用户id格式不正确！");
+        if (!UtilHelper.isLongNumer(userId)) {
+            return R.error(400, "用户id格式不正确，或者不符合常理！");
         }
         Map<String, Object> map = sysUserService.resetSysUserPassword(Long.valueOf(userId));
         return R.ok(map);
@@ -112,12 +112,12 @@ public class SysUserController {
             return R.error(400, "登录密码存在非法字符！");
         }else if (password.length()<6||password.length()>18) {
             return R.error(400, "登录密码长度不符合要求！");
-        } else if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
-        } else if (!UtilHelper.isNumer(roleId)) {
-            return R.error(400, "角色id格式不正确！");
-        } else if (!UtilHelper.isNumer(departmentId)) {
-            return R.error(400, "部门id格式不正确！");
+        } else if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isLongNumer(roleId)) {
+            return R.error(400, "角色id格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isLongNumer(departmentId)) {
+            return R.error(400, "部门id格式不正确，或者不符合常理！");
         }else if (UtilHelper.isEmpty(permsCompanyId)) {
             return R.error(400, "权限公司不能为空！！");
         }
@@ -135,10 +135,10 @@ public class SysUserController {
      */
     @RequestMapping(value = "/sysUserList", method = RequestMethod.POST)
     public R sysUserList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
-        if (!UtilHelper.isNumer(limit)) {
-            return R.error(400, "分页控制，每页条数limit只能为数字！");
-        } else if (!UtilHelper.isNumer(offset)) {
-            return R.error(400, "分页控制，页码offset只能为数字！");
+        if (!UtilHelper.isIntegerNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
         }
         Map<String, Object> map = sysUserService.sysUserList(Integer.valueOf(limit), Integer.valueOf(offset));
         return R.ok(map);
@@ -158,14 +158,14 @@ public class SysUserController {
     public R updateUserInfo(@RequestParam(value = "userId", required = false) String userId, @RequestParam(value = "companyId", required = false) String companyId
             , @RequestParam(value = "roleId", required = false) String roleId, @RequestParam(value = "departmentId", required = false) String departmentId
             , @RequestParam(value = "userName", required = false) String userName, @RequestParam(value = "permsCompanyId", required = false) String permsCompanyId) {
-        if (!UtilHelper.isNumer(userId)) {
-            return R.error(400, "用户编号不能为空，请联系系统管理员！");
-        } else if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司id格式不正确！");
-        } else if (!UtilHelper.isNumer(roleId)) {
-            return R.error(400, "角色id格式不正确！");
-        } else if (!UtilHelper.isNumer(departmentId)) {
-            return R.error(400, "部门id格式不正确！");
+        if (!UtilHelper.isLongNumer(userId)) {
+            return R.error(400, "用户编号不能为空，或者不符合常理，请联系系统管理员！");
+        } else if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司id格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isLongNumer(roleId)) {
+            return R.error(400, "角色id格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isLongNumer(departmentId)) {
+            return R.error(400, "部门id格式不正确，或者不符合常理！");
         }else if (UtilHelper.isEmpty(permsCompanyId)) {
             return R.error(400, "权限公司不能为空！！");
         }
@@ -182,8 +182,8 @@ public class SysUserController {
      */
     @RequestMapping(value = "/deleteSysUser", method = RequestMethod.POST)
     public R deleteUser(@RequestParam(value = "userId", required = false) String userId) {
-        if (!UtilHelper.isNumer(userId)) {
-            return R.error(400, "用户编号不能为空，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(userId)) {
+            return R.error(400, "用户编号不能为空，或者不符合常理，请联系系统管理员！");
         }
         Map<String, Object> map = sysUserService.deleteUser(userId, "delete");
         return R.ok(map);
@@ -198,8 +198,8 @@ public class SysUserController {
      */
     @RequestMapping(value = "/closeSysUserAccount", method = RequestMethod.POST)
     public R closeSysUserAccount(@RequestParam(value = "userId", required = false) String userId,@RequestParam(value = "type", required = false) String type) {
-        if (!UtilHelper.isNumer(userId)) {
-            return R.error(400, "用户编号不能为空，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(userId)) {
+            return R.error(400, "用户编号不能为空，或者不符合常理，请联系系统管理员！");
         }else if (UtilHelper.isEmpty(type)) {
             return R.error(400, "操作类型参数不能为空！");
         }
@@ -226,8 +226,8 @@ public class SysUserController {
      */
     @RequestMapping(value = "/sysUserCompanyAuthority", method = RequestMethod.POST)
     public R sysUserCompanyAuthority(@RequestParam(value = "userId", required = false) String userId) {
-        if (!UtilHelper.isNumer(userId)) {
-            return R.error(400, "用户编号不能为空，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(userId)) {
+            return R.error(400, "用户编号不能为空，或者不符合常理，请联系系统管理员！");
         }
         Map<String, Object> map = sysUserService.sysUserCompanyAuthority(Long.valueOf(userId));
         return R.ok(map);

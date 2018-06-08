@@ -73,5 +73,10 @@ public interface SysProjectEnergyService {
      */
     Map<String,Object> findSysProjectFileById(long projectId);
 
+    /**
+     * 存储统计报表信息到redis缓存
+     */
+    void setDataToRedis();
+
 
 }

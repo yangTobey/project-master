@@ -87,4 +87,9 @@ public interface SysLaborCostService {
      * @return
      */
     Map<String,Object> findSysLaborCostById(Long laborCostId);
+
+    /**
+     * 将统计信息存储到redis缓存中
+     */
+    void setDateToRedis();
 }

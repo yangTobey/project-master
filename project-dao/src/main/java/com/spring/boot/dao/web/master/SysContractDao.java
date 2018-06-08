@@ -77,4 +77,9 @@ public interface SysContractDao extends BaseDao<SysContract>{
      * 更新快到期的合同状态
      */
     void updateSysContractExpire(@Param("type")Integer type,@Param("nowTime")String nowTime);
+    /**
+     * 根据合同类型id和合同状态获取合同信息
+     * @return
+     */
+    List<SysContract> findSysContractByTypeId(@Param("contractTypeId")Long contractTypeId,@Param("statusCode")Integer statusCode);
 }

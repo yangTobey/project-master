@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -43,8 +44,7 @@ public class FileManageController {
      */
     @RequestMapping(value = "/uploads", method = RequestMethod.POST)
     public String uploads(HttpServletRequest request, @RequestParam("files") MultipartFile[] files) {
-        String user = request.getParameter("userId");
-        System.out.println("user:" + user);
+        
         Map<String, String> resultMap = new HashMap<String, String>();
         //服务器硬盘存放地址
         String uploadUrl = "/upload/";
@@ -98,8 +98,12 @@ public class FileManageController {
         //获取文件后缀名
         String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
         String fileName = originalFilename.substring(0, originalFilename.lastIndexOf("."));
+        //获取时间，最为文件名的一部分
+        SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
+        String date = sDateFormat.format(new Date());
+
         //修改上传文件的文件名，避免出现重复文件时覆盖原有文件
-        String newFileName = UUID.randomUUID().toString().replace("-", "").substring(0, 15) + suffix;
+        String newFileName = UUID.randomUUID().toString().replace("-", "").substring(0, 10)+"-"+date + suffix;
         File saveFile = new File(uploadDir + newFileName);
         try {
             file.transferTo(saveFile);
@@ -128,13 +132,16 @@ public class FileManageController {
         for (String fileId : fileInfoArray) {
             SysQualityManageFile sysQualityManageFile = sysFileService.fileSysQualityManageFileById(Long.valueOf(fileId));
             if (sysQualityManageFile != null) {
-                //获取文件路径
-                String realPath = request.getSession().getServletContext().getRealPath("/") + sysQualityManageFile.getFileUrl();
+                //获取文件路径+原文件名称
+                String realPath = request.getSession().getServletContext().getRealPath("/") + sysQualityManageFile.getFileUrl()+";"+sysQualityManageFile.getFileName();
+                System.out.println("品质文件路径为："+realPath);
                 fileLists.add(realPath);
             }
         }
-        //将多个需要下载的文件打包成zip格式压缩包进行下载
-        downloadZip(fileLists, request, response);
+        if(fileLists.size()>0){
+            //将多个需要下载的文件打包成zip格式压缩包进行下载
+            downloadZip(fileLists, request, response);
+        }
         return null;
     }
     /**
@@ -153,13 +160,17 @@ public class FileManageController {
         for (String fileId : fileInfoArray) {
             SysProjectEnergyFile sysProjectEnergyFile = sysFileService.fileSysProjectEnergyFileById(Long.valueOf(fileId));
             if (sysProjectEnergyFile != null) {
-                //获取文件路径
-                String realPath = request.getSession().getServletContext().getRealPath("/") + sysProjectEnergyFile.getFileUrl();
+                //获取文件路径+原文件名称
+                String realPath = request.getSession().getServletContext().getRealPath("/") + sysProjectEnergyFile.getFileUrl()+";"+sysProjectEnergyFile.getFileName();
+                System.out.println("工程文件路径为："+realPath);
                 fileLists.add(realPath);
             }
         }
-        //将多个需要下载的文件打包成zip格式压缩包进行下载
-        downloadZip(fileLists, request, response);
+        if(fileLists.size()>0){
+            //将多个需要下载的文件打包成zip格式压缩包进行下载
+            downloadZip(fileLists, request, response);
+        }
+
         return null;
     }
     /**
@@ -178,13 +189,16 @@ public class FileManageController {
         for (String fileId : fileInfoArray) {
             SysContractFile sysContractFile = sysFileService.fileSysContractFileById(Long.valueOf(fileId));
             if (sysContractFile != null) {
-                //获取文件路径
-                String realPath = request.getSession().getServletContext().getRealPath("/") + sysContractFile.getFileUrl();
+                //获取文件路径+原文件名称
+                String realPath = request.getSession().getServletContext().getRealPath("/") + sysContractFile.getFileUrl()+";"+sysContractFile.getFileName();
+                System.out.println("合同文件路径为："+realPath);
                 fileLists.add(realPath);
             }
         }
-        //将多个需要下载的文件打包成zip格式压缩包进行下载
-        downloadZip(fileLists, request, response);
+        if(fileLists.size()>0){
+            //将多个需要下载的文件打包成zip格式压缩包进行下载
+            downloadZip(fileLists, request, response);
+        }
         return null;
     }
 
@@ -196,7 +210,7 @@ public class FileManageController {
      * @return
      */
     @RequestMapping(value = "/downloadFile",method = RequestMethod.GET)
-    public R downloadFile(HttpServletRequest request, HttpServletResponse response,@RequestParam("fileUrl") String fileUrl) {
+    public R downloadFile(HttpServletRequest request, HttpServletResponse response,@RequestParam("fileUrl") String fileUrl,@RequestParam("fileRealName") String fileRealName) {
         /*//去掉最后那个逗号，在进行获取数据
         String[]  fileInfoArray = fileIds.substring(0, fileIds.length() - 1).split(";");
         for (String fileId : fileInfoArray) {
@@ -209,9 +223,11 @@ public class FileManageController {
                 }
             }
         }*/
-        String fileName=fileUrl.substring(fileUrl.lastIndexOf("/")+1, fileUrl.length());
+        //获取文件后缀名
+        String suffix = fileUrl.substring(fileUrl.lastIndexOf("."));
+        //String fileName=fileUrl.substring(fileUrl.lastIndexOf("/")+1, fileUrl.length());
         try {
-            outputFile(request,response,fileUrl,fileName);
+            outputFile(request,response,fileUrl,fileRealName+suffix);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -228,7 +244,7 @@ public class FileManageController {
      */
     public void outputFile(HttpServletRequest request, HttpServletResponse response, String realPath, String fileName) throws IOException {
         //String fileName = "aim_test.txt";// 设置文件名，根据业务需要替换成要下载的文件名
-        if (fileName != null) {
+        if (!UtilHelper.isEmpty(fileName)) {
             //设置文件路径
             realPath = request.getSession().getServletContext().getRealPath("/") + realPath;
             File file = new File(realPath);
@@ -300,13 +316,24 @@ public class FileManageController {
             // 需要同时下载的两个文件result.txt ，source.txt
             File[] file1 = new File[createFilesPath.size()];
             for (int i = 0; i < createFilesPath.size(); i++) {
-                file1[i] = new File(createFilesPath.get(i));
+                //文件组组合信息（文件路径+原文件名称）
+                String[] fileInfo=createFilesPath.get(i).substring(0, createFilesPath.get(i).length()).split(";");
+                //String fileName = fileInfo[0].replace(fileInfo[0].substring(fileInfo[0].lastIndexOf("/")+1, fileInfo[0].lastIndexOf(".")),fileInfo[1]);
+                file1[i] = new File(fileInfo[0]);
+                System.out.println("文件名："+file1[i].getName());
             }
             for (int i = 0; i < file1.length; i++) {
                 //首先判断该文件在服务器是否存在，避免抛出异常，下载失败
                 if (file1[i].exists()) {
                     FileInputStream fis = new FileInputStream(file1[i]);
-                    out.putNextEntry(new ZipEntry(file1[i].getName()));
+
+                    //文件组组合信息（文件路径+原文件名称）
+                    String[] fileInfo=createFilesPath.get(i).substring(0, createFilesPath.get(i).length()).split(";");
+                    //获取文件后缀名
+                    String suffix = fileInfo[0].substring(fileInfo[0].lastIndexOf("."));
+                    //替换文件名，将文件替换为用户上传时的文件，因服务器存储规范问题，服务器存储文件的文件名都经过修改。全为英文
+                    //String fileName = fileInfo[0].replace(fileInfo[0].substring(fileInfo[0].lastIndexOf("/")+1, fileInfo[0].lastIndexOf(".")),fileInfo[1]);
+                    out.putNextEntry(new ZipEntry(fileInfo[1]+suffix));
                     //设置压缩文件内的字符编码，不然会变成乱码
                     //out.setEncoding("UTF-8");
                     int len;

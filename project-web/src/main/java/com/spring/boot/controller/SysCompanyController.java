@@ -29,10 +29,10 @@ public class SysCompanyController {
      */
     @RequestMapping(value = "/getSysCompanyList", method = RequestMethod.POST)
     public R getSysCompanyList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
-        if (!UtilHelper.isNumer(limit)) {
-            return R.error(400, "分页控制，每页条数limit只能为数字！");
-        } else if (!UtilHelper.isNumer(offset)) {
-            return R.error(400, "分页控制，页码offset只能为数字！");
+        if (!UtilHelper.isIntegerNumer(limit)) {
+            return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(offset)) {
+            return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
         }
         Map<String, Object> map = sysCompanyService.getSysCompanyList(Integer.valueOf(limit), Integer.valueOf(offset));
         return R.ok(map);
@@ -69,8 +69,8 @@ public class SysCompanyController {
     public R updateSysCompanyInfo(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "companyName", required = false) String companyName
             , @RequestParam(value = "companyPhone", required = false) String companyPhone, @RequestParam(value = "companyAddress", required = false) String companyAddress) {
         logger.info("公司信息更新操作！");
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司编号格式不正确，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司编号格式不正确，或者不符合常理，请联系系统管理员！");
         } else if (UtilHelper.isEmpty(companyName)) {
             return R.error(400, "公司名称不能为空！");
         }
@@ -87,8 +87,8 @@ public class SysCompanyController {
      */
     @RequestMapping(value = "/deleteSysCompanyById", method = RequestMethod.POST)
     public R deleteSysCompanyById(@RequestParam(value = "companyId", required = false) String companyId) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司编号格式不正确，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司编号格式不正确，或者不符合常理，请联系系统管理员！");
         }
         Map<String, Object> map = sysCompanyService.deleteSysCompanyById(Long.valueOf(companyId));
         return R.ok(map);
@@ -102,8 +102,8 @@ public class SysCompanyController {
      */
     @RequestMapping(value = "/findSysCompanyByCompanyId", method = RequestMethod.POST)
     public R findSysCompanyByCompanyId(@RequestParam(value = "companyId", required = false) String companyId) {
-        if (!UtilHelper.isNumer(companyId)) {
-            return R.error(400, "公司编号格式不正确，请联系系统管理员！");
+        if (!UtilHelper.isLongNumer(companyId)) {
+            return R.error(400, "公司编号格式不正确，或者不符合常理，请联系系统管理员！");
         }
         Map<String, Object> map = sysCompanyService.findSysCompanyByCompanyId(Long.valueOf(companyId));
         return R.ok().put(200, map, "获取成功！");

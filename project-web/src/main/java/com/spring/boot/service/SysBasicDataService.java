@@ -85,4 +85,9 @@ public interface SysBasicDataService {
      * @return
      */
     Map<String, Object> findSysBasicDataById(int basicId);
+
+    /**
+     * 存放基础信息到redis
+     */
+    void setBasicDataAnalysisDataToRedis();
 }
