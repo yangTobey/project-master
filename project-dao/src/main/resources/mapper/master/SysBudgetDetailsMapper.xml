@@ -49,7 +49,7 @@
                 AND budget.company_id IN(SELECT company_id from sys_company where status_code!=2)
             </otherwise>
         </choose>
-        order by budget.create_time desc
+        order by budget.year desc,budget.month desc
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
         </if>

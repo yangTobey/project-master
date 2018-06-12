@@ -154,7 +154,7 @@
         </if>
         and laborCost.status_code!=2
         GROUP BY  laborCost.labor_cost_id
-        order by laborCost.create_time desc
+        order by laborCost.year desc,laborCost.month desc
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
         </if>

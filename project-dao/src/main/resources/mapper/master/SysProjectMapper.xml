@@ -69,7 +69,7 @@
 			</choose>
 
 			GROUP BY project.project_id
-			order by project.create_time desc
+			order by project.year desc,project.month desc
 			<if test="offset != null and limit != null">
 				limit #{offset},#{limit}
 			</if>
@@ -140,7 +140,6 @@
 		LEFT JOIN sys_energy AS energy ON project.project_id = energy.project_id
 		WHERE 1=1
 		/*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
-		<if test="type == 1">
 			<choose>
 				<when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
 					AND project.company_id IN
@@ -152,7 +151,7 @@
 					AND project.company_id IN(SELECT company_id from sys_company where status_code!=2)
 				</otherwise>
 			</choose>
-		</if>
+
 		and project.year=#{year} and project.status_code!=2
 	</select>
 	<!--根据年份、月份、公司id查找工程能耗分析信息-->
@@ -188,7 +187,6 @@
 		LEFT JOIN sys_energy AS energy ON project.project_id = energy.project_id
 		WHERE 1=1
 		/*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
-		<if test="type == 1">
 			<choose>
 				<when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
 					AND project.company_id IN
@@ -200,7 +198,7 @@
 					AND project.company_id IN(SELECT company_id from sys_company where status_code!=2)
 				</otherwise>
 			</choose>
-		</if>
+
 		and project.year=#{year}  and project.status_code!=2 GROUP BY project.month
 	</select>
 

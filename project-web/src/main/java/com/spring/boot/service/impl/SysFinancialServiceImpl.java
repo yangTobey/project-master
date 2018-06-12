@@ -705,10 +705,11 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 Map<Integer, Double> yearChargeMoneyScale = new HashMap<Integer, Double>();
                 //一年清欠收缴率（针对大屏数据展示页面）
                 Map<Integer, Double> yearChargeDebtScale = new HashMap<Integer, Double>();
-                ;
-                for (int i = 0; i < list.size(); i++) {
-                    yearChargeMoneyScale.put(i + 1, list.get(i).getChargeMoneyNow());
-                    yearChargeDebtScale.put(i + 1, list.get(i).getChargeDebtReturn());
+                int listSize=list.size();
+                //注：查询sql结果为倒序排序,即为第一条为最新一周数据，需求显示为12周，最后一周12周为最新的周数数据
+                for (int i = 0; i < listSize; i++) {
+                    yearChargeMoneyScale.put(listSize-i, list.get(i).getChargeMoneyNow());
+                    yearChargeDebtScale.put(listSize-i, list.get(i).getChargeDebtReturn());
                 }
                 sysChargeDetails.setYearChargeMoneyScale(yearChargeMoneyScale);
                 sysChargeDetails.setYearChargeDebtScale(yearChargeDebtScale);

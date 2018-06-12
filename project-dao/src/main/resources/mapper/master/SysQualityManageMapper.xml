@@ -45,7 +45,7 @@
         and quality.status_code!=2
         GROUP BY
         quality.quality_id
-        ORDER BY quality.create_time DESC
+        ORDER BY quality.year DESC,quality.month DESC
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
         </if>
@@ -63,7 +63,6 @@
         FROM sys_quality_manage AS quality
         WHERE 1 = 1
         /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
-        <if test="type == 1">
             <choose>
                 <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
                     AND quality.company_id IN
@@ -75,7 +74,7 @@
                     AND quality.company_id IN(SELECT company_id from sys_company where status_code!=2)
                 </otherwise>
             </choose>
-        </if>
+
         and quality.year = #{year}
         and quality.status_code!=2
     </select>
@@ -92,7 +91,6 @@
         FROM sys_quality_manage AS quality
         WHERE 1 = 1
         /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
-        <if test="type == 1">
             <choose>
                 <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
                     AND  quality.company_id IN
@@ -104,7 +102,7 @@
                     AND quality.company_id IN(SELECT company_id from sys_company where status_code!=2)
                 </otherwise>
             </choose>
-        </if>
+
         and quality.year = #{year}
         and quality.month = #{month}
         and quality.status_code!=2
@@ -123,7 +121,6 @@
         FROM sys_quality_manage AS quality
         WHERE 1 = 1
         /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
-        <if test="type == 1">
             <choose>
                 <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
                     AND  quality.company_id IN
@@ -135,7 +132,7 @@
                     AND quality.company_id IN(SELECT company_id from sys_company where status_code!=2)
                 </otherwise>
             </choose>
-        </if>
+
         and quality.year = #{year}
     <!-- /*and quality.month = #{month}*/-->
      and quality.status_code!=2

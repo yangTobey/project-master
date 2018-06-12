@@ -109,7 +109,7 @@
                 AND accountsRe.company_id IN(SELECT company_id from sys_company where status_code!=2)
             </otherwise>
         </choose>
-        and accountsRe.year = #{year} ORDER BY accountsRe.create_time desc
+        and accountsRe.year = #{year} ORDER BY accountsRe.year desc,accountsRe.month desc
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
         </if>

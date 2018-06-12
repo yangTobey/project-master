@@ -163,19 +163,19 @@
 		<choose>
 			<when test="type==1">
 				status_code=1
-				where  contract_startTime <![CDATA[ >= ]]>#{nowTime}
+				where  contract_startTime <![CDATA[ >= ]]>#{nowTime} and status_code!=5
 			</when>
 			<when test="type==2">
 				status_code=2
-				where  contract_startTime <![CDATA[ <= ]]>#{nowTime} and contract_endTime <![CDATA[ >= ]]>#{nowTime} and status_code!=3
+				where  contract_startTime <![CDATA[ <= ]]>#{nowTime} and contract_endTime <![CDATA[ >= ]]>#{nowTime} and status_code!=3 and status_code!=5
 			</when>
 			<when test="type==3">
 				status_code=3
-				where  TO_DAYS( contract_endTime )- TO_DAYS(NOW()) BETWEEN 0 and 30
+				where status_code!=5 and TO_DAYS( contract_endTime )- TO_DAYS(NOW()) BETWEEN 0 and 30
 			</when>
 			<when test="type==4">
 				status_code=4
-				where  contract_endTime <![CDATA[ <= ]]>#{nowTime}
+				where  contract_endTime <![CDATA[ <= ]]>#{nowTime} and status_code!=5
 			</when>
 		</choose>
 

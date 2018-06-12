@@ -54,8 +54,8 @@
         SUM(charge_debt) AS charge_debt,
         SUM(charge_debt_return) AS charge_debt_return
         FROM sys_charge_details
-        WHERE 1 = 1 AND status_code != 2
-        GROUP BY week_of_year ORDER BY `year` DESC,week_of_year DESC LIMIT 0, 12
+        WHERE 1 = 1 AND status_code != 2 AND company_id IN(SELECT company_id from sys_company where status_code!=2)
+        GROUP BY year,week_of_year ORDER BY `year` DESC,week_of_year DESC LIMIT 0, 12
         <!--原来按照月份查询数据的条件/*SELECT charge_id,year,month,SUM(charge_money) AS charge_money,SUM(charge_money_now) AS charge_money_now,SUM(charge_debt) AS charge_debt,SUM(charge_debt_return) AS charge_debt_return from sys_charge_details where 1=1
         and status_code!=2 and year=#{year} GROUP BY month*/-->
         <!--/* SELECT
@@ -78,7 +78,7 @@
     <!--根据主键id查找信息-->
     <select id="findSysChargeDetailsById" resultMap="sysChargeDetails" >
         select charge.charge_id, charge.charge_money, charge.charge_money_now, charge.charge_debt,charge.charge_debt_return,charge.create_time,charge.company_id,charge.status_code
-        ,company.company_name
+        ,charge.year,charge.week_of_year,company.company_name
         from sys_charge_details as charge left join sys_company as company on charge.company_id=company.company_id
         where charge.status_code!=2
         and charge.charge_id = #{chargeId}

@@ -9,7 +9,7 @@
 			FROM
 			sys_user_company AS userCompany
 			LEFT JOIN sys_company AS company ON userCompany.company_id = company.company_id
-			WHERE userCompany.user_id = #{userId}
+			WHERE userCompany.user_id = #{userId} and company.status_code!=2
 	</select>
 	<select id="sysUserCompanyAuthority" resultType="com.spring.boot.bean.master.SysUserCompany">
 		SELECT
