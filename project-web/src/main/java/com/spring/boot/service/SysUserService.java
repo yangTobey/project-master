@@ -59,22 +59,22 @@ public interface SysUserService {
      * @param userAccount  登录账号
      * @param password     登录密码
      * @param companyId    所属公司id
-     * @param roleId       角色id
+     * @param roleIds       多个角色id组合
      * @param departmentId 部门id
      * @return
      */
-    Map<String, Object> addUser(String userAccount, String password, Long companyId, Long roleId, Long departmentId, String userName, String permsCompanyId);
+    Map<String, Object> addUser(String userAccount, String password, Long companyId, String roleIds, Long departmentId, String userName, String permsCompanyId);
 
     /**
      * 更新用户信息
      *
      * @param userId       用户id
      * @param companyId    所属公司id
-     * @param roleId       角色id
+     * @param roleId       多个角色id组合
      * @param departmentId 部门id
      * @return
      */
-    Map<String, Object> updateUserInfo(Long userId, Long companyId, Long roleId, Long departmentId, String userName, String permsCompanyId);
+    Map<String, Object> updateUserInfo(Long userId, Long companyId, String roleId, Long departmentId, String userName, String permsCompanyId);
 
     /**
      * 删除用户信息（只更新用户账号状态，不作删除处理）
@@ -103,4 +103,11 @@ public interface SysUserService {
      * @return
      */
     Map<String, Object> getUserRole();
+
+    /**
+     * 根据用户id查找用户详细详细
+     * @param userId
+     * @return
+     */
+    Map<String, Object> findSysUserInfoById(Long userId);
 }

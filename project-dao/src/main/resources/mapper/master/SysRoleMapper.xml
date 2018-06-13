@@ -62,4 +62,9 @@
 		VALUES   (#{roleId},#{menuId})
 	</insert>
 
+	<!--根据用户id查找用户权限详细信息（用于查找用户列表信息时获取用户多个角色信息使用）-->
+	<select id="findUserRoleByRoleId" resultType="com.spring.boot.bean.master.SysRole"  parameterType="map">
+		SELECT userRole.role_id as roleId,role.role_name as roleName from sys_user_role as userRole LEFT JOIN sys_role as role on userRole.role_id=role.role_id WHERE user_id=#{userId}
+	</select>
+
 </mapper>

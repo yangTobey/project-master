@@ -101,4 +101,10 @@ public interface SysUserDao {
      * @return
      */
     List<SysUser> findSysUserByDepartmentd(Long departmentId);
+    /**
+     * 根据用户id查找用户详细信息
+     * @param userId
+     * @return
+     */
+    SysUser findSysUserInfoById(Long userId);
 }

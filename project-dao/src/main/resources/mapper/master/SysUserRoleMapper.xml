@@ -19,4 +19,10 @@
 	<select id="findRoleByRoleId" resultType="com.spring.boot.bean.master.SysUserRole"  parameterType="map">
 		SELECT id,user_id as userId,role_id as roleId from sys_user_role where role_id=#{roleId}
 	</select>
+
+	<!--根据用户id查找用户权限详细信息（用于查找用户列表信息时获取用户多个角色信息使用）-->
+	<select id="findUserRoleNameByRoleId" resultType="com.spring.boot.bean.master.entity.SysUserRoleEntity"  parameterType="map">
+		SELECT group_concat(a.roleId) as roleIds,group_concat(a.roleName) as roleNames from(SELECT userRole.role_id as roleId,role.role_name as roleName from sys_user_role as userRole
+		LEFT JOIN sys_role as role on userRole.role_id=role.role_id WHERE user_id=#{userId}) as a
+	</select>
 </mapper>

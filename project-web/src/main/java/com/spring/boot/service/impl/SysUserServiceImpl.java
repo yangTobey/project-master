@@ -1,6 +1,7 @@
 package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.*;
+import com.spring.boot.bean.master.entity.SysUserRoleEntity;
 import com.spring.boot.service.SysUserService;
 import com.spring.boot.service.web.*;
 import com.spring.boot.util.R;
@@ -51,7 +52,16 @@ public class SysUserServiceImpl implements SysUserService {
             map.put("limit", limit);
             map.put("offset", offset);
             resultMap.put("total", sysUserBusinessService.sysUserTotal());
-            resultMap.put("list", sysUserBusinessService.sysUserList(map));
+            List<SysUser> sysUserList=sysUserBusinessService.sysUserList(map);
+            for(SysUser sysUser:sysUserList){
+                //根据用户id利用sql查询用户多个角色名称，用逗号，隔开
+                SysUserRoleEntity sysUserRoleEntity=sysUserRoleBusinessService.findUserRoleNameByRoleId(sysUser.getUserId());
+                if(null!=sysUserRoleEntity){
+                    sysUser.setRoleName(sysUserRoleEntity.getRoleNames());
+                }
+
+            }
+            resultMap.put("list", sysUserList);
             return R.ok().putData(200, resultMap, "获取成功！");
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,7 +178,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addUser(String userAccount, String password, Long companyId, Long roleId, Long departmentId, String userName, String permsCompanyId) {
+    public Map<String, Object> addUser(String userAccount, String password, Long companyId, String roleIds, Long departmentId, String userName, String permsCompanyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         //根据用户提交的密码，利用md5加密得到加密后的原密码new SimpleHash("md5", password, ByteSource.Util.bytes(userAccount), 2).toHex();
         password = new SimpleHash("md5", password, null, 2).toHex();
@@ -199,11 +209,15 @@ public class SysUserServiceImpl implements SysUserService {
             }
             int count = sysUserBusinessService.addUser(sysUser);
             if (count > 0) {
-                SysUserRole sysUserRole = new SysUserRole();
-                sysUserRole.setRoleId(roleId);
-                sysUserRole.setUserId(sysUser.getUserId());
-                sysUserRoleBusinessService.addUserRole(sysUserRole);
-
+                //用户与角色为多对多关系，一个用户可以拥有多个角色
+                String[] roleIdArray=roleIds.substring(0, roleIds.length()).split(",");
+                SysUserRole sysUserRole =null;
+                for (String roleId : roleIdArray) {
+                    sysUserRole = new SysUserRole();
+                    sysUserRole.setRoleId(Long.valueOf(roleId));
+                    sysUserRole.setUserId(sysUser.getUserId());
+                    sysUserRoleBusinessService.addUserRole(sysUserRole);
+                }
                 //当选择的权限公司信息id不为空时，更新用户的权限公司信息
                 if(!UtilHelper.isEmpty(permsCompanyId)){
                     String[] permsCompanyIdArray;
@@ -231,11 +245,11 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> updateUserInfo(Long userId, Long companyId, Long roleId, Long departmentId, String userName, String permsCompanyId) {
+    public Map<String, Object> updateUserInfo(Long userId, Long companyId, String roleIds, Long departmentId, String userName, String permsCompanyId) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userId", userId);
         map.put("companyId", companyId);
-        map.put("roleId", roleId);
+        //map.put("roleIds", roleId);
         map.put("departmentId", departmentId);
         map.put("userName", userName);
         try {
@@ -249,10 +263,15 @@ public class SysUserServiceImpl implements SysUserService {
             int count = sysUserBusinessService.updateUserInfo(map);
             if (count > 0) {
                 sysUserRoleBusinessService.deleteUserRoleByUserId(userId);
-                SysUserRole sysUserRole = new SysUserRole();
-                sysUserRole.setRoleId(roleId);
-                sysUserRole.setUserId(userId);
-                sysUserRoleBusinessService.addUserRole(sysUserRole);
+                //用户与角色为多对多关系，一个用户可以拥有多个角色
+                String[] roleIdArray=roleIds.substring(0, roleIds.length()).split(",");
+                SysUserRole sysUserRole =null;
+                for (String roleId : roleIdArray) {
+                    sysUserRole = new SysUserRole();
+                    sysUserRole.setRoleId(Long.valueOf(roleId));
+                    sysUserRole.setUserId(userId);
+                    sysUserRoleBusinessService.addUserRole(sysUserRole);
+                }
 
                 sysUserCompanyBusinessService.deleteSysUserCompany(userId);
                 //当选择的权限公司信息id不为空时，更新用户的权限公司信息
@@ -412,6 +431,28 @@ public class SysUserServiceImpl implements SysUserService {
             e.printStackTrace();
             logger.info("获取用户操作权限信息出错：" + e.getMessage());
             return R.error(500, "获取用户操作权限信息失败，服务器异常，请联系管理员！");
+        }
+    }
+
+    @Override
+    public Map<String, Object> findSysUserInfoById(Long userId) {
+        try {
+            SysUser sysUser = sysUserBusinessService.findSysUserInfoById(userId);
+            if (null != sysUser) {
+                //根据用户id利用sql查询用户多个角色名称，用逗号，隔开
+                SysUserRoleEntity sysUserRoleEntity=sysUserRoleBusinessService.findUserRoleNameByRoleId(sysUser.getUserId());
+                if(null!=sysUserRoleEntity){
+                    //获取多个角色id，逗号隔开
+                    sysUser.setRoleIds(sysUserRoleEntity.getRoleIds());
+                }
+                return R.ok().putData(200, sysUser, "获取成功！！");
+            } else {
+                return R.error(500, "获取失败，服务器异常，请联系管理员！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("根据用户id获取用户信息出错：" + e.getMessage());
+            return R.error(500, "根据用户id获取用户信息失败，服务器异常，请联系管理员！");
         }
     }
 }

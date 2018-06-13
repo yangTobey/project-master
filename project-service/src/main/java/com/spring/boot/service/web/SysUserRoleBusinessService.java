@@ -1,6 +1,8 @@
 package com.spring.boot.service.web;
 
+import com.spring.boot.bean.master.SysRole;
 import com.spring.boot.bean.master.SysUserRole;
+import com.spring.boot.bean.master.entity.SysUserRoleEntity;
 
 import java.util.List;
 
@@ -36,4 +38,12 @@ public interface SysUserRoleBusinessService {
      * @return
      */
     List<SysUserRole> findRoleByRoleId(Long roleId);
+
+
+    /**
+     * 根据用户id查找用户权限角色名称详细信息（用于在查询用户列表时，获取用户多个角色信息）
+     * @param userId
+     * @return
+     */
+    SysUserRoleEntity findUserRoleNameByRoleId(Long userId);
 }

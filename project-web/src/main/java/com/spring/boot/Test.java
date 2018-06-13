@@ -2,11 +2,13 @@ package com.spring.boot;
 
 import com.spring.boot.util.UtilHelper;
 import org.apache.shiro.crypto.hash.Hash;
+import org.thymeleaf.expression.Lists;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Administrator on 2018/3/19.
@@ -140,6 +142,36 @@ public class Test {
         System.out.println("2018年周数："+getMaxWeekNumOfYear(2018));
 
         System.out.println(UUID.randomUUID().toString());
+
+        //新建一个List 用的google提供的Guava  package com.google.common.collect;Lists.newArrayList();
+        List<String> list11 =new ArrayList<String>();
+        List<String> list2 = new ArrayList<String>();
+        list11.add("1");
+        list11.add("2");
+        list11.add("3");
+
+        list2 = list11.stream().map(string -> {
+            return "stream().map()处理之后：" + string;
+        }).collect(Collectors.toList());
+
+        list2.stream().forEach(string -> {
+            System.out.println(string+",");
+        });
+
+        List<String> list1 = new ArrayList<String>();//新建一个List 用的google提供的Guava  package com.google.common.collect;
+        list1.add("1");
+        list1.add("2");
+        list1.add("3");
+
+        list1.stream().forEach(string ->{
+            System.out.println(string);
+        });
+
+        List<Long> longList=new ArrayList<Long>();
+        longList.add(1L);
+        longList.add(2L);
+        longList.add(3L);
+        System.out.println(longList.toString());
 
     }
     // 获取当前时间所在年的最大周数

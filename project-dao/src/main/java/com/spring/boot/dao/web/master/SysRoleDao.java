@@ -60,4 +60,10 @@ public interface SysRoleDao extends BaseDao<SysRole>{
      * @return
      */
     int deleteSysRoleMenu(Long roleId);
+    /**
+     * 根据用户id查找用户权限详细信息
+     * @param userId
+     * @return
+     */
+    List<SysRole> findUserRoleByRoleId(Long userId);
 }

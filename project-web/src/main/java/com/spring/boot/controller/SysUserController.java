@@ -90,14 +90,14 @@ public class SysUserController {
      * @param account    账号
      * @param password       密码
      * @param companyId      公司id
-     * @param roleId         角色id
+     * @param roleIds         多个角色id组合
      * @param departmentId   部门id
      * @param permsCompanyId 权限公司id
      * @return
      */
     @RequestMapping(value = "/addSysUser", method = RequestMethod.POST)
     public R addUser(@RequestParam(value = "account", required = false) String account, @RequestParam(value = "password", required = false) String password
-            , @RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "roleId", required = false) String roleId
+            , @RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "roleIds", required = false) String roleIds
             , @RequestParam(value = "departmentId", required = false) String departmentId, @RequestParam(value = "userName", required = false) String userName
             , @RequestParam(value = "permsCompanyId", required = false) String permsCompanyId) {
         if (UtilHelper.isEmpty(account)) {
@@ -114,14 +114,14 @@ public class SysUserController {
             return R.error(400, "登录密码长度不符合要求！");
         } else if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
-        } else if (!UtilHelper.isLongNumer(roleId)) {
+        } else if (UtilHelper.isEmpty(roleIds)) {
             return R.error(400, "角色id格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isLongNumer(departmentId)) {
             return R.error(400, "部门id格式不正确，或者不符合常理！");
         }else if (UtilHelper.isEmpty(permsCompanyId)) {
             return R.error(400, "权限公司不能为空！！");
         }
-        Map<String, Object> map = sysUserService.addUser(account, password, Long.valueOf(companyId), Long.valueOf(roleId), Long.valueOf(departmentId), userName, permsCompanyId);
+        Map<String, Object> map = sysUserService.addUser(account, password, Long.valueOf(companyId), roleIds, Long.valueOf(departmentId), userName, permsCompanyId);
         return R.ok(map);
 
     }
@@ -150,26 +150,26 @@ public class SysUserController {
      *
      * @param userId
      * @param companyId
-     * @param roleId
+     * @param roleIds 多个角色id组合
      * @param departmentId
      * @return
      */
     @RequestMapping(value = "/updateSysUserInfo", method = RequestMethod.POST)
     public R updateUserInfo(@RequestParam(value = "userId", required = false) String userId, @RequestParam(value = "companyId", required = false) String companyId
-            , @RequestParam(value = "roleId", required = false) String roleId, @RequestParam(value = "departmentId", required = false) String departmentId
+            , @RequestParam(value = "roleIds", required = false) String roleIds, @RequestParam(value = "departmentId", required = false) String departmentId
             , @RequestParam(value = "userName", required = false) String userName, @RequestParam(value = "permsCompanyId", required = false) String permsCompanyId) {
         if (!UtilHelper.isLongNumer(userId)) {
             return R.error(400, "用户编号不能为空，或者不符合常理，请联系系统管理员！");
         } else if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
-        } else if (!UtilHelper.isLongNumer(roleId)) {
+        } else if (UtilHelper.isEmpty(roleIds)) {
             return R.error(400, "角色id格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isLongNumer(departmentId)) {
             return R.error(400, "部门id格式不正确，或者不符合常理！");
         }else if (UtilHelper.isEmpty(permsCompanyId)) {
             return R.error(400, "权限公司不能为空！！");
         }
-        Map<String, Object> map = sysUserService.updateUserInfo(Long.valueOf(userId), Long.valueOf(companyId), Long.valueOf(roleId), Long.valueOf(departmentId), userName, permsCompanyId);
+        Map<String, Object> map = sysUserService.updateUserInfo(Long.valueOf(userId), Long.valueOf(companyId), roleIds, Long.valueOf(departmentId), userName, permsCompanyId);
         return R.ok(map);
 
     }
@@ -241,6 +241,20 @@ public class SysUserController {
     @RequestMapping(value = "/getUserRole", method = RequestMethod.POST)
     public R getUserRole() {
         Map<String, Object> map = sysUserService.getUserRole();
+        return R.ok(map);
+    }
+
+    /**
+     *根据用户id查找用户信息
+     * @param userId 用户id
+     * @return
+     */
+    @RequestMapping(value = "/findSysUserInfoById", method = RequestMethod.POST)
+    public R findSysUserInfoById(@RequestParam(value = "userId", required = false) String userId) {
+        if (!UtilHelper.isLongNumer(userId)) {
+            return R.error(400, "用户编号不能为空，或者不符合常理，请联系系统管理员！");
+        }
+        Map<String, Object> map = sysUserService.findSysUserInfoById(Long.valueOf(userId));
         return R.ok(map);
     }
 }

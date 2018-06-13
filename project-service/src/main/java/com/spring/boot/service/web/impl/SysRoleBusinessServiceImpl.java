@@ -58,4 +58,9 @@ public class SysRoleBusinessServiceImpl implements SysRoleBusinessService {
     public int deleteSysRole(Map<String, Object> map) {
         return sysRoleDao.delete(map);
     }
+
+    @Override
+    public List<SysRole> findUserRoleByRoleId(Long userId) {
+        return sysRoleDao.findUserRoleByRoleId(userId);
+    }
 }

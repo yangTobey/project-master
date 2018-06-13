@@ -45,7 +45,12 @@ public class SysMenuServiceImpl implements SysMenuService {
         }
         Long userId = ShiroUtils.getUserEntity().getUserId();
         //用户菜单列表
-        List<Long> menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 1);
+        List<Long> menuIdList = null;
+        //非超级管理员需要查询权限菜单，超级管理员的userId为1
+        if(userId!=1){
+            //用户菜单列表
+            menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 1);
+        }
         List<SysMenu> menuList = getAllMenuList(menuIdList, 1, null);
         if (null != menuList && menuList.size() > 0) {
             return R.ok().putData(200, menuList, "获取成功！");
@@ -163,7 +168,9 @@ public class SysMenuServiceImpl implements SysMenuService {
                 }
             } else if (sysMenu.getMenuType() == Constant.MenuType.MENU.getValue()) {
                 //一级菜单，直接判断权限信息内有没有数据，如果有，直接组装
-                if (menuIdList.contains(sysMenu.getMenuId())) {
+                if (null!=menuIdList&&menuIdList.contains(sysMenu.getMenuId())) {
+                    subMenuList.add(sysMenu);
+                }else{//当userId为1的超级管理员时，不需要判断权限信息
                     subMenuList.add(sysMenu);
                 }
             }

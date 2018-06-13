@@ -92,4 +92,9 @@ public class SysUserBusinessServiceImpl implements SysUserBusinessService {
     public List<Long> queryUserAllModuleId(Long userId) {
         return null;
     }
+
+    @Override
+    public SysUser findSysUserInfoById(Long userId) {
+        return sysUserDao.findSysUserInfoById(userId);
+    }
 }

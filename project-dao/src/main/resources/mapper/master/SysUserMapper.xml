@@ -11,7 +11,6 @@
 		<result column="gender" property="gender" />
 		<result column="user_type" property="userType" />
 		<result column="company_id" property="companyId" />
-		<result column="role_id" property="roleId" />
 		<result column="department_id" property="departmentId" />
 		<result column="company_name" property="companyName" />
 		<result column="department_name" property="departmentName" />
@@ -23,7 +22,7 @@
 
 	<sql id="Base_Column_List">
 		user.user_id, user.user_name, user.user_password, user.user_account,user.user_type,user.gender,user.phone,user.status_code,user.company_id,user.department_id
-		,userRole.role_id,department.department_name,company.company_name,role.role_name
+		,department.department_name,company.company_name
 	</sql>
 	<!--查找用户列表-->
 	<select id="sysUserList" resultMap="sysUser" parameterType="map">
@@ -31,8 +30,6 @@
 		/*group_concat(role.role_name) as roleName,*/
 		<include refid="Base_Column_List"/>
 		FROM sys_user as user
-		LEFT JOIN sys_user_role as userRole on user.user_id=userRole.user_id
-		LEFT JOIN sys_role as role on userRole.role_id=role.role_id
 		LEFT JOIN sys_department as department on department.department_id=user.department_id
 		LEFT JOIN sys_company as company on company.company_id=user.company_id
 		where user.status_code!=3
@@ -115,13 +112,23 @@
 		LEFT JOIN sys_company AS company ON us.company_id = company.company_id
 		where user_id = #{userId}
 	</select>
-	<!--根据公司id查找用户信息-->
+	<!--根据部门id查找用户信息-->
 	<select id="findSysUserByDepartmentd" resultType="com.spring.boot.bean.master.SysUser" parameterType="map">
 		SELECT user_id as userId,user_account as account  FROM sys_user WHERE status_code=1 and department_id=#{departmentId}
 	</select>
-	<!--根据部门id查找用户信息-->
+	<!--根据公司id查找用户信息-->
 	<select id="findSysUserByCompanyId" resultType="com.spring.boot.bean.master.SysUser" parameterType="map">
 		SELECT user_id as userId,user_account as account  FROM sys_user WHERE status_code=1 and company_id=#{companyId}
+	</select>
+	<!--根据用户id查找用户详细信息-->
+	<select id="findSysUserInfoById" resultMap="sysUser">
+		select
+		<include refid="Base_Column_List"/>
+		FROM sys_user as user
+		LEFT JOIN sys_department as department on department.department_id=user.department_id
+		LEFT JOIN sys_company as company on company.company_id=user.company_id
+		where user.status_code!=3 and user.user_id=#{userId}
+
 	</select>
 
 </mapper>

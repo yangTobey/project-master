@@ -20,7 +20,7 @@ public class SysUser implements Serializable {
     private Integer userType;
     private String phone;
     private Long companyId;
-    private Long roleId;
+    private String roleIds;
     private Long departmentId;
 
     private String companyName;
@@ -101,12 +101,12 @@ public class SysUser implements Serializable {
         this.companyId = companyId;
     }
 
-    public Long getRoleId() {
-        return roleId;
+    public String getRoleIds() {
+        return roleIds;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
+    public void setRoleIds(String roleIds) {
+        this.roleIds = roleIds;
     }
 
     public Long getDepartmentId() {

@@ -1,6 +1,8 @@
 package com.spring.boot.service.web.impl;
 
+import com.spring.boot.bean.master.SysRole;
 import com.spring.boot.bean.master.SysUserRole;
+import com.spring.boot.bean.master.entity.SysUserRoleEntity;
 import com.spring.boot.dao.web.master.SysUserRoleDao;
 import com.spring.boot.service.web.SysUserRoleBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +40,12 @@ public class SysUserRoleBusinessServiceImpl implements SysUserRoleBusinessServic
     @Override
     public List<SysUserRole> findRoleByRoleId(Long roleId) {
         return sysUserRoleDao.findRoleByRoleId(roleId);
+    }
+
+
+
+    @Override
+    public SysUserRoleEntity findUserRoleNameByRoleId(Long userId) {
+        return sysUserRoleDao.findUserRoleNameByRoleId(userId);
     }
 }
