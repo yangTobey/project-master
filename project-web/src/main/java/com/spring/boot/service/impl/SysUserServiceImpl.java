@@ -414,15 +414,26 @@ public class SysUserServiceImpl implements SysUserService {
             //用户权限列表
             //Set<String> permsSet = new HashSet<String>();
             Map<String,Boolean> map=new HashMap<String,Boolean>();
-            //获得所有的权限
-            List<SysUserRole> permissionList = sysUserRoleBusinessService.findRoleByUserId(userId);
-            for (SysUserRole userRole : permissionList) {
-                List<SysRoleMenu> menuRoleList = sysRoleMenuBusinessService.findRoleMenuInfoByRoleId(userRole.getRoleId());
-                for (SysRoleMenu menuRole : menuRoleList) {
-                    SysMenu sysMenu = sysMenuBusinessService.findSysMenuInfoByMenuId(menuRole.getMenuId());
-                    if (sysMenu != null&&sysMenu.getPerms()!=null&&sysMenu.getPerms()!="") {
-                        //permsSet.add(sysMenu.getPerms());
+            //userId为1的是超级管理员,不需要进行权限校验，直接赋予系统全部权限（最高权限）
+            if(userId==1){
+                //获取系统全部菜单信息
+                List<SysMenu> menuList=sysMenuBusinessService.getSysMenuList(new HashMap<String,Object>());
+                for(SysMenu sysMenu:menuList){
+                    if(!UtilHelper.isEmpty(sysMenu.getPerms())){
                         map.put(sysMenu.getPerms(),true);
+                    }
+                }
+            }else{
+                //获得所有的权限
+                List<SysUserRole> permissionList = sysUserRoleBusinessService.findRoleByUserId(userId);
+                for (SysUserRole userRole : permissionList) {
+                    List<SysRoleMenu> menuRoleList = sysRoleMenuBusinessService.findRoleMenuInfoByRoleId(userRole.getRoleId());
+                    for (SysRoleMenu menuRole : menuRoleList) {
+                        SysMenu sysMenu = sysMenuBusinessService.findSysMenuInfoByMenuId(menuRole.getMenuId());
+                        if (sysMenu != null&&sysMenu.getPerms()!=null&&sysMenu.getPerms()!="") {
+                            //permsSet.add(sysMenu.getPerms());
+                            map.put(sysMenu.getPerms(),true);
+                        }
                     }
                 }
             }
