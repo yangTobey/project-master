@@ -2,10 +2,12 @@ package com.spring.boot.service.impl;
 
 import com.spring.boot.bean.master.SysMenu;
 import com.spring.boot.bean.master.SysRoleMenu;
+import com.spring.boot.bean.master.entity.SysUserRoleEntity;
 import com.spring.boot.service.SysMenuService;
 import com.spring.boot.service.web.SysMenuBusinessService;
 import com.spring.boot.service.web.SysRoleMenuBusinessService;
 import com.spring.boot.service.web.SysUserBusinessService;
+import com.spring.boot.service.web.SysUserRoleBusinessService;
 import com.spring.boot.util.Constant;
 import com.spring.boot.util.R;
 import com.spring.boot.util.ShiroUtils;
@@ -14,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2018/1/25.
@@ -31,6 +30,8 @@ public class SysMenuServiceImpl implements SysMenuService {
     private SysUserBusinessService sysUserBusinessService;
     @Autowired
     private SysRoleMenuBusinessService sysRoleMenuBusinessService;
+    @Autowired
+    private SysUserRoleBusinessService sysUserRoleBusinessService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -46,11 +47,22 @@ public class SysMenuServiceImpl implements SysMenuService {
         Long userId = ShiroUtils.getUserEntity().getUserId();
         //用户菜单列表
         List<Long> menuIdList = null;
-        //非超级管理员需要查询权限菜单，超级管理员的userId为1
+        //根据用户id利用sql查询用户多个角色名称，用逗号，隔开
+        SysUserRoleEntity sysUserRoleEntity=sysUserRoleBusinessService.findUserRoleNameByRoleId(userId);
+        if(null!=sysUserRoleEntity){
+            //获取用户全部角色的角色编码
+            List<String> roleCodeList= Arrays.asList(sysUserRoleEntity.getRoleCodes().split(","));
+            //角色编码为superadmin的系统超级管理员
+            if(!roleCodeList.contains("superadmin")){
+                //用户菜单列表
+                menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 1);
+            }
+        }
+        /*//非超级管理员需要查询权限菜单，超级管理员的userId为1
         if(userId!=1){
             //用户菜单列表
             menuIdList = sysUserBusinessService.queryUserAllMenuId(userId, 1);
-        }
+        }*/
         List<SysMenu> menuList = getAllMenuList(menuIdList, 1, null);
         if (null != menuList && menuList.size() > 0) {
             return R.ok().putData(200, menuList, "获取成功！");
@@ -170,7 +182,7 @@ public class SysMenuServiceImpl implements SysMenuService {
                 //一级菜单，直接判断权限信息内有没有数据，如果有，直接组装
                 if (null!=menuIdList&&menuIdList.contains(sysMenu.getMenuId())) {
                     subMenuList.add(sysMenu);
-                }else{//当userId为1的超级管理员时，不需要判断权限信息
+                }else{//当超级管理员时，不需要判断权限信息
                     subMenuList.add(sysMenu);
                 }
             }

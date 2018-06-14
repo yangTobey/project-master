@@ -278,7 +278,7 @@ public class SysContractController {
         return R.ok(map);
     }
     /**
-     * 根据主键id获取附件文档信息
+     * 根据主键id获取信息
      *
      * @param contractId
      * @return

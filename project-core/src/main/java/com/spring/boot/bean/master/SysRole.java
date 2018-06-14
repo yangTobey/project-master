@@ -16,6 +16,7 @@ public class SysRole {
     private Date createTime;
     private Long createUserId;
     private Integer statusCode;
+    private String roleCode;
 
     public Long getRoleId() {
         return roleId;
@@ -63,5 +64,13 @@ public class SysRole {
 
     public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public String getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
     }
 }

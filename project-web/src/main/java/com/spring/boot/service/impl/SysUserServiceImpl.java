@@ -414,8 +414,20 @@ public class SysUserServiceImpl implements SysUserService {
             //用户权限列表
             //Set<String> permsSet = new HashSet<String>();
             Map<String,Boolean> map=new HashMap<String,Boolean>();
-            //userId为1的是超级管理员,不需要进行权限校验，直接赋予系统全部权限（最高权限）
-            if(userId==1){
+
+            boolean isSuperadmin=false;
+            //根据用户id利用sql查询用户多个角色名称、角色编码、角色id，用逗号，隔开
+            SysUserRoleEntity sysUserRoleEntity=sysUserRoleBusinessService.findUserRoleNameByRoleId(userId);
+            if(null!=sysUserRoleEntity){
+                //获取用户全部角色的角色编码
+                List<String> roleCodeList= Arrays.asList(sysUserRoleEntity.getRoleCodes().split(","));
+                //角色编码为superadmin的系统超级管理员
+                if(roleCodeList.contains("superadmin")){
+                    isSuperadmin=true;
+                }
+            }
+            //超级管理员,不需要进行权限校验，直接赋予系统全部权限（最高权限）
+            if(isSuperadmin){
                 //获取系统全部菜单信息
                 List<SysMenu> menuList=sysMenuBusinessService.getSysMenuList(new HashMap<String,Object>());
                 for(SysMenu sysMenu:menuList){

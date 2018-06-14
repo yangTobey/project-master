@@ -8,10 +8,11 @@
 		<result column="create_time" property="createTime" />
 		<result column="create_user_id" property="createUserId" />
 		<result column="status_code" property="statusCode" />
+		<result column="role_code" property="roleCode" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		role_id, role_name, remark, create_time,status_code,create_user_id
+		role_id, role_name, remark, create_time,status_code,create_user_id,role_code
 	</sql>
 
 	<select id="findByUserId" resultMap="sysRole" parameterType="map">

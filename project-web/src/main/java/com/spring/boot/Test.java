@@ -168,10 +168,16 @@ public class Test {
         });
 
         List<Long> longList=new ArrayList<Long>();
-        longList.add(1L);
+        longList.add(11L);
         longList.add(2L);
         longList.add(3L);
         System.out.println(longList.toString());
+        System.out.println(longList.contains(1L));
+
+        String str11 = "abc1,bc";
+        System.out.println(str11.contains("abc"));
+        List<String> gameids = java.util.Arrays.asList(str11.split(","));
+        System.out.println(gameids);
 
     }
     // 获取当前时间所在年的最大周数

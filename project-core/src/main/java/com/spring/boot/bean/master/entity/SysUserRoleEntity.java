@@ -9,6 +9,8 @@ public class SysUserRoleEntity {
     //多个角色名称组合，如：a,b
     private String roleNames;
 
+    private String roleCodes;
+
     public String getRoleIds() {
         return roleIds;
     }
@@ -23,5 +25,13 @@ public class SysUserRoleEntity {
 
     public void setRoleNames(String roleNames) {
         this.roleNames = roleNames;
+    }
+
+    public String getRoleCodes() {
+        return roleCodes;
+    }
+
+    public void setRoleCodes(String roleCodes) {
+        this.roleCodes = roleCodes;
     }
 }

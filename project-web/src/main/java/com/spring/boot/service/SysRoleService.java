@@ -34,7 +34,7 @@ public interface SysRoleService {
      * @param remark       备注信息
      * @return
      */
-    Map<String, Object> updateSysRole(Long roleId, String roleName, String remark,String  moduleIds);
+    Map<String, Object> updateSysRole(Long roleId, String roleName, String remark,String  moduleIds,String roleCode);
 
     /**
      * 删除角色信息（只更新角色状态，不作删除处理）

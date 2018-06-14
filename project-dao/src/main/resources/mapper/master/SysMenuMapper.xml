@@ -82,6 +82,12 @@
         select count(menu_id)
         from sys_menu
         where is_use !=3
+        <if test="menuName != null and menuName !=''">
+            and menu_name  like concat('%', #{menuName}, '%')
+        </if>
+        <if test="menuUrl != null and menuUrl !=''">
+            and url like concat('%', #{menuUrl}, '%')
+        </if>
     </select>
     <update id="updateSysMenu" parameterType="map">
 		update sys_menu set menu_name = #{menuName},parent_id = #{parentId},url = #{menuUrl},perms = #{menuPerms},menu_type = #{menuType},sort = #{sort},remark = #{remark},icon = #{icon}

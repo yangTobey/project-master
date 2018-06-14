@@ -179,4 +179,9 @@ public class IndexController {
     public String test(){
         return "views/error/test";
     }
+
+    @RequestMapping(value = "/sysMenuIndex", method = RequestMethod.GET)
+    public String sysMenuIndex(){
+        return "views/otherManage/menuManage";
+    }
 }

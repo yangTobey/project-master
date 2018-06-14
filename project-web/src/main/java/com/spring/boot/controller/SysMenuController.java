@@ -51,7 +51,7 @@ public class SysMenuController {
     }
 
     /**
-     * 获取系统菜单和功能按钮
+     * 获取系统菜单和功能按钮（角色管理中，角色新增或者修改操作中使用）
      *
      * @return
      */

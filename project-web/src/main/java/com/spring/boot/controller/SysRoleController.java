@@ -32,6 +32,12 @@ public class SysRoleController {
         return "views/main/index";
     }
 
+    /**
+     * 获取角色列表
+     * @param limit
+     * @param offset
+     * @return
+     */
     @RequestMapping(value = "/getSysRoleList", method = RequestMethod.POST)
     public R getSysRoleList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
         if (!UtilHelper.isIntegerNumer(limit)) {
@@ -43,6 +49,11 @@ public class SysRoleController {
         return R.ok(map);
 
     }
+
+    /**
+     * 获取系统全部角色信息，用于添加、更新用户信息时，下拉选择角色
+     * @return
+     */
     @RequestMapping(value = "/getAllSysRole", method = RequestMethod.POST)
     public R getAllSysRole() {
         Map<String, Object> map=sysRoleService.getAllSysRole();
@@ -72,14 +83,25 @@ public class SysRoleController {
         }
     }
 
+    /**
+     * 更新角色信息
+     * @param roleId 角色id
+     * @param roleName 角色名称
+     * @param remark 备注信息
+     * @param moduleIds 模块id组合信息
+     * @return
+     */
     @RequestMapping(value = "/updateSysRole", method = RequestMethod.POST)
     public R updateSysRole(@RequestParam(value = "roleId", required = false)String roleId,@RequestParam(value = "roleName", required = false)String roleName
-            ,@RequestParam(value = "remark", required = false)String remark,@RequestParam(value = "moduleIds", required = false) String moduleIds) {
+            ,@RequestParam(value = "remark", required = false)String remark,@RequestParam(value = "moduleIds", required = false) String moduleIds
+            ,@RequestParam(value = "roleCode", required = false) String roleCode) {
         if(!UtilHelper.isLongNumer(roleId)){
             return R.error(400, "角色编号格式不正确，请联系系统管理员！");
+        }else if(UtilHelper.isEmpty(roleCode)){
+            return R.error(400, "角色编码不正确，请联系系统管理员！");
         }
         try {
-            Map<String, Object> map= sysRoleService.updateSysRole(Long.valueOf(roleId),roleName,remark,moduleIds);
+            Map<String, Object> map= sysRoleService.updateSysRole(Long.valueOf(roleId),roleName,remark,moduleIds,roleCode);
             return R.ok(map);
         }catch (Exception e){
             e.printStackTrace();
@@ -87,6 +109,12 @@ public class SysRoleController {
             return R.error(500, "更新角色信息失败，服务器异常，请联系系统管理员！");
         }
     }
+
+    /**
+     * 删除角色信息
+     * @param roleId
+     * @return
+     */
     @RequestMapping(value = "/deleteSysRole", method = RequestMethod.POST)
     public R  deleteSysRole(@RequestParam(value = "roleId", required = false)String roleId) {
         if(!UtilHelper.isLongNumer(roleId)){

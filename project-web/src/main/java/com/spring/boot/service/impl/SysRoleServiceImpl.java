@@ -98,21 +98,25 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> updateSysRole(Long roleId, String roleName, String remark, String moduleIds) {
+    public Map<String, Object> updateSysRole(Long roleId, String roleName, String remark, String moduleIds,String roleCode) {
+
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("roleId", roleId);
         map.put("roleName", roleName);
         map.put("remark", remark);
         int count = sysRoleBusinessService.updateSysRole(map);
         if (count > 0) {
-            int deleteCount = sysRoleBusinessService.deleteSysRoleMenu(roleId);
-            //当选择的权限不为空时
-            if(!UtilHelper.isEmpty(moduleIds)){
-                String[] moduleIdArray;
-                //去掉最后那个逗号，在进行获取数据
-                moduleIdArray = moduleIds.substring(0, moduleIds.length()).split(",");
-                for (String moduleId : moduleIdArray) {
-                    sysRoleBusinessService.addSysRoleMenu(Long.valueOf(moduleId), roleId);
+            //超级管理员赋予最高权限，不需要操作权限信息
+            if(!"superadmin".equals(roleCode)){
+                int deleteCount = sysRoleBusinessService.deleteSysRoleMenu(roleId);
+                //当选择的权限不为空时
+                if(!UtilHelper.isEmpty(moduleIds)){
+                    String[] moduleIdArray;
+                    //去掉最后那个逗号，在进行获取数据
+                    moduleIdArray = moduleIds.substring(0, moduleIds.length()).split(",");
+                    for (String moduleId : moduleIdArray) {
+                        sysRoleBusinessService.addSysRoleMenu(Long.valueOf(moduleId), roleId);
+                    }
                 }
             }
             return R.ok(200, "更新成功！");

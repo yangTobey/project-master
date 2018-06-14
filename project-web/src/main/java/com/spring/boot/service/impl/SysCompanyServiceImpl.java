@@ -126,11 +126,13 @@ public class SysCompanyServiceImpl implements SysCompanyService {
     @Override
     public Map<String, Object> findSysCompanyByCompanyId(long companyId) {
         Map<String, Object> map = new HashMap<String, Object>();
-        Map<String, Object>  resultMap = new HashMap<String, Object>();
         map.put("companyId", companyId);
         SysCompany sysCompany = sysCompanyBusinessService.findSysCompanyByCompanyId(map);
-        resultMap.put("data", sysCompanyBusinessService.findSysCompanyByCompanyId(map));
-        return resultMap;
+        if(null!=sysCompany){
+            return R.ok().putData(200,sysCompany,"获取成功！");
+        }else{
+            return R.error(500,"获取失败，不存在该公司信息，请联系系统管理员！");
+        }
     }
 
     @Override
