@@ -37,4 +37,19 @@ public class SysFileBusinessServiceImpl implements SysFileBusinessService {
     public SysContractFile fileSysContractFileById(Long fileId) {
         return sysFileDao.fileSysContractFileById(fileId);
     }
+
+    @Override
+    public int deleteSysQualityManageFileById(Long fileId) {
+        return sysFileDao.deleteSysQualityManageFileById(fileId);
+    }
+
+    @Override
+    public int deleteSysProjectEnergyFileById(Long fileId) {
+        return sysFileDao.deleteSysProjectEnergyFileById(fileId);
+    }
+
+    @Override
+    public int deleteSysContractFileById(Long fileId) {
+        return sysFileDao.deleteSysContractFileById(fileId);
+    }
 }

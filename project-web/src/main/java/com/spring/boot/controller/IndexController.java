@@ -175,11 +175,19 @@ public class IndexController {
         return "views/error/serverError";
     }
 
+    /**
+     * 系统测试
+     * @return
+     */
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test(){
         return "views/error/test";
     }
 
+    /**
+     * 系统菜单管理
+     * @return
+     */
     @RequestMapping(value = "/sysMenuIndex", method = RequestMethod.GET)
     public String sysMenuIndex(){
         return "views/otherManage/menuManage";

@@ -21,6 +21,11 @@ import java.util.Map;
 public class WebsocketTest {
     @Autowired
     private SysDataAnalysisService sysyDataAnalysisService;
+
+    /**
+     * 系统websocket测试
+     * @return
+     */
     @RequestMapping(value = "/websocketInfo", method = RequestMethod.GET)
     public R websocket() {
         Map<String, Object> result = new HashMap<String, Object>();

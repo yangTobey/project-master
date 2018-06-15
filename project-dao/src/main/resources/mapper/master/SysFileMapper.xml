@@ -23,5 +23,17 @@
         sys_contract_file where 1=1
         and file_id = #{fileId}
     </select>
+    <!--根据id删除品质文档附件信息-->
+    <delete id="deleteSysQualityManageFileById" >
+        DELETE FROM sys_quality_manage_file WHERE file_id = #{fileId}
+    </delete>
+    <!--根据id删除功能能耗文档附件信息-->
+    <delete id="deleteSysProjectEnergyFileById" >
+        DELETE FROM sys_project_energy_file WHERE file_id = #{fileId}
+    </delete>
+    <!--根据id删除合同文档附件信息-->
+    <delete id="deleteSysContractFileById" >
+        DELETE FROM sys_contract_file WHERE file_id = #{fileId}
+    </delete>
 
 </mapper>

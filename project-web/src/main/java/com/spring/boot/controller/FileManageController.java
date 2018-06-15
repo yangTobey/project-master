@@ -127,7 +127,7 @@ public class FileManageController {
     @RequestMapping(value = "/downloadQualityFile", method = RequestMethod.GET)
     public R downloadQualityFile(HttpServletRequest request, HttpServletResponse response, @RequestParam("fileIds") String fileIds) {
         //去掉最后那个逗号，在进行获取数据
-        String[] fileInfoArray = fileIds.substring(0, fileIds.length() - 1).split(";");
+        String[] fileInfoArray = fileIds.substring(0, fileIds.length()).split(";");
         List<String> fileLists = new ArrayList<String>();
         for (String fileId : fileInfoArray) {
             SysQualityManageFile sysQualityManageFile = sysFileService.fileSysQualityManageFileById(Long.valueOf(fileId));
@@ -155,7 +155,7 @@ public class FileManageController {
     @RequestMapping(value = "/downloadProjectFile", method = RequestMethod.GET)
     public R downloadProjectFile(HttpServletRequest request, HttpServletResponse response, @RequestParam("fileIds") String fileIds) {
         //去掉最后那个逗号，在进行获取数据
-        String[] fileInfoArray = fileIds.substring(0, fileIds.length() - 1).split(";");
+        String[] fileInfoArray = fileIds.substring(0, fileIds.length()).split(";");
         List<String> fileLists = new ArrayList<String>();
         for (String fileId : fileInfoArray) {
             SysProjectEnergyFile sysProjectEnergyFile = sysFileService.fileSysProjectEnergyFileById(Long.valueOf(fileId));
@@ -184,7 +184,7 @@ public class FileManageController {
     @RequestMapping(value = "/downloadSysContractFile", method = RequestMethod.GET)
     public R downloadSysContractFile(HttpServletRequest request, HttpServletResponse response, @RequestParam("fileIds") String fileIds) {
         //去掉最后那个逗号，在进行获取数据
-        String[] fileInfoArray = fileIds.substring(0, fileIds.length() - 1).split(";");
+        String[] fileInfoArray = fileIds.substring(0, fileIds.length()).split(";");
         List<String> fileLists = new ArrayList<String>();
         for (String fileId : fileInfoArray) {
             SysContractFile sysContractFile = sysFileService.fileSysContractFileById(Long.valueOf(fileId));
@@ -385,6 +385,24 @@ public class FileManageController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * 系统文件删除操作管理
+     * @param request
+     * @param fileIds
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/deleteFileByFileId", method = RequestMethod.GET)
+    public R deleteFileByFileId(HttpServletRequest request,@RequestParam(value = "fileIds", required = false) String fileIds,@RequestParam(value = "type", required = false) String type){
+        if (UtilHelper.isEmpty(fileIds)) {
+            return R.error(400, "文件id格式不正确，请联系系统管理员进行处理！");
+        }else if(UtilHelper.isEmpty(type)){
+            return R.error(400, "删除文件类型格式不正确，请联系系统管理员进行处理！");
+        }
+        Map<String, Object> map=sysFileService.deleteFileByFileId(request,fileIds,type);
+        return R.ok(map);
     }
 
 }

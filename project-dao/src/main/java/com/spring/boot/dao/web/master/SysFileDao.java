@@ -33,4 +33,24 @@ public interface SysFileDao extends BaseDao<SysQualityManageFile> {
      * @return
      */
     SysContractFile fileSysContractFileById(Long fileId);
+    /**
+     * 根据文件id删除品质管理文件
+     * @param fileId
+     * @return
+     */
+    int deleteSysQualityManageFileById(Long fileId);
+
+    /**
+     * 根据文件id删除功能能耗文件
+     * @param fileId
+     * @return
+     */
+    int deleteSysProjectEnergyFileById(Long fileId);
+
+    /**
+     * 根据文件id删除合同管理文件
+     * @param fileId
+     * @return
+     */
+    int deleteSysContractFileById(Long fileId);
 }
