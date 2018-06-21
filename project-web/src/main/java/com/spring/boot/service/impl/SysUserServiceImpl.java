@@ -45,13 +45,15 @@ public class SysUserServiceImpl implements SysUserService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public Map<String, Object> sysUserList(Integer limit, Integer offset) {
+    public Map<String, Object> sysUserList(Integer limit, Integer offset,String account,String userName) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        Map<String, Object> map = map = new HashMap<String, Object>();
+        Map<String, Object> map  = new HashMap<String, Object>();
         try {
             map.put("limit", limit);
             map.put("offset", offset);
-            resultMap.put("total", sysUserBusinessService.sysUserTotal());
+            map.put("account", account);
+            map.put("userName", userName);
+            resultMap.put("total", sysUserBusinessService.sysUserTotal(map));
             List<SysUser> sysUserList=sysUserBusinessService.sysUserList(map);
             for(SysUser sysUser:sysUserList){
                 //根据用户id利用sql查询用户多个角色名称，用逗号，隔开

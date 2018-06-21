@@ -33,6 +33,12 @@
 		LEFT JOIN sys_department as department on department.department_id=user.department_id
 		LEFT JOIN sys_company as company on company.company_id=user.company_id
 		where user.status_code!=3
+		<if test="account != null and account != ''">
+			and user.user_account like concat('%', #{account}, '%')
+		</if>
+		<if test="userName != null and userName != ''">
+			and user.user_name like concat('%', #{userName}, '%')
+		</if>
 		order by user.create_time desc
 		<if test="offset != null and limit != null">
 			limit #{offset},#{limit}
@@ -43,6 +49,12 @@
 		select count(user_id)
 		from sys_user
 		where status_code!=3
+		<if test="account != null and account != ''">
+			and user_account like concat('%', #{account}, '%')
+		</if>
+		<if test="userName != null and userName != ''">
+			and user_name like concat('%', #{userName}, '%')
+		</if>
 	</select>
 
 	<select id="findByUserId" resultMap="sysUser" parameterType="map">

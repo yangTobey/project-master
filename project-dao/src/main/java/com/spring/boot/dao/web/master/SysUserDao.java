@@ -18,7 +18,7 @@ public interface SysUserDao {
     /**
      * 查找系统用户列表总数
      */
-    int sysUserTotal();
+    int sysUserTotal(Map<String, Object> map);
     /**
      * 根据用户id查找用户信息
      *

@@ -29,8 +29,8 @@ public class SysUserBusinessServiceImpl implements SysUserBusinessService {
     }
 
     @Override
-    public int sysUserTotal() {
-        return sysUserDao.sysUserTotal();
+    public int sysUserTotal(Map<String, Object> map) {
+        return sysUserDao.sysUserTotal(map);
     }
 
     @Override

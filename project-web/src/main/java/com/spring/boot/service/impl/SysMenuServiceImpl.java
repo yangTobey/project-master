@@ -81,7 +81,7 @@ public class SysMenuServiceImpl implements SysMenuService {
            if(menuType==0){
                menuList=new ArrayList<SysMenu>();
                SysMenu sysMenu=new SysMenu();
-               sysMenu.setMenuName("系统最外层菜单");
+               sysMenu.setMenuName("系统最外层目录");
                sysMenu.setMenuId(0L);
                menuList.add(sysMenu);
            }else{

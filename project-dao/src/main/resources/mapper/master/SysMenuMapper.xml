@@ -32,9 +32,9 @@
     <select id="queryCatalogAndMenu" resultMap="sysMenu" parameterType="Integer">
         select <include refid="Base_Column_List"/> from sys_menu where 1=1
         <choose>
-           <!-- <when test="menuType==0">
-                and type=0
-            </when>-->
+           <when test="menuType==2">
+                and menu_type=1
+            </when>
             <when test="menuType==1">
                 and menu_type=0
             </when>
