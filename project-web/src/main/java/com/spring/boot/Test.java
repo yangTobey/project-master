@@ -179,6 +179,21 @@ public class Test {
         List<String> gameids = java.util.Arrays.asList(str11.split(","));
         System.out.println(gameids);
 
+        StringBuilder sb=new StringBuilder();
+        switch (1){
+            case 1:sb.append("Hello");
+            case 2:sb.append("aa");
+            default:sb.append("9");
+
+        }
+        System.out.println(sb);
+
+        int aaa=2;
+        System.out.println((aaa++)/3);
+        System.out.println(aaa);
+        int x[][]=new int[5][3];
+        System.out.println(x.length);
+
     }
     // 获取当前时间所在年的最大周数
     public static int getMaxWeekNumOfYear(int year) {
