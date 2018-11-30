@@ -13,7 +13,7 @@ public interface SysUserService {
      *
      * @return
      */
-    Map<String, Object> sysUserList(Integer limit, Integer offset,String account,String userName);
+    Map<String, Object> sysUserList(Integer limit, Integer offset,String account,String userName,Long companyId);
 
     /**
      * 根据用户id查找用户信息

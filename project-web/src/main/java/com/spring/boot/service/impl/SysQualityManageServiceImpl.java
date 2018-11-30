@@ -160,7 +160,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addSysQualityManage(Long companyId, Integer year, Integer month, Integer qualityCheck, Integer qualityCheckPass, Integer securityEvent, Integer qualityCheckUnmodified, String fileInfo) {
+    public Map<String, Object> addSysQualityManage(Long companyId, Integer year, Integer month, Integer qualityCheck, Integer qualityCheckPass, Integer securityEvent, Integer qualityCheckUnmodified, String fileInfo, Integer lastQualityCheckUnmodified) {
         SysQualityManage sysQualityManage = new SysQualityManage();
         sysQualityManage.setCompanyId(companyId);
         sysQualityManage.setYear(year);
@@ -170,6 +170,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         sysQualityManage.setQualityCheckFail(qualityCheck-qualityCheckPass);
         sysQualityManage.setSecurityEvent(securityEvent);
         sysQualityManage.setQualityCheckUnmodified(qualityCheckUnmodified);
+        sysQualityManage.setLastQualityCheckUnmodified(lastQualityCheckUnmodified);
         sysQualityManage.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
         SysQualityManage record=sysQualityManageBusinessService.sysQualityManageRecord(companyId,year,month);
         if(null!=record){
@@ -185,7 +186,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                 String[] fileData;
                 for (String fileUrl : fileInfoArray) {
                     sysQualityManageFile = new SysQualityManageFile();
-                    //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
+                    //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
                     fileData = fileUrl.substring(0, fileUrl.length()).split(",");
                     sysQualityManageFile.setQualityId(sysQualityManage.getQualityId());
                     sysQualityManageFile.setFileName(fileData[0]);
@@ -208,7 +209,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> updateSysQualityManage(Long qualityId, Long companyId, Integer year, Integer month, Integer qualityCheck, Integer qualityCheckPass
-            ,  Integer securityEvent, Integer qualityCheckUnmodified, String fileInfo) {
+            ,  Integer securityEvent, Integer qualityCheckUnmodified, String fileInfo,Integer lastQualityCheckUnmodified) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("qualityId", qualityId);
         map.put("companyId", companyId);
@@ -219,6 +220,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         map.put("qualityCheckFail", qualityCheck-qualityCheckPass);
         map.put("securityEvent", securityEvent);
         map.put("qualityCheckUnmodified", qualityCheckUnmodified);
+        map.put("lastQualityCheckUnmodified", lastQualityCheckUnmodified);
         SysQualityManage record=sysQualityManageBusinessService.sysQualityManageRecord(companyId,year,month);
         if(null!=record){
             if(!qualityId.equals(record.getQualityId())){
@@ -237,7 +239,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                 String[] fileData;
                 for (String fileUrl : fileInfoArray) {
                     sysQualityManageFile = new SysQualityManageFile();
-                    //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
+                    //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
                     fileData = fileUrl.substring(0, fileUrl.length()).split(",");
                     sysQualityManageFile.setQualityId(qualityId);
                     sysQualityManageFile.setFileName(fileData[0]);

@@ -217,7 +217,7 @@ public class SysContractServiceImpl implements SysContractService {
                         String[] fileData;
                         for (String fileUrl : fileInfoArray) {
                             sysContractFile = new SysContractFile();
-                            //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
+                            //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
                             fileData = fileUrl.substring(0, fileUrl.length()).split(",");
                             sysContractFile.setContractId(sysContract.getContractId());
                             sysContractFile.setFileName(fileData[0]);
@@ -294,7 +294,7 @@ public class SysContractServiceImpl implements SysContractService {
                     String[] fileData;
                     for (String fileUrl : fileInfoArray) {
                         sysContractFile = new SysContractFile();
-                        //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件地址，文件大小）
+                        //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
                         fileData = fileUrl.substring(0, fileUrl.length()).split(",");
                         sysContractFile.setContractId(contractId);
                         sysContractFile.setFileName(fileData[0]);
@@ -440,7 +440,7 @@ public class SysContractServiceImpl implements SysContractService {
 
     @Override
     public void updateSysContractExpire() {
-        System.out.println("定时器执行！！");
+
         //（1：未执行，2：在执行，3：即将过期，4：已经过期，5：已经删除）
         //1：未执行
         sysContractBusinessService.updateSysContractExpire(1,UtilHelper.getNowTimeStr());

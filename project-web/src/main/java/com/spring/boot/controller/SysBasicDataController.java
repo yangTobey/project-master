@@ -97,7 +97,9 @@ public class SysBasicDataController {
             , @RequestParam(value = "houseNumber", required = false) String houseNumber, @RequestParam(value = "acceptHouseNumber", required = false) String acceptHouseNumber
             , @RequestParam(value = "forSaleHouseNumber", required = false) String forSaleHouseNumber, @RequestParam(value = "decorateHouseNumber", required = false) String decorateHouseNumber
             , @RequestParam(value = "parkingSpace", required = false) String parkingSpace, @RequestParam(value = "forSaleParkingSpace", required = false) String forSaleParkingSpace
-            , @RequestParam(value = "salesDistribution", required = false) String salesDistribution, @RequestParam(value = "companyId", required = false) String companyId) {
+            , @RequestParam(value = "salesDistribution", required = false) String salesDistribution, @RequestParam(value = "companyId", required = false) String companyId
+            , @RequestParam(value = "parkingSpaceFileInfo", required = false) String parkingSpaceFileInfo, @RequestParam(value = "salesDistributionFileInfo", required = false) String salesDistributionFileInfo
+            , @RequestParam(value = "constructionAreaFileInfo", required = false) String constructionAreaFileInfo) {
 
         if (!UtilHelper.isIntegerNumer(year)) {
             return R.error(400, "年份格式不正确，或者不符合常理！");
@@ -127,12 +129,16 @@ public class SysBasicDataController {
             return R.error(400, "销配格式不正确，或者不符合常理！");
         }else if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
-        }
+        }/*else if (UtilHelper.isEmpty(parkingSpaceFileInfo)) {
+            return R.error(400, "车位附件不能为空！");
+        }else if (UtilHelper.isEmpty(salesDistributionFileInfo)) {
+            return R.error(400, "销配附件不能为空！");
+        }*/
         //异常捕捉，service层做事物管理回滚
         try{
             Map<String, Object> map = sysBasicDataService.addSysBasicData(Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
                     , Integer.valueOf(projectNumber), Integer.valueOf(houseNumber), Integer.valueOf(acceptHouseNumber), Integer.valueOf(forSaleHouseNumber), Integer.valueOf(decorateHouseNumber),
-                    Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Long.valueOf(companyId));
+                    Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Long.valueOf(companyId),parkingSpaceFileInfo,salesDistributionFileInfo,constructionAreaFileInfo);
             return R.ok(map);
         }catch (Exception e){
             e.printStackTrace();
@@ -168,8 +174,10 @@ public class SysBasicDataController {
             , @RequestParam(value = "houseNumber", required = false) String houseNumber, @RequestParam(value = "acceptHouseNumber", required = false) String acceptHouseNumber
             , @RequestParam(value = "forSaleHouseNumber", required = false) String forSaleHouseNumber, @RequestParam(value = "decorateHouseNumber", required = false) String decorateHouseNumber
             , @RequestParam(value = "parkingSpace", required = false) String parkingSpace, @RequestParam(value = "forSaleParkingSpace", required = false) String forSaleParkingSpace
-            , @RequestParam(value = "salesDistribution", required = false) String salesDistribution, @RequestParam(value = "companyId", required = false) String companyId) {
-        logger.info("更新基础信息！");
+            , @RequestParam(value = "salesDistribution", required = false) String salesDistribution, @RequestParam(value = "companyId", required = false) String companyId
+            , @RequestParam(value = "parkingSpaceFileInfo", required = false) String parkingSpaceFileInfo, @RequestParam(value = "salesDistributionFileInfo", required = false) String salesDistributionFileInfo
+            , @RequestParam(value = "constructionAreaFileInfo", required = false) String constructionAreaFileInfo) {
+
         if (!UtilHelper.isLongNumer(basicId)) {
             return R.error(400, "基础信息id格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(year)) {
@@ -200,11 +208,15 @@ public class SysBasicDataController {
             return R.error(400, "销配格式不正确，或者不符合常理！");
         }else if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
+        }else if (UtilHelper.isEmpty(parkingSpaceFileInfo)) {
+            return R.error(400, "车位附件不能为空！");
+        }else if (UtilHelper.isEmpty(salesDistributionFileInfo)) {
+            return R.error(400, "销配附件不能为空！");
         }
         try {
             Map<String, Object> map = sysBasicDataService.updateSysBasicData(Long.valueOf(basicId), Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
                     , Integer.valueOf(projectNumber), Integer.valueOf(houseNumber), Integer.valueOf(acceptHouseNumber), Integer.valueOf(forSaleHouseNumber), Integer.valueOf(decorateHouseNumber),
-                    Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Long.valueOf(companyId));
+                    Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Long.valueOf(companyId),parkingSpaceFileInfo,salesDistributionFileInfo,constructionAreaFileInfo);
             return R.ok(map);
         }catch (Exception e){
             e.printStackTrace();

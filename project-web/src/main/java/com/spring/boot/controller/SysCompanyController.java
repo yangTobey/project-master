@@ -44,15 +44,22 @@ public class SysCompanyController {
      * @param companyName
      * @param companyPhone
      * @param companyAddress
+     * @param principal 负责人
+     * @param fileInfo 附件文档
      * @return
      */
     @RequestMapping(value = "/addSysCompany", method = RequestMethod.POST)
     public R addSysCompany(@RequestParam(value = "companyName", required = false) String companyName, @RequestParam(value = "companyPhone", required = false) String companyPhone
-            , @RequestParam(value = "companyAddress", required = false) String companyAddress) {
+            , @RequestParam(value = "companyAddress", required = false) String companyAddress, @RequestParam(value = "principal", required = false) String principal
+            , @RequestParam(value = "fileInfo", required = false) String fileInfo) {
         if (UtilHelper.isEmpty(companyName)) {
             return R.error(400, "公司名称不能为空！");
+        }else if (UtilHelper.isEmpty(principal)) {
+            return R.error(400, "公司负责人不能为空！");
+        }else if (UtilHelper.isEmpty(fileInfo)) {
+            return R.error(400, "附件文档不能为空！");
         }
-        Map<String, Object> map = sysCompanyService.addSysCompany(companyName, companyPhone, companyAddress);
+        Map<String, Object> map = sysCompanyService.addSysCompany(companyName, companyPhone, companyAddress,principal,fileInfo);
         return R.ok(map);
     }
 
@@ -67,14 +74,19 @@ public class SysCompanyController {
      */
     @RequestMapping(value = "/updateSysCompanyInfo", method = RequestMethod.POST)
     public R updateSysCompanyInfo(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "companyName", required = false) String companyName
-            , @RequestParam(value = "companyPhone", required = false) String companyPhone, @RequestParam(value = "companyAddress", required = false) String companyAddress) {
+            , @RequestParam(value = "companyPhone", required = false) String companyPhone, @RequestParam(value = "companyAddress", required = false) String companyAddress
+            , @RequestParam(value = "principal", required = false) String principal, @RequestParam(value = "fileInfo", required = false) String fileInfo) {
         logger.info("公司信息更新操作！");
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司编号格式不正确，或者不符合常理，请联系系统管理员！");
         } else if (UtilHelper.isEmpty(companyName)) {
             return R.error(400, "公司名称不能为空！");
+        }else if (UtilHelper.isEmpty(principal)) {
+            return R.error(400, "公司负责人不能为空！");
+        }else if (UtilHelper.isEmpty(fileInfo)) {
+            return R.error(400, "附件文档不能为空！");
         }
-        Map<String, Object> map = sysCompanyService.updateSysCompanyInfo(companyId, companyName, companyPhone, companyAddress);
+        Map<String, Object> map = sysCompanyService.updateSysCompanyInfo(companyId, companyName, companyPhone, companyAddress,principal,fileInfo);
         return R.ok(map);
 
     }

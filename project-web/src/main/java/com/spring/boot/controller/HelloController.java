@@ -33,10 +33,26 @@ public class HelloController {
         }
 
         Statement statement = cc.createStatement();
-        String sql = "select * from sys_user";
+        long sys3=System.currentTimeMillis();
+        //String sql = "select * from sys_user";
+        String sql = "SELECT company.cityName,company.longitude,company.latitude,re.community_id as communityId,re.`status`," +
+                "REPLACE (re.user_name,SUBSTR(re.user_name, 2),'**') as userName,company.id as cityId,co.`name` as communityName, " +
+                "CASE re.level " +
+                "WHEN 0 THEN '报修'" +
+                "WHEN 1 THEN '投诉' " +
+                "END AS levelName " +
+                "FROM  `repair` AS re " +
+                "LEFT JOIN community AS co ON re.community_id = co.community_id " +
+                "LEFT JOIN worker_branchCommunity AS wocom ON wocom.community = co.community_id " +
+                "LEFT JOIN worker_branchCompany AS company ON company.id = wocom.branchCompanyId " +
+                "WHERE re.`status`!=-1 and re.`status`!=3 and wocom.type=1 and company.`status`!=2 " +
+                "ORDER BY re.commit_time DESC LIMIT 0, 30";
         ResultSet rs = statement.executeQuery(sql);
+
+        long sys4=System.currentTimeMillis();
+
         while(rs.next()) {
-            System.out.println(rs.getString("user_id")+"");
+            System.out.println("AA:"+(sys4-sys3));
         }
     }
 }

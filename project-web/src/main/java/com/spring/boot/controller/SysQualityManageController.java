@@ -78,7 +78,7 @@ public class SysQualityManageController {
             , @RequestParam(value = "month", required = false) String month, @RequestParam(value = "qualityCheck", required = false) String qualityCheck
             , @RequestParam(value = "qualityCheckPass", required = false) String qualityCheckPass
             , @RequestParam(value = "securityEvent", required = false) String securityEvent, @RequestParam(value = "qualityCheckUnmodified", required = false) String qualityCheckUnmodified
-            , @RequestParam(value = "fileInfo", required = false) String fileInfo) {
+            , @RequestParam(value = "fileInfo", required = false) String fileInfo, @RequestParam(value = "lastQualityCheckUnmodified", required = false) String lastQualityCheckUnmodified) {
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(year)) {
@@ -95,10 +95,12 @@ public class SysQualityManageController {
             return R.error(400, "月安全事故数量项格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(qualityCheckUnmodified)) {
             return R.error(400, "月品质检查未整改项格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(lastQualityCheckUnmodified)) {
+            return R.error(400, "上个月品质检查未整改项格式不正确，或者不符合常理！");
         }
         try {
             Map<String, Object> map = sysQualityManageService.addSysQualityManage(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(qualityCheck), Integer.valueOf(qualityCheckPass)
-                    , Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified), fileInfo);
+                    , Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified), fileInfo,Integer.valueOf(lastQualityCheckUnmodified));
             return R.ok(map);
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,7 +127,8 @@ public class SysQualityManageController {
             , @RequestParam(value = "year", required = false) String year, @RequestParam(value = "month", required = false) String month
             , @RequestParam(value = "qualityCheck", required = false) String qualityCheck, @RequestParam(value = "qualityCheckPass", required = false) String qualityCheckPass
             ,  @RequestParam(value = "securityEvent", required = false) String securityEvent
-            , @RequestParam(value = "qualityCheckUnmodified", required = false) String qualityCheckUnmodified, @RequestParam(value = "fileInfo", required = false) String fileInfo) {
+            , @RequestParam(value = "qualityCheckUnmodified", required = false) String qualityCheckUnmodified, @RequestParam(value = "fileInfo", required = false) String fileInfo
+            , @RequestParam(value = "lastQualityCheckUnmodified", required = false) String lastQualityCheckUnmodified) {
         logger.info("信息更新操作！");
         if (!UtilHelper.isLongNumer(qualityId)) {
             return R.error(400, "质量管理编号格式不正确，请联系系统管理员，或者不符合常理！");
@@ -145,10 +148,12 @@ public class SysQualityManageController {
             return R.error(400, "月安全事故数量项格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(qualityCheckUnmodified)) {
             return R.error(400, "月品质检查未整改项格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(lastQualityCheckUnmodified)) {
+            return R.error(400, "上个月品质检查未整改项格式不正确，或者不符合常理！");
         }
         try {
             Map<String, Object> map = sysQualityManageService.updateSysQualityManage(Long.valueOf(qualityId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(qualityCheck), Integer.valueOf(qualityCheckPass)
-                    , Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified), fileInfo);
+                    , Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified), fileInfo,Integer.valueOf(lastQualityCheckUnmodified));
             return R.ok(map);
         } catch (Exception e) {
             e.printStackTrace();

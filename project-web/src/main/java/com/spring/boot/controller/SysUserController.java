@@ -135,13 +135,21 @@ public class SysUserController {
      */
     @RequestMapping(value = "/sysUserList", method = RequestMethod.POST)
     public R sysUserList(@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset
-            , @RequestParam(value = "account", required = false) String account, @RequestParam(value = "userName", required = false) String userName) {
+            , @RequestParam(value = "account", required = false) String account, @RequestParam(value = "userName", required = false) String userName
+            , @RequestParam(value = "companyId", required = false) String companyId) {
         if (!UtilHelper.isIntegerNumer(limit)) {
             return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(offset)) {
             return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
         }
-        Map<String, Object> map = sysUserService.sysUserList(Integer.valueOf(limit), Integer.valueOf(offset),account,userName);
+        if(!UtilHelper.isEmpty(companyId)){
+            if(!UtilHelper.isLongNumer(companyId)){
+                return R.error(400, "公司id格式不正确，或者不符合常理！");
+            }
+        }else{//全部公司
+            companyId="0";
+        }
+        Map<String, Object> map = sysUserService.sysUserList(Integer.valueOf(limit), Integer.valueOf(offset),account,userName,Long.valueOf(companyId));
         return R.ok(map);
 
     }

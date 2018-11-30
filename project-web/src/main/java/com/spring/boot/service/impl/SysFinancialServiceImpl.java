@@ -183,11 +183,18 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                     return R.ok().putData(200, resultMap, "获取成功！");
                 }else{
                     //当需要添加的数据年份和周数都与当前前年份、周数一致时，才允许添加，避免前端提前添加数据造成误导
-                    if(UtilHelper.getYear()==resultMap.get("year")&&UtilHelper.getWeekOfYear()==resultMap.get("weekOfYear")){
+                    if(UtilHelper.getYear()<resultMap.get("year")){
+                        return R.error(500, "本周数据已添加，下周数据暂不能添加，谢谢配合！");
+                    }else if(UtilHelper.getYear()==resultMap.get("year")&&UtilHelper.getWeekOfYear()<resultMap.get("weekOfYear")){
+                        return R.error(500, "本周数据已添加，下周数据暂不能添加，谢谢配合！");
+                    }else{
+                        return R.ok().putData(200, resultMap, "获取成功！");
+                    }
+                    /*if(UtilHelper.getYear()==resultMap.get("year")&&UtilHelper.getWeekOfYear()==resultMap.get("weekOfYear")){
                         return R.ok().putData(200, resultMap, "获取成功！");
                     }else{
                         return R.error(500, "本周数据已添加，下周数据暂不能添加，谢谢配合！");
-                    }
+                    }*/
                 }
 
             } else {

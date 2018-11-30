@@ -20,7 +20,7 @@ public interface SysCompanyService {
      * @param companyAddress 公司地址
      * @return
      */
-    Map<String,Object> addSysCompany(String companyName,String companyPhone,String companyAddress);
+    Map<String,Object> addSysCompany(String companyName,String companyPhone,String companyAddress,String principal,String fileInfo);
 
     /**
      * 更新公司信息
@@ -30,7 +30,7 @@ public interface SysCompanyService {
      * @param companyAddress 公司地址
      * @return
      */
-    Map<String,Object> updateSysCompanyInfo(String companyId,String companyName,String companyPhone,String companyAddress);
+    Map<String,Object> updateSysCompanyInfo(String companyId,String companyName,String companyPhone,String companyAddress,String principal,String fileInfo);
     /**
      * 删除公司信息
      * @param companyId 公司id

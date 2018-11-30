@@ -45,7 +45,7 @@ public class SysUserServiceImpl implements SysUserService {
     private StringRedisTemplate redisTemplate;
 
     @Override
-    public Map<String, Object> sysUserList(Integer limit, Integer offset,String account,String userName) {
+    public Map<String, Object> sysUserList(Integer limit, Integer offset,String account,String userName,Long companyId) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> map  = new HashMap<String, Object>();
         try {
@@ -53,6 +53,7 @@ public class SysUserServiceImpl implements SysUserService {
             map.put("offset", offset);
             map.put("account", account);
             map.put("userName", userName);
+            map.put("companyId", companyId);
             resultMap.put("total", sysUserBusinessService.sysUserTotal(map));
             List<SysUser> sysUserList=sysUserBusinessService.sysUserList(map);
             for(SysUser sysUser:sysUserList){
