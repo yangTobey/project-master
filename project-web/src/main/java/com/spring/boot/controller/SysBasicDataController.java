@@ -208,11 +208,11 @@ public class SysBasicDataController {
             return R.error(400, "销配格式不正确，或者不符合常理！");
         }else if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
-        }else if (UtilHelper.isEmpty(parkingSpaceFileInfo)) {
+        }/*else if (UtilHelper.isEmpty(parkingSpaceFileInfo)) {
             return R.error(400, "车位附件不能为空！");
         }else if (UtilHelper.isEmpty(salesDistributionFileInfo)) {
             return R.error(400, "销配附件不能为空！");
-        }
+        }*/
         try {
             Map<String, Object> map = sysBasicDataService.updateSysBasicData(Long.valueOf(basicId), Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
                     , Integer.valueOf(projectNumber), Integer.valueOf(houseNumber), Integer.valueOf(acceptHouseNumber), Integer.valueOf(forSaleHouseNumber), Integer.valueOf(decorateHouseNumber),

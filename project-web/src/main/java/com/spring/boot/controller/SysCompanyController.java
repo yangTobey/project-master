@@ -56,9 +56,9 @@ public class SysCompanyController {
             return R.error(400, "公司名称不能为空！");
         }else if (UtilHelper.isEmpty(principal)) {
             return R.error(400, "公司负责人不能为空！");
-        }else if (UtilHelper.isEmpty(fileInfo)) {
+        }/*else if (UtilHelper.isEmpty(fileInfo)) {
             return R.error(400, "附件文档不能为空！");
-        }
+        }*/
         Map<String, Object> map = sysCompanyService.addSysCompany(companyName, companyPhone, companyAddress,principal,fileInfo);
         return R.ok(map);
     }
@@ -83,9 +83,9 @@ public class SysCompanyController {
             return R.error(400, "公司名称不能为空！");
         }else if (UtilHelper.isEmpty(principal)) {
             return R.error(400, "公司负责人不能为空！");
-        }else if (UtilHelper.isEmpty(fileInfo)) {
+        }/*else if (UtilHelper.isEmpty(fileInfo)) {
             return R.error(400, "附件文档不能为空！");
-        }
+        }*/
         Map<String, Object> map = sysCompanyService.updateSysCompanyInfo(companyId, companyName, companyPhone, companyAddress,principal,fileInfo);
         return R.ok(map);
 
