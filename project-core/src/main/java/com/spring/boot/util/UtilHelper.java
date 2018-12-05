@@ -32,7 +32,7 @@ public class UtilHelper {
     public static final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final int PAGE_SIZE = 10;
     private static int currentid = 1;
-    private static Calendar calendar = Calendar.getInstance();
+    private static Calendar calendar = null;
 
     public static Timestamp formatTime(String date, String time) {
         try {
@@ -69,6 +69,7 @@ public class UtilHelper {
      * @return
      */
     public static int getYear(){
+        calendar = Calendar.getInstance();
         return calendar.get(Calendar.YEAR);
     }
     /**
@@ -87,6 +88,7 @@ public class UtilHelper {
      * @return
      */
     public static int getMonth(){
+        calendar = Calendar.getInstance();
         return calendar.get(Calendar.MONTH) + 1;
     }
     /**
@@ -94,6 +96,7 @@ public class UtilHelper {
      * @return
      */
     public static int getDayOfMonth(){
+        calendar = Calendar.getInstance();
         return calendar.get(Calendar.DAY_OF_MONTH);
     }
 
@@ -182,10 +185,11 @@ public class UtilHelper {
     }
 
     public static boolean isEmpty(String str) {
-        if (StringUtils.isEmpty(str) || StringUtils.isBlank(str)) {
+        /*if (StringUtils.isEmpty(str) || StringUtils.isBlank(str)) {
             return true;
         }
-        return false;
+        return false;*/
+        return StringUtils.isEmpty(str) || StringUtils.isBlank(str);
     }
 
     /**

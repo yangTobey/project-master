@@ -93,7 +93,8 @@
         </choose>
         and basic.year = #{year}
         and basic.status_code!=2
-        ORDER BY basic.year DESC,basic.month DESC
+        <!--添加id排序，避免出现重复数据-->
+        ORDER BY basic.year DESC,basic.month DESC,basic.basic_id DESC
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
         </if>
@@ -124,15 +125,33 @@
 		,sales_distribution = #{salesDistribution}
 		where basic_id = #{basicId}
 	</update>
-    <insert id="addSysBasicData" parameterType="map">
+    <insert id="addSysBasicData" parameterType="com.spring.boot.bean.master.SysBasicData" useGeneratedKeys="true" keyProperty="basicId">
 		INSERT INTO sys_basic_data (company_id, year, month, construction_area,charge_area,city_number,project_number,house_number,accept_house_number,for_sale_house_number,decorate_house_number
 		,parking_space,for_sale_parking_space,sales_distribution,create_time)
               VALUES   (#{companyId},#{year},#{month},#{constructionArea},#{chargeArea},#{cityNumber},#{projectNumber},#{houseNumber},#{acceptHouseNumber},#{forSaleHouseNumber},#{decorateHouseNumber}
-              ,#{parkingSpace} ,#{forSaleParkingSpace},#{salesDistribution},#{createTime} )
+              ,#{parkingSpace} ,#{forSaleParkingSpace},#{salesDistribution},#{createTime})
 	</insert>
     <update id="deleteSysBasicData" parameterType="map">
 		update sys_basic_data set status_code = 2
 		where basic_id = #{basicId}
 	</update>
+    <!--添加附件文档-->
+    <insert id="addSysBasicDataFile" parameterType="com.spring.boot.bean.master.SysBasicDataFile" useGeneratedKeys="true" keyProperty="fileId">
+        INSERT INTO sys_basic_data_file (basic_id, file_name, file_url, file_size,upload_time,file_type)
+        VALUES   (#{sysBasicDataId},#{fileName},#{fileUrl},#{fileSize},#{uploadTime},#{fileType})
+    </insert>
+    <!--根据id查找文档信息-->
+    <select id="findSysBasicDataFileByBasicId" resultType="com.spring.boot.bean.master.SysBasicDataFile" >
+        SELECT
+        file_id AS fileId,
+        basic_id AS sysBasicDataId,
+        file_name AS fileName,
+        file_size AS fileSize,
+        file_type as fileType,
+        file_url AS fileUrl FROM
+        sys_basic_data_file where 1=1
+        and basic_id = #{basicId}
+        and status_code!=2
+    </select>
 
 </mapper>

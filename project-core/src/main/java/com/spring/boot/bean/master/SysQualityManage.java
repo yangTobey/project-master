@@ -19,6 +19,7 @@ public class SysQualityManage {
     private Integer qualityCheckFail;
     private Integer securityEvent;
     private Integer qualityCheckUnmodified;
+    private Integer lastQualityCheckUnmodified;
     private Integer statusCode;
     private Date createTime;
 
@@ -138,5 +139,13 @@ public class SysQualityManage {
 
     public void setFileList(List<SysQualityManageFile> fileList) {
         this.fileList = fileList;
+    }
+
+    public Integer getLastQualityCheckUnmodified() {
+        return lastQualityCheckUnmodified;
+    }
+
+    public void setLastQualityCheckUnmodified(Integer lastQualityCheckUnmodified) {
+        this.lastQualityCheckUnmodified = lastQualityCheckUnmodified;
     }
 }

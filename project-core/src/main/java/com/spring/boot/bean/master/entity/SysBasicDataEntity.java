@@ -1,9 +1,11 @@
 package com.spring.boot.bean.master.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.spring.boot.bean.master.SysBasicDataFile;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * 基础数据
@@ -31,6 +33,7 @@ public class SysBasicDataEntity implements Serializable {
     private Integer statusCode;
     private Timestamp createTime;
     private Integer subsidiaryCount;//分公司总数
+    List<SysBasicDataFile> fileList;
 
     private Double forSaleHouseScale;//房屋空置率(转化后保留两位小数)
     //已售房屋数（入住）率(转化后保留两位小数)
@@ -222,6 +225,14 @@ public class SysBasicDataEntity implements Serializable {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public List<SysBasicDataFile> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<SysBasicDataFile> fileList) {
+        this.fileList = fileList;
     }
 }
 

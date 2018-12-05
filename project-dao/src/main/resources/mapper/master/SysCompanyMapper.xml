@@ -10,12 +10,13 @@
         <result column="company_address" property="companyAddress"/>
         <result column="status_code" property="statusCode"/>
         <result column="create_time" property="createTime"/>
+        <result column="principal" property="principal"/>
     </resultMap>
 
     <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
 
     <sql id="Base_Column_List">
-		company_id, company_name, company_code, parent_id,company_phone,company_address,status_code,create_time
+		company_id, company_name, company_code, parent_id,company_phone,company_address,status_code,create_time,principal
 	</sql>
 
     <!--<select id="findByUserId" resultMap="User" parameterType="map">
@@ -74,12 +75,12 @@
         where status_code!=2
     </select>
     <update id="update" parameterType="map">
-		update sys_company set company_name = #{companyName},parent_id = #{parentId},company_phone = #{companyPhone,jdbcType=VARCHAR},company_address = #{companyAddress,jdbcType=VARCHAR}
+		update sys_company set company_name = #{companyName},parent_id = #{parentId},principal = #{principal},company_phone = #{companyPhone,jdbcType=VARCHAR},company_address = #{companyAddress,jdbcType=VARCHAR}
 		where company_id = #{companyId}
 	</update>
-    <insert id="save" parameterType="map">
-		INSERT INTO sys_company (company_name, company_code, parent_id, company_phone,company_address,create_time)
-              VALUES   (#{companyName},#{companyCode},#{parentId},#{companyPhone,jdbcType=VARCHAR},#{companyAddress,jdbcType=VARCHAR},#{createTime})
+    <insert id="save" parameterType="com.spring.boot.bean.master.SysCompany" useGeneratedKeys="true" keyProperty="companyId">
+		INSERT INTO sys_company (company_name, company_code, parent_id, company_phone,company_address,create_time,principal)
+              VALUES   (#{companyName},#{companyCode},#{parentId},#{companyPhone,jdbcType=VARCHAR},#{companyAddress,jdbcType=VARCHAR},#{createTime},#{principal})
 	</insert>
     <update id="delete" parameterType="map">
 		update sys_company set status_code = 2
@@ -91,6 +92,23 @@
         <include refid="Base_Column_List"/>
         from sys_company
         where 1=1 and company_id = #{companyId} and status_code!=2
+    </select>
+    <!--添加附件文档-->
+    <insert id="addSysCompanyFileInfo" parameterType="com.spring.boot.bean.master.SysCompanyFile" useGeneratedKeys="true" keyProperty="fileId">
+        INSERT INTO sys_company_file (company_id, file_name, file_url, file_size,upload_time)
+        VALUES   (#{companyId},#{fileName},#{fileUrl},#{fileSize},#{uploadTime})
+    </insert>
+    <!--根据id查找文档信息-->
+    <select id="findSysCompanyFileByCompanyId" resultType="com.spring.boot.bean.master.SysCompanyFile" >
+        SELECT
+        file_id AS fileId,
+        company_id AS companyId,
+        file_name AS fileName,
+        file_size AS fileSize,
+        file_url AS fileUrl FROM
+        sys_company_file where 1=1
+        and company_id = #{companyId}
+        and status_code!=2
     </select>
 
 </mapper>

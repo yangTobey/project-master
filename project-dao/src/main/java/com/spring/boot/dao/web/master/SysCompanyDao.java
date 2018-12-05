@@ -1,6 +1,7 @@
 package com.spring.boot.dao.web.master;
 
 import com.spring.boot.bean.master.SysCompany;
+import com.spring.boot.bean.master.SysCompanyFile;
 import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.dao.BaseDao;
 
@@ -64,4 +65,12 @@ public interface SysCompanyDao extends BaseDao<SysCompany> {
      * @return
      */
     List<Long> getAllSysCompanyId();
+    /**
+     * 新增公司附件
+     *
+     * @param sysCompanyFile
+     * @return
+     */
+    int addSysCompanyFileInfo(SysCompanyFile sysCompanyFile);
+    List<SysCompanyFile> findSysCompanyFileByCompanyId(Long companyId);
 }

@@ -39,6 +39,9 @@
 		<if test="userName != null and userName != ''">
 			and user.user_name like concat('%', #{userName}, '%')
 		</if>
+		<if test="companyId != 0">
+			and company_id =#{companyId}
+		</if>
 		order by user.create_time desc
 		<if test="offset != null and limit != null">
 			limit #{offset},#{limit}
@@ -53,7 +56,10 @@
 			and user_account like concat('%', #{account}, '%')
 		</if>
 		<if test="userName != null and userName != ''">
-			and user_name like concat('%', #{userName}, '%')
+			and user.user_name like concat('%', #{userName}, '%')
+		</if>
+		<if test="companyId != 0">
+			and company_id =#{companyId}
 		</if>
 	</select>
 

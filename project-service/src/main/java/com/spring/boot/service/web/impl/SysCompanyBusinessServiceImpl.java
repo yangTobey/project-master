@@ -1,6 +1,7 @@
 package com.spring.boot.service.web.impl;
 
 import com.spring.boot.bean.master.SysCompany;
+import com.spring.boot.bean.master.SysCompanyFile;
 import com.spring.boot.bean.master.SysUser;
 import com.spring.boot.dao.web.master.SysCompanyDao;
 import com.spring.boot.dao.web.master.SysUserDao;
@@ -37,8 +38,8 @@ public class SysCompanyBusinessServiceImpl implements SysCompanyBusinessService 
     }
 
     @Override
-    public int addSysCompany(Map<String, Object> map) {
-        return sysCompanyDao.save(map);
+    public int addSysCompany(SysCompany sysCompany) {
+        return sysCompanyDao.save(sysCompany);
     }
 
     @Override
@@ -64,5 +65,15 @@ public class SysCompanyBusinessServiceImpl implements SysCompanyBusinessService 
     @Override
     public List<Long> getAllSysCompanyId() {
         return sysCompanyDao.getAllSysCompanyId();
+    }
+
+    @Override
+    public int addSysCompanyFileInfo(SysCompanyFile sysCompanyFile) {
+        return sysCompanyDao.addSysCompanyFileInfo(sysCompanyFile);
+    }
+
+    @Override
+    public List<SysCompanyFile> findSysCompanyFileByCompanyId(Long companyId) {
+        return sysCompanyDao.findSysCompanyFileByCompanyId(companyId);
     }
 }

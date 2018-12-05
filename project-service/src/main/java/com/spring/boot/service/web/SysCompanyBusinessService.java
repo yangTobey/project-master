@@ -1,6 +1,7 @@
 package com.spring.boot.service.web;
 
 import com.spring.boot.bean.master.SysCompany;
+import com.spring.boot.bean.master.SysCompanyFile;
 import com.spring.boot.bean.master.SysUser;
 
 import java.util.List;
@@ -34,10 +35,10 @@ public interface SysCompanyBusinessService {
     /**
      * 新增公司
      *
-     * @param map
+     * @param sysCompany
      * @return
      */
-    int addSysCompany(Map<String, Object> map);
+    int addSysCompany(SysCompany sysCompany);
 
     /**
      * 更新公司信息
@@ -70,4 +71,13 @@ public interface SysCompanyBusinessService {
      * @return
      */
     List<Long> getAllSysCompanyId();
+    /**
+     * 新增公司附件
+     *
+     * @param sysCompanyFile
+     * @return
+     */
+    int addSysCompanyFileInfo(SysCompanyFile sysCompanyFile);
+
+    List<SysCompanyFile> findSysCompanyFileByCompanyId(Long companyId);
 }

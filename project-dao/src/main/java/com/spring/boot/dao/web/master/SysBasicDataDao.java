@@ -1,6 +1,7 @@
 package com.spring.boot.dao.web.master;
 
 import com.spring.boot.bean.master.SysBasicData;
+import com.spring.boot.bean.master.SysBasicDataFile;
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 import com.spring.boot.dao.BaseDao;
@@ -44,10 +45,10 @@ public interface SysBasicDataDao extends BaseDao<SysBasicDataEntity> {
     /**
      * 新增
      *
-     * @param map
+     * @param sysBasicData
      * @return
      */
-    int addSysBasicData(Map<String, Object> map);
+    int addSysBasicData(SysBasicData sysBasicData);
 
     /**
      * 更新信息
@@ -70,4 +71,18 @@ public interface SysBasicDataDao extends BaseDao<SysBasicDataEntity> {
      * @return
      */
     SysBasicDataEntity findSysBasicDataById(Map<String, Object> map);
+    /**
+     * 新增附件信息
+     *
+     * @param sysBasicDataFile
+     * @return
+     */
+    int addSysBasicDataFile(SysBasicDataFile sysBasicDataFile);
+
+    /**
+     * 查找附件
+     * @param map
+     * @return
+     */
+    List<SysBasicDataFile> findSysBasicDataFileByBasicId(Map<String, Object> map);
 }

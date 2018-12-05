@@ -3,6 +3,7 @@ package com.spring.boot.bean.master;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/2.
@@ -20,6 +21,8 @@ public class SysCompany {
     private Boolean authority;
 
     private Date createTime;
+    private String principal;
+    private List<SysCompanyFile> fileList;
 
     public Long getCompanyId() {
         return companyId;
@@ -91,5 +94,21 @@ public class SysCompany {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getPrincipal() {
+        return principal;
+    }
+
+    public void setPrincipal(String principal) {
+        this.principal = principal;
+    }
+
+    public List<SysCompanyFile> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<SysCompanyFile> fileList) {
+        this.fileList = fileList;
     }
 }

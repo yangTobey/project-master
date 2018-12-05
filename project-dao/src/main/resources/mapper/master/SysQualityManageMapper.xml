@@ -15,13 +15,14 @@
         <result column="create_time" property="createTime"/>
         <result column="companyName" property="companyName"/>
         <result column="fileNum" property="fileNum"/>
+        <result column="last_quality_check_unmodified" property="lastQualityCheckUnmodified"/>
     </resultMap>
 
     <!--<parameterMap id="user" type="com.spring.boot.bean.User"/>-->
 
     <sql id="Base_Column_List">
 		quality.quality_id,quality.company_id, quality.year, quality.month, quality.quality_check,quality.quality_check_pass,quality.quality_check_fail,quality.quality_check_unmodified
-		,quality.security_event,quality.status_code,quality.create_time
+		,quality.security_event,quality.status_code,quality.create_time,quality.last_quality_check_unmodified
 	</sql>
     <select id="queryList" resultMap="sysQualityManage" parameterType="map">
         select
@@ -158,12 +159,12 @@
  </select>
  <update id="updateSysQualityManage" parameterType="map">
      update sys_quality_manage set company_id = #{companyId},year = #{year},month = #{month},quality_check = #{qualityCheck},quality_check_pass = #{qualityCheckPass}
-     ,quality_check_fail = #{qualityCheckFail},security_event = #{securityEvent},quality_check_unmodified = #{qualityCheckUnmodified}
+     ,quality_check_fail = #{qualityCheckFail},security_event = #{securityEvent},quality_check_unmodified = #{qualityCheckUnmodified},last_quality_check_unmodified = #{lastQualityCheckUnmodified}
      where quality_id = #{qualityId}
  </update>
  <insert id="addSysQualityManage" parameterType="com.spring.boot.bean.master.SysQualityManage" useGeneratedKeys="true" keyProperty="qualityId">
-     INSERT INTO sys_quality_manage (company_id, year, month, quality_check,quality_check_pass,quality_check_fail,security_event,quality_check_unmodified,create_time)
-           VALUES   (#{companyId},#{year},#{month},#{qualityCheck},#{qualityCheckPass},#{qualityCheckFail},#{securityEvent},#{qualityCheckUnmodified},#{createTime})
+     INSERT INTO sys_quality_manage (company_id, year, month, quality_check,quality_check_pass,quality_check_fail,security_event,quality_check_unmodified,create_time,last_quality_check_unmodified)
+           VALUES   (#{companyId},#{year},#{month},#{qualityCheck},#{qualityCheckPass},#{qualityCheckFail},#{securityEvent},#{qualityCheckUnmodified},#{createTime},#{lastQualityCheckUnmodified})
  </insert>
  <!--添加附件文档-->
     <insert id="addSysQualityManageFile" parameterType="com.spring.boot.bean.master.SysQualityManageFile" useGeneratedKeys="true" keyProperty="fileId">

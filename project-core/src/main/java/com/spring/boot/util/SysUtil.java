@@ -37,7 +37,7 @@ public class SysUtil {
     }
 
     /**
-     * 获取查询数据需要用到的年和月（每月10号到下个月10号显示上一个月的数据，即5月10号到6月10号显示4月份数据。）
+     * 获取查询数据需要用到的年和月（每月10号到下个月9号显示上一个月的数据，即5月10号到6月9号显示4月份数据。）
      * @param day
      * @return
      */
@@ -47,7 +47,7 @@ public class SysUtil {
         int month=0;
         //获取当前月的天数
         int dayOfMonth=UtilHelper.getDayOfMonth();
-        //每月10号到下个月10号显示上一个月的数据，即5月10号到6月10号显示4月份数据。
+        //每月10号到下个月9号显示上一个月的数据，即5月10号到6月9号显示4月份数据。
         if(dayOfMonth<day){
             if(UtilHelper.getMonth()<=2){
                 year=UtilHelper.getYear()-1;
@@ -80,8 +80,8 @@ public class SysUtil {
     public static boolean updateToRedis(int day,int year,int month){
         //获取当前月的天数
         int dayOfMonth=UtilHelper.getDayOfMonth();
-        //每月10号到下个月10号显示上一个月的数据，即5月10号到6月10号显示4月份数据。
-        if(dayOfMonth<=day){
+        //每月10号到下个月9号显示上一个月的数据，即5月10号到6月9号显示4月份数据。
+        if(dayOfMonth<day){
             if(UtilHelper.getMonth()<=2){
                 if(12-2+UtilHelper.getMonth()==month&&UtilHelper.getYear()-1==year){
                     return true;

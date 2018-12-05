@@ -1,6 +1,7 @@
 package com.spring.boot.service.web;
 
 import com.spring.boot.bean.master.SysBasicData;
+import com.spring.boot.bean.master.SysBasicDataFile;
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 
@@ -44,10 +45,10 @@ public interface SysBasicDataBusinessService {
     /**
      * 新增信息
      *
-     * @param map
+     * @param sysBasicData
      * @return
      */
-    int addSysBasicData(Map<String, Object> map);
+    int addSysBasicData(SysBasicData sysBasicData);
 
     /**
      * 更新信息
@@ -71,4 +72,18 @@ public interface SysBasicDataBusinessService {
      * @return
      */
     SysBasicDataEntity findSysBasicDataById(Map<String, Object> map);
+    /**
+     * 新增附件信息
+     *
+     * @param sysBasicDataFile
+     * @return
+     */
+    int addSysBasicDataFile(SysBasicDataFile sysBasicDataFile);
+
+    /**
+     * 根据信息id查找附件信息
+     * @param map
+     * @return
+     */
+    List<SysBasicDataFile> findSysBasicDataFileByBasicId(Map<String, Object> map);
 }

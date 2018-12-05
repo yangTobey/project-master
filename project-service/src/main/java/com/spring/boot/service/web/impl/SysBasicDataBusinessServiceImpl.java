@@ -1,6 +1,7 @@
 package com.spring.boot.service.web.impl;
 
 import com.spring.boot.bean.master.SysBasicData;
+import com.spring.boot.bean.master.SysBasicDataFile;
 import com.spring.boot.bean.master.SysCompany;
 import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 import com.spring.boot.dao.web.master.SysBasicDataDao;
@@ -42,8 +43,8 @@ public class SysBasicDataBusinessServiceImpl implements SysBasicDataBusinessServ
     }
 
     @Override
-    public int addSysBasicData(Map<String, Object> map) {
-        return sysBasicDataDao.addSysBasicData(map);
+    public int addSysBasicData(SysBasicData sysBasicData) {
+        return sysBasicDataDao.addSysBasicData(sysBasicData);
     }
 
     @Override
@@ -59,5 +60,15 @@ public class SysBasicDataBusinessServiceImpl implements SysBasicDataBusinessServ
     @Override
     public SysBasicDataEntity findSysBasicDataById(Map<String, Object> map) {
         return sysBasicDataDao.findSysBasicDataById(map);
+    }
+
+    @Override
+    public int addSysBasicDataFile(SysBasicDataFile sysBasicDataFile) {
+        return sysBasicDataDao.addSysBasicDataFile(sysBasicDataFile);
+    }
+
+    @Override
+    public List<SysBasicDataFile> findSysBasicDataFileByBasicId(Map<String, Object> map) {
+        return sysBasicDataDao.findSysBasicDataFileByBasicId(map);
     }
 }
