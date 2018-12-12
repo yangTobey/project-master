@@ -12,17 +12,17 @@
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<!--依赖于core模块-->
-		<dependency>
+		<!--<dependency>
 			<groupId>project.common</groupId>
 			<artifactId>project-core</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-		<!--依赖于service模块-->
+		&lt;!&ndash;依赖于service模块&ndash;&gt;
 		<dependency>
 			<groupId>project.common</groupId>
 			<artifactId>project-service</artifactId>
 			<version>1.0-SNAPSHOT</version>
-		</dependency>
+		</dependency>-->
 		<!--<dependency>
             <groupId>project.common</groupId>
             <artifactId>project-dao</artifactId>

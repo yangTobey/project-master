@@ -2,6 +2,8 @@ package com.spring.boot.bean.master;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,9 +12,12 @@ import java.util.Date;
  */
 public class SysAccountsReceivable implements Serializable {
     private Long accountsId;
+    @NotNull(message = "公司id不能为空")
     private Long companyId;
     private Integer year;
     private Integer month;
+    @NotNull(message = "receivableAccountsOwner不能为空")
+    @Min(value = 10,message = "不能大于10")
     private Double receivableAccountsOwner;
     private Double completeAccountsOwner;
     private Double completeCoupon;

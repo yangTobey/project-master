@@ -231,13 +231,13 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/addSysAccountsReceivable", method = RequestMethod.POST)
     public R addSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
-        if(!UtilHelper.isLongNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
+       /* if(!UtilHelper.isLongNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
             return R.error(400, "公司id格式不正确，或者不符合常理！！");
         }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysAccountsReceivable.getMonth()))){
             return R.error(400, "月份格式不正确，或者不符合常理！！");
         }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysAccountsReceivable.getYear()))){
             return R.error(400, "年份格式不正确，或者不符合常理！！");
-        }
+        }*/
         Double receivableHouse = sysAccountsReceivable.getReceivableCoupon() + sysAccountsReceivable.getReceivableVacancy() + sysAccountsReceivable.getReceivableSubsidy()
                 + sysAccountsReceivable.getReceivableSales() + sysAccountsReceivable.getReceivableOpen() + sysAccountsReceivable.getReceivablePropertySubsidy()
                 + sysAccountsReceivable.getReceivableHouseOther();
@@ -267,13 +267,13 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/updateSysAccountsReceivable", method = RequestMethod.POST)
     public R updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
-        if(!UtilHelper.isLongNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
+       /* if(!UtilHelper.isLongNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
             return R.error(400, "公司id格式不正确，或者不符合常理！！");
         }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysAccountsReceivable.getMonth()))){
             return R.error(400, "月份格式不正确，或者不符合常理！！");
         }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysAccountsReceivable.getYear()))){
             return R.error(400, "年份格式不正确，或者不符合常理！！");
-        }
+        }*/
         Double receivableHouse = sysAccountsReceivable.getReceivableCoupon() + sysAccountsReceivable.getReceivableVacancy() + sysAccountsReceivable.getReceivableSubsidy()
                 + sysAccountsReceivable.getReceivableSales() + sysAccountsReceivable.getReceivableOpen() + sysAccountsReceivable.getReceivablePropertySubsidy()
                 + sysAccountsReceivable.getReceivableHouseOther();
