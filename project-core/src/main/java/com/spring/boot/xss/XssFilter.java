@@ -34,7 +34,7 @@ public class XssFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
 
-        logger.info("自定义过滤器->doFilter");
+        //logger.info("自定义过滤器->doFilter");
 
         chain.doFilter(new XssHttpServletRequestWrapper(
                 (HttpServletRequest) request), response);

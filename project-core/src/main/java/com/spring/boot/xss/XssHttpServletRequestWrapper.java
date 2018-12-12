@@ -56,6 +56,8 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     private String cleanXSS(String value) {
 
+        //以请求头为实例：当value为:application/json, text/javascript, */*; q=0.01
+
 
         //You'll need to remove the spaces from the html entities below
         value = value.replaceAll("<", "& lt;").replaceAll(">", "& gt;");
@@ -63,10 +65,10 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         value = value.replaceAll("'", "& #39;");
         value = value.replaceAll("eval\\((.*)\\)", "");
         value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
-        value = value.replaceAll("script", "");
-        value = value.replaceAll("[*]", "[" + "*]");
+        //value = value.replaceAll("script", "");//当 text/javascript,会出现错误
+        //value = value.replaceAll("[*]", "[" + "*]");//该处需要省略，假如请求头有*号会出现错误
         value = value.replaceAll("[+]", "[" + "+]");
-        value = value.replaceAll("[?]", "[" + "?]");
+        //value = value.replaceAll("[?]", "[" + "?]");
 
 
         // replace sql 这里可以自由发挥

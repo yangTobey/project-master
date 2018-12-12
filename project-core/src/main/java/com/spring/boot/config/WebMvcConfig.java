@@ -38,11 +38,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         super.addViewControllers(registry);
     }
 
-    @Override
+    /*@Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(false);
-    }
-    @Override
+    }*/
+   /* @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
         converter.setFeatures(SerializerFeature.WriteNullListAsEmpty,
@@ -57,7 +57,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         //mediaTypes.add(MediaType.parseMediaType("application/x-www-form-urlencoded"));
         converter.setSupportedMediaTypes(mediaTypes);
         converters.add(converter);
-    }
+    }*/
     /**
      * 允许CORS
      * @return
