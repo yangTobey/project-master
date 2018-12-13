@@ -13,7 +13,7 @@ import java.io.IOException;
  * Created by Administrator on 2018/11/29.
  * xss和sql关键字过滤
  */
-@WebFilter(urlPatterns = "/*")
+/*@WebFilter(urlPatterns = "*//*")*/
 public class XssFilter implements Filter {
 
     private static final Logger logger = LoggerFactory.getLogger(XssFilter.class);

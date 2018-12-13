@@ -2,8 +2,8 @@ package com.spring.boot.bean.master;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,7 +19,12 @@ public class SysAccountsReceivable implements Serializable {
     @NotNull(message = "receivableAccountsOwner不能为空")
     @Min(value = 10,message = "不能大于10")
     private Double receivableAccountsOwner;
+    @Digits(integer = Double.MAX_EXPONENT,fraction = 2)
     private Double completeAccountsOwner;
+
+    @Pattern(regexp = "^[0-9]+(.[0-9]{0,2})?$",message = "小数只能保留两位小数")
+    @Max(value = Integer.MAX_VALUE,message = "输入的数字过大！")
+    @Min(value = Integer.MIN_VALUE,message = "输入的数字过小！")
     private Double completeCoupon;
     private Double receivableCoupon;
     private Double completeVacancy;
@@ -38,6 +43,7 @@ public class SysAccountsReceivable implements Serializable {
     private Double receivableHouse;
     private Date createTime;
     private Integer statusCode;
+    @NotNull(message = "receivableAccountsOwner不能为空")
     private String companyName;
 
     //礼券减免收缴率

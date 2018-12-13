@@ -1,5 +1,6 @@
 package com.spring.boot.handler;
 
+import com.spring.boot.util.R;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -24,9 +25,9 @@ class ExceptionhandlerController {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public Response exception(HttpServletRequest request, Exception exception) {
+    public R exception(HttpServletRequest request, Exception exception) {
         logger.error("raised exception : " + exception);
-        return Response.error(exception.getMessage());
+        return R.error(400,exception.getMessage());
     }
 
     /**
@@ -38,14 +39,15 @@ class ExceptionhandlerController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public Response validationError(MethodArgumentNotValidException ex) {
-        logger.error("raised MethodArgumentNotValidException : " + ex);
+    public R validationError(MethodArgumentNotValidException ex) {
+        //logger.error("raised MethodArgumentNotValidException : " + ex);
         BindingResult result = ex.getBindingResult();
         final List<FieldError> fieldErrors = result.getFieldErrors();
         StringBuilder builder = new StringBuilder();
         for (FieldError error : fieldErrors) {
+            System.out.println(error.getDefaultMessage());
             builder.append(error.getDefaultMessage() + "\n");
         }
-        return new Response(builder.toString(),"500");
+        return R.error(400, builder.toString());
     }
 }

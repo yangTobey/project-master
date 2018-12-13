@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 /**
@@ -230,7 +231,7 @@ public class SysFinancialController {
      * @return
      */
     @RequestMapping(value = "/addSysAccountsReceivable", method = RequestMethod.POST)
-    public R addSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
+    public R addSysAccountsReceivable( SysAccountsReceivable sysAccountsReceivable) {
        /* if(!UtilHelper.isLongNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
             return R.error(400, "公司id格式不正确，或者不符合常理！！");
         }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysAccountsReceivable.getMonth()))){
