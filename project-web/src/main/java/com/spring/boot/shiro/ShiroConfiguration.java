@@ -140,7 +140,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/login/login", "anon");
         //********物业大屏和财务大屏数据展示两个界面不拦截（后期为了数据查看功能限制，再配置进行拦截）*******//
         //filterChainDefinitionMap.put("ws://localhost:8080/websocket", "anon");
-        filterChainDefinitionMap.put("/websocket", "anon");
+        filterChainDefinitionMap.put("/websocket/", "anon");
         filterChainDefinitionMap.put("/sysPage/sysPropertyDetails", "anon");
         filterChainDefinitionMap.put("/sysPage/sysfinancialDetails", "anon");
         //***************************************************************************************//
