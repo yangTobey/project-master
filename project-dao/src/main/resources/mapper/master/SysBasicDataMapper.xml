@@ -94,10 +94,10 @@
         and basic.year = #{year}
         and basic.status_code!=2
         <!--添加id排序，避免出现重复数据-->
-        ORDER BY basic.year DESC,basic.month DESC,basic.basic_id DESC
+        <!--ORDER BY basic.year DESC,basic.month DESC,basic.basic_id DESC
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
-        </if>
+        </if>-->
     </select>
     <!--根据信息id查找详情信息-->
     <select id="findSysBasicDataById" resultType="com.spring.boot.bean.master.entity.SysBasicDataEntity"  parameterType="map">
