@@ -23,7 +23,7 @@ public class PageInfoBean<T> implements Serializable {
      * @param list          page结果
      * @param
      */
-    public PageInfoBean(List list) {
+    public PageInfoBean(List<T> list) {
         if (list instanceof Page) {
             Page page = (Page) list;
             this.setPageNum(page.getPageNum());
@@ -77,11 +77,11 @@ public class PageInfoBean<T> implements Serializable {
      */
     private List<T> list;
     /**
-     * 总页数
+     * 查询结果总页数
      */
     private Integer totalOfPage;
     /**
-     * 数据总数
+     * 查询结果数据总数
      */
     private Long totalOfData;
 

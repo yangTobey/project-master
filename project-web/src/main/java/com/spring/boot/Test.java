@@ -194,6 +194,14 @@ public class Test {
         int x[][]=new int[5][3];
         System.out.println(x.length);
 
+        System.out.println("数据："+UtilHelper.matcherStr("1111111111111111111"));
+
+        AA aa11a=new AA();
+        aa11a.setName("张山");
+        TestClass testClass=new TestClass();
+        aa11a=(AA)testClass.save(aa11a);
+        System.out.println("信息："+aa11a.getName());
+
     }
     // 获取当前时间所在年的最大周数
     public static int getMaxWeekNumOfYear(int year) {
@@ -211,4 +219,6 @@ public class Test {
 
         return c.get(Calendar.WEEK_OF_YEAR);
     }
+
+
 }
