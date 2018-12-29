@@ -146,6 +146,22 @@ public class ShiroConfiguration {
         //***************************************************************************************//
         filterChainDefinitionMap.put("/login/logout", "logout");
         filterChainDefinitionMap.put("/error", "anon");
+        //在线swagger接口文档不拦截
+        //https://www.cnblogs.com/it-taosir/p/9977857.html https://blog.csdn.net/qq_26641781/article/details/80497761
+        //https://blog.csdn.net/tydyz/article/details/80302302
+        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        /*filterChainDefinitionMap.put("swagger-ui.html", "anon");
+        filterChainDefinitionMap.put("/swagger-ui", "anon");*/
+        filterChainDefinitionMap.put("/swagger/**","anon");
+        //filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        filterChainDefinitionMap.put("/swagger-resources/**", "anon");
+        filterChainDefinitionMap.put("/v2/**", "anon");
+        filterChainDefinitionMap.put("/webjars/**", "anon");
+
+        //数据库连接信息
+        //https://blog.csdn.net/tydyz/article/details/80302302
+        filterChainDefinitionMap.put("/druid/**","anon");
+
         /*注：如果开通验证权限，则会出现跨域问题，后期需要修改配置*/
         filterChainDefinitionMap.put("/**", "authc");
 

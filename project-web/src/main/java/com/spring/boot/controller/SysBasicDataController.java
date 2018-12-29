@@ -1,8 +1,12 @@
 package com.spring.boot.controller;
 
+import com.spring.boot.bean.master.SysBasicData;
 import com.spring.boot.service.SysBasicDataService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 /**
@@ -18,6 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/sysBasicData")
+@Api(value = "/sysBasicData", tags = {"/sysBasicData"})
 public class SysBasicDataController {
     private static final Logger logger = Logger.getLogger(SysBasicDataController.class);
     @Autowired
@@ -57,7 +63,7 @@ public class SysBasicDataController {
     public R sysBasicDataAnalysisList(@RequestParam(value = "companyId", required = false) String companyId,
             @RequestParam(value = "limit", required = false) String limit,
             @RequestParam(value = "offset", required = false) String offset,
-            @RequestParam(value = "year", required = false) String year) {
+            @RequestParam(value = "year", required = false) String year,@RequestParam(value = "projectName", required = false) String projectName) {
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
         }else if (!UtilHelper.isIntegerNumer(limit)) {
@@ -67,7 +73,7 @@ public class SysBasicDataController {
         } else if (!UtilHelper.isIntegerNumer(year)) {
             return R.error(400, "年份格式不正确，或者不符合常理！");
         }
-        Map<String, Object> map = sysBasicDataService.sysBasicDataAnalysisList(Long.valueOf(companyId),Integer.valueOf(limit), Integer.valueOf(offset), Integer.valueOf(year));
+        Map<String, Object> map = sysBasicDataService.sysBasicDataAnalysisList(Long.valueOf(companyId),Integer.valueOf(limit), Integer.valueOf(offset), Integer.valueOf(year),projectName);
         return R.ok().put(200, map,"获取成功！");
     }
 
@@ -91,16 +97,9 @@ public class SysBasicDataController {
      * @return
      */
     @RequestMapping(value = "/addSysBasicData", method = RequestMethod.POST)
-    public R addSysBasicData(@RequestParam(value = "year", required = false) String year, @RequestParam(value = "month", required = false) String month
-            , @RequestParam(value = "constructionArea", required = false) String constructionArea, @RequestParam(value = "chargeArea", required = false) String chargeArea
-            , @RequestParam(value = "cityNumber", required = false) String cityNumber, @RequestParam(value = "projectNumber", required = false) String projectNumber
-            , @RequestParam(value = "houseNumber", required = false) String houseNumber, @RequestParam(value = "acceptHouseNumber", required = false) String acceptHouseNumber
-            , @RequestParam(value = "forSaleHouseNumber", required = false) String forSaleHouseNumber, @RequestParam(value = "decorateHouseNumber", required = false) String decorateHouseNumber
-            , @RequestParam(value = "parkingSpace", required = false) String parkingSpace, @RequestParam(value = "forSaleParkingSpace", required = false) String forSaleParkingSpace
-            , @RequestParam(value = "salesDistribution", required = false) String salesDistribution, @RequestParam(value = "companyId", required = false) String companyId
-            , @RequestParam(value = "parkingSpaceFileInfo", required = false) String parkingSpaceFileInfo, @RequestParam(value = "salesDistributionFileInfo", required = false) String salesDistributionFileInfo
-            , @RequestParam(value = "constructionAreaFileInfo", required = false) String constructionAreaFileInfo) {
-
+    @ApiOperation(value = "新增基础数据信息", httpMethod = "POST")
+    public R addSysBasicData(@RequestParam @ApiParam(name = "新增基础数据信息", value = "", required = true) @Valid SysBasicData sysBasicDataAdd) {
+/*
         if (!UtilHelper.isIntegerNumer(year)) {
             return R.error(400, "年份格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(month)) {
@@ -129,16 +128,14 @@ public class SysBasicDataController {
             return R.error(400, "销配格式不正确，或者不符合常理！");
         }else if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
-        }/*else if (UtilHelper.isEmpty(parkingSpaceFileInfo)) {
+        }*//*else if (UtilHelper.isEmpty(parkingSpaceFileInfo)) {
             return R.error(400, "车位附件不能为空！");
         }else if (UtilHelper.isEmpty(salesDistributionFileInfo)) {
             return R.error(400, "销配附件不能为空！");
         }*/
         //异常捕捉，service层做事物管理回滚
         try{
-            Map<String, Object> map = sysBasicDataService.addSysBasicData(Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
-                    , Integer.valueOf(projectNumber), Integer.valueOf(houseNumber), Integer.valueOf(acceptHouseNumber), Integer.valueOf(forSaleHouseNumber), Integer.valueOf(decorateHouseNumber),
-                    Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Long.valueOf(companyId),parkingSpaceFileInfo,salesDistributionFileInfo,constructionAreaFileInfo);
+            Map<String, Object> map = sysBasicDataService.addSysBasicData(sysBasicDataAdd);
             return R.ok(map);
         }catch (Exception e){
             e.printStackTrace();
@@ -168,19 +165,11 @@ public class SysBasicDataController {
      * @return
      */
     @RequestMapping(value = "/updateSysBasicData", method = RequestMethod.POST)
-    public R updateSysBasicData(@RequestParam(value = "basicId", required = false) String basicId, @RequestParam(value = "year", required = false) String year, @RequestParam(value = "month", required = false) String month
-            , @RequestParam(value = "constructionArea", required = false) String constructionArea, @RequestParam(value = "chargeArea", required = false) String chargeArea
-            , @RequestParam(value = "cityNumber", required = false) String cityNumber, @RequestParam(value = "projectNumber", required = false) String projectNumber
-            , @RequestParam(value = "houseNumber", required = false) String houseNumber, @RequestParam(value = "acceptHouseNumber", required = false) String acceptHouseNumber
-            , @RequestParam(value = "forSaleHouseNumber", required = false) String forSaleHouseNumber, @RequestParam(value = "decorateHouseNumber", required = false) String decorateHouseNumber
-            , @RequestParam(value = "parkingSpace", required = false) String parkingSpace, @RequestParam(value = "forSaleParkingSpace", required = false) String forSaleParkingSpace
-            , @RequestParam(value = "salesDistribution", required = false) String salesDistribution, @RequestParam(value = "companyId", required = false) String companyId
-            , @RequestParam(value = "parkingSpaceFileInfo", required = false) String parkingSpaceFileInfo, @RequestParam(value = "salesDistributionFileInfo", required = false) String salesDistributionFileInfo
-            , @RequestParam(value = "constructionAreaFileInfo", required = false) String constructionAreaFileInfo) {
+    public R updateSysBasicData(@RequestParam @Valid SysBasicData sysBasicDataUpdate) {
 
-        if (!UtilHelper.isLongNumer(basicId)) {
+        if (!UtilHelper.isLongNumer(sysBasicDataUpdate.getBasicId().toString())) {
             return R.error(400, "基础信息id格式不正确，或者不符合常理！");
-        } else if (!UtilHelper.isIntegerNumer(year)) {
+        } /*else if (!UtilHelper.isIntegerNumer(year)) {
             return R.error(400, "年份格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(month)) {
             return R.error(400, "月份格式不正确，或者不符合常理！");
@@ -208,15 +197,13 @@ public class SysBasicDataController {
             return R.error(400, "销配格式不正确，或者不符合常理！");
         }else if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
-        }/*else if (UtilHelper.isEmpty(parkingSpaceFileInfo)) {
+        }*//*else if (UtilHelper.isEmpty(parkingSpaceFileInfo)) {
             return R.error(400, "车位附件不能为空！");
         }else if (UtilHelper.isEmpty(salesDistributionFileInfo)) {
             return R.error(400, "销配附件不能为空！");
         }*/
         try {
-            Map<String, Object> map = sysBasicDataService.updateSysBasicData(Long.valueOf(basicId), Integer.valueOf(year), Integer.valueOf(month), Double.valueOf(constructionArea), Double.valueOf(chargeArea), Integer.valueOf(cityNumber)
-                    , Integer.valueOf(projectNumber), Integer.valueOf(houseNumber), Integer.valueOf(acceptHouseNumber), Integer.valueOf(forSaleHouseNumber), Integer.valueOf(decorateHouseNumber),
-                    Integer.valueOf(parkingSpace), Integer.valueOf(forSaleParkingSpace), Integer.valueOf(salesDistribution), Long.valueOf(companyId),parkingSpaceFileInfo,salesDistributionFileInfo,constructionAreaFileInfo);
+            Map<String, Object> map = sysBasicDataService.updateSysBasicData(sysBasicDataUpdate);
             return R.ok(map);
         }catch (Exception e){
             e.printStackTrace();

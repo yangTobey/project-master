@@ -91,6 +91,9 @@
                 AND basic.company_id IN(SELECT company_id from sys_company where status_code!=2)
             </otherwise>
         </choose>
+        <if test="projectName != null and projectName !=''">
+            and basic.project_name  like concat('%', #{projectName}, '%')
+        </if>
         and basic.year = #{year}
         and basic.status_code!=2
         <!--添加id排序，避免出现重复数据-->
@@ -122,14 +125,14 @@
 		update sys_basic_data set company_id = #{companyId},year = #{year},month = #{month},construction_area = #{constructionArea},charge_area = #{chargeArea}
 		,city_number = #{cityNumber},project_number = #{projectNumber},house_number = #{houseNumber},accept_house_number = #{acceptHouseNumber},accept_house_number = #{acceptHouseNumber}
 		,for_sale_house_number = #{forSaleHouseNumber},decorate_house_number = #{decorateHouseNumber},parking_space = #{parkingSpace},for_sale_parking_space = #{forSaleParkingSpace}
-		,sales_distribution = #{salesDistribution}
+		,sales_distribution = #{salesDistribution},remark=#{remark},project_name=#{projectName},sales_distribution_name=#{salesDistributionName}
 		where basic_id = #{basicId}
 	</update>
     <insert id="addSysBasicData" parameterType="com.spring.boot.bean.master.SysBasicData" useGeneratedKeys="true" keyProperty="basicId">
 		INSERT INTO sys_basic_data (company_id, year, month, construction_area,charge_area,city_number,project_number,house_number,accept_house_number,for_sale_house_number,decorate_house_number
-		,parking_space,for_sale_parking_space,sales_distribution,create_time)
-              VALUES   (#{companyId},#{year},#{month},#{constructionArea},#{chargeArea},#{cityNumber},#{projectNumber},#{houseNumber},#{acceptHouseNumber},#{forSaleHouseNumber},#{decorateHouseNumber}
-              ,#{parkingSpace} ,#{forSaleParkingSpace},#{salesDistribution},#{createTime})
+		,parking_space,for_sale_parking_space,sales_distribution,create_time,remark,project_name,sales_distribution_name)
+        VALUES (#{companyId},#{year},#{month},#{constructionArea},#{chargeArea},#{cityNumber},#{projectNumber},#{houseNumber},#{acceptHouseNumber},#{forSaleHouseNumber},#{decorateHouseNumber}
+         ,#{parkingSpace} ,#{forSaleParkingSpace},#{salesDistribution},#{createTime},#{remark},#{projectName},#{salesDistributionName})
 	</insert>
     <update id="deleteSysBasicData" parameterType="map">
 		update sys_basic_data set status_code = 2

@@ -1,11 +1,15 @@
 package com.spring.boot.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.support.http.StatViewServlet;
+import com.alibaba.druid.support.http.WebStatFilter;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -16,9 +20,17 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
-// 扫描 Mapper 接口并容器管理
+// 扫描 Mapper 接口并容器管理https://www.cnblogs.com/carrychan/p/9401471.html  https://blog.csdn.net/qq_37142346/article/details/78488452  https://www.cnblogs.com/java-zhao/p/5413845.html
+//https://www.cnblogs.com/java-zhao/p/5413845.html
+/**
+ * DataSource类型需要引入javax.sql.DataSource；当系统中有多个数据源时，必须有一个数据源为主数据源，使用@Primary修饰。
+ * https://blog.csdn.net/acquaintanceship/article/details/75350653
+ */
 @MapperScan(basePackages = MasterDataSourceConfig.PACKAGE, sqlSessionFactoryRef = "masterSqlSessionFactory")
 public class MasterDataSourceConfig {
 
@@ -42,7 +54,7 @@ public class MasterDataSourceConfig {
     private String driverClass;
 
     @Bean(name = "masterDataSource")
-    @Primary
+    @Primary //https://blog.csdn.net/lz710117239/article/details/81192761  https://www.imooc.com/article/43065
     public DataSource masterDataSource() {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setDriverClassName(driverClass);
@@ -87,4 +99,33 @@ public class MasterDataSourceConfig {
                 .getResources(MasterDataSourceConfig.MAPPER_LOCATION));
         return sessionFactory.getObject();
     }
+
+    @Bean
+    public ServletRegistrationBean statViewServlet(){
+        ServletRegistrationBean registrationBean = new ServletRegistrationBean();
+        registrationBean.setServlet(new StatViewServlet());
+        registrationBean.setUrlMappings(Arrays.asList("/druid/*"));
+        //设置初始化参数
+        Map<String,String> initMap = new HashMap<>();
+        initMap.put("loginUsername","admin");
+        initMap.put("loginPassword","admin@A123");
+        initMap.put("allow","");
+        initMap.put("deny","192.168.110.76");
+        registrationBean.setInitParameters(initMap);
+        return registrationBean;
+    }
+    @Bean
+    public FilterRegistrationBean webStatFilter(){
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(new WebStatFilter());
+        registrationBean.setUrlPatterns(Arrays.asList("/*"));
+        //设置初始化参数
+        Map<String,String> initMap = new HashMap<>();
+        initMap.put("exclusions","*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        registrationBean.setInitParameters(initMap);
+        return registrationBean;
+    }
+    //原文：https://blog.csdn.net/J080624/article/details/80812051
+    //https://blog.csdn.net/u011943534/article/details/82260311
+
 }

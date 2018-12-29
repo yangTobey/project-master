@@ -1,5 +1,7 @@
 package com.spring.boot.service;
 
+import com.spring.boot.bean.master.SysBasicData;
+
 import java.util.Map;
 
 /**
@@ -24,7 +26,7 @@ public interface SysBasicDataService {
      * @param year   年份
      * @return
      */
-    Map<String, Object> sysBasicDataAnalysisList(long companyId,int limit, int offset, int year);
+    Map<String, Object> sysBasicDataAnalysisList(long companyId,int limit, int offset, int year,String projectName);
 
     /**
      * 新增基础数据信息
@@ -45,9 +47,7 @@ public interface SysBasicDataService {
      * @param companyId           公司id
      * @return
      */
-    Map<String, Object> addSysBasicData(Integer year, Integer month, Double constructionArea, Double chargeArea, Integer cityNumber, Integer projectNumber, Integer houseNumber, Integer acceptHouseNumber
-            , Integer forSaleHouseNumber, Integer decorateHouseNumber, Integer parkingSpace, Integer forSaleParkingSpace, Integer salesDistribution, Long companyId,String parkingSpaceFileInfo,String salesDistributionFileInfo
-            , String constructionAreaFileInfo);
+    Map<String, Object> addSysBasicData(SysBasicData sysBasicDataAdd);
 
     /**
      * 更新信息
@@ -69,9 +69,7 @@ public interface SysBasicDataService {
      * @param companyId           公司id
      * @return
      */
-    Map<String, Object> updateSysBasicData(Long basicId, Integer year, Integer month, Double constructionArea, Double chargeArea, Integer cityNumber, Integer projectNumber, Integer houseNumber, Integer acceptHouseNumber
-            , Integer forSaleHouseNumber, Integer decorateHouseNumber, Integer parkingSpace, Integer forSaleParkingSpace, Integer salesDistribution, Long companyId,String parkingSpaceFileInfo,String salesDistributionFileInfo
-            ,String constructionAreaFileInfo);
+    Map<String, Object> updateSysBasicData(SysBasicData sysBasicData);
 
     /**
      * 删除基础数据信息

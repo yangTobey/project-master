@@ -103,7 +103,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     }
 
     @Override
-    public Map<String, Object> sysBasicDataAnalysisList(long companyId, int limit, int offset, int year) {
+    public Map<String, Object> sysBasicDataAnalysisList(long companyId, int limit, int offset, int year,String projectName) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
@@ -119,9 +119,10 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             map.put("limit", limit);
             map.put("offset", offset);
             map.put("year", year);
+            map.put("projectName", projectName);
             //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
             PageHelper.startPage((offset/limit)+1,limit);
-            //PageHelper.orderBy("desc");
+            PageHelper.orderBy(" basic.year DESC,basic.month DESC,basic.basic_id DESC ");
             List<SysBasicDataEntity> list=sysBasicDataBusinessService.sysBasicDataAnalysisList(map);
             PageInfoBean result = new PageInfoBean(list);
             resultMap.put("total", result.getTotalOfData());
@@ -136,12 +137,10 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addSysBasicData(Integer year, Integer month, Double constructionArea, Double chargeArea, Integer cityNumber, Integer projectNumber, Integer houseNumber, Integer acceptHouseNumber
-            , Integer forSaleHouseNumber, Integer decorateHouseNumber, Integer parkingSpace, Integer forSaleParkingSpace, Integer salesDistribution, Long companyId,String parkingSpaceFileInfo,String salesDistributionFileInfo
-            , String constructionAreaFileInfo) {
-        SysBasicData sysBasicData = sysBasicDataBusinessService.sysBasicDataRecord(companyId, year, month);
+    public Map<String, Object> addSysBasicData(SysBasicData sysBasicDataAdd) {
+        SysBasicData sysBasicData = sysBasicDataBusinessService.sysBasicDataRecord(sysBasicDataAdd.getCompanyId(), sysBasicDataAdd.getYear(), sysBasicDataAdd.getMonth());
         if (null != sysBasicData) {
-            return R.error(500, "新增失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+            return R.error(500, "新增失败，系统已存在" + sysBasicDataAdd.getYear() + "年" + sysBasicDataAdd.getMonth() + "月的记录，不能重复添加");
         }
         /*Map<String, Object> map = new HashMap<String, Object>();
         map.put("year", year);
@@ -159,7 +158,9 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         map.put("salesDistribution", salesDistribution);
         map.put("companyId", companyId);
         map.put("createTime", UtilHelper.getNowTimeStr());*/
-        SysBasicData sysBasicDataAdd=new SysBasicData();
+
+
+        /*SysBasicData sysBasicDataAdd=new SysBasicData();
         sysBasicDataAdd.setYear(year);
         sysBasicDataAdd.setMonth(month);
         sysBasicDataAdd.setConstructionArea(constructionArea);
@@ -173,72 +174,27 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         sysBasicDataAdd.setParkingSpace(parkingSpace);
         sysBasicDataAdd.setForSaleParkingSpace(forSaleParkingSpace);
         sysBasicDataAdd.setSalesDistribution(salesDistribution);
-        sysBasicDataAdd.setCompanyId(companyId);
+        sysBasicDataAdd.setCompanyId(companyId);*/
         sysBasicDataAdd.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
 
         int count = sysBasicDataBusinessService.addSysBasicData(sysBasicDataAdd);
         if (count > 0) {
 
-            if (!UtilHelper.isEmpty(parkingSpaceFileInfo)) {
-                String[] fileInfoArray;
-                //去掉最后那个逗号，在进行获取数据
-                fileInfoArray = parkingSpaceFileInfo.substring(0, parkingSpaceFileInfo.length()).split(";");
-                SysBasicDataFile sysBasicDataFile = null;
-                String[] fileData;
-                for (String fileUrl : fileInfoArray) {
-                    sysBasicDataFile = new SysBasicDataFile();
-                    //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
-                    fileData = fileUrl.substring(0, fileUrl.length()).split(",");
-                    sysBasicDataFile.setSysBasicDataId(sysBasicDataAdd.getBasicId());
-                    sysBasicDataFile.setFileName(fileData[0]);
-                    sysBasicDataFile.setFileSize(Double.valueOf(fileData[2]));
-                    sysBasicDataFile.setFileUrl(fileData[1]);
-                    sysBasicDataFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-                    sysBasicDataFile.setFileType(1);
-                    sysBasicDataBusinessService.addSysBasicDataFile(sysBasicDataFile);
-                }
+            if (!UtilHelper.isEmpty(sysBasicDataAdd.getParkingSpaceFileInfo())) {
+                saveFile(sysBasicDataAdd.getParkingSpaceFileInfo(),sysBasicDataAdd.getBasicId(),1);
             }
-            if (!UtilHelper.isEmpty(salesDistributionFileInfo)) {
-                String[] fileInfoArray;
-                //去掉最后那个逗号，在进行获取数据
-                fileInfoArray = salesDistributionFileInfo.substring(0, salesDistributionFileInfo.length()).split(";");
-                SysBasicDataFile sysBasicDataFile = null;
-                String[] fileData;
-                for (String fileUrl : fileInfoArray) {
-                    sysBasicDataFile = new SysBasicDataFile();
-                    //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
-                    fileData = fileUrl.substring(0, fileUrl.length()).split(",");
-                    sysBasicDataFile.setSysBasicDataId(sysBasicDataAdd.getBasicId());
-                    sysBasicDataFile.setFileName(fileData[0]);
-                    sysBasicDataFile.setFileSize(Double.valueOf(fileData[2]));
-                    sysBasicDataFile.setFileUrl(fileData[1]);
-                    sysBasicDataFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-                    sysBasicDataFile.setFileType(2);
-                    sysBasicDataBusinessService.addSysBasicDataFile(sysBasicDataFile);
-                }
+            if (!UtilHelper.isEmpty(sysBasicDataAdd.getSalesDistributionFileInfo())) {
+                saveFile(sysBasicDataAdd.getSalesDistributionFileInfo(),sysBasicDataAdd.getBasicId(),2);
             }
-            if (!UtilHelper.isEmpty(constructionAreaFileInfo)) {
-                String[] fileInfoArray;
-                //去掉最后那个逗号，在进行获取数据
-                fileInfoArray = constructionAreaFileInfo.substring(0, constructionAreaFileInfo.length()).split(";");
-                SysBasicDataFile sysBasicDataFile = null;
-                String[] fileData;
-                for (String fileUrl : fileInfoArray) {
-                    sysBasicDataFile = new SysBasicDataFile();
-                    //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
-                    fileData = fileUrl.substring(0, fileUrl.length()).split(",");
-                    sysBasicDataFile.setSysBasicDataId(sysBasicDataAdd.getBasicId());
-                    sysBasicDataFile.setFileName(fileData[0]);
-                    sysBasicDataFile.setFileSize(Double.valueOf(fileData[2]));
-                    sysBasicDataFile.setFileUrl(fileData[1]);
-                    sysBasicDataFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-                    sysBasicDataFile.setFileType(3);
-                    sysBasicDataBusinessService.addSysBasicDataFile(sysBasicDataFile);
-                }
+            if (!UtilHelper.isEmpty(sysBasicDataAdd.getConstructionAreaFileInfo())) {
+                saveFile(sysBasicDataAdd.getConstructionAreaFileInfo(),sysBasicDataAdd.getBasicId(),3);
+            }
+            if (!UtilHelper.isEmpty(sysBasicDataAdd.getEarlyFileInfo())) {
+                saveFile(sysBasicDataAdd.getEarlyFileInfo(),sysBasicDataAdd.getBasicId(),4);
             }
 
             SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
+            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysBasicDataAdd.getYear(),sysBasicDataAdd.getMonth());
             if(updateToRedis){
                 //存储统计信息到redis缓存
                 setBasicDataAnalysisDataToRedis();
@@ -251,94 +207,47 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> updateSysBasicData(Long basicId, Integer year, Integer month, Double constructionArea, Double chargeArea, Integer cityNumber, Integer projectNumber, Integer houseNumber, Integer acceptHouseNumber
-            , Integer forSaleHouseNumber, Integer decorateHouseNumber, Integer parkingSpace, Integer forSaleParkingSpace, Integer salesDistribution, Long companyId,String parkingSpaceFileInfo,String salesDistributionFileInfo
-            , String constructionAreaFileInfo) {
-        SysBasicData sysBasicData = sysBasicDataBusinessService.sysBasicDataRecord(companyId, year, month);
+    public Map<String, Object> updateSysBasicData(SysBasicData sysBasicDataUpdate) {
+        SysBasicData sysBasicData = sysBasicDataBusinessService.sysBasicDataRecord(sysBasicDataUpdate.getCompanyId(), sysBasicDataUpdate.getYear(), sysBasicDataUpdate.getMonth());
         if (null != sysBasicData) {
-            if (!basicId.equals(sysBasicData.getBasicId())) {
-                return R.error(500, "更新失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+            if (!sysBasicDataUpdate.getBasicId().equals(sysBasicData.getBasicId())) {
+                return R.error(500, "更新失败，系统已存在" + sysBasicDataUpdate.getYear() + "年" + sysBasicDataUpdate.getMonth() + "月的记录，不能重复添加");
             }
         }
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("basicId", basicId);
-        map.put("year", year);
-        map.put("month", month);
-        map.put("constructionArea", constructionArea);
-        map.put("chargeArea", chargeArea);
-        map.put("cityNumber", cityNumber);
-        map.put("projectNumber", projectNumber);
-        map.put("houseNumber", houseNumber);
-        map.put("acceptHouseNumber", acceptHouseNumber);
-        map.put("forSaleHouseNumber", forSaleHouseNumber);
-        map.put("decorateHouseNumber", decorateHouseNumber);
-        map.put("parkingSpace", parkingSpace);
-        map.put("forSaleParkingSpace", forSaleParkingSpace);
-        map.put("salesDistribution", salesDistribution);
-        map.put("companyId", companyId);
+        map.put("basicId", sysBasicDataUpdate.getBasicId());
+        map.put("year", sysBasicDataUpdate.getYear());
+        map.put("month", sysBasicDataUpdate.getMonth());
+        map.put("constructionArea", sysBasicDataUpdate.getConstructionArea());
+        map.put("chargeArea", sysBasicDataUpdate.getChargeArea());
+        map.put("cityNumber", sysBasicDataUpdate.getCityNumber());
+        map.put("projectNumber", sysBasicDataUpdate.getProjectName());
+        map.put("houseNumber", sysBasicDataUpdate.getHouseNumber());
+        map.put("acceptHouseNumber", sysBasicDataUpdate.getAcceptHouseNumber());
+        map.put("forSaleHouseNumber", sysBasicDataUpdate.getForSaleHouseNumber());
+        map.put("decorateHouseNumber", sysBasicDataUpdate.getDecorateHouseNumber());
+        map.put("parkingSpace", sysBasicDataUpdate.getParkingSpace());
+        map.put("forSaleParkingSpace", sysBasicDataUpdate.getForSaleParkingSpace());
+        map.put("salesDistribution", sysBasicDataUpdate.getSalesDistribution());
+        map.put("companyId", sysBasicDataUpdate.getCompanyId());
 
         int count = sysBasicDataBusinessService.updateSysBasicData(map);
         if (count > 0) {
-            if (!UtilHelper.isEmpty(parkingSpaceFileInfo)) {
-                String[] fileInfoArray;
-                //去掉最后那个逗号，在进行获取数据
-                fileInfoArray = parkingSpaceFileInfo.substring(0, parkingSpaceFileInfo.length()).split(";");
-                SysBasicDataFile sysBasicDataFile = null;
-                String[] fileData;
-                for (String fileUrl : fileInfoArray) {
-                    sysBasicDataFile = new SysBasicDataFile();
-                    //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
-                    fileData = fileUrl.substring(0, fileUrl.length()).split(",");
-                    sysBasicDataFile.setSysBasicDataId(basicId);
-                    sysBasicDataFile.setFileName(fileData[0]);
-                    sysBasicDataFile.setFileSize(Double.valueOf(fileData[2]));
-                    sysBasicDataFile.setFileUrl(fileData[1]);
-                    sysBasicDataFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-                    sysBasicDataFile.setFileType(1);
-                    sysBasicDataBusinessService.addSysBasicDataFile(sysBasicDataFile);
-                }
+            if (!UtilHelper.isEmpty(sysBasicDataUpdate.getParkingSpaceFileInfo())) {
+                saveFile(sysBasicDataUpdate.getParkingSpaceFileInfo(),sysBasicDataUpdate.getBasicId(),1);
             }
-            if (!UtilHelper.isEmpty(salesDistributionFileInfo)) {
-                String[] fileInfoArray;
-                //去掉最后那个逗号，在进行获取数据
-                fileInfoArray = salesDistributionFileInfo.substring(0, salesDistributionFileInfo.length()).split(";");
-                SysBasicDataFile sysBasicDataFile = null;
-                String[] fileData;
-                for (String fileUrl : fileInfoArray) {
-                    sysBasicDataFile = new SysBasicDataFile();
-                    //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
-                    fileData = fileUrl.substring(0, fileUrl.length()).split(",");
-                    sysBasicDataFile.setSysBasicDataId(basicId);
-                    sysBasicDataFile.setFileName(fileData[0]);
-                    sysBasicDataFile.setFileSize(Double.valueOf(fileData[2]));
-                    sysBasicDataFile.setFileUrl(fileData[1]);
-                    sysBasicDataFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-                    sysBasicDataFile.setFileType(2);
-                    sysBasicDataBusinessService.addSysBasicDataFile(sysBasicDataFile);
-                }
+            if (!UtilHelper.isEmpty(sysBasicDataUpdate.getSalesDistributionFileInfo())) {
+                saveFile(sysBasicDataUpdate.getSalesDistributionFileInfo(),sysBasicDataUpdate.getBasicId(),2);
             }
-            if (!UtilHelper.isEmpty(constructionAreaFileInfo)) {
-                String[] fileInfoArray;
-                //去掉最后那个逗号，在进行获取数据
-                fileInfoArray = constructionAreaFileInfo.substring(0, constructionAreaFileInfo.length()).split(";");
-                SysBasicDataFile sysBasicDataFile = null;
-                String[] fileData;
-                for (String fileUrl : fileInfoArray) {
-                    sysBasicDataFile = new SysBasicDataFile();
-                    //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
-                    fileData = fileUrl.substring(0, fileUrl.length()).split(",");
-                    sysBasicDataFile.setSysBasicDataId(basicId);
-                    sysBasicDataFile.setFileName(fileData[0]);
-                    sysBasicDataFile.setFileSize(Double.valueOf(fileData[2]));
-                    sysBasicDataFile.setFileUrl(fileData[1]);
-                    sysBasicDataFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-                    sysBasicDataFile.setFileType(3);
-                    sysBasicDataBusinessService.addSysBasicDataFile(sysBasicDataFile);
-                }
+            if (!UtilHelper.isEmpty(sysBasicDataUpdate.getConstructionAreaFileInfo())) {
+                saveFile(sysBasicDataUpdate.getConstructionAreaFileInfo(),sysBasicDataUpdate.getBasicId(),3);
+            }
+            if (!UtilHelper.isEmpty(sysBasicDataUpdate.getEarlyFileInfo())) {
+                saveFile(sysBasicDataUpdate.getEarlyFileInfo(),sysBasicDataUpdate.getBasicId(),4);
             }
 
             SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),year,month);
+            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysBasicDataUpdate.getYear(),sysBasicDataUpdate.getMonth());
             if(updateToRedis){
                 //存储统计信息到redis缓存
                 setBasicDataAnalysisDataToRedis();
@@ -348,6 +257,40 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             return R.error(500, "更新失败！");
         }
 
+    }
+
+    /**
+     * 保存图片信息
+     * @param fileInfo 图片详细信息
+     * @param basicId 基础数据主键id
+     * @param type 类型 文件类型（1：车位附件，2：销配附件,3：管理面积，4：前期文件）
+     */
+    public void saveFile(String fileInfo,Long basicId,Integer type){
+        String[] fileInfoArray;
+        //去掉最后那个逗号，在进行获取数据
+        fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
+        SysBasicDataFile sysBasicDataFile = null;
+        String[] fileData;
+        for (String fileUrl : fileInfoArray) {
+            sysBasicDataFile = new SysBasicDataFile();
+            //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
+            fileData = fileUrl.substring(0, fileUrl.length()).split(",");
+            sysBasicDataFile.setSysBasicDataId(basicId);
+            sysBasicDataFile.setFileName(fileData[0]);
+            sysBasicDataFile.setFileSize(Double.valueOf(fileData[2]));
+            sysBasicDataFile.setFileUrl(fileData[1]);
+            sysBasicDataFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
+            if(type==1){
+                sysBasicDataFile.setFileType(1);
+            }else if(type==2){
+                sysBasicDataFile.setFileType(2);
+            }else if(type==3){
+                sysBasicDataFile.setFileType(3);
+            }else if(type==4){
+                sysBasicDataFile.setFileType(4);
+            }
+            sysBasicDataBusinessService.addSysBasicDataFile(sysBasicDataFile);
+        }
     }
 
     @Override

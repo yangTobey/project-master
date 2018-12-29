@@ -91,6 +91,23 @@
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>1.2.10</version>
             </dependency>
+            <!--swagger依赖-->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>2.9.2</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>2.9.2</version>
+            </dependency>
+            <!--<dependency>
+                <groupId>com.battcn</groupId>
+                <artifactId>swagger-spring-boot-starter</artifactId>
+                <version>1.4.5-RELEASE</version>
+                &lt;!&ndash; https://github.com/battcn/swagger-spring-boot-starter &ndash;&gt;
+            </dependency>-->
             <!--<dependency>
                      <groupId>org.codehaus.jackson</groupId>
                     <artifactId>jackson-core-asl</artifactId>

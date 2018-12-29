@@ -15,11 +15,11 @@ import java.util.Arrays;
 /**
  * 参数格式检验规格和判断是否符合切面类
  */
-@Aspect
-@Component
+/*@Aspect
+@Component*/
 public class ParamCheckAspect {
 
-    @Before("execution(* com.spring.boot.controller.*.*(..))")
+    //@Before("execution(* com.spring.boot.controller.*.*(..))")
     public void paramCheck(JoinPoint joinPoint) throws Exception {
         //获取参数对象
         Object[] args = joinPoint.getArgs();

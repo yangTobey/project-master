@@ -1,7 +1,11 @@
 package com.spring.boot.bean.master;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -10,24 +14,129 @@ import java.util.Date;
  * Created by Administrator on 2018/3/16.
  */
 public class SysBasicData {
-
+    /**
+     * 主键
+     */
     private Long basicId;
+    /**
+     * 公司id
+     */
+    @Range(min = 1,max = Integer.MAX_VALUE,message = "公司id格式不正确，或者不符合常理！！")
     private Long companyId;
+    /**
+     * 年份
+     */
+    //@NotNull(message = "登录账号不能为空！")
+    //@Size(min = 6,max = 18,message = "登录账号长度不符合要求！")
+    @Pattern(regexp = "[0-9]*",message = "年份格式不正确，或者存在非法字符")
     private Integer year;
+    /**
+     * 月份
+     */
+    //@NotNull(message = "登录密码不能为空")
+    @Range(min=1, max=12, message = "月份格式错误")
     private Integer month;
+    /**
+     * 建筑面积
+     */
+    /*@NotNull(message = "公司id格式不正确，或者不符合常理！！！")
+    @Min(value = 0,message = "最小为0")*/
+    @Range(min = 1,max = Integer.MAX_VALUE,message = "公司id格式不正确，或者不符合常理！！")
     private Double constructionArea;
+    /**
+     * 建筑收费面积
+     */
+    @NotNull(message = "角色id格式不正确，或者不符合常理！！！")
     private Double chargeArea;
+    /**
+     * 城市数量
+     */
+    @Range(min = 1,max = Integer.MAX_VALUE,message = "城市数量格式不正确，或者不符合常理！！")
     private Integer cityNumber;
+    /**
+     * 项目数量
+     */
+    @Range(min = 1,max = Integer.MAX_VALUE,message = "项目数量格式不正确，或者不符合常理！！")
     private Integer projectNumber;
+
+    /**
+     * 房屋数量
+     */
+    @Range(min = 1,max = Integer.MAX_VALUE,message = "房屋数量格式不正确，或者不符合常理！！")
     private Integer houseNumber;
+    /**
+     * 已收房屋数量
+     */
+    @Range(min = 1,max = Integer.MAX_VALUE,message = "已收房屋数量格式不正确，或者不符合常理！！")
     private Integer acceptHouseNumber;
+    /**
+     * 待售房屋数量（空置）
+     */
+    @Range(min = 1,max = Integer.MAX_VALUE,message = "待售房屋数量（空置格式不正确，或者不符合常理！！")
     private Integer forSaleHouseNumber;
+    /**
+     * 装修房屋数量
+     */
+    @Range(min = 1,max = Integer.MAX_VALUE,message = "装修房屋数量格式不正确，或者不符合常理！！")
     private Integer decorateHouseNumber;
+    /**
+     * 停车位总数量
+     */
+    @Range(min = 1,max = Integer.MAX_VALUE,message = "停车位总数量格式不正确，或者不符合常理！！")
     private Integer parkingSpace;
+    /**
+     * 待售车位数量
+     */
+    @Range(min = 1,max = Integer.MAX_VALUE,message = "待售车位数量格式不正确，或者不符合常理！！")
     private Integer forSaleParkingSpace;
+    /**
+     * 销配
+     */
+    @Range(min = 1,max = Integer.MAX_VALUE,message = "销配数量格式不正确，或者不符合常理！！")
     private Integer salesDistribution;
+    /**
+     * 状态码
+     */
     private Integer statusCode;
+    /**
+     * 创建时间
+     */
     private Date createTime;
+    /**
+     * 车位文件
+     */
+    private String parkingSpaceFileInfo;
+    /**
+     * 销配文件
+     */
+    private String salesDistributionFileInfo;
+    /**
+     * 文件
+     */
+    private String constructionAreaFileInfo;
+    /**
+     * 前期数据文件
+     */
+    @NotNull(message = "前期数据文件不能为空！")
+    private String earlyFileInfo;
+    /**
+     * 项目名称
+     */
+    @NotNull(message = "项目名称不能为空！")
+    @Length(min = 0,max = 30,message = "项目名称长度必须要在{min}和{max}之间")
+    private String projectName;
+    /**
+     * 销配名称
+     */
+    @NotNull(message = "销配名称不能为空！")
+    @Length(min = 0,max = 30,message = "销配名称长度必须要在{min}和{max}之间")
+    //@Size(min=, max=) 验证对象（Array,Collection,Map,String）长度是否在给定的范围之内 
+    private String salesDistributionName;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
     public Long getBasicId() {
         return basicId;
@@ -163,6 +272,62 @@ public class SysBasicData {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getParkingSpaceFileInfo() {
+        return parkingSpaceFileInfo;
+    }
+
+    public void setParkingSpaceFileInfo(String parkingSpaceFileInfo) {
+        this.parkingSpaceFileInfo = parkingSpaceFileInfo;
+    }
+
+    public String getSalesDistributionFileInfo() {
+        return salesDistributionFileInfo;
+    }
+
+    public void setSalesDistributionFileInfo(String salesDistributionFileInfo) {
+        this.salesDistributionFileInfo = salesDistributionFileInfo;
+    }
+
+    public String getConstructionAreaFileInfo() {
+        return constructionAreaFileInfo;
+    }
+
+    public void setConstructionAreaFileInfo(String constructionAreaFileInfo) {
+        this.constructionAreaFileInfo = constructionAreaFileInfo;
+    }
+
+    public String getEarlyFileInfo() {
+        return earlyFileInfo;
+    }
+
+    public void setEarlyFileInfo(String earlyFileInfo) {
+        this.earlyFileInfo = earlyFileInfo;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getSalesDistributionName() {
+        return salesDistributionName;
+    }
+
+    public void setSalesDistributionName(String salesDistributionName) {
+        this.salesDistributionName = salesDistributionName;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
 
