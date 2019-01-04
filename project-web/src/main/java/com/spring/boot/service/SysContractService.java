@@ -1,5 +1,6 @@
 package com.spring.boot.service;
 
+import com.spring.boot.bean.master.SysContract;
 import org.omg.PortableInterceptor.INACTIVE;
 
 import java.util.Map;
@@ -53,15 +54,13 @@ public interface SysContractService {
      * @param contractName
      * @return
      */
-    Map<String, Object> addSysContract(String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime,
-                                       Integer contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName,String fileInfo,Long companyId);
+    Map<String, Object> addSysContract(SysContract sysContract);
     /**
      * 更新合同
      * @param contractName
      * @return
      */
-    Map<String, Object> updateSysContract(Long contractId,String contractName,String contractCode,String contractMoney,String contractStartTime, String contractEndTime,
-                       String contractTypeId,String firstPartyCompany,String secondPartyCompany,String personLiableName,String fileInfo,Long companyId);
+    Map<String, Object> updateSysContract(SysContract sysContract);
     /**
      * 删除合同
      * @param contractId

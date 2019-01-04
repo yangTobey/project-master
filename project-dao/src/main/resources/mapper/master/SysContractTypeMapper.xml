@@ -20,9 +20,9 @@
 		from sys_contract_type
 		where 1=1 and status_code!=2
 		ORDER BY create_time DESC
-		<if test="offset != null and limit != null">
+		<!--<if test="offset != null and limit != null">
 			limit #{offset},#{limit}
-		</if>
+		</if>-->
 
 	</select>
 	<!--查询合同分类条数-->

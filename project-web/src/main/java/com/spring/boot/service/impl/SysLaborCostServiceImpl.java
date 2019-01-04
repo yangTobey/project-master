@@ -1,9 +1,8 @@
 package com.spring.boot.service.impl;
 
-import com.spring.boot.bean.master.SysBudgetDetails;
-import com.spring.boot.bean.master.SysLaborCost;
-import com.spring.boot.bean.master.SysLaborCostDetails;
-import com.spring.boot.bean.master.SysUpdateDataRules;
+import com.github.pagehelper.PageHelper;
+import com.spring.boot.bean.PageInfoBean;
+import com.spring.boot.bean.master.*;
 import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
 import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysLaborCostService;
@@ -171,8 +170,15 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
         //map.put("year", month);
         //resultMap.put("sysLaborCostDetailsList", list);
         try {
-            resultMap.put("total", sysLaborCostBusinessService.getSysLaborCostListTotal(map));
-            resultMap.put("list", sysLaborCostBusinessService.getSysLaborCostList(map));
+            //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+            PageHelper.startPage((offset/limit)+1,limit);
+            List<SysLaborCostDetailsEntity> list=sysLaborCostBusinessService.getSysLaborCostList(map);
+            PageInfoBean result = new PageInfoBean(list);
+            resultMap.put("total", result.getTotalOfData());
+            resultMap.put("list", result.getList());
+
+            //resultMap.put("total", sysLaborCostBusinessService.getSysLaborCostListTotal(map));
+            //resultMap.put("list", sysLaborCostBusinessService.getSysLaborCostList(map));
             return R.ok().putData(200, resultMap, "获取成功！");
         } catch (Exception e) {
             e.printStackTrace();

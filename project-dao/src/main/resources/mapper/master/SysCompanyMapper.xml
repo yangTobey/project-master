@@ -38,9 +38,9 @@
         from sys_company
         where status_code!=2
         order by create_time desc
-        <if test="offset != null and limit != null">
+        <!--<if test="offset != null and limit != null">
             limit #{offset},#{limit}
-        </if>
+        </if>-->
     </select>
     <!--获取全部公司信息-->
     <select id="getAllSysCompany" resultMap="sysCompany" parameterType="map">

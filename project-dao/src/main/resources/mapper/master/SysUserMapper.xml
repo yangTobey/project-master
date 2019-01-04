@@ -43,9 +43,9 @@
 			and company_id =#{companyId}
 		</if>
 		order by user.create_time desc
-		<if test="offset != null and limit != null">
+		<!--<if test="offset != null and limit != null">
 			limit #{offset},#{limit}
-		</if>
+		</if>-->
 	</select>
 	<!--用户列表总数-->
 	<select id="sysUserTotal" resultType="int"  parameterType="map">

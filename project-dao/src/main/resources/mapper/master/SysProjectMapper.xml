@@ -70,9 +70,9 @@
 
 			GROUP BY project.project_id
 			order by project.year desc,project.month desc
-			<if test="offset != null and limit != null">
+			<!--<if test="offset != null and limit != null">
 				limit #{offset},#{limit}
-			</if>
+			</if>-->
 	</select>
 	<!--查找列表信息-->
 	<select id="sysProjectEnergyListTotal" resultType="int" parameterType="map">

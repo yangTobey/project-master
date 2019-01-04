@@ -1,6 +1,9 @@
 package com.spring.boot.bean.master;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.spring.boot.validation.IsNotNull;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 
 import javax.validation.constraints.*;
@@ -13,37 +16,151 @@ import java.util.Date;
 public class SysAccountsReceivable implements Serializable {
     private Long accountsId;
     @NotNull(message = "公司id不能为空")
+    @Range(min = 1,max = Integer.MAX_VALUE,message = "公司id格式不正确，或者不符合常理！！")
     private Long companyId;
+    /**
+     * 年份
+     */
+    @NotNull(message = "年份不能为空！")
+    @Range(message = "年份格式不正确，或者不符合常理！！")
     private Integer year;
+    /**
+     * 月份
+     */
+    @NotNull(message = "月份不能为空！")
+    @Range(min=1, max=12, message = "月份格式错误")
     private Integer month;
-    @NotNull(message = "receivableAccountsOwner不能为空")
-    @Min(value = 10,message = "不能大于10")
+    /**
+     * 业主应收款
+     */
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "业主应收款格式不正确，或者不符合常理！！")
+    @IsNotNull(message = "业主应收款格式不正确，只能保留两位小数，或者不符合常理(数值过大)！")
     private Double receivableAccountsOwner;
-    @Digits(integer = Double.MAX_EXPONENT,fraction = 2)
+
+    /**
+     * 业主已收款
+     */
+    @NotNull(message = "业主已收款不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "业主已收款格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "业主已收款格式不正确，或者不符合常理！！")
     private Double completeAccountsOwner;
 
-    @Pattern(regexp = "^[0-9]+(.[0-9]{0,2})?$",message = "小数只能保留两位小数")
-    @Max(value = Integer.MAX_VALUE,message = "输入的数字过大！")
-    @Min(value = Integer.MIN_VALUE,message = "输入的数字过小！")
+    /**
+     * 礼券减免（已收）
+     */
+    @NotNull(message = "礼券减免（已收）不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "礼券减免（已收）格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "礼券减免（已收）格式不正确，或者不符合常理！！")
     private Double completeCoupon;
+    /**
+     * 礼券减免（应收）
+     */
+    @NotNull(message = "礼券减免（应收）不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "礼券减免（应收）格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "礼券减免（应收）格式不正确，或者不符合常理！！")
     private Double receivableCoupon;
+    /**
+     * 空置（已收）
+     */
+    @NotNull(message = "空置（已收）不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "空置（已收）格式不正确，数值过大或者过小")
+    @Digits(integer =Integer.MAX_VALUE,fraction = 2,message = "空置（已收）格式不正确，或者不符合常理！！")
     private Double completeVacancy;
+    /**
+     * 空置（应收）
+     */
+    @NotNull(message = "空置（应收）不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "空置（应收）格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "空置（应收）格式不正确，或者不符合常理！！")
     private Double receivableVacancy;
+    /**
+     * %3补贴款（已收）
+     */
+    @NotNull(message = "%3补贴款（已收）不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "%3补贴款（已收）格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "%3补贴款（已收）格式不正确，或者不符合常理！！")
     private Double completeSubsidy;
+    /**
+     * %3补贴款（应收）
+     */
+    @NotNull(message = "%3补贴款（应收）不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "%3补贴款（应收）格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "%3补贴款（应收）格式不正确，或者不符合常理！！")
     private Double receivableSubsidy;
+    /**
+     * 销售配合（已收)
+     */
+    @NotNull(message = "销售配合（已收)不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "销售配合（已收)格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "销售配合（已收)格式不正确，或者不符合常理！！")
     private Double completeSales;
+    /**
+     * 销售配合（应收)
+     */
+    @NotNull(message = "销售配合（应收)不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "销售配合（应收)格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "销售配合（应收)格式不正确，或者不符合常理！！")
     private Double receivableSales;
+    /**
+     * 开办费（应收）
+     */
+    @NotNull(message = "开办费（应收）不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "开办费（应收）格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "开办费（应收）格式不正确，或者不符合常理！！")
     private Double receivableOpen;
+    /**
+     * 开办费（已收）
+     */
+    @NotNull(message = "开办费（已收）不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "开办费（已收）格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "开办费（已收）格式不正确，或者不符合常理！！")
     private Double completeOpen;
+    /**
+     * 物业补贴（已收）
+     */
+    @NotNull(message = "物业补贴（已收）不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "物业补贴（已收）格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "物业补贴（已收）格式不正确，或者不符合常理！！")
     private Double completePropertySubsidy;
+    /**
+     * 物业补贴（应收）
+     */
+    @NotNull(message = "物业补贴（应收）不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "物业补贴（应收）格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "物业补贴（应收）格式不正确，或者不符合常理！！")
     private Double receivablePropertySubsidy;
+    /**
+     * 其他地产应付款（已收）
+     */
+    @NotNull(message = "其他地产应付款（已收）不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "其他地产应付款（已收）格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "其他地产应付款（已收）格式不正确，或者不符合常理！！")
     private Double completeHouseOther;
+    /**
+     * 其他地产应付款（应收）
+     */
+    @NotNull(message = "其他地产应付款（应收）不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "其他地产应付款（应收）格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "其他地产应付款（应收）格式不正确，或者不符合常理！！")
     private Double receivableHouseOther;
+    /**
+     * 地产已收款总数
+     */
+    @NotNull(message = "地产已收款总数不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "地产已收款总数格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "地产已收款总数格式不正确，或者不符合常理！！")
     private Double completeHouse;
+    /**
+     * 地产应收款总数
+     */
+    @NotNull(message = "地产应收款总数不能为空！")
+    @Range(min = Integer.MIN_VALUE,max = Integer.MAX_VALUE,message = "地产应收款总数格式不正确，数值过大或者过小")
+    @Digits(integer = Integer.MAX_VALUE,fraction = 2,message = "地产应收款总数格式不正确，或者不符合常理！！")
     private Double receivableHouse;
+
     private Date createTime;
     private Integer statusCode;
-    @NotNull(message = "receivableAccountsOwner不能为空")
+    @NotBlank(message = "公司名称不能为空")
     private String companyName;
 
     //礼券减免收缴率

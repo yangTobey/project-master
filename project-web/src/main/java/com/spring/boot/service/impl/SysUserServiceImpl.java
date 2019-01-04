@@ -1,5 +1,7 @@
 package com.spring.boot.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.spring.boot.bean.PageInfoBean;
 import com.spring.boot.bean.master.*;
 import com.spring.boot.bean.master.entity.SysUserRoleEntity;
 import com.spring.boot.service.SysUserService;
@@ -54,8 +56,15 @@ public class SysUserServiceImpl implements SysUserService {
             map.put("account", account);
             map.put("userName", userName);
             map.put("companyId", companyId);
-            resultMap.put("total", sysUserBusinessService.sysUserTotal(map));
-            List<SysUser> sysUserList=sysUserBusinessService.sysUserList(map);
+
+            //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+            PageHelper.startPage((offset/limit)+1,limit);
+            List<SysUser> list=sysUserBusinessService.sysUserList(map);
+            PageInfoBean result = new PageInfoBean(list);
+            resultMap.put("total", result.getTotalOfData());
+
+            //resultMap.put("total", sysUserBusinessService.sysUserTotal(map));
+            List<SysUser> sysUserList=result.getList();
             for(SysUser sysUser:sysUserList){
                 //根据用户id利用sql查询用户多个角色名称，用逗号，隔开
                 SysUserRoleEntity sysUserRoleEntity=sysUserRoleBusinessService.findUserRoleNameByRoleId(sysUser.getUserId());

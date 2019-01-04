@@ -1,8 +1,11 @@
 package com.spring.boot.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.spring.boot.bean.PageInfoBean;
 import com.spring.boot.bean.master.SysQualityManage;
 import com.spring.boot.bean.master.SysQualityManageFile;
 import com.spring.boot.bean.master.SysUpdateDataRules;
+import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 import com.spring.boot.bean.master.entity.SysQualityManageEntity;
 import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysQualityManageService;
@@ -147,8 +150,15 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
             map.put("year", year);
             map.put("limit", limit);
             map.put("offset", offset);
-            resultMap.put("total", sysQualityManageBusinessService.getSysQualityManageListTotal(map));
-            resultMap.put("list", sysQualityManageBusinessService.getSysQualityManageList(map));
+            //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+            PageHelper.startPage((offset/limit)+1,limit);
+            List<SysQualityManage> list=sysQualityManageBusinessService.getSysQualityManageList(map);
+            PageInfoBean result = new PageInfoBean(list);
+            resultMap.put("total", result.getTotalOfData());
+            resultMap.put("list", result.getList());
+
+            //resultMap.put("total", sysQualityManageBusinessService.getSysQualityManageListTotal(map));
+            //resultMap.put("list", sysQualityManageBusinessService.getSysQualityManageList(map));
             return R.ok().putData(200, resultMap, "获取数据成功！");
         } catch (Exception e) {
             e.printStackTrace();
@@ -160,28 +170,28 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addSysQualityManage(Long companyId, Integer year, Integer month, Integer qualityCheck, Integer qualityCheckPass, Integer securityEvent, Integer qualityCheckUnmodified, String fileInfo, Integer lastQualityCheckUnmodified) {
-        SysQualityManage sysQualityManage = new SysQualityManage();
-        sysQualityManage.setCompanyId(companyId);
-        sysQualityManage.setYear(year);
-        sysQualityManage.setMonth(month);
-        sysQualityManage.setQualityCheck(qualityCheck);
-        sysQualityManage.setQualityCheckPass(qualityCheckPass);
-        sysQualityManage.setQualityCheckFail(qualityCheck-qualityCheckPass);
-        sysQualityManage.setSecurityEvent(securityEvent);
-        sysQualityManage.setQualityCheckUnmodified(qualityCheckUnmodified);
-        sysQualityManage.setLastQualityCheckUnmodified(lastQualityCheckUnmodified);
+    public Map<String, Object> addSysQualityManage(SysQualityManage sysQualityManage) {
+        //SysQualityManage sysQualityManage = new SysQualityManage();
+        //sysQualityManage.setCompanyId(companyId);
+        //sysQualityManage.setYear(year);
+        //sysQualityManage.setMonth(month);
+        //sysQualityManage.setQualityCheck(qualityCheck);
+        //sysQualityManage.setQualityCheckPass(qualityCheckPass);
+        //sysQualityManage.setQualityCheckFail(qualityCheck-qualityCheckPass);
+        //sysQualityManage.setSecurityEvent(securityEvent);
+        //sysQualityManage.setQualityCheckUnmodified(qualityCheckUnmodified);
+        //sysQualityManage.setLastQualityCheckUnmodified(lastQualityCheckUnmodified);
         sysQualityManage.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-        SysQualityManage record=sysQualityManageBusinessService.sysQualityManageRecord(companyId,year,month);
+        SysQualityManage record=sysQualityManageBusinessService.sysQualityManageRecord(sysQualityManage.getCompanyId(),sysQualityManage.getYear(),sysQualityManage.getMonth());
         if(null!=record){
-            return R.error(500, "新增失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+            return R.error(500, "新增失败，系统已存在" + sysQualityManage.getYear() + "年" + sysQualityManage.getMonth() + "月的记录，不能重复添加");
         }
         int count = sysQualityManageBusinessService.addSysQualityManage(sysQualityManage);
         if (count > 0) {
-            if (!UtilHelper.isEmpty(fileInfo)) {
+            if (!UtilHelper.isEmpty(sysQualityManage.getFileInfo())) {
                 String[] fileInfoArray;
                 //去掉最后那个逗号，在进行获取数据
-                fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
+                fileInfoArray = sysQualityManage.getFileInfo().substring(0, sysQualityManage.getFileInfo().length()).split(";");
                 SysQualityManageFile sysQualityManageFile = null;
                 String[] fileData;
                 for (String fileUrl : fileInfoArray) {
@@ -208,40 +218,39 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> updateSysQualityManage(Long qualityId, Long companyId, Integer year, Integer month, Integer qualityCheck, Integer qualityCheckPass
-            ,  Integer securityEvent, Integer qualityCheckUnmodified, String fileInfo,Integer lastQualityCheckUnmodified) {
+    public Map<String, Object> updateSysQualityManage(SysQualityManage sysQualityManage) {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("qualityId", qualityId);
-        map.put("companyId", companyId);
-        map.put("year", year);
-        map.put("month", month);
-        map.put("qualityCheck", qualityCheck);
-        map.put("qualityCheckPass", qualityCheckPass);
-        map.put("qualityCheckFail", qualityCheck-qualityCheckPass);
-        map.put("securityEvent", securityEvent);
-        map.put("qualityCheckUnmodified", qualityCheckUnmodified);
-        map.put("lastQualityCheckUnmodified", lastQualityCheckUnmodified);
-        SysQualityManage record=sysQualityManageBusinessService.sysQualityManageRecord(companyId,year,month);
+        map.put("qualityId", sysQualityManage.getQualityId());
+        map.put("companyId", sysQualityManage.getCompanyId());
+        map.put("year", sysQualityManage.getYear());
+        map.put("month", sysQualityManage.getMonth());
+        map.put("qualityCheck", sysQualityManage.getQualityCheck());
+        map.put("qualityCheckPass", sysQualityManage.getQualityCheckPass());
+        map.put("qualityCheckFail", sysQualityManage.getQualityCheck()-sysQualityManage.getQualityCheckPass());
+        map.put("securityEvent", sysQualityManage.getSecurityEvent());
+        map.put("qualityCheckUnmodified", sysQualityManage.getQualityCheckUnmodified());
+        map.put("lastQualityCheckUnmodified", sysQualityManage.getLastQualityCheckUnmodified());
+        SysQualityManage record=sysQualityManageBusinessService.sysQualityManageRecord(sysQualityManage.getCompanyId(),sysQualityManage.getYear(),sysQualityManage.getMonth());
         if(null!=record){
-            if(!qualityId.equals(record.getQualityId())){
-                return R.error(500, "更新失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+            if(!sysQualityManage.getQualityId().equals(record.getQualityId())){
+                return R.error(500, "更新失败，系统已存在" + sysQualityManage.getYear() + "年" + sysQualityManage.getMonth() + "月的记录，不能重复添加");
             }
         }
         int count = sysQualityManageBusinessService.updateSysQualityManage(map);
         if (count > 0) {
-            if (!UtilHelper.isEmpty(fileInfo)) {
+            if (!UtilHelper.isEmpty(sysQualityManage.getFileInfo())) {
                 //先删除原有数据库记录
                 //sysQualityManageBusinessService.deleteSysQualityManageFileByQualityId(qualityId);
                 String[] fileInfoArray;
                 //去掉最后那个逗号，在进行获取数据
-                fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
+                fileInfoArray = sysQualityManage.getFileInfo().substring(0, sysQualityManage.getFileInfo().length()).split(";");
                 SysQualityManageFile sysQualityManageFile = null;
                 String[] fileData;
                 for (String fileUrl : fileInfoArray) {
                     sysQualityManageFile = new SysQualityManageFile();
                     //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
                     fileData = fileUrl.substring(0, fileUrl.length()).split(",");
-                    sysQualityManageFile.setQualityId(qualityId);
+                    sysQualityManageFile.setQualityId(sysQualityManage.getQualityId());
                     sysQualityManageFile.setFileName(fileData[0]);
                     sysQualityManageFile.setFileSize(Double.valueOf(fileData[2]));
                     sysQualityManageFile.setFileUrl(fileData[1]);

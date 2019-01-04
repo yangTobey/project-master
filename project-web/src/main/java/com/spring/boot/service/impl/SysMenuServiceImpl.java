@@ -1,6 +1,9 @@
 package com.spring.boot.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.spring.boot.bean.PageInfoBean;
 import com.spring.boot.bean.master.SysMenu;
+import com.spring.boot.bean.master.SysQualityManage;
 import com.spring.boot.bean.master.SysRoleMenu;
 import com.spring.boot.bean.master.entity.SysUserRoleEntity;
 import com.spring.boot.service.SysMenuService;
@@ -264,8 +267,15 @@ public class SysMenuServiceImpl implements SysMenuService {
         map.put("menuName", menuName);
         map.put("menuUrl", menuUrl);
         try {
-            resultMap.put("total", sysMenuBusinessService.getSysMenuListTotal(map));
-            resultMap.put("list", sysMenuBusinessService.getSysMenuList(map));
+            //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+            PageHelper.startPage((offset/limit)+1,limit);
+            List<SysMenu> list=sysMenuBusinessService.getSysMenuList(map);
+            PageInfoBean result = new PageInfoBean(list);
+            resultMap.put("total", result.getTotalOfData());
+            resultMap.put("list", result.getList());
+
+            //resultMap.put("total", sysMenuBusinessService.getSysMenuListTotal(map));
+            //resultMap.put("list", sysMenuBusinessService.getSysMenuList(map));
             return R.ok().putData(200, resultMap, "获取成功！");
         } catch (Exception e) {
             e.printStackTrace();

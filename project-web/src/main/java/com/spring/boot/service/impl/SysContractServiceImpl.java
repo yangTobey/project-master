@@ -1,8 +1,11 @@
 package com.spring.boot.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.spring.boot.bean.PageInfoBean;
 import com.spring.boot.bean.master.SysContract;
 import com.spring.boot.bean.master.SysContractFile;
 import com.spring.boot.bean.master.SysContractType;
+import com.spring.boot.bean.master.SysProject;
 import com.spring.boot.service.SysContractService;
 import com.spring.boot.service.web.SysContractBusinessService;
 import com.spring.boot.util.R;
@@ -38,11 +41,18 @@ public class SysContractServiceImpl implements SysContractService {
         map.put("limit", limit);
         map.put("offset", offset);
         try {
-            int count = sysContractBusinessService.sysContractTypeDataTotal(map);
-            List<SysContractType> list = sysContractBusinessService.sysContractTypeList(map);
+            //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+            PageHelper.startPage((offset/limit)+1,limit);
+            List<SysContractType> list=sysContractBusinessService.sysContractTypeList(map);
+            PageInfoBean result = new PageInfoBean(list);
+            resultMap.put("total", result.getTotalOfData());
+            resultMap.put("list", result.getList());
 
-            resultMap.put("total", count);
-            resultMap.put("list", list);
+            //int count = sysContractBusinessService.sysContractTypeDataTotal(map);
+            //List<SysContractType> list = sysContractBusinessService.sysContractTypeList(map);
+
+            //resultMap.put("total", count);
+            //resultMap.put("list", list);
             return R.ok().putData(200, resultMap, "获取成功！");
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,14 +160,22 @@ public class SysContractServiceImpl implements SysContractService {
             map.put("secondPartyCompany", secondPartyCompany);
             map.put("limit", limit);
             map.put("offset", offset);
-            int count = sysContractBusinessService.sysContractDataTotal(map);
-            List<SysContract> list = sysContractBusinessService.sysContractDataList(map);
 
-            map = new HashMap<String, Object>();
+            //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+            PageHelper.startPage((offset/limit)+1,limit);
+            List<SysContract> list=sysContractBusinessService.sysContractDataList(map);
+            PageInfoBean result = new PageInfoBean(list);
+            resultMap.put("total", result.getTotalOfData());
+            resultMap.put("list", result.getList());
 
-            map.put("total", count);
-            map.put("list", list);
-            return R.ok().putData(200, map, "获取成功！");
+            //int count = sysContractBusinessService.sysContractDataTotal(map);
+            //List<SysContract> list = sysContractBusinessService.sysContractDataList(map);
+
+            //map = new HashMap<String, Object>();
+
+            //map.put("total", count);
+            //map.put("list", list);
+            return R.ok().putData(200, resultMap, "获取成功！");
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("获取失败：" + e.getMessage());
@@ -168,58 +186,57 @@ public class SysContractServiceImpl implements SysContractService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addSysContract(String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime, Integer contractTypeId
-            , String firstPartyCompany, String secondPartyCompany, String personLiableName, String fileInfo,Long companyId) {
+    public Map<String, Object> addSysContract(SysContract sysContractAdd) {
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
-        SysContract sysContract = sysContractBusinessService.findSysContractByContractCode(contractCode);
+        SysContract sysContract = sysContractBusinessService.findSysContractByContractCode(sysContractAdd.getContractCode());
         if (sysContract != null) {
             return R.error(500, "添加合同失败，系统已存在相同编号的合同，请重新添加或者联系系统管理员！！");
         } else {
             try {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String now=format.format(new Date());
-                Date startTime = format.parse(contractStartTime);
-                Date endTime = format.parse(contractEndTime);
+                Date startTime = sysContractAdd.getContractStartTime();
+                Date endTime =sysContractAdd.getContractEndTime();
                 Date nowTime=format.parse(now);
 
-                sysContract = new SysContract();
-                sysContract.setContractCode(contractCode);
-                sysContract.setContractName(contractName);
-                sysContract.setContractEndTime(Timestamp.valueOf(contractEndTime));
-                sysContract.setContractStartTime(Timestamp.valueOf(contractStartTime));
-                sysContract.setContractMoney(Double.valueOf(contractMoney));
-                sysContract.setContractTypeId(contractTypeId);
-                sysContract.setFirstPartyCompany(firstPartyCompany);
-                sysContract.setSecondPartyCompany(secondPartyCompany);
-                sysContract.setPersonLiableName(personLiableName);
-                sysContract.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-                sysContract.setCompanyId(companyId);
+                //sysContract = new SysContract();
+                //sysContract.setContractCode(contractCode);
+                //sysContract.setContractName(contractName);
+                //sysContract.setContractEndTime(Timestamp.valueOf(contractEndTime));
+                //sysContract.setContractStartTime(Timestamp.valueOf(contractStartTime));
+               // sysContract.setContractMoney(Double.valueOf(contractMoney));
+                //sysContract.setContractTypeId(contractTypeId);
+                //sysContract.setFirstPartyCompany(firstPartyCompany);
+               // sysContract.setSecondPartyCompany(secondPartyCompany);
+                //sysContract.setPersonLiableName(personLiableName);
+                sysContractAdd.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
+                //sysContract.setCompanyId(companyId);
                 //算两个日期间隔多少天
                 int day = (int) ((endTime.getTime() - startTime.getTime()) / (1000*3600*24));
                 if(nowTime.getTime()-endTime.getTime()>0){//到期：指的是当前日期大于合同结束时间
-                    sysContract.setStatusCode(4);
+                    sysContractAdd.setStatusCode(4);
                 }else if(startTime.getTime()-nowTime.getTime()>0){//未开始：当前日期小于开始时间
-                    sysContract.setStatusCode(1);
+                    sysContractAdd.setStatusCode(1);
                 }else if(day<31){//即将到期：结束日期-当前日期<31天
-                    sysContract.setStatusCode(3);
+                    sysContractAdd.setStatusCode(3);
                 }else if(nowTime.getTime()-startTime.getTime()>0&&endTime.getTime()-nowTime.getTime()>0){
-                    sysContract.setStatusCode(2);
+                    sysContractAdd.setStatusCode(2);
                 }
-                int count = sysContractBusinessService.addSysContract(sysContract);
+                int count = sysContractBusinessService.addSysContract(sysContractAdd);
                 if (count > 0) {
-                    if (!UtilHelper.isEmpty(fileInfo)) {
+                    if (!UtilHelper.isEmpty(sysContractAdd.getFileInfo())) {
                         String[] fileInfoArray;
                         //去掉最后那个逗号，在进行获取数据
-                        fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
+                        fileInfoArray = sysContractAdd.getFileInfo().substring(0, sysContractAdd.getFileInfo().length()).split(";");
                         SysContractFile sysContractFile = null;
                         String[] fileData;
                         for (String fileUrl : fileInfoArray) {
                             sysContractFile = new SysContractFile();
                             //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
                             fileData = fileUrl.substring(0, fileUrl.length()).split(",");
-                            sysContractFile.setContractId(sysContract.getContractId());
+                            sysContractFile.setContractId(sysContractAdd.getContractId());
                             sysContractFile.setFileName(fileData[0]);
                             sysContractFile.setFileSize(Double.valueOf(fileData[2]));
                             sysContractFile.setFileUrl(fileData[1]);
@@ -242,27 +259,26 @@ public class SysContractServiceImpl implements SysContractService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> updateSysContract(Long contractId, String contractName, String contractCode, String contractMoney, String contractStartTime, String contractEndTime
-            , String contractTypeId, String firstPartyCompany, String secondPartyCompany, String personLiableName, String fileInfo,Long companyId) {
+    public Map<String, Object> updateSysContract(SysContract sysContractUpdate) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        map.put("contractId", contractId);
-        map.put("contractName", contractName);
-        map.put("contractCode", contractCode);
-        map.put("contractMoney", contractMoney);
-        map.put("contractStartTime", contractStartTime);
-        map.put("contractEndTime", contractEndTime);
-        map.put("contractTypeId", contractTypeId);
-        map.put("firstPartyCompany", firstPartyCompany);
-        map.put("secondPartyCompany", secondPartyCompany);
-        map.put("personLiableName", personLiableName);
+        map.put("contractId", sysContractUpdate.getContractId());
+        map.put("contractName", sysContractUpdate.getContractName());
+        map.put("contractCode", sysContractUpdate.getContractCode());
+        map.put("contractMoney", sysContractUpdate.getContractMoney());
+        map.put("contractStartTime", sysContractUpdate.getContractStartTime());
+        map.put("contractEndTime", sysContractUpdate.getContractEndTime());
+        map.put("contractTypeId", sysContractUpdate.getContractTypeId());
+        map.put("firstPartyCompany", sysContractUpdate.getFirstPartyCompany());
+        map.put("secondPartyCompany", sysContractUpdate.getSecondPartyCompany());
+        map.put("personLiableName", sysContractUpdate.getPersonLiableName());
         map.put("createTime", Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-        map.put("companyId", companyId);
+        map.put("companyId", sysContractUpdate.getCompanyId());
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String now=format.format(new Date());
-            Date startTime = format.parse(contractStartTime);
-            Date endTime = format.parse(contractEndTime);
+            Date startTime = sysContractUpdate.getContractStartTime();
+            Date endTime = sysContractUpdate.getContractEndTime();
             Date nowTime=format.parse(now);
             //算两个日期间隔多少天
             int day = (int) ((endTime.getTime() - startTime.getTime()) / (1000*3600*24));
@@ -275,28 +291,28 @@ public class SysContractServiceImpl implements SysContractService {
             }else if(nowTime.getTime()-startTime.getTime()>0&&endTime.getTime()-nowTime.getTime()>0){
                 map.put("statusCode", 2);
             }
-            SysContract sysContract = sysContractBusinessService.findSysContractByContractCode(contractCode);
+            SysContract sysContract = sysContractBusinessService.findSysContractByContractCode(sysContractUpdate.getContractCode());
             if (sysContract != null) {
                 //判断是否已存在该编号的合同
-                if (!contractId.equals(sysContract.getContractId())) {
+                if (!sysContractUpdate.getContractId().equals(sysContract.getContractId())) {
                     return R.error(500, "更新合同失败，系统已存在相同编号的合同，请重新添加或者联系系统管理员！！");
                 }
             }
             int count = sysContractBusinessService.updateSysContract(map);
             if (count > 0) {
-                if (!UtilHelper.isEmpty(fileInfo)) {
+                if (!UtilHelper.isEmpty(sysContractUpdate.getFileInfo())) {
                     //先删除原有数据库记录
                     //sysContractBusinessService.deleteSysContractFileByContractId(contractId);
                     String[] fileInfoArray;
                     //去掉最后那个逗号，在进行获取数据
-                    fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
+                    fileInfoArray = sysContractUpdate.getFileInfo().substring(0, sysContractUpdate.getFileInfo().length()).split(";");
                     SysContractFile sysContractFile = null;
                     String[] fileData;
                     for (String fileUrl : fileInfoArray) {
                         sysContractFile = new SysContractFile();
                         //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
                         fileData = fileUrl.substring(0, fileUrl.length()).split(",");
-                        sysContractFile.setContractId(contractId);
+                        sysContractFile.setContractId(sysContractUpdate.getContractId());
                         sysContractFile.setFileName(fileData[0]);
                         sysContractFile.setFileSize(Double.valueOf(fileData[2]));
                         sysContractFile.setFileUrl(fileData[1]);

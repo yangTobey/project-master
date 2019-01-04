@@ -95,9 +95,9 @@
 
 		GROUP BY contract.contract_id
 		ORDER BY contract.create_time DESC
-		<if test="offset != null and limit != null">
+		<!--<if test="offset != null and limit != null">
 			limit #{offset},#{limit}
-		</if>
+		</if>-->
 
 	</select>
 	<!--获取报表统计数据-->
@@ -248,13 +248,14 @@
 	<update id="updateSysContract" parameterType="map">
 		update sys_contract set contract_name = #{contractName},contract_code = #{contractCode},contract_money = #{contractMoney},contract_startTime = #{contractStartTime},
 		contract_endTime = #{contractEndTime},contract_type_id = #{contractTypeId},first_party_company = #{firstPartyCompany},second_party_company = #{secondPartyCompany},
-		person_liable_name = #{personLiableName},company_id = #{companyId},status_code=#{statusCode}
+		person_liable_name = #{personLiableName},company_id = #{companyId},status_code=#{statusCode},contact_name=#{contactName}
 		where contract_id = #{contractId}
 	</update>
 	<insert id="save" parameterType="com.spring.boot.bean.master.SysContract" useGeneratedKeys="true" keyProperty="contractId">
 		INSERT INTO sys_contract  (contract_name, contract_code,contract_money,contract_startTime,contract_endTime,contract_type_id,first_party_company,second_party_company,person_liable_name,
-		 create_time,company_id,status_code)
-              VALUES   (#{contractName},#{contractCode},#{contractMoney},#{contractStartTime},#{contractEndTime},#{contractTypeId},#{firstPartyCompany},#{secondPartyCompany},#{personLiableName},#{createTime},#{companyId},#{statusCode} )
+		 create_time,company_id,status_code,contact_name)
+              VALUES   (#{contractName},#{contractCode},#{contractMoney},#{contractStartTime},#{contractEndTime},#{contractTypeId},#{firstPartyCompany}
+              ,#{secondPartyCompany},#{personLiableName},#{createTime},#{companyId},#{statusCode},#{contactName} )
 	</insert>
 	<update id="deleteSysContract" parameterType="map">
 		update sys_contract  set status_code = 5

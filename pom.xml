@@ -238,6 +238,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <!--<fork>true</fork>
+                    &lt;!&ndash;增加jvm参数&ndash;&gt;
+                    <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>-->
                     <!-- 指定该Main Class为全局的唯一入口 -->
                     <mainClass>com.spring.boot.WebApplication</mainClass>
                     <layout>ZIP</layout>

@@ -1,7 +1,10 @@
 package com.spring.boot.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.spring.boot.bean.PageInfoBean;
 import com.spring.boot.bean.master.*;
 import com.spring.boot.bean.master.entity.SysProjectEnergyEntity;
+import com.spring.boot.entity.SysProjectEnergyInfoEntity;
 import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysProjectEnergyService;
 import com.spring.boot.service.web.SysEnergyBusinessService;
@@ -47,36 +50,37 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addSysProjectEnergy(Long companyId, Integer year, Integer month, Integer projectUnfinishedTotal, Integer projectFinishedTotal, Double monthConsumptionElectricity, Double monthConsumptionWater, String fileInfo) {
+    public Map<String, Object> addSysProjectEnergy(SysProjectEnergyInfoEntity sysProjectEnergyEntity) {
         //先根据年份、月份、公司id查找系统是不是已经存在该月的记录
-        SysProject sysProject = sysProjectBusinessService.findSysProjectRecord(companyId, year, month);
+        SysProject sysProject = sysProjectBusinessService.findSysProjectRecord(sysProjectEnergyEntity.getCompanyId(), sysProjectEnergyEntity.getYear(), sysProjectEnergyEntity.getMonth());
         if (null != sysProject) {
-            return R.error(500, "新增失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+            return R.error(500, "新增失败，系统已存在" + sysProjectEnergyEntity.getYear() + "年" + sysProjectEnergyEntity.getMonth() + "月的记录，不能重复添加");
         } else {
             Date date = Timestamp.valueOf(UtilHelper.getNowTimeStr());
             sysProject = new SysProject();
-            sysProject.setCompanyId(companyId);
-            sysProject.setYear(year);
-            sysProject.setMonth(month);
+            sysProject.setCompanyId(sysProjectEnergyEntity.getCompanyId());
+            sysProject.setYear(sysProjectEnergyEntity.getYear());
+            sysProject.setMonth(sysProjectEnergyEntity.getMonth());
             sysProject.setCreateTime(date);
-            sysProject.setProjectFinishedTotal(projectFinishedTotal);
-            sysProject.setProjectUnfinishedTotal(projectUnfinishedTotal);
+            sysProject.setProjectFinishedTotal(sysProjectEnergyEntity.getProjectFinishedTotal());
+            sysProject.setProjectUnfinishedTotal(sysProjectEnergyEntity.getProjectUnfinishedTotal());
             int count = sysProjectBusinessService.addSysProject(sysProject);
             if (count > 0) {
                 SysEnergy sysEnergy = new SysEnergy();
-                sysEnergy.setCompanyId(companyId);
-                sysEnergy.setYear(year);
-                sysEnergy.setMonth(month);
+                sysEnergy.setCompanyId(sysProjectEnergyEntity.getCompanyId());
+                sysEnergy.setYear(sysProjectEnergyEntity.getYear());
+                sysEnergy.setMonth(sysProjectEnergyEntity.getMonth());
                 sysEnergy.setProjectId(sysProject.getProjectId());
-                sysEnergy.setMonthConsumptionElectricity(monthConsumptionElectricity);
-                sysEnergy.setMonthConsumptionWater(monthConsumptionWater);
+                sysEnergy.setMonthConsumptionElectricity(sysProjectEnergyEntity.getMonthConsumptionElectricity());
+                sysEnergy.setMonthConsumptionWater(sysProjectEnergyEntity.getMonthConsumptionWater());
                 sysEnergy.setCreateTime(date);
                 sysEnergyBusinessService.addSysEergy(sysEnergy);
                 //添加附件信息
-                if (!UtilHelper.isEmpty(fileInfo)) {
-                    String[] fileInfoArray;
+                if (!UtilHelper.isEmpty(sysProjectEnergyEntity.getPreviousFileInfo())) {
+                    saveFile(sysProjectEnergyEntity.getPreviousFileInfo(), sysProject.getProjectId(), 3);
+                    /*String[] fileInfoArray;
                     //去掉最后那个逗号，在进行获取数据
-                    fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
+                    fileInfoArray = sysProjectEnergyEntity.getPreviousFileInfo().substring(0, sysProjectEnergyEntity.getPreviousFileInfo().length()).split(";");
                     SysProjectEnergyFile sysProjectEnergyFile = null;
                     String[] fileData;
                     for (String fileUrl : fileInfoArray) {
@@ -89,7 +93,16 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                         sysProjectEnergyFile.setFileUrl(fileData[1]);
                         sysProjectEnergyFile.setUploadTime(date);
                         sysProjectBusinessService.addSysProjectEnergyFile(sysProjectEnergyFile);
-                    }
+                    }*/
+                }
+                if (!UtilHelper.isEmpty(sysProjectEnergyEntity.getAcceptFileInfo())) {
+                    saveFile(sysProjectEnergyEntity.getAcceptFileInfo(), sysProject.getProjectId(), 4);
+                }
+                if (!UtilHelper.isEmpty(sysProjectEnergyEntity.getUnfinishedFileInfo())) {
+                    saveFile(sysProjectEnergyEntity.getUnfinishedFileInfo(), sysProject.getProjectId(), 1);
+                }
+                if (!UtilHelper.isEmpty(sysProjectEnergyEntity.getFinishedFileInfo())) {
+                    saveFile(sysProjectEnergyEntity.getFinishedFileInfo(), sysProject.getProjectId(), 2);
                 }
 
                 //存储统计信息到redis缓存
@@ -103,44 +116,54 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> updateSysProjectEnergy(Long projectId, Long companyId, Integer year, Integer month, Integer projectUnfinishedTotal, Integer projectFinishedTotal, Double monthConsumptionElectricity, Double monthConsumptionWater, String fileInfo) {
+    public Map<String, Object> updateSysProjectEnergy(SysProjectEnergyInfoEntity sysProjectEnergyEntity) {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("projectId", projectId);
-        map.put("companyId", companyId);
-        map.put("year", year);
-        map.put("month", month);
-        map.put("projectUnfinishedTotal", projectUnfinishedTotal);
-        map.put("projectFinishedTotal", projectFinishedTotal);
-        map.put("monthConsumptionElectricity", monthConsumptionElectricity);
-        map.put("monthConsumptionWater", monthConsumptionWater);
+        map.put("projectId", sysProjectEnergyEntity.getProjectId());
+        map.put("companyId", sysProjectEnergyEntity.getCompanyId());
+        map.put("year", sysProjectEnergyEntity.getYear());
+        map.put("month", sysProjectEnergyEntity.getMonth());
+        map.put("projectUnfinishedTotal", sysProjectEnergyEntity.getProjectUnfinishedTotal());
+        map.put("projectFinishedTotal", sysProjectEnergyEntity.getProjectFinishedTotal());
+        map.put("monthConsumptionElectricity", sysProjectEnergyEntity.getMonthConsumptionElectricity());
+        map.put("monthConsumptionWater", sysProjectEnergyEntity.getMonthConsumptionWater());
 
         //先根据年份、月份、公司id查找系统是不是已经存在该月的记录
-        SysProject sysProject = sysProjectBusinessService.findSysProjectRecord(companyId, year, month);
+        SysProject sysProject = sysProjectBusinessService.findSysProjectRecord(sysProjectEnergyEntity.getCompanyId(), sysProjectEnergyEntity.getYear(), sysProjectEnergyEntity.getMonth());
         if (null != sysProject) {
-            if (!projectId.equals(sysProject.getProjectId())) {
-                return R.error(500, "更新失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+            if (!sysProjectEnergyEntity.getProjectId().equals(sysProject.getProjectId())) {
+                return R.error(500, "更新失败，系统已存在" + sysProjectEnergyEntity.getYear() + "年" + sysProjectEnergyEntity.getMonth() + "月的记录，不能重复添加");
             }
         }
         sysProjectBusinessService.updateSysProject(map);
         sysEnergyBusinessService.updateSysEnergy(map);
         //添加附件信息
-        if (!UtilHelper.isEmpty(fileInfo)) {
-            String[] fileInfoArray;
+        if (!UtilHelper.isEmpty(sysProjectEnergyEntity.getPreviousFileInfo())) {
+            saveFile(sysProjectEnergyEntity.getPreviousFileInfo(),sysProjectEnergyEntity.getProjectId(),3);
+           /* String[] fileInfoArray;
             //去掉最后那个逗号，在进行获取数据
-            fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
+            fileInfoArray = sysProjectEnergyEntity.getPreviousFileInfo().substring(0, sysProjectEnergyEntity.getPreviousFileInfo().length()).split(";");
             SysProjectEnergyFile sysProjectEnergyFile = null;
             String[] fileData;
             for (String fileUrl : fileInfoArray) {
                 sysProjectEnergyFile = new SysProjectEnergyFile();
                 //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
                 fileData = fileUrl.substring(0, fileUrl.length()).split(",");
-                sysProjectEnergyFile.setProjectId(projectId);
+                sysProjectEnergyFile.setProjectId(sysProjectEnergyEntity.getProjectId());
                 sysProjectEnergyFile.setFileName(fileData[0]);
                 sysProjectEnergyFile.setFileSize(Double.valueOf(fileData[2]));
                 sysProjectEnergyFile.setFileUrl(fileData[1]);
                 sysProjectEnergyFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
                 sysProjectBusinessService.addSysProjectEnergyFile(sysProjectEnergyFile);
-            }
+            }*/
+        }
+        if (!UtilHelper.isEmpty(sysProjectEnergyEntity.getAcceptFileInfo())) {
+            saveFile(sysProjectEnergyEntity.getAcceptFileInfo(), sysProjectEnergyEntity.getProjectId(), 4);
+        }
+        if (!UtilHelper.isEmpty(sysProjectEnergyEntity.getUnfinishedFileInfo())) {
+            saveFile(sysProjectEnergyEntity.getUnfinishedFileInfo(), sysProjectEnergyEntity.getProjectId(), 1);
+        }
+        if (!UtilHelper.isEmpty(sysProjectEnergyEntity.getFinishedFileInfo())) {
+            saveFile(sysProjectEnergyEntity.getFinishedFileInfo(), sysProjectEnergyEntity.getProjectId(), 2);
         }
 
         //存储统计信息到redis缓存
@@ -148,6 +171,39 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
 
         return R.ok(200, "更新成功！！");
 
+    }
+    /**
+     * 保存文件信息
+     * @param fileInfo 文件详细信息
+     * @param projectId 基础数据主键id
+     * @param type 类型 文件类型（1：车位附件，2：销配附件,3：管理面积，4：前期文件）
+     */
+    public void saveFile(String fileInfo,Long projectId,Integer type){
+        String[] fileInfoArray;
+        //去掉最后那个逗号，在进行获取数据
+        fileInfoArray = fileInfo.substring(0, fileInfo.length()).split(";");
+        SysProjectEnergyFile sysProjectEnergyFile = null;
+        String[] fileData;
+        for (String fileUrl : fileInfoArray) {
+            sysProjectEnergyFile = new SysProjectEnergyFile();
+            //根据，逗号分隔，获取文件的地址和文件大小（文件数据格式：文件名称，文件地址，文件大小）
+            fileData = fileUrl.substring(0, fileUrl.length()).split(",");
+            sysProjectEnergyFile.setProjectId(projectId);
+            sysProjectEnergyFile.setFileName(fileData[0]);
+            sysProjectEnergyFile.setFileSize(Double.valueOf(fileData[2]));
+            sysProjectEnergyFile.setFileUrl(fileData[1]);
+            sysProjectEnergyFile.setUploadTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
+            if(type==1){
+                sysProjectEnergyFile.setFileType(1);
+            }else if(type==2){
+                sysProjectEnergyFile.setFileType(2);
+            }else if(type==3){
+                sysProjectEnergyFile.setFileType(3);
+            }else if(type==4){
+                sysProjectEnergyFile.setFileType(4);
+            }
+            sysProjectBusinessService.addSysProjectEnergyFile(sysProjectEnergyFile);
+        }
     }
 
     @Override
@@ -204,8 +260,15 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
         map.put("sysUserCompanyIds", sysUserCompanyIds);
         map.put("year", year);
         try {
-            resultMap.put("total", sysProjectBusinessService.sysProjectEnergyListTotal(map));
-            resultMap.put("list", sysProjectBusinessService.sysProjectEnergyList(map));
+            //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+            PageHelper.startPage((offset/limit)+1,limit);
+            List<SysProject> list=sysProjectBusinessService.sysProjectEnergyList(map);
+            PageInfoBean result = new PageInfoBean(list);
+            resultMap.put("total", result.getTotalOfData());
+            resultMap.put("list", result.getList());
+
+            //resultMap.put("total", sysProjectBusinessService.sysProjectEnergyListTotal(map));
+            //resultMap.put("list", sysProjectBusinessService.sysProjectEnergyList(map));
             return R.ok().putData(200, resultMap, "获取数据成功！");
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,9 +1,8 @@
 package com.spring.boot.service.impl;
 
-import com.spring.boot.bean.master.SysBasicDataFile;
-import com.spring.boot.bean.master.SysCompany;
-import com.spring.boot.bean.master.SysCompanyFile;
-import com.spring.boot.bean.master.SysUser;
+import com.github.pagehelper.PageHelper;
+import com.spring.boot.bean.PageInfoBean;
+import com.spring.boot.bean.master.*;
 import com.spring.boot.controller.SysCompanyController;
 import com.spring.boot.service.SysCompanyService;
 import com.spring.boot.service.SysUserService;
@@ -46,8 +45,15 @@ public class SysCompanyServiceImpl implements SysCompanyService {
         map.put("limit", limit);
         map.put("offset", offset);
         try {
-            resultMap.put("total", sysCompanyBusinessService.getSysCompanyListTotal(map));
-            resultMap.put("list", sysCompanyBusinessService.getSysCompanyList(map));
+            //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+            PageHelper.startPage((offset/limit)+1,limit);
+            List<SysCompany> list=sysCompanyBusinessService.getSysCompanyList(map);
+            PageInfoBean result = new PageInfoBean(list);
+            resultMap.put("total", result.getTotalOfData());
+            resultMap.put("list", result.getList());
+
+            //resultMap.put("total", sysCompanyBusinessService.getSysCompanyListTotal(map));
+            //resultMap.put("list", sysCompanyBusinessService.getSysCompanyList(map));
             return R.ok().putData(200,resultMap,"获取成功！");
         }catch (Exception e){
             e.printStackTrace();

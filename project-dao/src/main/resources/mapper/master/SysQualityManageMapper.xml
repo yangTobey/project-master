@@ -47,9 +47,9 @@
         GROUP BY
         quality.quality_id
         ORDER BY quality.year DESC,quality.month DESC
-        <if test="offset != null and limit != null">
+       <!-- <if test="offset != null and limit != null">
             limit #{offset},#{limit}
-        </if>
+        </if>-->
     </select>
     <!--根据公司id查找 年 度品质管理分析情况-->
     <select id="sysQualityManageAnalysisForYear" resultType="com.spring.boot.bean.master.entity.SysQualityManageEntity" parameterType="map">

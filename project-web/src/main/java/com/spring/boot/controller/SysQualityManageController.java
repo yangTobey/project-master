@@ -1,5 +1,6 @@
 package com.spring.boot.controller;
 
+import com.spring.boot.bean.master.SysQualityManage;
 import com.spring.boot.service.SysCompanyService;
 import com.spring.boot.service.SysQualityManageService;
 import com.spring.boot.util.R;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 /**
@@ -74,12 +76,8 @@ public class SysQualityManageController {
      * @return
      */
     @RequestMapping(value = "/addSysQualityManage", method = RequestMethod.POST)
-    public R addSysQualityManage(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
-            , @RequestParam(value = "month", required = false) String month, @RequestParam(value = "qualityCheck", required = false) String qualityCheck
-            , @RequestParam(value = "qualityCheckPass", required = false) String qualityCheckPass
-            , @RequestParam(value = "securityEvent", required = false) String securityEvent, @RequestParam(value = "qualityCheckUnmodified", required = false) String qualityCheckUnmodified
-            , @RequestParam(value = "fileInfo", required = false) String fileInfo, @RequestParam(value = "lastQualityCheckUnmodified", required = false) String lastQualityCheckUnmodified) {
-        if (!UtilHelper.isLongNumer(companyId)) {
+    public R addSysQualityManage(@RequestParam @Valid SysQualityManage sysQualityManage) {
+        /*if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(year)) {
             return R.error(400, "年份格式不正确，或者不符合常理！");
@@ -89,18 +87,17 @@ public class SysQualityManageController {
             return R.error(400, "月品质检查项格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(qualityCheckPass)) {
             return R.error(400, "月品质检查合格项格式不正确，或者不符合常理！");
-        } else if (Integer.valueOf(qualityCheck)<Integer.valueOf(qualityCheckPass)) {
+        } else*/ if (sysQualityManage.getQualityCheck()<sysQualityManage.getQualityCheckPass()) {
             return R.error(400, "月品质检查 合格项 不能 大于 月品质检查项！");
-        } else if (!UtilHelper.isIntegerNumer(securityEvent)) {
+        } /*else if (!UtilHelper.isIntegerNumer(securityEvent)) {
             return R.error(400, "月安全事故数量项格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(qualityCheckUnmodified)) {
             return R.error(400, "月品质检查未整改项格式不正确，或者不符合常理！");
         }else if (!UtilHelper.isIntegerNumer(lastQualityCheckUnmodified)) {
             return R.error(400, "上个月品质检查未整改项格式不正确，或者不符合常理！");
-        }
+        }*/
         try {
-            Map<String, Object> map = sysQualityManageService.addSysQualityManage(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(qualityCheck), Integer.valueOf(qualityCheckPass)
-                    , Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified), fileInfo,Integer.valueOf(lastQualityCheckUnmodified));
+            Map<String, Object> map = sysQualityManageService.addSysQualityManage(sysQualityManage);
             return R.ok(map);
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,16 +120,11 @@ public class SysQualityManageController {
      * @return
      */
     @RequestMapping(value = "/updateSysQualityManage", method = RequestMethod.POST)
-    public R updateSysQualityManage(@RequestParam(value = "qualityId", required = false) String qualityId, @RequestParam(value = "companyId", required = false) String companyId
-            , @RequestParam(value = "year", required = false) String year, @RequestParam(value = "month", required = false) String month
-            , @RequestParam(value = "qualityCheck", required = false) String qualityCheck, @RequestParam(value = "qualityCheckPass", required = false) String qualityCheckPass
-            ,  @RequestParam(value = "securityEvent", required = false) String securityEvent
-            , @RequestParam(value = "qualityCheckUnmodified", required = false) String qualityCheckUnmodified, @RequestParam(value = "fileInfo", required = false) String fileInfo
-            , @RequestParam(value = "lastQualityCheckUnmodified", required = false) String lastQualityCheckUnmodified) {
-        logger.info("信息更新操作！");
-        if (!UtilHelper.isLongNumer(qualityId)) {
+    public R updateSysQualityManage(@RequestParam @Valid SysQualityManage sysQualityManage) {
+        //logger.info("信息更新操作！");
+        if (!UtilHelper.isLongNumer(sysQualityManage.getQualityId().toString())) {
             return R.error(400, "质量管理编号格式不正确，请联系系统管理员，或者不符合常理！");
-        } else if (!UtilHelper.isLongNumer(companyId)) {
+        } /*else if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司编号格式不正确，请联系系统管理员，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(year)) {
             return R.error(400, "年份格式不正确，或者不符合常理！");
@@ -142,18 +134,17 @@ public class SysQualityManageController {
             return R.error(400, "月品质检查项格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(qualityCheckPass)) {
             return R.error(400, "月品质检查合格项格式不正确，或者不符合常理！");
-        } else if (Integer.valueOf(qualityCheck)<Integer.valueOf(qualityCheckPass)) {
+        } */else if (sysQualityManage.getQualityCheck()<sysQualityManage.getQualityCheckPass()) {
             return R.error(400, "月品质检查 合格项 不能 大于 月品质检查项！");
-        } else if (!UtilHelper.isIntegerNumer(securityEvent)) {
+        }/* else if (!UtilHelper.isIntegerNumer(securityEvent)) {
             return R.error(400, "月安全事故数量项格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(qualityCheckUnmodified)) {
             return R.error(400, "月品质检查未整改项格式不正确，或者不符合常理！");
         }else if (!UtilHelper.isIntegerNumer(lastQualityCheckUnmodified)) {
             return R.error(400, "上个月品质检查未整改项格式不正确，或者不符合常理！");
-        }
+        }*/
         try {
-            Map<String, Object> map = sysQualityManageService.updateSysQualityManage(Long.valueOf(qualityId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(qualityCheck), Integer.valueOf(qualityCheckPass)
-                    , Integer.valueOf(securityEvent), Integer.valueOf(qualityCheckUnmodified), fileInfo,Integer.valueOf(lastQualityCheckUnmodified));
+            Map<String, Object> map = sysQualityManageService.updateSysQualityManage(sysQualityManage);
             return R.ok(map);
         } catch (Exception e) {
             e.printStackTrace();

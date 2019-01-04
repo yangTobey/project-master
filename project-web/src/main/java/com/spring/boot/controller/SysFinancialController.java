@@ -7,10 +7,7 @@ import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -231,7 +228,7 @@ public class SysFinancialController {
      * @return
      */
     @RequestMapping(value = "/addSysAccountsReceivable", method = RequestMethod.POST)
-    public R addSysAccountsReceivable( SysAccountsReceivable sysAccountsReceivable) {
+    public R addSysAccountsReceivable( @RequestBody @Valid SysAccountsReceivable sysAccountsReceivable) {
        /* if(!UtilHelper.isLongNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
             return R.error(400, "公司id格式不正确，或者不符合常理！！");
         }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysAccountsReceivable.getMonth()))){
@@ -267,7 +264,7 @@ public class SysFinancialController {
      * @return
      */
     @RequestMapping(value = "/updateSysAccountsReceivable", method = RequestMethod.POST)
-    public R updateSysAccountsReceivable(SysAccountsReceivable sysAccountsReceivable) {
+    public R updateSysAccountsReceivable( @Valid SysAccountsReceivable sysAccountsReceivable) {
        /* if(!UtilHelper.isLongNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
             return R.error(400, "公司id格式不正确，或者不符合常理！！");
         }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysAccountsReceivable.getMonth()))){
@@ -281,8 +278,9 @@ public class SysFinancialController {
         Double completeHouse = sysAccountsReceivable.getCompleteCoupon() + sysAccountsReceivable.getCompleteVacancy() + sysAccountsReceivable.getCompleteSubsidy()
                 + sysAccountsReceivable.getCompleteSales() + sysAccountsReceivable.getCompleteOpen() + sysAccountsReceivable.getCompletePropertySubsidy()
                 + sysAccountsReceivable.getCompleteHouseOther();
-        
-        if (!UtilHelper.DecimalFormatForDouble(String.valueOf(receivableHouse)).equals(sysAccountsReceivable.getReceivableHouse())) {
+        if(!UtilHelper.isLongNumer(String.valueOf(sysAccountsReceivable.getAccountsId()))){
+            return R.error(400, "主键id格式不正确，或者不符合常理！！");
+        }else if (!UtilHelper.DecimalFormatForDouble(String.valueOf(receivableHouse)).equals(sysAccountsReceivable.getReceivableHouse())) {
             return R.error(400, "地产应收款总数不对，请联系管理员进行处理！");
         } else if (!UtilHelper.DecimalFormatForDouble(String.valueOf(completeHouse)).equals(sysAccountsReceivable.getCompleteHouse())) {
             return R.error(400, "地产已收款总数不对，请联系管理员进行处理！");

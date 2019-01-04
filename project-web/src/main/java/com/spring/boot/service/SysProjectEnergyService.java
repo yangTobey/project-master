@@ -1,5 +1,8 @@
 package com.spring.boot.service;
 
+
+import com.spring.boot.entity.SysProjectEnergyInfoEntity;
+
 import java.util.Map;
 
 /**
@@ -18,7 +21,7 @@ public interface SysProjectEnergyService {
      * @param fileInfo
      * @return
      */
-    Map<String,Object> addSysProjectEnergy(Long companyId,Integer year,Integer month,Integer projectUnfinishedTotal,Integer projectFinishedTotal,Double monthConsumptionElectricity,Double monthConsumptionWater,String fileInfo);
+    Map<String,Object> addSysProjectEnergy(SysProjectEnergyInfoEntity sysProjectEnergyEntity);
 
     /**
      * 更新信息
@@ -33,7 +36,7 @@ public interface SysProjectEnergyService {
      * @param fileInfo
      * @return
      */
-    Map<String,Object> updateSysProjectEnergy(Long projectId,Long companyId,Integer year,Integer month,Integer projectUnfinishedTotal,Integer projectFinishedTotal,Double monthConsumptionElectricity,Double monthConsumptionWater,String fileInfo);
+    Map<String,Object> updateSysProjectEnergy(SysProjectEnergyInfoEntity sysProjectEnergyEntity);
 
     /**
      * 删除信息

@@ -110,9 +110,9 @@
             </otherwise>
         </choose>
         and accountsRe.year = #{year} ORDER BY accountsRe.year desc,accountsRe.month desc
-        <if test="offset != null and limit != null">
+        <!--<if test="offset != null and limit != null">
             limit #{offset},#{limit}
-        </if>
+        </if>-->
     </select>
     <!--应收账款列表信息总条数-->
     <select id="sysAccountsReceivableListTotal" resultType="int" parameterType="map">

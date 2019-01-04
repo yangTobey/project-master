@@ -1,5 +1,7 @@
 package com.spring.boot.service;
 
+import com.spring.boot.bean.master.SysQualityManage;
+
 import java.util.Map;
 
 /**
@@ -29,7 +31,7 @@ public interface SysQualityManageService {
      * @param qualityCheckUnmodified
      * @return
      */
-    Map<String,Object> addSysQualityManage(Long companyId, Integer year, Integer month,Integer qualityCheck,Integer qualityCheckPass,Integer securityEvent,Integer qualityCheckUnmodified,String fileInfo,Integer lastQualityCheckUnmodified);
+    Map<String,Object> addSysQualityManage(SysQualityManage sysQualityManage);
 
     /**
      * 更新信息
@@ -43,7 +45,7 @@ public interface SysQualityManageService {
      * @param qualityCheckUnmodified
      * @return
      */
-    Map<String,Object> updateSysQualityManage(Long qualityId,Long companyId, Integer year, Integer month,Integer qualityCheck,Integer qualityCheckPass,Integer securityEvent,Integer qualityCheckUnmodified, String fileInfo,Integer lastQualityCheckUnmodified);
+    Map<String,Object> updateSysQualityManage(SysQualityManage sysQualityManage);
     /**
      * 删除信息
      * @param qualityId id

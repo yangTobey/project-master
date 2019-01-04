@@ -15,6 +15,7 @@ public class SysProjectEnergyFile {
     private Double fileSize;
     private Integer statusCode;
     private Date uploadTime;
+    private Integer fileType;
 
     public Long getFileId() {
         return fileId;
@@ -71,5 +72,13 @@ public class SysProjectEnergyFile {
 
     public void setUploadTime(Date uploadTime) {
         this.uploadTime = uploadTime;
+    }
+
+    public Integer getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(Integer fileType) {
+        this.fileType = fileType;
     }
 }

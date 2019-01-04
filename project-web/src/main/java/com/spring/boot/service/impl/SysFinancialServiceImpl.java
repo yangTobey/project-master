@@ -1,5 +1,7 @@
 package com.spring.boot.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.spring.boot.bean.PageInfoBean;
 import com.spring.boot.bean.master.*;
 import com.spring.boot.bean.master.entity.SysBudgetDetailsEntity;
 import com.spring.boot.bean.master.entity.SysReceivableAccountsOwnerEntity;
@@ -355,8 +357,15 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         map.put("limit", limit);
         map.put("offset", offset);
         try {
-            resultMap.put("total", sysAccountsReceivableBusinessService.sysAccountsReceivableListTotal(map));
-            resultMap.put("list", sysAccountsReceivableBusinessService.sysAccountsReceivableList(map));
+            //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+            PageHelper.startPage((offset/limit)+1,limit);
+            List<SysAccountsReceivable> list=sysAccountsReceivableBusinessService.sysAccountsReceivableList(map);
+            PageInfoBean result = new PageInfoBean(list);
+            resultMap.put("total", result.getTotalOfData());
+            resultMap.put("list", result.getList());
+
+            //resultMap.put("total", sysAccountsReceivableBusinessService.sysAccountsReceivableListTotal(map));
+            //resultMap.put("list", sysAccountsReceivableBusinessService.sysAccountsReceivableList(map));
             return R.ok().putData(200, resultMap, "获取成功！");
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,17 +1,17 @@
 
 package com.spring.boot.controller;
 
+import com.spring.boot.bean.master.SysContract;
+import com.spring.boot.exception.SysException;
 import com.spring.boot.service.SysContractService;
 import com.spring.boot.service.SysDepartmentService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -171,13 +171,8 @@ public class SysContractController {
      */
     @RequestMapping(value = "/addSysContract", method = RequestMethod.POST)
     @ResponseBody
-    public R addSysContract(@RequestParam(value = "contractName", required = false)String contractName,@RequestParam(value = "contractCode", required = false) String contractCode
-            ,@RequestParam(value = "contractMoney", required = false) String contractMoney, @RequestParam(value = "contractStartTime", required = false)String contractStartTime
-            , @RequestParam(value = "contractEndTime", required = false)String contractEndTime,@RequestParam(value = "contractTypeId", required = false)String contractTypeId
-            ,@RequestParam(value = "firstPartyCompany", required = false) String firstPartyCompany,@RequestParam(value = "secondPartyCompany", required = false) String secondPartyCompany
-            , @RequestParam(value = "personLiableName", required = false)String personLiableName, @RequestParam(value = "fileInfo", required = false) String fileInfo
-            , @RequestParam(value = "companyId", required = false) String companyId) {
-        if(UtilHelper.isEmpty(contractName)){
+    public R addSysContract(@RequestBody @Valid SysContract sysContract) {
+       /* if(UtilHelper.isEmpty(contractName)){
             return R.error(400, "合同名称不能为空！");
         }else if(UtilHelper.isEmpty(contractCode)){
             return R.error(400, "合同编号不能为空！");
@@ -197,19 +192,19 @@ public class SysContractController {
             return R.error(400, "合同负责人不能为空！");
         }else if(!UtilHelper.isLongNumer(companyId)){
             return R.error(400, "公司id格式不正确，或者不符合常理，请联系系统管理员！");
-        }
+        }*/
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date startTime = format.parse(contractStartTime);
-            Date endTime = format.parse(contractEndTime);
-            if(startTime.getTime()-endTime.getTime()>0){
+            //Date startTime = format.parse(sysContract.getContractStartTime());
+            //Date endTime = format.parse(contractEndTime);
+            if(sysContract.getContractStartTime().getTime()-sysContract.getContractEndTime().getTime()>0){
                 return R.error(400, "合同开始时间不能大于合同到期时间！");
             }
         }catch (Exception e){
             e.printStackTrace();
+            throw new SysException("系统异常，请联系系统管理员进行处理，谢谢！！");
         }
-        Map<String, Object> map=sysContractService.addSysContract(contractName,contractCode,contractMoney,contractStartTime, contractEndTime,
-                Integer.valueOf(contractTypeId),firstPartyCompany,secondPartyCompany,personLiableName,fileInfo,Long.valueOf(companyId));
+        Map<String, Object> map=sysContractService.addSysContract(sysContract);
 
         return R.ok(map);
     }
@@ -219,15 +214,10 @@ public class SysContractController {
      */
     @RequestMapping(value = "/updateSysContract", method = RequestMethod.POST)
     @ResponseBody
-    public R updateSysContract(@RequestParam(value = "contractId", required = false)String contractId,@RequestParam(value = "contractName", required = false)String contractName
-            ,@RequestParam(value = "contractCode", required = false) String contractCode,@RequestParam(value = "contractMoney", required = false) String contractMoney
-            , @RequestParam(value = "contractStartTime", required = false)String contractStartTime, @RequestParam(value = "contractEndTime", required = false)String contractEndTime
-            ,@RequestParam(value = "contractTypeId", required = false)String contractTypeId,@RequestParam(value = "firstPartyCompany", required = false) String firstPartyCompany
-            ,@RequestParam(value = "secondPartyCompany", required = false) String secondPartyCompany, @RequestParam(value = "personLiableName", required = false)String personLiableName
-            , @RequestParam(value = "fileInfo", required = false) String fileInfo, @RequestParam(value = "companyId", required = false) String companyId) {
-        if (!UtilHelper.isLongNumer(contractId)) {
+    public R updateSysContract(@RequestBody @Valid SysContract sysContract) {
+        if (!UtilHelper.isLongNumer(sysContract.getContractId().toString())) {
             return R.error(400, "合同id格式不正确，或者不符合常理！");
-        }else if(UtilHelper.isEmpty(contractName)){
+        }/*else if(UtilHelper.isEmpty(contractName)){
             return R.error(400, "合同名称不能为空！");
         }else if(UtilHelper.isEmpty(contractCode)){
             return R.error(400, "合同编号不能为空！");
@@ -247,19 +237,19 @@ public class SysContractController {
             return R.error(400, "合同负责人不能为空！");
         }else if(!UtilHelper.isLongNumer(companyId)){
             return R.error(400, "公司id格式不正确，或者不符合常理，请联系系统管理员！");
-        }
+        }*/
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date startTime = format.parse(contractStartTime);
-            Date endTime = format.parse(contractEndTime);
-            if(startTime.getTime()-endTime.getTime()>0){
+            //Date startTime = format.parse(sysContract.getContractStartTime());
+            //Date endTime = format.parse(contractEndTime);
+            if(sysContract.getContractStartTime().getTime()-sysContract.getContractEndTime().getTime()>0){
                 return R.error(400, "合同开始时间不能大于合同到期时间！");
             }
         }catch (Exception e){
             e.printStackTrace();
+            throw new SysException("系统异常，请联系系统管理员进行处理，谢谢！！");
         }
-        Map<String, Object> map=sysContractService.updateSysContract(Long.valueOf(contractId),contractName,contractCode,contractMoney,contractStartTime, contractEndTime,
-                contractTypeId,firstPartyCompany,secondPartyCompany,personLiableName,fileInfo,Long.valueOf(companyId));
+        Map<String, Object> map=sysContractService.updateSysContract(sysContract);
 
         return R.ok(map);
     }

@@ -9,10 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -98,7 +95,7 @@ public class SysBasicDataController {
      */
     @RequestMapping(value = "/addSysBasicData", method = RequestMethod.POST)
     @ApiOperation(value = "新增基础数据信息", httpMethod = "POST")
-    public R addSysBasicData(@RequestParam @ApiParam(name = "新增基础数据信息", value = "", required = true) @Valid SysBasicData sysBasicDataAdd) {
+    public R addSysBasicData(@RequestBody @ApiParam(name = "新增基础数据信息", value = "", required = true) @Valid SysBasicData sysBasicDataAdd) {
 /*
         if (!UtilHelper.isIntegerNumer(year)) {
             return R.error(400, "年份格式不正确，或者不符合常理！");
@@ -165,7 +162,7 @@ public class SysBasicDataController {
      * @return
      */
     @RequestMapping(value = "/updateSysBasicData", method = RequestMethod.POST)
-    public R updateSysBasicData(@RequestParam @Valid SysBasicData sysBasicDataUpdate) {
+    public R updateSysBasicData(@RequestBody @Valid SysBasicData sysBasicDataUpdate) {
 
         if (!UtilHelper.isLongNumer(sysBasicDataUpdate.getBasicId().toString())) {
             return R.error(400, "基础信息id格式不正确，或者不符合常理！");

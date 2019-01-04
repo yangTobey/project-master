@@ -1,7 +1,9 @@
 package com.spring.boot.bean.master;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.spring.boot.validation.IsNotNull;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
@@ -21,19 +23,20 @@ public class SysBasicData {
     /**
      * 公司id
      */
+    @NotNull(message = "公司id不能为空")
     @Range(min = 1,max = Integer.MAX_VALUE,message = "公司id格式不正确，或者不符合常理！！")
     private Long companyId;
     /**
      * 年份
      */
-    //@NotNull(message = "登录账号不能为空！")
+    @NotNull(message = "年份不能为空！")
     //@Size(min = 6,max = 18,message = "登录账号长度不符合要求！")
-    @Pattern(regexp = "[0-9]*",message = "年份格式不正确，或者存在非法字符")
+    @Range(message = "年份格式不正确，或者不符合常理！！")
     private Integer year;
     /**
      * 月份
      */
-    //@NotNull(message = "登录密码不能为空")
+    @NotNull(message = "月份不能为空")
     @Range(min=1, max=12, message = "月份格式错误")
     private Integer month;
     /**
@@ -41,58 +44,69 @@ public class SysBasicData {
      */
     /*@NotNull(message = "公司id格式不正确，或者不符合常理！！！")
     @Min(value = 0,message = "最小为0")*/
-    @Range(min = 1,max = Integer.MAX_VALUE,message = "公司id格式不正确，或者不符合常理！！")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "建筑面积格式不正确，或者不符合常理！！")
+    @IsNotNull(message = "建筑面积格式不正确，只能保留两位小数，或者不符合常理(数值过大)！")
     private Double constructionArea;
     /**
      * 建筑收费面积
      */
-    @NotNull(message = "角色id格式不正确，或者不符合常理！！！")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "建筑收费面积，或者不符合常理！！")
+    @IsNotNull(message = "建筑收费面积格式不正确，只能保留两位小数，或者不符合常理(数值过大)！")
     private Double chargeArea;
     /**
      * 城市数量
      */
-    @Range(min = 1,max = Integer.MAX_VALUE,message = "城市数量格式不正确，或者不符合常理！！")
+    @NotNull(message = "城市数量不能为空")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "城市数量格式不正确，或者不符合常理！！")
     private Integer cityNumber;
     /**
      * 项目数量
      */
-    @Range(min = 1,max = Integer.MAX_VALUE,message = "项目数量格式不正确，或者不符合常理！！")
+    @NotNull(message = "项目数量不能为空")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "项目数量格式不正确，或者不符合常理！！")
     private Integer projectNumber;
 
     /**
      * 房屋数量
      */
-    @Range(min = 1,max = Integer.MAX_VALUE,message = "房屋数量格式不正确，或者不符合常理！！")
+    @NotNull(message = "房屋数量不能为空")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "房屋数量格式不正确，或者不符合常理！！")
     private Integer houseNumber;
     /**
      * 已收房屋数量
      */
-    @Range(min = 1,max = Integer.MAX_VALUE,message = "已收房屋数量格式不正确，或者不符合常理！！")
+    @NotNull(message = "已收房屋数量不能为空")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "已收房屋数量格式不正确，或者不符合常理！！")
     private Integer acceptHouseNumber;
     /**
      * 待售房屋数量（空置）
      */
-    @Range(min = 1,max = Integer.MAX_VALUE,message = "待售房屋数量（空置格式不正确，或者不符合常理！！")
+    @NotNull(message = "待售房屋数量（空置）不能为空")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "待售房屋数量（空置格式不正确，或者不符合常理！！")
     private Integer forSaleHouseNumber;
     /**
      * 装修房屋数量
      */
-    @Range(min = 1,max = Integer.MAX_VALUE,message = "装修房屋数量格式不正确，或者不符合常理！！")
+    @NotNull(message = "装修房屋数量不能为空")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "装修房屋数量格式不正确，或者不符合常理！！")
     private Integer decorateHouseNumber;
     /**
      * 停车位总数量
      */
-    @Range(min = 1,max = Integer.MAX_VALUE,message = "停车位总数量格式不正确，或者不符合常理！！")
+    @NotNull(message = "停车位总数量不能为空")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "停车位总数量格式不正确，或者不符合常理！！")
     private Integer parkingSpace;
     /**
      * 待售车位数量
      */
-    @Range(min = 1,max = Integer.MAX_VALUE,message = "待售车位数量格式不正确，或者不符合常理！！")
+    @NotNull(message = "待售车位数量不能为空")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "待售车位数量格式不正确，或者不符合常理！！")
     private Integer forSaleParkingSpace;
     /**
      * 销配
      */
-    @Range(min = 1,max = Integer.MAX_VALUE,message = "销配数量格式不正确，或者不符合常理！！")
+    @NotNull(message = "销配不能为空")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "销配数量格式不正确，或者不符合常理！！")
     private Integer salesDistribution;
     /**
      * 状态码
@@ -117,19 +131,19 @@ public class SysBasicData {
     /**
      * 前期数据文件
      */
-    @NotNull(message = "前期数据文件不能为空！")
+    @NotBlank(message = "前期数据文件不能为空！")
     private String earlyFileInfo;
     /**
      * 项目名称
      */
-    @NotNull(message = "项目名称不能为空！")
+    @NotBlank(message = "项目名称不能为空！")
     @Length(min = 0,max = 30,message = "项目名称长度必须要在{min}和{max}之间")
     private String projectName;
     /**
      * 销配名称
      */
-    @NotNull(message = "销配名称不能为空！")
-    @Length(min = 0,max = 30,message = "销配名称长度必须要在{min}和{max}之间")
+    @NotBlank(message = "销配案场名称不能为空！")
+    @Length(min = 0,max = 30,message = "销配案场名称长度必须要在{min}和{max}之间")
     //@Size(min=, max=) 验证对象（Array,Collection,Map,String）长度是否在给定的范围之内 
     private String salesDistributionName;
 

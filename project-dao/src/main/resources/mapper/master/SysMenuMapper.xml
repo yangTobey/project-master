@@ -73,9 +73,9 @@
         <if test="menuUrl != null and menuUrl !=''">
             and url like concat('%', #{menuUrl}, '%')
         </if>
-        <if test="offset != null and limit != null">
+        <!--<if test="offset != null and limit != null">
             limit #{offset},#{limit}
-        </if>
+        </if>-->
     </select>
     <!--获取菜单列表总条数-->
     <select id="getSysMenuListTotal" resultType="int"  parameterType="map">

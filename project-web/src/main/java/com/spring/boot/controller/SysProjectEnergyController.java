@@ -1,5 +1,7 @@
 package com.spring.boot.controller;
 
+
+import com.spring.boot.entity.SysProjectEnergyInfoEntity;
 import com.spring.boot.service.SysProjectEnergyService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.UtilHelper;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 /**
@@ -37,11 +40,8 @@ public class SysProjectEnergyController {
      * @return
      */
     @RequestMapping(value = "/addSysProjectEnergy", method = RequestMethod.POST)
-    public R addSysProjectEnergy(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
-            , @RequestParam(value = "month", required = false) String month, @RequestParam(value = "projectUnfinishedTotal", required = false) String projectUnfinishedTotal
-            , @RequestParam(value = "projectFinishedTotal", required = false) String projectFinishedTotal, @RequestParam(value = "monthConsumptionElectricity", required = false) String monthConsumptionElectricity
-            , @RequestParam(value = "monthConsumptionWater", required = false) String monthConsumptionWater, @RequestParam(value = "fileInfo", required = false) String fileInfo) {
-        if (!UtilHelper.isLongNumer(companyId)) {
+    public R addSysProjectEnergy(@Valid SysProjectEnergyInfoEntity sysProjectEnergyEntity) {
+        /*if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不合理，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(year)) {
             return R.error(400, "年份格式不合理，或者不符合常理！");
@@ -55,10 +55,9 @@ public class SysProjectEnergyController {
             return R.error(400, "月耗电量格式不合理,只能保留两位小数！");
         } else if (!UtilHelper.isDoubleNumer(monthConsumptionWater)) {
             return R.error(400, "月耗水量格式不合理,只能保留两位小数！");
-        }
+        }*/
         try {
-            Map<String, Object> map = sysProjectEnergyService.addSysProjectEnergy(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(projectUnfinishedTotal)
-                    , Integer.valueOf(projectFinishedTotal), Double.valueOf(monthConsumptionElectricity), Double.valueOf(monthConsumptionWater), fileInfo);
+            Map<String, Object> map = sysProjectEnergyService.addSysProjectEnergy(sysProjectEnergyEntity);
             return R.ok(map);
         }catch (Exception e){
             e.printStackTrace();
@@ -82,12 +81,8 @@ public class SysProjectEnergyController {
      * @return
      */
     @RequestMapping(value = "/updateSysProjectEnergy", method = RequestMethod.POST)
-    public R updateSysProjectEnergy(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
-            , @RequestParam(value = "month", required = false) String month, @RequestParam(value = "projectUnfinishedTotal", required = false) String projectUnfinishedTotal
-            , @RequestParam(value = "projectFinishedTotal", required = false) String projectFinishedTotal, @RequestParam(value = "monthConsumptionElectricity", required = false) String monthConsumptionElectricity
-            , @RequestParam(value = "monthConsumptionWater", required = false) String monthConsumptionWater, @RequestParam(value = "fileInfo", required = false) String fileInfo
-            , @RequestParam(value = "projectId", required = false) String projectId) {
-        if (!UtilHelper.isLongNumer(companyId)) {
+    public R updateSysProjectEnergy(@Valid SysProjectEnergyInfoEntity sysProjectEnergyEntity) {
+        /*if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不合理，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(year)) {
             return R.error(400, "年份格式不合理，或者不符合常理！");
@@ -101,12 +96,11 @@ public class SysProjectEnergyController {
             return R.error(400, "月耗电量格式不合理,只能保留两位小数！");
         } else if (!UtilHelper.isDoubleNumer(monthConsumptionWater)) {
             return R.error(400, "月耗水量格式不合理,只能保留两位小数！");
-        } else if (!UtilHelper.isLongNumer(projectId)) {
+        } else*/ if (!UtilHelper.isLongNumer(sysProjectEnergyEntity.getProjectId().toString())) {
             return R.error(400, "主键id格式不正确，或者不符合常理！");
         }
         try {
-            Map<String, Object> map = sysProjectEnergyService.updateSysProjectEnergy(Long.valueOf(projectId), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(projectUnfinishedTotal)
-                    , Integer.valueOf(projectFinishedTotal), Double.valueOf(monthConsumptionElectricity), Double.valueOf(monthConsumptionWater), fileInfo);
+            Map<String, Object> map = sysProjectEnergyService.updateSysProjectEnergy(sysProjectEnergyEntity);
             return R.ok(map);
         }catch (Exception e){
             e.printStackTrace();

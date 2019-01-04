@@ -260,8 +260,8 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     }
 
     /**
-     * 保存图片信息
-     * @param fileInfo 图片详细信息
+     * 保存文件信息
+     * @param fileInfo 文件详细信息
      * @param basicId 基础数据主键id
      * @param type 类型 文件类型（1：车位附件，2：销配附件,3：管理面积，4：前期文件）
      */
