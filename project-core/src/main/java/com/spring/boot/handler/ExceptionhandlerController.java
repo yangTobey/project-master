@@ -1,6 +1,7 @@
 package com.spring.boot.handler;
 
 import com.spring.boot.exception.SysException;
+import com.spring.boot.exception.XssException;
 import com.spring.boot.exception.auth.UserInvalidException;
 import com.spring.boot.util.R;
 import org.slf4j.Logger;
@@ -85,9 +86,15 @@ class ExceptionhandlerController {
     }
 
     @ExceptionHandler(SysException.class)
-    public R SysExceptionHandler(HttpServletResponse response, UserInvalidException ex) {
+    public R sysExceptionHandler(HttpServletResponse response, UserInvalidException ex) {
         //response.setStatus(200);
         logger.error(ex.getMessage(),ex);
-        return R.error(ex.getStatus(), ex.getMessage());
+        return R.error(400, ex.getMessage());
+    }
+    @ExceptionHandler(XssException.class)
+    public R xssException(HttpServletResponse response, XssException ex) {
+        //response.setStatus(200);
+        logger.error(ex.getMessage(),ex);
+        return R.error(400, ex.getMessage());
     }
 }
