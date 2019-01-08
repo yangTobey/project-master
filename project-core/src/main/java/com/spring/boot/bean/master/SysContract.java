@@ -64,9 +64,9 @@ public class SysContract {
     @NotBlank(message = "甲方公司名称不能为空！")
     private String secondPartyCompany;
     /**
-     * 合同责任人姓名
+     * 合同管理人姓名
      */
-    @NotBlank(message = "合同责任人姓名不能为空！")
+    @NotBlank(message = "合同管理人姓名不能为空！")
     private String personLiableName;
     /**
      * 创建时间
@@ -86,7 +86,7 @@ public class SysContract {
      * 联系人姓名
      */
     @NotBlank(message = "合同联系人姓名不能为空！")
-    private String contactName;
+    private String contactsName;
 
     /**
      * 合同总数
@@ -291,12 +291,12 @@ public class SysContract {
         this.fileList = fileList;
     }
 
-    public String getContactName() {
-        return contactName;
+    public String getContactsName() {
+        return contactsName;
     }
 
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
+    public void setContactsName(String contactsName) {
+        this.contactsName = contactsName;
     }
 
     public String getFileInfo() {

@@ -38,6 +38,9 @@
         ,budget.create_time,budget.status_code,company.company_name as companyName
         from sys_budget_details as budget left JOIN sys_company as company on budget.company_id=company.company_id
         where 1=1 and budget.status_code!=2 and budget.year = #{year}
+        <if test="month != null and month != 0">
+            and budget.month = #{month}
+        </if>
         <choose>
             <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
                 AND budget.company_id IN
@@ -50,9 +53,9 @@
             </otherwise>
         </choose>
         order by budget.year desc,budget.month desc
-        <if test="offset != null and limit != null">
+        <!--<if test="offset != null and limit != null">
             limit #{offset},#{limit}
-        </if>
+        </if>-->
     </select>
 
     <select id="findSysBudgetDetailsById" resultMap="sysBudgetDetails" parameterType="map">

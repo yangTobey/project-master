@@ -3,6 +3,7 @@ package com.spring.boot.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.spring.boot.bean.PageInfoBean;
 import com.spring.boot.bean.master.*;
+import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 import com.spring.boot.bean.master.entity.SysBudgetDetailsEntity;
 import com.spring.boot.bean.master.entity.SysReceivableAccountsOwnerEntity;
 import com.spring.boot.service.SysDataAnalysisService;
@@ -262,13 +263,13 @@ public class SysFinancialServiceImpl implements SysFinancialService {
     }
 
     @Override
-    public Map<String, Object> sysAccountsReceivableAnalysis(Long companyId) {
+    public Map<String, Object> sysAccountsReceivableAnalysis(Long companyId, Integer selectYear, Integer selectMonth) {
         List<Long> sysUserCompanyIds = null;
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> mapForMonth = new HashMap<String, Object>();
         Map<String, Object> mapForYear = new HashMap<String, Object>();
-        int thisYear = UtilHelper.getYear();
-        int thisMonth = UtilHelper.getMonth();
+        //int thisYear = UtilHelper.getYear();
+        //int thisMonth = UtilHelper.getMonth();
 
         try {
             if (companyId == 0) {
@@ -278,14 +279,19 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 sysUserCompanyIds = new ArrayList<Long>();
                 sysUserCompanyIds.add(companyId);
             }
-            mapForYear.put("year", thisYear);
-            mapForYear.put("month", thisMonth);
-            mapForYear.put("sysUserCompanyIds", sysUserCompanyIds);
             SysUpdateDataRules sysUpdateDataRules = sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
             //获取需要查询的年份和月份
             Map<String, Integer> yearAndMonthMap = SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
-            mapForMonth.put("year", yearAndMonthMap.get("year"));
-            mapForMonth.put("month", yearAndMonthMap.get("month"));
+            if(selectYear==null||selectMonth==null){
+                selectYear = yearAndMonthMap.get("year");
+                selectMonth = yearAndMonthMap.get("month");
+            }
+            mapForYear.put("year", selectYear);
+            mapForYear.put("month", selectMonth);
+            mapForYear.put("sysUserCompanyIds", sysUserCompanyIds);
+
+            mapForMonth.put("year", selectYear);
+            mapForMonth.put("month", selectMonth);
             mapForMonth.put("sysUserCompanyIds", sysUserCompanyIds);
             //也可以封装成map传值
             SysAccountsReceivable sysAccountsReceivable = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(mapForMonth);
@@ -341,7 +347,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
     }
 
     @Override
-    public Map<String, Object> sysAccountsReceivableList(Long companyId, Integer year, Integer limit, Integer offset) {
+    public Map<String, Object> sysAccountsReceivableList(Long companyId, Integer year, Integer limit, Integer offset,Integer month) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
@@ -354,6 +360,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         }
         map.put("sysUserCompanyIds", sysUserCompanyIds);
         map.put("year", year);
+        map.put("month", month);
         map.put("limit", limit);
         map.put("offset", offset);
         try {
@@ -472,7 +479,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
     }
 
     @Override
-    public Map<String, Object> sysBudgetDetailsAnalysis(Long companyId) {
+    public Map<String, Object> sysBudgetDetailsAnalysis(Long companyId, Integer selectYear, Integer selectMonth) {
         List<Long> sysUserCompanyIds = null;
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> mapForMonth = new HashMap<String, Object>();
@@ -492,8 +499,12 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             SysUpdateDataRules sysUpdateDataRules = sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
             //获取需要查询的年份和月份
             Map<String, Integer> yearAndMonthMap = SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
-            mapForMonth.put("year", yearAndMonthMap.get("year"));
-            mapForMonth.put("month", yearAndMonthMap.get("month"));
+            if(selectYear==null||selectMonth==null){
+                selectYear=yearAndMonthMap.get("year");
+                selectMonth=yearAndMonthMap.get("month");
+            }
+            mapForMonth.put("year", selectYear);
+            mapForMonth.put("month", selectMonth);
             mapForMonth.put("sysUserCompanyIds", sysUserCompanyIds);
 
             mapForYear.put("year", thisYear);
@@ -584,7 +595,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
     }
 
     @Override
-    public Map<String, Object> sysBudgetDetailsList(Long companyId, Integer year, Integer limit, Integer offset) {
+    public Map<String, Object> sysBudgetDetailsList(Long companyId, Integer year, Integer limit, Integer offset,Integer month) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
@@ -597,11 +608,18 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         }
         map.put("sysUserCompanyIds", sysUserCompanyIds);
         map.put("year", year);
+        map.put("month", month);
         map.put("limit", limit);
         map.put("offset", offset);
         try {
-            resultMap.put("total", sysBudgetDetailsBusinessService.sysBudgetDetailsListTotal(map));
-            resultMap.put("list", sysBudgetDetailsBusinessService.sysBudgetDetailsList(map));
+            //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+            PageHelper.startPage((offset/limit)+1,limit);
+            List<SysBudgetDetails> list=sysBudgetDetailsBusinessService.sysBudgetDetailsList(map);
+            PageInfoBean result = new PageInfoBean(list);
+            resultMap.put("total", result.getTotalOfData());
+            resultMap.put("list", result.getList());
+            //resultMap.put("total", sysBudgetDetailsBusinessService.sysBudgetDetailsListTotal(map));
+            //resultMap.put("list", sysBudgetDetailsBusinessService.sysBudgetDetailsList(map));
             return R.ok().putData(200, resultMap, "获取成功！");
         } catch (Exception e) {
             e.printStackTrace();

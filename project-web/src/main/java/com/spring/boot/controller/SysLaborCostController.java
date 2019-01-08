@@ -30,11 +30,15 @@ public class SysLaborCostController {
      * @return
      */
     @RequestMapping(value = "/getSysLaborCostAnalysis", method = RequestMethod.POST)
-    public R getSysLaborCostAnalysis(@RequestParam(value = "companyId", required = false) String companyId) {
+    public R getSysLaborCostAnalysis(@RequestParam(value = "companyId", required = false) String companyId,
+                                     @RequestParam(value = "year", required = false) String year,
+                                     @RequestParam(value = "month", required = false) String month) {
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不合理，或者不符合常理！");
+        }else if(!UtilHelper.isIntegerNumer(month)){
+            return R.error(400, "月份格式不合理，或者不符合常理！");
         }
-        Map<String, Object> map = sysLaborCostService.getSysLaborCostAnalysis(Long.valueOf(companyId));
+        Map<String, Object> map = sysLaborCostService.getSysLaborCostAnalysis(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month));
         return R.ok(map);
     }
 
@@ -57,14 +61,11 @@ public class SysLaborCostController {
             return R.error(400, "年份格式不合理，或者不符合常理！");
         } else if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不合理，或者不符合常理！");
+        }else if(!UtilHelper.isIntegerNumer(month)){
+            return R.error(400, "月份格式不合理，或者不符合常理！");
         }
 
-        if (!UtilHelper.isEmpty(month)) {
-            if(!UtilHelper.isIntegerNumer(month)){
-                return R.error(400, "月份格式不合理，或者不符合常理！");
-            }
-        }
-        Map<String, Object> map = sysLaborCostService.getSysLaborCostList(Integer.valueOf(limit), Integer.valueOf(offset), Long.valueOf(companyId), Integer.valueOf(year));
+        Map<String, Object> map = sysLaborCostService.getSysLaborCostList(Integer.valueOf(limit), Integer.valueOf(offset), Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month));
         return R.ok(map);
     }
 

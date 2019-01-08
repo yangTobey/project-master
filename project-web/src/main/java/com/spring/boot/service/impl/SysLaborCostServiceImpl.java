@@ -48,7 +48,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
     private RedisTemplate redisTemplate;
 
     @Override
-    public Map<String, Object> getSysLaborCostAnalysis(Long companyId) {
+    public Map<String, Object> getSysLaborCostAnalysis(Long companyId, Integer selectYear, Integer selectMonth) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         int month = 0;
@@ -66,9 +66,13 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
         SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
         //获取需要查询的年份和月份
         Map<String,Integer> yearAndMonthMap=SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
+        if(selectYear==null||selectMonth==null){
+            selectYear=yearAndMonthMap.get("year");
+            selectMonth=yearAndMonthMap.get("month");
+        }
         map.put("sysUserCompanyIds", sysUserCompanyIds);
-        map.put("year", yearAndMonthMap.get("year"));
-        map.put("month", yearAndMonthMap.get("month"));
+        map.put("year", selectYear);
+        map.put("month", selectYear);
         try {
             sysLaborCostDetails = sysLaborCostBusinessService.getSysLaborCostTotal(map);
             if (null != sysLaborCostDetails) {
@@ -99,15 +103,15 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
                 //人工费用
                 Double personnelCostLastMonth = 0.00;
                 //根据年份跟月份查找系统预算记录
-                SysBudgetDetails sysBudget = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year"), yearAndMonthMap.get("month"), sysUserCompanyIds);
+                SysBudgetDetails sysBudget = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(selectYear, selectMonth, sysUserCompanyIds);
                 //根据年份跟月份查找系统预算记录
                 SysBudgetDetails sysBudgetLastMonth = null;
-                if (yearAndMonthMap.get("month") == 1) {
+                if (selectMonth == 1) {
                     month = 12;
-                    year = yearAndMonthMap.get("year") - 1;
+                    year = selectYear - 1;
                 } else {
-                    month = yearAndMonthMap.get("month") - 1;
-                    year = yearAndMonthMap.get("year");
+                    month = selectMonth - 1;
+                    year = selectYear;
                 }
                 sysBudgetLastMonth = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(year, month, sysUserCompanyIds);
                 if (null != sysBudgetLastMonth && sysBudgetLastMonth.getRealProfits() != null) {
@@ -150,7 +154,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
     }
 
     @Override
-    public Map<String, Object> getSysLaborCostList(Integer limit, Integer offset, Long companyId, Integer year) {
+    public Map<String, Object> getSysLaborCostList(Integer limit, Integer offset, Long companyId, Integer year,Integer month) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         SysLaborCostDetailsEntity sysLaborCostDetailsEntity = null;
@@ -167,6 +171,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
         map.put("limit", limit);
         map.put("offset", offset);
         map.put("year", year);
+        map.put("month", month);
         //map.put("year", month);
         //resultMap.put("sysLaborCostDetailsList", list);
         try {

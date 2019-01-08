@@ -51,7 +51,9 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         if (value == null) {
             return null;
         }
-        return cleanXSS(value);
+        return value;
+        //注：先阶段header没有自定义，如果自定义参数并且有传值操作数据库，请修改该处
+        //return cleanXSS(value);
     }
 
     private String cleanXSS(String value) {
@@ -65,7 +67,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         value = value.replaceAll("'", "& #39;");
         value = value.replaceAll("eval\\((.*)\\)", "");
         value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
-        //value = value.replaceAll("script", "");//当 text/javascript,会出现错误
+        value = value.replaceAll("script", "");//当 text/javascript,会出现错误
         //value = value.replaceAll("[*]", "[" + "*]");//该处需要省略，假如请求头有*号会出现错误
         value = value.replaceAll("[+]", "[" + "+]");
         //value = value.replaceAll("[?]", "[" + "?]");
@@ -79,7 +81,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
                 "table|from|grant|use|group_concat|column_name|" +
                 "information_schema.columns|table_schema|union|where|select|delete|update|order|by|count|" +
                 "chr|mid|master|truncate|char|declare|or|;|-|--|,|like|//|/|%|#";*/
-        String badStr = "'|or|exec|execute|insert|select|delete|update|master|truncate|javascript|count(*)|"
+        String badStr = "'|or|exec|execute|insert|select|delete|update|master|truncate|drop|javascript|count(*)|"
                 + "declare|create|" + "grant|script|iframe" + "|--";
 
         String[] badStrs = badStr.split("\\|");

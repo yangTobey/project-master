@@ -57,19 +57,19 @@ public interface SysProjectEnergyService {
      * @param year
      * @return
      */
-    Map<String,Object> sysProjectEnergyList(Long companyId, Integer year,Integer limit, Integer offset);
+    Map<String,Object> sysProjectEnergyList(Long companyId, Integer year,Integer limit, Integer offset,Integer month);
     /**
      * 查找年度和月度报表统计信息
      * @param companyId
      * @return
      */
-    Map<String,Object> sysProjectEnergyAnalysis(Long companyId);
+    Map<String,Object> sysProjectEnergyAnalysis(Long companyId, Integer year, Integer month);
     /**
      * 查找年度每月报表统计信息
      * @param companyId
      * @return
      */
-    Map<String,Object> sysProjectEnergyAnalysisForMonth(Long companyId);
+    Map<String,Object> sysProjectEnergyAnalysisForMonth(Long companyId, Integer year, Integer month);
     /**
      * 根据id获取附件文档信息
      * @return

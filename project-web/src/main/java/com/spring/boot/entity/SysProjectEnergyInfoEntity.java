@@ -68,16 +68,24 @@ public class SysProjectEnergyInfoEntity {
     /**
      * 已处理工程遗留问题数量文件
      */
-    private String FinishedFileInfo;
+    private String finishedFileInfo;
 
     /**
      * 往来文件
      */
     private String previousFileInfo;
     /**
+     * 往来文件数量
+     */
+    private Integer previousFileNum;
+    /**
      * 验收文件
      */
     private String acceptFileInfo;
+    /**
+     * 验收文件数量
+     */
+    private Integer acceptFileNum;
 
     public Long getProjectId() {
         return projectId;
@@ -152,11 +160,11 @@ public class SysProjectEnergyInfoEntity {
     }
 
     public String getFinishedFileInfo() {
-        return FinishedFileInfo;
+        return finishedFileInfo;
     }
 
     public void setFinishedFileInfo(String finishedFileInfo) {
-        FinishedFileInfo = finishedFileInfo;
+        this.finishedFileInfo = finishedFileInfo;
     }
 
     public String getPreviousFileInfo() {
@@ -173,5 +181,21 @@ public class SysProjectEnergyInfoEntity {
 
     public void setAcceptFileInfo(String acceptFileInfo) {
         this.acceptFileInfo = acceptFileInfo;
+    }
+
+    public Integer getPreviousFileNum() {
+        return previousFileNum;
+    }
+
+    public void setPreviousFileNum(Integer previousFileNum) {
+        this.previousFileNum = previousFileNum;
+    }
+
+    public Integer getAcceptFileNum() {
+        return acceptFileNum;
+    }
+
+    public void setAcceptFileNum(Integer acceptFileNum) {
+        this.acceptFileNum = acceptFileNum;
     }
 }

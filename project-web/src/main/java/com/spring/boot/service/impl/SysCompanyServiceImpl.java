@@ -10,6 +10,7 @@ import com.spring.boot.service.web.SysCompanyBusinessService;
 import com.spring.boot.service.web.SysUserBusinessService;
 import com.spring.boot.util.R;
 import com.spring.boot.util.ShiroUtils;
+import com.spring.boot.util.SysUtil;
 import com.spring.boot.util.UtilHelper;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
@@ -20,6 +21,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +46,17 @@ public class SysCompanyServiceImpl implements SysCompanyService {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("limit", limit);
         map.put("offset", offset);
+        List<Long> sysUserCompanyIds = null;
         try {
+            //查找权限内的管理公司
+            if (SysUtil.getSysUserCompany() !=null) {
+                //获取用户权限下可操作的小区信息
+                sysUserCompanyIds = SysUtil.getSysUserCompany();
+            } else {
+                sysUserCompanyIds = new ArrayList<Long>();
+                sysUserCompanyIds.add(0L);
+            }
+            map.put("sysUserCompanyIds", sysUserCompanyIds);
             //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
             PageHelper.startPage((offset/limit)+1,limit);
             List<SysCompany> list=sysCompanyBusinessService.getSysCompanyList(map);

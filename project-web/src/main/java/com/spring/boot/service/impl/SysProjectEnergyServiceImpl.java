@@ -64,6 +64,8 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
             sysProject.setCreateTime(date);
             sysProject.setProjectFinishedTotal(sysProjectEnergyEntity.getProjectFinishedTotal());
             sysProject.setProjectUnfinishedTotal(sysProjectEnergyEntity.getProjectUnfinishedTotal());
+            sysProject.setPreviousFileNum(sysProjectEnergyEntity.getPreviousFileNum());
+            sysProject.setAcceptFileNum(sysProjectEnergyEntity.getAcceptFileNum());
             int count = sysProjectBusinessService.addSysProject(sysProject);
             if (count > 0) {
                 SysEnergy sysEnergy = new SysEnergy();
@@ -126,6 +128,9 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
         map.put("projectFinishedTotal", sysProjectEnergyEntity.getProjectFinishedTotal());
         map.put("monthConsumptionElectricity", sysProjectEnergyEntity.getMonthConsumptionElectricity());
         map.put("monthConsumptionWater", sysProjectEnergyEntity.getMonthConsumptionWater());
+
+        map.put("previousFileNum", sysProjectEnergyEntity.getPreviousFileNum());
+        map.put("acceptFileNum", sysProjectEnergyEntity.getAcceptFileNum());
 
         //先根据年份、月份、公司id查找系统是不是已经存在该月的记录
         SysProject sysProject = sysProjectBusinessService.findSysProjectRecord(sysProjectEnergyEntity.getCompanyId(), sysProjectEnergyEntity.getYear(), sysProjectEnergyEntity.getMonth());
@@ -244,7 +249,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
     }
 
     @Override
-    public Map<String, Object> sysProjectEnergyList(Long companyId, Integer year, Integer limit, Integer offset) {
+    public Map<String, Object> sysProjectEnergyList(Long companyId, Integer year, Integer limit, Integer offset,Integer month) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
@@ -259,6 +264,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
         map.put("offset", offset);
         map.put("sysUserCompanyIds", sysUserCompanyIds);
         map.put("year", year);
+        map.put("month", month);
         try {
             //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
             PageHelper.startPage((offset/limit)+1,limit);
@@ -296,7 +302,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
     }
 
     @Override
-    public Map<String, Object> sysProjectEnergyAnalysis(Long companyId) {
+    public Map<String, Object> sysProjectEnergyAnalysis(Long companyId, Integer selectYear, Integer selectMonth) {
         Map<String, Object> map = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
         try {
@@ -307,27 +313,30 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                 sysUserCompanyIds = new ArrayList<Long>();
                 sysUserCompanyIds.add(companyId);
             }
-            int year = UtilHelper.getYear();
-            int month = UtilHelper.getMonth();
+
 
             SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
             //获取需要查询的年份和月份
             Map<String,Integer> yearAndMonthMap=SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
+            if(selectYear==null||selectMonth==null){
+                selectYear = yearAndMonthMap.get("year");
+                selectMonth = yearAndMonthMap.get("month");
+            }
 
             //某一个月的上一年数据（每月10号到下个月10号显示上一个月的数据，即5月10号到6月10号显示4月份数据。）
             int lastYear = 0;
             //某一个月的上个月数据（每月10号到下个月10号显示上一个月的数据，即5月10号到6月10号显示4月份数据。）
             int lastMonth = 0;
-            if (yearAndMonthMap.get("month") == 1) {
+            if (selectMonth == 1) {
                 lastMonth = 12;
-                lastYear = yearAndMonthMap.get("year") - 1;
+                lastYear = selectYear - 1;
             } else {
-                lastMonth = yearAndMonthMap.get("month") - 1;
-                lastYear = yearAndMonthMap.get("year");
+                lastMonth = selectMonth - 1;
+                lastYear = selectYear;
             }
             map.put("sysUserCompanyIds", sysUserCompanyIds);
-            map.put("year", year);
-            map.put("month", month);
+            map.put("year", selectYear);
+            map.put("month", selectMonth);
             /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
             map.put("type", 1);
             SysProject sysProjectForYear = sysProjectBusinessService.sysProjectEnergyAnalysisForYear(map);
@@ -337,7 +346,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
 
 
                 //某一个月数据（每月10号到下个月10号显示上一个月的数据，即5月10号到6月10号显示4月份数据。）
-                SysProject sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(yearAndMonthMap.get("year"), yearAndMonthMap.get("month"), sysUserCompanyIds);
+                SysProject sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(selectYear, selectMonth, sysUserCompanyIds);
                 if (null != sysProjectForMonth) {
                     sysProjectForYear.setMonthConsumptionElectricity(sysProjectForMonth.getMonthConsumptionElectricity());
                     sysProjectForYear.setMonthConsumptionWater(sysProjectForMonth.getMonthConsumptionWater());
@@ -347,7 +356,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                         sysProjectForYear.setMtoMtConsumptionElectricityScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionElectricity() - sysProjectForLastMonth.getMonthConsumptionElectricity(), sysProjectForLastMonth.getMonthConsumptionElectricity())));
                         sysProjectForYear.setMtoMtConsumptionWaterScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionWater() - sysProjectForLastMonth.getMonthConsumptionWater(), sysProjectForLastMonth.getMonthConsumptionWater())));
                         //上一年同月数据
-                        SysProject sysProjectForLastYear = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(yearAndMonthMap.get("year") - 1, yearAndMonthMap.get("month"), sysUserCompanyIds);
+                        SysProject sysProjectForLastYear = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(selectYear - 1, selectMonth, sysUserCompanyIds);
                         if (null != sysProjectForLastYear) {
                             sysProjectForYear.setYoYConsumptionElectricityScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionElectricity() - sysProjectForLastYear.getMonthConsumptionElectricity(), sysProjectForLastYear.getMonthConsumptionElectricity())));
                             sysProjectForYear.setYoYConsumptionWaterScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProjectForMonth.getMonthConsumptionWater() - sysProjectForLastYear.getMonthConsumptionWater(), sysProjectForLastYear.getMonthConsumptionWater())));
@@ -367,7 +376,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
     }
 
     @Override
-    public Map<String, Object> sysProjectEnergyAnalysisForMonth(Long companyId) {
+    public Map<String, Object> sysProjectEnergyAnalysisForMonth(Long companyId, Integer selectYear, Integer selectMonth) {
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
@@ -379,10 +388,19 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                 sysUserCompanyIds = new ArrayList<Long>();
                 sysUserCompanyIds.add(companyId);
             }
-            int year = UtilHelper.getYear();
-            int month = UtilHelper.getMonth();
+            SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+            //获取需要查询的年份和月份
+            Map<String,Integer> yearAndMonthMap=SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
+
+            if(selectYear==null|selectMonth==null){
+                selectYear = yearAndMonthMap.get("year");
+                selectMonth = yearAndMonthMap.get("month");
+            }
+
+            //int year = UtilHelper.getYear();
+            //int month = UtilHelper.getMonth();
             map.put("sysUserCompanyIds", sysUserCompanyIds);
-            map.put("year", year);
+            map.put("year", selectYear);
             /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
             map.put("type", 1);
             //耗电量环比
@@ -409,9 +427,9 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                         monthCsElectricityMap.put(infoMonth, sysProject.getMonthConsumptionElectricity());
                         monthCsWaterMap.put(infoMonth, sysProject.getMonthConsumptionWater());
                         if (infoMonth == 1) {
-                            sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year - 1, 12, sysUserCompanyIds);
+                            sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(selectYear - 1, 12, sysUserCompanyIds);
                         } else {
-                            sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(year, infoMonth - 1, sysUserCompanyIds);
+                            sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(selectYear, infoMonth - 1, sysUserCompanyIds);
                         }
                         if (null != sysProjectForMonth) {
                             mtOMtCsElectricityScaleMap.put(infoMonth, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber(sysProject.getMonthConsumptionElectricity() - sysProjectForMonth.getMonthConsumptionElectricity(), sysProjectForMonth.getMonthConsumptionElectricity())));

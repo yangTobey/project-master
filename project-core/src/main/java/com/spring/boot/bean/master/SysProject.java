@@ -11,6 +11,7 @@ import java.util.Map;
  * Created by Administrator on 2018/4/13.
  */
 public class SysProject implements Serializable {
+    private static final long serialVersionUID = 4084723666317353000L;
     private Long projectId;
     private String projectName;
     private Integer projectTotal;
@@ -44,6 +45,14 @@ public class SysProject implements Serializable {
     //耗水量环比
     private Double mtoMtConsumptionWaterScale;
     List<SysProjectEnergyFile> fileList;
+    /**
+     * 往来文件数量
+     */
+    private Integer previousFileNum;
+    /**
+     * 验收文件数量
+     */
+    private Integer acceptFileNum;
 
 
 
@@ -237,5 +246,21 @@ public class SysProject implements Serializable {
 
     public void setMtoMtConsumptionWaterScale(Double mtoMtConsumptionWaterScale) {
         this.mtoMtConsumptionWaterScale = mtoMtConsumptionWaterScale;
+    }
+
+    public Integer getPreviousFileNum() {
+        return previousFileNum;
+    }
+
+    public void setPreviousFileNum(Integer previousFileNum) {
+        this.previousFileNum = previousFileNum;
+    }
+
+    public Integer getAcceptFileNum() {
+        return acceptFileNum;
+    }
+
+    public void setAcceptFileNum(Integer acceptFileNum) {
+        this.acceptFileNum = acceptFileNum;
     }
 }

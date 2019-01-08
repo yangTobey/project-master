@@ -149,7 +149,7 @@
             </otherwise>
         </choose>
         and laborCost.year=#{year}
-        <if test="month != null and month != ''">
+        <if test="month != null and month != '' and month != 0 ">
             and laborCost.month=#{month}
         </if>
         and laborCost.status_code!=2

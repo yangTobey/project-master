@@ -173,11 +173,15 @@ public class SysFinancialController {
      * @return
      */
     @RequestMapping(value = "/sysAccountsReceivableAnalysis", method = RequestMethod.POST)
-    public R sysAccountsReceivableAnalysis(@RequestParam(value = "companyId", required = false) String companyId) {
+    public R sysAccountsReceivableAnalysis(@RequestParam(value = "companyId", required = false) String companyId,
+                                           @RequestParam(value = "year", required = false) String year,
+                                           @RequestParam(value = "month", required = false) String month) {
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         }
-        Map<String, Object> map = sysFinancialService.sysAccountsReceivableAnalysis(Long.valueOf(companyId));
+        Map<String, Object> map = sysFinancialService.sysAccountsReceivableAnalysis(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month));
         return R.ok(map);
     }
 
@@ -192,7 +196,8 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/sysAccountsReceivableList", method = RequestMethod.POST)
     public R sysAccountsReceivableList(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
-            , @RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
+            , @RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset
+            , @RequestParam(value = "month", required = false) String month) {
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(year)) {
@@ -201,8 +206,10 @@ public class SysFinancialController {
             return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(offset)) {
             return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         }
-        Map<String, Object> map = sysFinancialService.sysAccountsReceivableList(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(limit), Integer.valueOf(offset));
+        Map<String, Object> map = sysFinancialService.sysAccountsReceivableList(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(limit), Integer.valueOf(offset), Integer.valueOf(month));
         return R.ok(map);
     }
 
@@ -228,7 +235,7 @@ public class SysFinancialController {
      * @return
      */
     @RequestMapping(value = "/addSysAccountsReceivable", method = RequestMethod.POST)
-    public R addSysAccountsReceivable( @RequestBody @Valid SysAccountsReceivable sysAccountsReceivable) {
+    public R addSysAccountsReceivable(  @Valid SysAccountsReceivable sysAccountsReceivable) {
        /* if(!UtilHelper.isLongNumer(String.valueOf(sysAccountsReceivable.getCompanyId()))){
             return R.error(400, "公司id格式不正确，或者不符合常理！！");
         }else if(!UtilHelper.isIntegerNumer(String.valueOf(sysAccountsReceivable.getMonth()))){
@@ -318,12 +325,16 @@ public class SysFinancialController {
      * @return
      */
     @RequestMapping(value = "/sysBudgetDetailsAnalysis", method = RequestMethod.POST)
-    public R sysBudgetDetailsAnalysis(@RequestParam(value = "companyId", required = false) String companyId) {
+    public R sysBudgetDetailsAnalysis(@RequestParam(value = "companyId", required = false) String companyId,
+                                      @RequestParam(value = "year", required = false) String year,
+                                      @RequestParam(value = "month", required = false) String month) {
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         }
         try {
-            Map<String, Object> map = sysFinancialService.sysBudgetDetailsAnalysis(Long.valueOf(companyId));
+            Map<String, Object> map = sysFinancialService.sysBudgetDetailsAnalysis(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month));
             return R.ok(map);
         } catch (Exception e) {
             e.printStackTrace();
@@ -340,7 +351,8 @@ public class SysFinancialController {
      */
     @RequestMapping(value = "/sysBudgetDetailsList", method = RequestMethod.POST)
     public R sysBudgetDetailsList(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
-            , @RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
+            , @RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset
+            , @RequestParam(value = "month", required = false) String month) {
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(year)) {
@@ -349,8 +361,10 @@ public class SysFinancialController {
             return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(offset)) {
             return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         }
-        Map<String, Object> map = sysFinancialService.sysBudgetDetailsList(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(limit), Integer.valueOf(offset));
+        Map<String, Object> map = sysFinancialService.sysBudgetDetailsList(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(limit), Integer.valueOf(offset), Integer.valueOf(month));
         return R.ok(map);
     }
 

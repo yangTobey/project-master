@@ -12,13 +12,13 @@ public interface SysLaborCostService {
      * @param companyId 公司id
      * @return
      */
-    Map<String,Object> getSysLaborCostAnalysis(Long companyId);
+    Map<String,Object> getSysLaborCostAnalysis(Long companyId, Integer year, Integer month);
     /**
      * 查询人员成本信息（根据操作类型查询信息，数据分析图表数据或者列表数据）
      * @param companyId 公司id
      * @return
      */
-    Map<String,Object> getSysLaborCostList(Integer limit,Integer offset,Long companyId,Integer year);
+    Map<String,Object> getSysLaborCostList(Integer limit,Integer offset,Long companyId,Integer year,Integer month);
 
 
     /**

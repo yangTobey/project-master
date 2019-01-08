@@ -59,7 +59,7 @@ public class SysBasicDataController {
     @RequestMapping(value = "/sysBasicDataAnalysisList", method = RequestMethod.POST)
     public R sysBasicDataAnalysisList(@RequestParam(value = "companyId", required = false) String companyId,
             @RequestParam(value = "limit", required = false) String limit,
-            @RequestParam(value = "offset", required = false) String offset,
+            @RequestParam(value = "offset", required = false) String offset,@RequestParam(value = "month", required = false) String month,
             @RequestParam(value = "year", required = false) String year,@RequestParam(value = "projectName", required = false) String projectName) {
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
@@ -69,8 +69,10 @@ public class SysBasicDataController {
             return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(year)) {
             return R.error(400, "年份格式不正确，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         }
-        Map<String, Object> map = sysBasicDataService.sysBasicDataAnalysisList(Long.valueOf(companyId),Integer.valueOf(limit), Integer.valueOf(offset), Integer.valueOf(year),projectName);
+        Map<String, Object> map = sysBasicDataService.sysBasicDataAnalysisList(Long.valueOf(companyId),Integer.valueOf(limit), Integer.valueOf(offset), Integer.valueOf(year),projectName,Integer.valueOf(month));
         return R.ok().put(200, map,"获取成功！");
     }
 
@@ -95,7 +97,7 @@ public class SysBasicDataController {
      */
     @RequestMapping(value = "/addSysBasicData", method = RequestMethod.POST)
     @ApiOperation(value = "新增基础数据信息", httpMethod = "POST")
-    public R addSysBasicData(@RequestBody @ApiParam(name = "新增基础数据信息", value = "", required = true) @Valid SysBasicData sysBasicDataAdd) {
+    public R addSysBasicData( @ApiParam(name = "新增基础数据信息", value = "", required = true) @Valid SysBasicData sysBasicDataAdd) {
 /*
         if (!UtilHelper.isIntegerNumer(year)) {
             return R.error(400, "年份格式不正确，或者不符合常理！");
@@ -162,7 +164,7 @@ public class SysBasicDataController {
      * @return
      */
     @RequestMapping(value = "/updateSysBasicData", method = RequestMethod.POST)
-    public R updateSysBasicData(@RequestBody @Valid SysBasicData sysBasicDataUpdate) {
+    public R updateSysBasicData( @Valid SysBasicData sysBasicDataUpdate) {
 
         if (!UtilHelper.isLongNumer(sysBasicDataUpdate.getBasicId().toString())) {
             return R.error(400, "基础信息id格式不正确，或者不符合常理！");

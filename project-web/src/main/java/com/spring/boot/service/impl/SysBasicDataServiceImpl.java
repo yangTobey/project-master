@@ -103,7 +103,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     }
 
     @Override
-    public Map<String, Object> sysBasicDataAnalysisList(long companyId, int limit, int offset, int year,String projectName) {
+    public Map<String, Object> sysBasicDataAnalysisList(long companyId, int limit, int offset, int year,String projectName,Integer month) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
@@ -119,6 +119,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             map.put("limit", limit);
             map.put("offset", offset);
             map.put("year", year);
+            map.put("month", month);
             map.put("projectName", projectName);
             //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
             PageHelper.startPage((offset/limit)+1,limit);
@@ -192,6 +193,9 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             if (!UtilHelper.isEmpty(sysBasicDataAdd.getEarlyFileInfo())) {
                 saveFile(sysBasicDataAdd.getEarlyFileInfo(),sysBasicDataAdd.getBasicId(),4);
             }
+            if (!UtilHelper.isEmpty(sysBasicDataAdd.getBasicFileInfo())) {
+                saveFile(sysBasicDataAdd.getBasicFileInfo(),sysBasicDataAdd.getBasicId(),5);
+            }
 
             SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
             boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysBasicDataAdd.getYear(),sysBasicDataAdd.getMonth());
@@ -244,6 +248,9 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             }
             if (!UtilHelper.isEmpty(sysBasicDataUpdate.getEarlyFileInfo())) {
                 saveFile(sysBasicDataUpdate.getEarlyFileInfo(),sysBasicDataUpdate.getBasicId(),4);
+            }
+            if (!UtilHelper.isEmpty(sysBasicDataUpdate.getBasicFileInfo())) {
+                saveFile(sysBasicDataUpdate.getBasicFileInfo(),sysBasicDataUpdate.getBasicId(),5);
             }
 
             SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();

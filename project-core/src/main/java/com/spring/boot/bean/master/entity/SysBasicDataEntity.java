@@ -41,6 +41,18 @@ public class SysBasicDataEntity implements Serializable {
     private Double decorateHouseScale;//房屋装修率(转化后保留两位小数)
     private Double forSaleParkingSpaceScale;//车位空置率(转化后保留两位小数)
     private String companyName;
+    /**
+     * 项目名称
+     */
+    private String projectName;
+    /**
+     * 销配名称
+     */
+    private String salesDistributionName;
+    /**
+     * 备注
+     */
+    private String remark;
 
     public Long getBasicId() {
         return basicId;
@@ -233,6 +245,30 @@ public class SysBasicDataEntity implements Serializable {
 
     public void setFileList(List<SysBasicDataFile> fileList) {
         this.fileList = fileList;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getSalesDistributionName() {
+        return salesDistributionName;
+    }
+
+    public void setSalesDistributionName(String salesDistributionName) {
+        this.salesDistributionName = salesDistributionName;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
 

@@ -22,12 +22,14 @@
 		<result column="contractexpired" property="contractexpired" />
 		<result column="total" property="total" />
 		<result column="contractType_name" property="contractTypeName" />
+		<result column="contacts_name" property="contactsName" />
 		<result column="fileNum" property="fileNum" />
+		<result column="contacts_name" property="contactsName" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		 contract.contract_id,contract.contract_name,contract.contract_code,contract.contract_money,contract.contract_startTime,contract.contract_endTime,contract.contract_type_id,
-		 contract.first_party_company,contract.second_party_company,contract.person_liable_name,contract.status_code,contract.company_id,contract.status_code,contract.create_time,company.company_name,type.contractType_name
+		 contract.contract_id,contract.contract_name,contract.contract_code,contract.contract_money,contract.contract_startTime,contract.contract_endTime,contract.contract_type_id,contract.contacts_name,
+		 contract.first_party_company,contract.second_party_company,contract.person_liable_name,contract.status_code,contract.company_id,contract.create_time,company.company_name,type.contractType_name
 	</sql>
 	<!--根据查询条件，查询合同列表数据-->
 	<select id="sysContractDataList" resultMap="sysContract" >
@@ -124,7 +126,7 @@
 	<!--根据id查找合同信息-->
 	<select id="findSysContractById" resultMap="sysContract" >
 		SELECT
-		contract.contract_id,contract.contract_name,contract.contract_code,contract.contract_money,contract.contract_startTime,contract.contract_endTime,contract.contract_type_id,
+		contract.contract_id,contract.contract_name,contract.contract_code,contract.contract_money,contract.contract_startTime,contract.contract_endTime,contract.contract_type_id,contract.contacts_name,
 		contract.first_party_company,contract.second_party_company,contract.person_liable_name,contract.status_code,contract.company_id,company.company_name,type.contractType_name
 		from sys_contract as contract LEFT JOIN sys_company as company on contract.company_id=company.company_id
 		LEFT JOIN sys_contract_type as type on contract.contract_type_id=type.contractType_id
@@ -248,14 +250,14 @@
 	<update id="updateSysContract" parameterType="map">
 		update sys_contract set contract_name = #{contractName},contract_code = #{contractCode},contract_money = #{contractMoney},contract_startTime = #{contractStartTime},
 		contract_endTime = #{contractEndTime},contract_type_id = #{contractTypeId},first_party_company = #{firstPartyCompany},second_party_company = #{secondPartyCompany},
-		person_liable_name = #{personLiableName},company_id = #{companyId},status_code=#{statusCode},contact_name=#{contactName}
+		person_liable_name = #{personLiableName},company_id = #{companyId},status_code=#{statusCode},contacts_name=#{contactsName}
 		where contract_id = #{contractId}
 	</update>
 	<insert id="save" parameterType="com.spring.boot.bean.master.SysContract" useGeneratedKeys="true" keyProperty="contractId">
 		INSERT INTO sys_contract  (contract_name, contract_code,contract_money,contract_startTime,contract_endTime,contract_type_id,first_party_company,second_party_company,person_liable_name,
-		 create_time,company_id,status_code,contact_name)
+		 create_time,company_id,status_code,contacts_name)
               VALUES   (#{contractName},#{contractCode},#{contractMoney},#{contractStartTime},#{contractEndTime},#{contractTypeId},#{firstPartyCompany}
-              ,#{secondPartyCompany},#{personLiableName},#{createTime},#{companyId},#{statusCode},#{contactName} )
+              ,#{secondPartyCompany},#{personLiableName},#{createTime},#{companyId},#{statusCode},#{contactsName} )
 	</insert>
 	<update id="deleteSysContract" parameterType="map">
 		update sys_contract  set status_code = 5

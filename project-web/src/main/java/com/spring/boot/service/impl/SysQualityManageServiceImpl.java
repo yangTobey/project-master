@@ -49,7 +49,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public Map<String, Object> sysQualityManageAnalysis(long companyId) {
+    public Map<String, Object> sysQualityManageAnalysis(Long companyId, Integer selectYear, Integer selectMonth) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
         Map<String, Object> mapForYear = new HashMap<String, Object>();
@@ -64,20 +64,26 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                 sysUserCompanyIds = new ArrayList<Long>();
                 sysUserCompanyIds.add(companyId);
             }
+            Integer yearData,monthData;
             SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
+
             //获取需要查询的年份和月份
             Map<String,Integer> yearAndMonthMap=SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
+            if(selectYear==null||selectMonth==null){
+                selectYear=yearAndMonthMap.get("year");
+                selectMonth=yearAndMonthMap.get("month");
+            }
             //***************************查询年数据条件************************************//
             mapForYear.put("sysUserCompanyIds", sysUserCompanyIds);
-            mapForYear.put("year", UtilHelper.getYear());
-            mapForYear.put("month", UtilHelper.getMonth());
+            mapForYear.put("year", selectYear);
+            mapForYear.put("month", selectMonth);
             /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
             mapForYear.put("type", 1);
 
             //***************************查询月份数据条件************************************//
             mapForMonth.put("sysUserCompanyIds", sysUserCompanyIds);
-            mapForMonth.put("year", yearAndMonthMap.get("year"));
-            mapForMonth.put("month", yearAndMonthMap.get("month"));
+            mapForMonth.put("year", selectYear);
+            mapForMonth.put("month", selectMonth);
             /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
             mapForMonth.put("type", 1);
             //查找年度报表数据
@@ -134,7 +140,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
     }
 
     @Override
-    public Map<String, Object> getSysQualityManageList(long companyId, int year, int limit, int offset) {
+    public Map<String, Object> getSysQualityManageList(long companyId, int year, int limit, int offset,Integer month) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
@@ -148,6 +154,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
             }
             map.put("sysUserCompanyIds", sysUserCompanyIds);
             map.put("year", year);
+            map.put("month", month);
             map.put("limit", limit);
             map.put("offset", offset);
             //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】

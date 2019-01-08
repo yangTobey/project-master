@@ -2,6 +2,8 @@ package com.spring.boot.bean.master;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.spring.boot.validation.IsNotNull;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
@@ -15,20 +17,24 @@ import java.util.Date;
  * 基础数据实体类
  * Created by Administrator on 2018/3/16.
  */
+@ApiModel(value="基础数据对象")
 public class SysBasicData {
     /**
      * 主键
      */
+    @ApiModelProperty(value = "主键")
     private Long basicId;
     /**
      * 公司id
      */
+    @ApiModelProperty(value = "公司id")
     @NotNull(message = "公司id不能为空")
     @Range(min = 1,max = Integer.MAX_VALUE,message = "公司id格式不正确，或者不符合常理！！")
     private Long companyId;
     /**
      * 年份
      */
+    @ApiModelProperty(value = "年份")
     @NotNull(message = "年份不能为空！")
     //@Size(min = 6,max = 18,message = "登录账号长度不符合要求！")
     @Range(message = "年份格式不正确，或者不符合常理！！")
@@ -131,8 +137,13 @@ public class SysBasicData {
     /**
      * 前期数据文件
      */
-    @NotBlank(message = "前期数据文件不能为空！")
+    //@NotBlank(message = "前期数据文件不能为空！")
     private String earlyFileInfo;
+
+    /**
+     * 基础数据文件
+     */
+    private String basicFileInfo;
     /**
      * 项目名称
      */
@@ -342,6 +353,14 @@ public class SysBasicData {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getBasicFileInfo() {
+        return basicFileInfo;
+    }
+
+    public void setBasicFileInfo(String basicFileInfo) {
+        this.basicFileInfo = basicFileInfo;
     }
 }
 

@@ -13,12 +13,12 @@ public interface SysQualityManageService {
      * 获取品质管理年度报表数据
      * @return
      */
-    Map<String,Object> sysQualityManageAnalysis(long companyId);
+    Map<String,Object> sysQualityManageAnalysis(Long companyId, Integer year, Integer month);
     /**
      * 获取列表数据
      * @return
      */
-    Map<String,Object> getSysQualityManageList(long companyId,int year,int limit, int offset);
+    Map<String,Object> getSysQualityManageList(long companyId,int year,int limit, int offset,Integer month);
 
     /**
      * 新增质量管理信息

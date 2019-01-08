@@ -30,11 +30,17 @@ public class SysQualityManageController {
      * @return
      */
     @RequestMapping(value = "/sysQualityManageAnalysis", method = RequestMethod.POST)
-    public R sysQualityManageAnalysisForYear(@RequestParam(value = "companyId", required = false) String companyId) {
+    public R sysQualityManageAnalysisForYear(@RequestParam(value = "companyId", required = false) String companyId
+            ,@RequestParam(value = "year", required = false) String year
+            , @RequestParam(value = "month", required = false) String month) {
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         }
-        Map<String, Object> map = sysQualityManageService.sysQualityManageAnalysis(Long.valueOf(companyId));
+        Map<String, Object> map = sysQualityManageService.sysQualityManageAnalysis(Long.valueOf(companyId),Integer.valueOf(year),Integer.valueOf(month));
         return R.ok(map);
     }
 
@@ -49,7 +55,8 @@ public class SysQualityManageController {
      */
     @RequestMapping(value = "/getSysQualityManageList", method = RequestMethod.POST)
     public R getSysQualityManageList(@RequestParam(value = "companyId", required = false) String companyId, @RequestParam(value = "year", required = false) String year
-            , @RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
+            , @RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset
+            , @RequestParam(value = "month", required = false) String month) {
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(year)) {
@@ -58,8 +65,10 @@ public class SysQualityManageController {
             return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(offset)) {
             return R.error(400, "分页控制，页码offset只能为数字，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         }
-        Map<String, Object> map = sysQualityManageService.getSysQualityManageList(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(limit), Integer.valueOf(offset));
+        Map<String, Object> map = sysQualityManageService.getSysQualityManageList(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(limit), Integer.valueOf(offset), Integer.valueOf(month));
         return R.ok(map);
     }
 
@@ -76,7 +85,7 @@ public class SysQualityManageController {
      * @return
      */
     @RequestMapping(value = "/addSysQualityManage", method = RequestMethod.POST)
-    public R addSysQualityManage(@RequestParam @Valid SysQualityManage sysQualityManage) {
+    public R addSysQualityManage( @Valid SysQualityManage sysQualityManage) {
         /*if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不正确，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(year)) {
@@ -120,7 +129,7 @@ public class SysQualityManageController {
      * @return
      */
     @RequestMapping(value = "/updateSysQualityManage", method = RequestMethod.POST)
-    public R updateSysQualityManage(@RequestParam @Valid SysQualityManage sysQualityManage) {
+    public R updateSysQualityManage( @Valid SysQualityManage sysQualityManage) {
         //logger.info("信息更新操作！");
         if (!UtilHelper.isLongNumer(sysQualityManage.getQualityId().toString())) {
             return R.error(400, "质量管理编号格式不正确，请联系系统管理员，或者不符合常理！");

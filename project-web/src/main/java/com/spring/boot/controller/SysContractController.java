@@ -171,7 +171,7 @@ public class SysContractController {
      */
     @RequestMapping(value = "/addSysContract", method = RequestMethod.POST)
     @ResponseBody
-    public R addSysContract(@RequestBody @Valid SysContract sysContract) {
+    public R addSysContract( @Valid SysContract sysContract) {
        /* if(UtilHelper.isEmpty(contractName)){
             return R.error(400, "合同名称不能为空！");
         }else if(UtilHelper.isEmpty(contractCode)){
@@ -214,7 +214,7 @@ public class SysContractController {
      */
     @RequestMapping(value = "/updateSysContract", method = RequestMethod.POST)
     @ResponseBody
-    public R updateSysContract(@RequestBody @Valid SysContract sysContract) {
+    public R updateSysContract( @Valid SysContract sysContract) {
         if (!UtilHelper.isLongNumer(sysContract.getContractId().toString())) {
             return R.error(400, "合同id格式不正确，或者不符合常理！");
         }/*else if(UtilHelper.isEmpty(contractName)){

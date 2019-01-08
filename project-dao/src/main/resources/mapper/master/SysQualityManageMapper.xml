@@ -43,6 +43,9 @@
             </otherwise>
         </choose>
         and quality.year = #{year}
+        <if test="month != null and month != 0">
+            and quality.month = #{month}
+        </if>
         and quality.status_code!=2
         GROUP BY
         quality.quality_id

@@ -151,7 +151,8 @@ public class SysProjectEnergyController {
      */
     @RequestMapping(value = "/sysProjectEnergyList", method = RequestMethod.POST)
     public R sysProjectEnergyList(@RequestParam(value = "companyId", required = false) String companyId,@RequestParam(value = "year", required = false) String year
-    ,@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset) {
+    ,@RequestParam(value = "limit", required = false) String limit, @RequestParam(value = "offset", required = false) String offset
+            , @RequestParam(value = "month", required = false) String month) {
         if (!UtilHelper.isIntegerNumer(limit)) {
             return R.error(400, "分页控制，每页条数limit只能为数字，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(offset)) {
@@ -160,8 +161,10 @@ public class SysProjectEnergyController {
             return R.error(400, "公司id格式不合理，或者不符合常理！");
         }else if (!UtilHelper.isIntegerNumer(year)) {
             return R.error(400, "年份格式不合理，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         }
-        Map<String, Object> map = sysProjectEnergyService.sysProjectEnergyList(Long.valueOf(companyId),Integer.valueOf(year),Integer.valueOf(limit),Integer.valueOf(offset));
+        Map<String, Object> map = sysProjectEnergyService.sysProjectEnergyList(Long.valueOf(companyId),Integer.valueOf(year),Integer.valueOf(limit),Integer.valueOf(offset),Integer.valueOf(month));
         return R.ok(map);
     }
     /**
@@ -170,11 +173,17 @@ public class SysProjectEnergyController {
      * @return
      */
     @RequestMapping(value = "/sysProjectEnergyAnalysis", method = RequestMethod.POST)
-    public R sysProjectEnergyAnalysis(@RequestParam(value = "companyId", required = false) String companyId) {
+    public R sysProjectEnergyAnalysis(@RequestParam(value = "companyId", required = false) String companyId,
+                                      @RequestParam(value = "year", required = false) String year,
+                                      @RequestParam(value = "month", required = false) String month) {
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不合理，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         }
-        Map<String, Object> map = sysProjectEnergyService.sysProjectEnergyAnalysis(Long.valueOf(companyId));
+        Map<String, Object> map = sysProjectEnergyService.sysProjectEnergyAnalysis(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month));
         return R.ok(map);
     }
     /**
@@ -183,11 +192,17 @@ public class SysProjectEnergyController {
      * @return
      */
     @RequestMapping(value = "/sysProjectEnergyAnalysisForMonth", method = RequestMethod.POST)
-    public R sysProjectEnergyAnalysisForMonth(@RequestParam(value = "companyId", required = false) String companyId) {
+    public R sysProjectEnergyAnalysisForMonth(@RequestParam(value = "companyId", required = false) String companyId,
+                                              @RequestParam(value = "year", required = false) String year,
+                                              @RequestParam(value = "month", required = false) String month) {
         if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不合理，或者不符合常理！");
+        }else if (!UtilHelper.isIntegerNumer(year)) {
+            return R.error(400, "年份格式不正确，或者不符合常理！");
+        } else if (!UtilHelper.isIntegerNumer(month)) {
+            return R.error(400, "月份格式不正确，或者不符合常理！");
         }
-        Map<String, Object> map = sysProjectEnergyService.sysProjectEnergyAnalysisForMonth(Long.valueOf(companyId));
+        Map<String, Object> map = sysProjectEnergyService.sysProjectEnergyAnalysisForMonth(Long.valueOf(companyId), Integer.valueOf(year), Integer.valueOf(month));
         return R.ok(map);
     }
     /**

@@ -37,6 +37,17 @@
         <include refid="Base_Column_List"/>
         from sys_company
         where status_code!=2
+        <choose>
+            <when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
+                AND company_id IN
+                <foreach collection="sysUserCompanyIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
         order by create_time desc
         <!--<if test="offset != null and limit != null">
             limit #{offset},#{limit}

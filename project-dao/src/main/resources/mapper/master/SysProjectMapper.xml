@@ -20,6 +20,8 @@
 		<result column="yearConsumptionWater" property="yearConsumptionWater" />
 		<result column="fileNum" property="fileNum" />
 		<result column="company_name" property="companyName" />
+		<result column="previous_file_num" property="previousFileNum" />
+		<result column="accept_file_num" property="acceptFileNum" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -29,13 +31,13 @@
 	<!--更新工程信息-->
 	<update id="updateSysProject" parameterType="map">
 		update sys_project set project_unfinished_total = #{projectUnfinishedTotal},project_finished_total = #{projectFinishedTotal},
-		company_id = #{companyId},year = #{year},month = #{month}
+		company_id = #{companyId},year = #{year},month = #{month},previous_file_num = #{previousFileNum},accept_file_num = #{acceptFileNum}
 		where project_id = #{projectId}
 	</update>
 	<!--新增工程信息-->
 	<insert id="addSysProject" parameterType="com.spring.boot.bean.master.SysProject" useGeneratedKeys="true" keyProperty="projectId">
-		INSERT INTO sys_project  ( project_unfinished_total,project_finished_total,create_time,company_id,year,month)
-              VALUES   (#{projectUnfinishedTotal},#{projectFinishedTotal},#{createTime},#{companyId},#{year},#{month})
+		INSERT INTO sys_project  ( project_unfinished_total,project_finished_total,create_time,company_id,year,month,previous_file_num,accept_file_num)
+              VALUES   (#{projectUnfinishedTotal},#{projectFinishedTotal},#{createTime},#{companyId},#{year},#{month},#{previousFileNum},#{acceptFileNum})
 	</insert>
 	<!--删除工程信息-->
 	<update id="deleteSysProject" parameterType="map">
@@ -56,6 +58,9 @@
 			LEFT JOIN sys_company AS company ON company.company_id = project.company_id
 			where 1=1 and project.status_code!=2
 			and project.year=#{year}
+		<if test="month != null and month != 0">
+			and quality.month = #{month}
+		</if>
 			<choose>
 				<when test="sysUserCompanyIds != null and sysUserCompanyIds.size>0">
 					AND project.company_id IN
@@ -97,7 +102,7 @@
 	<!--根据主键id查找信息-->
 	<select id="findSysProjectEnergyById" resultMap="sysProject" >
 		SELECT
-		project.project_id, project.company_id, project.`year`, project.`month`, project.project_finished_total,
+		project.project_id, project.company_id, project.`year`, project.`month`, project.project_finished_total,project.previous_file_num,project.accept_file_num,
 		project.project_unfinished_total, project.create_time, project.status_code, energy.month_consumption_electricity, energy.month_consumption_water,company.company_name
 		FROM
 		sys_project AS project

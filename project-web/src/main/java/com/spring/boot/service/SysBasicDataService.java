@@ -26,7 +26,7 @@ public interface SysBasicDataService {
      * @param year   年份
      * @return
      */
-    Map<String, Object> sysBasicDataAnalysisList(long companyId,int limit, int offset, int year,String projectName);
+    Map<String, Object> sysBasicDataAnalysisList(long companyId,int limit, int offset, int year,String projectName,Integer month);
 
     /**
      * 新增基础数据信息
