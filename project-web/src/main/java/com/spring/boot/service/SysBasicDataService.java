@@ -90,4 +90,9 @@ public interface SysBasicDataService {
      * 存放基础信息到redis
      */
     void setBasicDataAnalysisDataToRedis();
+    /**
+     * 根据id获取附件文档信息
+     * @return
+     */
+    Map<String,Object> findSysBasicDataFileById(long basicId);
 }

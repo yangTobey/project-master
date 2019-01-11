@@ -245,4 +245,18 @@ public class SysBasicDataController {
         Map<String, Object> map = sysBasicDataService.findSysBasicDataById(Integer.valueOf(basicId));
         return R.ok(map);
     }
+    /**
+     * 根据公司id获取附件文档信息
+     *
+     * @param basicId
+     * @return
+     */
+    @RequestMapping(value = "/findSysBasicDataFileById", method = RequestMethod.POST)
+    public R findSysBasicDataFileById(@RequestParam(value = "basicId", required = false) String basicId) {
+        if (!UtilHelper.isLongNumer(basicId)) {
+            return R.error(400, "主键ID格式不正确，或者不符合常理，请联系系统管理员！");
+        }
+        Map<String, Object> map =sysBasicDataService.findSysBasicDataFileById(Long.valueOf(basicId));
+        return R.ok(map);
+    }
 }

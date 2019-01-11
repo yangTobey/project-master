@@ -14,6 +14,7 @@ import java.util.Date;
  * Created by Administrator on 2018/3/2.
  */
 public class SysAccountsReceivable implements Serializable {
+    private static final long serialVersionUID = -4315712891689302261L;
     private Long accountsId;
     @NotNull(message = "公司id不能为空")
     @Range(min = 1,max = Integer.MAX_VALUE,message = "公司id格式不正确，或者不符合常理！！")
@@ -177,6 +178,34 @@ public class SysAccountsReceivable implements Serializable {
     private Double propertySubsidyScale;
     //其他地产收缴率
     private Double houseOtherScale;
+
+    public SysAccountsReceivable(){
+
+    }
+    public SysAccountsReceivable(Double receivableAccountsOwner,Double completeAccountsOwner,Double completeCoupon,Double receivableCoupon,Double completeVacancy,
+                                 Double receivableVacancy,Double completeSubsidy,Double receivableSubsidy,Double completeSales,Double receivableSales,Double receivableOpen,
+                                 Double completeOpen,Double completePropertySubsidy,Double receivablePropertySubsidy,Double completeHouseOther,Double receivableHouseOther,
+                                 Double completeHouse,Double receivableHouse){
+        this.receivableAccountsOwner=receivableAccountsOwner;
+        this.completeAccountsOwner=completeAccountsOwner;
+        this.completeCoupon=completeCoupon;
+        this.receivableCoupon=receivableCoupon;
+        this.completeVacancy=completeVacancy;
+        this.receivableVacancy=receivableVacancy;
+        this.completeSubsidy=completeSubsidy;
+        this.receivableSubsidy=receivableSubsidy;
+        this.completeSales=completeSales;
+        this.receivableSales=receivableSales;
+        this.receivableOpen=receivableOpen;
+        this.completeOpen=completeOpen;
+        this.completePropertySubsidy=completePropertySubsidy;
+        this.receivablePropertySubsidy=receivablePropertySubsidy;
+        this.completeHouseOther=completeHouseOther;
+        this.receivableHouseOther=receivableHouseOther;
+        this.completeHouse=completeHouse;
+        this.receivableHouse=receivableHouse;
+
+    }
 
     public Long getAccountsId() {
         return accountsId;

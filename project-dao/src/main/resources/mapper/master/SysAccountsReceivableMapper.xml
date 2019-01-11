@@ -53,7 +53,7 @@
         complete_house_other,SUM(receivable_house_other) AS receivable_house_other
         from sys_accounts_receivable where 1=1 and status_code!=2
         and year = #{year}
-        <if test="month != null and month!=''">
+        <if test="month != null and month!='' and month!=0 ">
             and month = #{month}
         </if>
         <choose>

@@ -1,9 +1,6 @@
 package com.spring.boot.dao.web.master;
 
-import com.spring.boot.bean.master.SysBasicData;
-import com.spring.boot.bean.master.SysContractFile;
-import com.spring.boot.bean.master.SysProjectEnergyFile;
-import com.spring.boot.bean.master.SysQualityManageFile;
+import com.spring.boot.bean.master.*;
 import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 import com.spring.boot.dao.BaseDao;
 import org.apache.ibatis.annotations.Param;
@@ -34,6 +31,12 @@ public interface SysFileDao extends BaseDao<SysQualityManageFile> {
      */
     SysContractFile fileSysContractFileById(Long fileId);
     /**
+     * 根据文件id基础数据附件文档信息
+     * @param fileId
+     * @return
+     */
+    SysBasicDataFile fileSysBasicDataFileById(Long fileId);
+    /**
      * 根据文件id删除品质管理文件
      * @param fileId
      * @return
@@ -53,4 +56,24 @@ public interface SysFileDao extends BaseDao<SysQualityManageFile> {
      * @return
      */
     int deleteSysContractFileById(Long fileId);
+    /**
+     * 根据文件id删除基础数据文件
+     * @param fileId
+     * @return
+     */
+    int deleteSysBasicFileById(Long fileId);
+
+    /**
+     * 根据文件id删除应收账款文件
+     * @param fileId
+     * @return
+     */
+    int deleteSysAccountsReceivableFileById(Long fileId);
+
+    /**
+     * 根据文件id删除预算执行文件
+     * @param fileId
+     * @return
+     */
+    int deleteSysBudgetFileById(Long fileId);
 }

@@ -1,9 +1,6 @@
 package com.spring.boot.service.web;
 
-import com.spring.boot.bean.master.SysAccountsReceivable;
-import com.spring.boot.bean.master.SysContractFile;
-import com.spring.boot.bean.master.SysProjectEnergyFile;
-import com.spring.boot.bean.master.SysQualityManageFile;
+import com.spring.boot.bean.master.*;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +29,15 @@ public interface SysFileBusinessService {
     SysContractFile fileSysContractFileById(Long fileId);
 
     /**
+     * 根据文件id基础数据附件文档信息
+     * @param fileId
+     * @return
+     */
+    SysBasicDataFile fileSysBasicDataFileById(Long fileId);
+
+
+
+    /**
      * 根据文件id删除品质管理文件
      * @param fileId
      * @return
@@ -51,6 +57,27 @@ public interface SysFileBusinessService {
      * @return
      */
     int deleteSysContractFileById(Long fileId);
+
+    /**
+     * 根据文件id删除基础数据文件
+     * @param fileId
+     * @return
+     */
+    int deleteSysBasicFileById(Long fileId);
+
+    /**
+     * 根据文件id删除应收账款文件
+     * @param fileId
+     * @return
+     */
+    int deleteSysAccountsReceivableFileById(Long fileId);
+
+    /**
+     * 根据文件id删除预算执行文件
+     * @param fileId
+     * @return
+     */
+    int deleteSysBudgetFileById(Long fileId);
 
 
 }

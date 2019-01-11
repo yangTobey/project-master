@@ -274,6 +274,7 @@ public class SysContractServiceImpl implements SysContractService {
         map.put("personLiableName", sysContractUpdate.getPersonLiableName());
         map.put("createTime", Timestamp.valueOf(UtilHelper.getNowTimeStr()));
         map.put("companyId", sysContractUpdate.getCompanyId());
+        map.put("contactsName", sysContractUpdate.getContactsName());
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String now=format.format(new Date());

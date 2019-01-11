@@ -5,9 +5,12 @@ import org.apache.shiro.crypto.hash.Hash;
 import org.thymeleaf.expression.Lists;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -201,6 +204,22 @@ public class Test {
         TestClass testClass=new TestClass();
         aa11a=(AA)testClass.save(aa11a);
         System.out.println("信息："+aa11a.getName());
+        System.out.println(3-(-10));
+
+        int aH=2,Bb=0;
+        if((Bb=aH)==1){
+            System.out.println("hellll");
+        }
+        System.out.println("Bb=="+Bb);
+
+
+        Double asaa=0.10;
+        Pattern pattern = Pattern.compile("^[0-9]+(.[0-9]{0,2})?$");
+        Matcher isNum = pattern.matcher(asaa.toString());
+        System.out.println(isNum.matches());
+        System.out.println(new Date());
+        System.out.println(new Timestamp(System.currentTimeMillis()));
+
 
     }
     // 获取当前时间所在年的最大周数

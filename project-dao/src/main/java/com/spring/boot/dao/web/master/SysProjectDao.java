@@ -91,5 +91,11 @@ public interface SysProjectDao extends BaseDao<SysProject> {
      * @return
      */
     List<SysProject> sysProjectEnergyAnalysisForMonth(Map<String, Object> map);
+    /**
+     * 报表遗留问题年度统计信息
+     * @param map
+     * @return
+     */
+    SysProject sysProjectUnfinishedForYear(Map<String, Object> map);
 
 }

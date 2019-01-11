@@ -52,6 +52,30 @@ public class SysBudgetDetails implements Serializable {
     //实际利润环比
     Map<Integer, Object> realProfitsScaleMap ;
     private String monthsInfo;
+    public SysBudgetDetails(){
+
+    }
+
+    public SysBudgetDetails(Double budgetIncome, Double realIncome, Double budgetProfits, Double realProfits, Double budgetExpenses, Double personnelCost, Double administrativeCost, Double materialCost, Double energyCost,
+             Double equipmentCost, Double cleaningCost, Double afforestCost, Double orderMaintenanceCost, Double communityActivitiesCost, Double otherCost, Double realExpensesTotal){
+        this.budgetIncome=budgetIncome;
+        this.realIncome=realIncome;
+        this.budgetProfits=budgetProfits;
+        this.realProfits=realProfits;
+        this.budgetExpenses=budgetExpenses;
+        this.personnelCost=personnelCost;
+        this.administrativeCost=administrativeCost;
+        this.materialCost=materialCost;
+        this.energyCost=energyCost;
+        this.equipmentCost=equipmentCost;
+        this.cleaningCost=cleaningCost;
+        this.afforestCost=afforestCost;
+        this.orderMaintenanceCost=orderMaintenanceCost;
+        this.communityActivitiesCost=communityActivitiesCost;
+        this.otherCost=otherCost;
+        this.realExpensesTotal=realExpensesTotal;
+
+    }
 
     public Long getBudgetId() {
         return budgetId;

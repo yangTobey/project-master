@@ -73,6 +73,12 @@ public interface SysProjectBusinessService {
      */
     SysProject sysProjectEnergyAnalysisForYear(Map<String, Object> map);
     /**
+     * 报表遗留问题年度统计信息
+     * @param map
+     * @return
+     */
+    SysProject sysProjectUnfinishedForYear(Map<String, Object> map);
+    /**
      * 报表月度（当月）统计信息
      * @param
      * @return

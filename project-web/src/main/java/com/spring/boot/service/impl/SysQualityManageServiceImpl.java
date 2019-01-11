@@ -100,29 +100,6 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
             //查找月度报表数据
             sysQualityManageEntityForMonth = sysQualityManageBusinessService.sysQualityManageAnalysisForMonth(mapForMonth);
             if (sysQualityManageEntityForMonth != null) {
-                List<SysQualityManage> list = sysQualityManageBusinessService.sysQualityManageAnalysisList(mapForYear);
-                //月度品质合格率
-                double qualityCheckPassScale = 0;
-                //月度品质整改合格率
-                double modifiedPassScale = 0;
-                //合格率(月)
-                Map<Integer, Double> checkPassScaleMap = null;
-                //整改合格率(月)
-                Map<Integer, Double> modifiedPassScaleMap = null;
-                if (list.size() > 0) {
-                    checkPassScaleMap = new HashMap<Integer, Double>();
-                    modifiedPassScaleMap = new HashMap<Integer, Double>();
-                    Integer month = 0;
-                    for (SysQualityManage sysQualityManage : list) {
-                        qualityCheckPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckPass(), sysQualityManage.getQualityCheck()));
-                        modifiedPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckFail()-sysQualityManage.getQualityCheckUnmodified(), sysQualityManage.getQualityCheckFail()));
-                        month = sysQualityManage.getMonth();
-                        checkPassScaleMap.put(month, qualityCheckPassScale);
-                        modifiedPassScaleMap.put(month, modifiedPassScale);
-                    }
-                }
-                sysQualityManageEntityForMonth.setCheckPassScaleMap(checkPassScaleMap);
-                sysQualityManageEntityForMonth.setModifiedPassScaleMap(modifiedPassScaleMap);
                 sysQualityManageEntityForMonth.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckPass(), sysQualityManageEntityForMonth.getQualityCheck())));
                 sysQualityManageEntityForMonth.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckFail()-sysQualityManageEntityForMonth.getQualityCheckUnmodified(), sysQualityManageEntityForMonth.getQualityCheckFail())));
                 //resultMap.put("qualityManageMonth", sysQualityManageEntityForMonth);
@@ -130,6 +107,31 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
                 sysQualityManageEntityForMonth=new SysQualityManageEntity();
                 //return R.error(500, "获取月度信息失败，不存在数据！");
             }
+
+            List<SysQualityManage> list = sysQualityManageBusinessService.sysQualityManageAnalysisList(mapForYear);
+            //月度品质合格率
+            double qualityCheckPassScale = 0;
+            //月度品质整改合格率
+            double modifiedPassScale = 0;
+            //合格率(月)
+            Map<Integer, Double> checkPassScaleMap = null;
+            //整改合格率(月)
+            Map<Integer, Double> modifiedPassScaleMap = null;
+            if (list.size() > 0) {
+                checkPassScaleMap = new HashMap<Integer, Double>();
+                modifiedPassScaleMap = new HashMap<Integer, Double>();
+                Integer month = 0;
+                for (SysQualityManage sysQualityManage : list) {
+                    qualityCheckPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckPass(), sysQualityManage.getQualityCheck()));
+                    modifiedPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckFail()-sysQualityManage.getQualityCheckUnmodified(), sysQualityManage.getQualityCheckFail()));
+                    month = sysQualityManage.getMonth();
+                    checkPassScaleMap.put(month, qualityCheckPassScale);
+                    modifiedPassScaleMap.put(month, modifiedPassScale);
+                }
+            }
+            sysQualityManageEntityForMonth.setCheckPassScaleMap(checkPassScaleMap);
+            sysQualityManageEntityForMonth.setModifiedPassScaleMap(modifiedPassScaleMap);
+
             resultMap.put("qualityManageMonth", sysQualityManageEntityForMonth);
         } catch (Exception e) {
             e.printStackTrace();
@@ -349,8 +351,8 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         Map<String,Integer> yearAndMonthMap=SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
         //***************************查询年数据条件************************************//
         mapForYear.put("sysUserCompanyIds", null);
-        mapForYear.put("year", UtilHelper.getYear());
-        mapForYear.put("month", UtilHelper.getMonth());
+        mapForYear.put("year", yearAndMonthMap.get("year"));
+        mapForYear.put("month", yearAndMonthMap.get("month"));
             /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
         mapForYear.put("type", 2);
 
@@ -375,34 +377,35 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         //查找月度报表数据
         sysQualityManageEntityForMonth = sysQualityManageBusinessService.sysQualityManageAnalysisForMonth(mapForMonth);
         if (sysQualityManageEntityForMonth != null) {
-            List<SysQualityManage> list = sysQualityManageBusinessService.sysQualityManageAnalysisList(mapForYear);
-            //月度品质合格率
-            double qualityCheckPassScale = 0;
-            //月度品质整改合格率
-            double modifiedPassScale = 0;
-            //合格率(月)
-            Map<Integer, Double> checkPassScaleMap = null;
-            //整改合格率(月)
-            Map<Integer, Double> modifiedPassScaleMap = null;
-            if (list.size() > 0) {
-                checkPassScaleMap = new HashMap<Integer, Double>();
-                modifiedPassScaleMap = new HashMap<Integer, Double>();
-                Integer month = 0;
-                for (SysQualityManage sysQualityManage : list) {
-                    qualityCheckPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckPass(), sysQualityManage.getQualityCheck()));
-                    modifiedPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckFail()-sysQualityManage.getQualityCheckUnmodified(), sysQualityManage.getQualityCheckFail()));
-                    month = sysQualityManage.getMonth();
-                    checkPassScaleMap.put(month, qualityCheckPassScale);
-                    modifiedPassScaleMap.put(month, modifiedPassScale);
-                }
-            }
-            sysQualityManageEntityForMonth.setCheckPassScaleMap(checkPassScaleMap);
-            sysQualityManageEntityForMonth.setModifiedPassScaleMap(modifiedPassScaleMap);
+
             sysQualityManageEntityForMonth.setQualityCheckPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckPass(), sysQualityManageEntityForMonth.getQualityCheck())));
             sysQualityManageEntityForMonth.setModifiedPassScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManageEntityForMonth.getQualityCheckFail()-sysQualityManageEntityForMonth.getQualityCheckUnmodified(), sysQualityManageEntityForMonth.getQualityCheckFail())));
         }else{
             sysQualityManageEntityForMonth=new SysQualityManageEntity();
         }
+        List<SysQualityManage> list = sysQualityManageBusinessService.sysQualityManageAnalysisList(mapForYear);
+        //月度品质合格率
+        double qualityCheckPassScale = 0;
+        //月度品质整改合格率
+        double modifiedPassScale = 0;
+        //合格率(月)
+        Map<Integer, Double> checkPassScaleMap = null;
+        //整改合格率(月)
+        Map<Integer, Double> modifiedPassScaleMap = null;
+        if (list.size() > 0) {
+            checkPassScaleMap = new HashMap<Integer, Double>();
+            modifiedPassScaleMap = new HashMap<Integer, Double>();
+            Integer month = 0;
+            for (SysQualityManage sysQualityManage : list) {
+                qualityCheckPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckPass(), sysQualityManage.getQualityCheck()));
+                modifiedPassScale = UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysQualityManage.getQualityCheckFail()-sysQualityManage.getQualityCheckUnmodified(), sysQualityManage.getQualityCheckFail()));
+                month = sysQualityManage.getMonth();
+                checkPassScaleMap.put(month, qualityCheckPassScale);
+                modifiedPassScaleMap.put(month, modifiedPassScale);
+            }
+        }
+        sysQualityManageEntityForMonth.setCheckPassScaleMap(checkPassScaleMap);
+        sysQualityManageEntityForMonth.setModifiedPassScaleMap(modifiedPassScaleMap);
         //resultMap.put("qualityManageMonth", sysQualityManageEntityForMonth);
         //将月度统计报表信息放入redis缓存
         redisTemplate.opsForValue().set("qualityManageMonth", sysQualityManageEntityForMonth);

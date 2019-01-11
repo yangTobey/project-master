@@ -2,10 +2,7 @@ package com.spring.boot.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.spring.boot.bean.PageInfoBean;
-import com.spring.boot.bean.master.SysBasicData;
-import com.spring.boot.bean.master.SysBasicDataFile;
-import com.spring.boot.bean.master.SysQualityManageFile;
-import com.spring.boot.bean.master.SysUpdateDataRules;
+import com.spring.boot.bean.master.*;
 import com.spring.boot.bean.master.entity.SysBasicDataEntity;
 import com.spring.boot.service.SysBasicDataService;
 import com.spring.boot.service.SysDataAnalysisService;
@@ -225,7 +222,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         map.put("constructionArea", sysBasicDataUpdate.getConstructionArea());
         map.put("chargeArea", sysBasicDataUpdate.getChargeArea());
         map.put("cityNumber", sysBasicDataUpdate.getCityNumber());
-        map.put("projectNumber", sysBasicDataUpdate.getProjectName());
+        map.put("projectNumber", sysBasicDataUpdate.getProjectNumber());
         map.put("houseNumber", sysBasicDataUpdate.getHouseNumber());
         map.put("acceptHouseNumber", sysBasicDataUpdate.getAcceptHouseNumber());
         map.put("forSaleHouseNumber", sysBasicDataUpdate.getForSaleHouseNumber());
@@ -234,6 +231,10 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         map.put("forSaleParkingSpace", sysBasicDataUpdate.getForSaleParkingSpace());
         map.put("salesDistribution", sysBasicDataUpdate.getSalesDistribution());
         map.put("companyId", sysBasicDataUpdate.getCompanyId());
+
+        map.put("projectName", sysBasicDataUpdate.getProjectName());
+        map.put("salesDistributionName", sysBasicDataUpdate.getSalesDistributionName());
+        map.put("remark", sysBasicDataUpdate.getRemark());
 
         int count = sysBasicDataBusinessService.updateSysBasicData(map);
         if (count > 0) {
@@ -295,6 +296,8 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
                 sysBasicDataFile.setFileType(3);
             }else if(type==4){
                 sysBasicDataFile.setFileType(4);
+            }else if(type==5){
+                sysBasicDataFile.setFileType(5);
             }
             sysBasicDataBusinessService.addSysBasicDataFile(sysBasicDataFile);
         }
@@ -338,6 +341,25 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             e.printStackTrace();
             logger.info("根据id查找基础信息失败：" + e.getMessage());
             return R.error(500, "根据id查找基础信息失败，服务器异常，请联系系统管理员！");
+        }
+    }
+    @Override
+    public Map<String, Object> findSysBasicDataFileById(long basicId) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("basicId", basicId);
+        try {
+            List<SysBasicDataFile> fileList = sysBasicDataBusinessService.findSysBasicDataFileByBasicId(map);
+            if (fileList != null) {
+                resultMap.put("list", fileList);
+                return R.ok().putData(200, resultMap, "获取文件成功！");
+            } else {
+                return R.error(500, "不存在文件！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("获取文件失败：" + e.getMessage());
+            return R.error(500, "获取文件失败，服务器异常，请联系系统管理员！");
         }
     }
 

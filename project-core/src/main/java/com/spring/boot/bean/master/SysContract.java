@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -41,12 +42,12 @@ public class SysContract {
      * 合同开始时间
      */
     @IsNotNull(message = "合同开始时间不能为空！")//自定义注解
-    private Date contractStartTime;
+    private Timestamp contractStartTime;
     /**
      * 合同结束时间
      */
     @IsNotNull(message = "合同到期时间不能为空！")//自定义注解
-    private Date contractEndTime;
+    private Timestamp contractEndTime;
     /**
      * 合同类型id
      */
@@ -154,19 +155,19 @@ public class SysContract {
         this.contractMoney = contractMoney;
     }
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    public Date getContractStartTime() {
+    public Timestamp getContractStartTime() {
         return contractStartTime;
     }
 
-    public void setContractStartTime(Date contractStartTime) {
+    public void setContractStartTime(Timestamp contractStartTime) {
         this.contractStartTime = contractStartTime;
     }
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    public Date getContractEndTime() {
+    public Timestamp getContractEndTime() {
         return contractEndTime;
     }
 
-    public void setContractEndTime(Date contractEndTime) {
+    public void setContractEndTime(Timestamp contractEndTime) {
         this.contractEndTime = contractEndTime;
     }
 

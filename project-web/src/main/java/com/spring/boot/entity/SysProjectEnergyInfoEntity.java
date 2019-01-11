@@ -75,17 +75,17 @@ public class SysProjectEnergyInfoEntity {
      */
     private String previousFileInfo;
     /**
-     * 往来文件数量
+     * 往来文件信息
      */
-    private Integer previousFileNum;
+    private Integer previousFileMes;
     /**
      * 验收文件
      */
     private String acceptFileInfo;
     /**
-     * 验收文件数量
+     * 验收文件信息
      */
-    private Integer acceptFileNum;
+    private Integer acceptFileMes;
 
     public Long getProjectId() {
         return projectId;
@@ -183,19 +183,19 @@ public class SysProjectEnergyInfoEntity {
         this.acceptFileInfo = acceptFileInfo;
     }
 
-    public Integer getPreviousFileNum() {
-        return previousFileNum;
+    public Integer getPreviousFileMes() {
+        return previousFileMes;
     }
 
-    public void setPreviousFileNum(Integer previousFileNum) {
-        this.previousFileNum = previousFileNum;
+    public void setPreviousFileMes(Integer previousFileMes) {
+        this.previousFileMes = previousFileMes;
     }
 
-    public Integer getAcceptFileNum() {
-        return acceptFileNum;
+    public Integer getAcceptFileMes() {
+        return acceptFileMes;
     }
 
-    public void setAcceptFileNum(Integer acceptFileNum) {
-        this.acceptFileNum = acceptFileNum;
+    public void setAcceptFileMes(Integer acceptFileMes) {
+        this.acceptFileMes = acceptFileMes;
     }
 }

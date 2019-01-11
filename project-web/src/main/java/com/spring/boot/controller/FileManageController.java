@@ -401,8 +401,14 @@ public class FileManageController {
         }else if(UtilHelper.isEmpty(type)){
             return R.error(400, "删除文件类型格式不正确，请联系系统管理员进行处理！");
         }
-        Map<String, Object> map=sysFileService.deleteFileByFileId(request,fileIds,type);
-        return R.ok(map);
+        try {
+            Map<String, Object> map=sysFileService.deleteFileByFileId(request,fileIds,type);
+            return R.ok(map);
+        }catch (Exception e){
+            e.printStackTrace();
+            return R.error(500, "删除失败，服务器异常，请联系系统管理员！");
+        }
+
     }
 
 }

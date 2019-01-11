@@ -82,4 +82,9 @@ public class SysProjectBusinessServiceImpl implements SysProjectBusinessService 
     public List<SysProject> sysProjectEnergyAnalysisForMonth(Map<String, Object> map) {
         return sysProjectDao.sysProjectEnergyAnalysisForMonth(map);
     }
+
+    @Override
+    public SysProject sysProjectUnfinishedForYear(Map<String, Object> map) {
+        return sysProjectDao.sysProjectUnfinishedForYear(map);
+    }
 }

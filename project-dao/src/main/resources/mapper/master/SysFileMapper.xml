@@ -23,6 +23,15 @@
         sys_contract_file where 1=1
         and file_id = #{fileId}
     </select>
+
+    <!--根据文件id基础数据附件文档信息-->
+    <select id="fileSysBasicDataFileById" resultType="com.spring.boot.bean.master.SysBasicDataFile" >
+        SELECT
+        file_name AS fileName,file_url as fileUrl  FROM
+        sys_basic_data_file where 1=1
+        and file_id = #{fileId}
+    </select>
+
     <!--根据id删除品质文档附件信息-->
     <delete id="deleteSysQualityManageFileById" >
         DELETE FROM sys_quality_manage_file WHERE file_id = #{fileId}
@@ -34,6 +43,19 @@
     <!--根据id删除合同文档附件信息-->
     <delete id="deleteSysContractFileById" >
         DELETE FROM sys_contract_file WHERE file_id = #{fileId}
+    </delete>
+
+    <!--根据文件id删除基础数据文件-->
+    <delete id="deleteSysBasicFileById" >
+        DELETE FROM sys_basic_data_file WHERE file_id = #{fileId}
+    </delete>
+    <!--根据文件id删除应收账款文件-->
+    <delete id="deleteSysAccountsReceivableFileById" >
+        DELETE FROM a WHERE file_id = #{fileId}
+    </delete>
+    <!--根据文件id删除预算执行文件-->
+    <delete id="deleteSysBudgetFileById" >
+        DELETE FROM a WHERE file_id = #{fileId}
     </delete>
 
 </mapper>
