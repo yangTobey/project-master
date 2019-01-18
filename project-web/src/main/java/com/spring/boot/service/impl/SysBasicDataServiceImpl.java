@@ -138,7 +138,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
     public Map<String, Object> addSysBasicData(SysBasicData sysBasicDataAdd) {
         SysBasicData sysBasicData = sysBasicDataBusinessService.sysBasicDataRecord(sysBasicDataAdd.getCompanyId(), sysBasicDataAdd.getYear(), sysBasicDataAdd.getMonth());
         if (null != sysBasicData) {
-            return R.error(500, "新增失败，系统已存在" + sysBasicDataAdd.getYear() + "年" + sysBasicDataAdd.getMonth() + "月的记录，不能重复添加");
+            return R.error(500, "新增失败，该公司系统已存在" + sysBasicDataAdd.getYear() + "年" + sysBasicDataAdd.getMonth() + "月的记录，不能重复添加");
         }
         /*Map<String, Object> map = new HashMap<String, Object>();
         map.put("year", year);
@@ -212,7 +212,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         SysBasicData sysBasicData = sysBasicDataBusinessService.sysBasicDataRecord(sysBasicDataUpdate.getCompanyId(), sysBasicDataUpdate.getYear(), sysBasicDataUpdate.getMonth());
         if (null != sysBasicData) {
             if (!sysBasicDataUpdate.getBasicId().equals(sysBasicData.getBasicId())) {
-                return R.error(500, "更新失败，系统已存在" + sysBasicDataUpdate.getYear() + "年" + sysBasicDataUpdate.getMonth() + "月的记录，不能重复添加");
+                return R.error(500, "更新失败，该公司系统已存在" + sysBasicDataUpdate.getYear() + "年" + sysBasicDataUpdate.getMonth() + "月的记录，不能重复添加");
             }
         }
         Map<String, Object> map = new HashMap<String, Object>();

@@ -1065,6 +1065,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 sysBudgetDetailsForyear.setBudgetExpensesMap(budgetExpensesMap);
                 sysBudgetDetailsForyear.setRealProfitsMap(realProfitsMap);
                 sysBudgetDetailsForyear.setRealProfitsScaleMap(realProfitsScaleMap);
+            }else{
+                sysBudgetDetailsForyear=new SysBudgetDetails();
             }
             //sysBudgetDetailsEntity.setSysBudgetDetailsForMonth(sysBudgetDetailsForMonth);
             //sysBudgetDetailsEntity.setSysBudgetDetailsForYear(sysBudgetDetailsForyear);

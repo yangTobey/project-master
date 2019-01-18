@@ -12,6 +12,7 @@ import java.io.IOException;
 /**
  * Created by Administrator on 2018/11/29.
  * xss和sql关键字过滤
+ * 其中/*配置表示过滤所有请求
  */
 @WebFilter(urlPatterns = "/*")
 public class XssFilter implements Filter {

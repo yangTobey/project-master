@@ -162,8 +162,8 @@ public class ShiroConfiguration {
         //https://blog.csdn.net/tydyz/article/details/80302302
         filterChainDefinitionMap.put("/druid/**","anon");
 
-        /*注：如果开通验证权限，则会出现跨域问题，后期需要修改配置*/
-        filterChainDefinitionMap.put("/**", "anon");
+        /*注：如果开通验证权限，则会出现跨域问题，后期需要修改配置（相当于前后端分离开发情况，配置需要修改）*/
+        filterChainDefinitionMap.put("/**", "authc");
 
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilterFactoryBean.setLoginUrl("/");

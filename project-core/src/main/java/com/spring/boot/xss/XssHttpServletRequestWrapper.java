@@ -59,17 +59,24 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     private String cleanXSS(String value) {
 
         //以请求头为实例：当value为:application/json, text/javascript, */*; q=0.01
+        //注：replaceAll 的第一个参数是正则表达式，故而要经过两次转义，一次Java、一次正则。因此就需要四个反斜杠才可以匹配一个反斜杠。故而，替换一个反斜杠为空的replaceAll的代码即为：
+        //str1 = str.replaceAll("\\\\","");
+        //.*?是非贪婪的匹配，如果是贪婪的就是.*匹配任何字符，但用贪婪的就是不包含>的内容
 
 
         //You'll need to remove the spaces from the html entities below
-        value = value.replaceAll("<", "& lt;").replaceAll(">", "& gt;");
-        value = value.replaceAll("\\(", "& #40;").replaceAll("\\)", "& #41;");
-        value = value.replaceAll("'", "& #39;");
+        //value = value.replaceAll("<", "& lt;").replaceAll(">", "& gt;");
+        //value = value.replaceAll("\\(", "& #40;").replaceAll("\\)", "& #41;");
+        //value = value.replaceAll("'", "& #39;");
         value = value.replaceAll("eval\\((.*)\\)", "");
+        value = value.replaceAll("<script>(.*?)</script>", "");
+        value = value.replaceAll("</script>", "");
+        value = value.replaceAll("expression\\((.*?)\\)", "");
+        value = value.replaceAll("onload(.*?)=", "");
         value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
-        value = value.replaceAll("script", "");//当 text/javascript,会出现错误
+        //value = value.replaceAll("script", "");//当 text/javascript,会出现错误
         //value = value.replaceAll("[*]", "[" + "*]");//该处需要省略，假如请求头有*号会出现错误
-        value = value.replaceAll("[+]", "[" + "+]");
+        //value = value.replaceAll("[+]", "[" + "+]");
         //value = value.replaceAll("[?]", "[" + "?]");
 
 

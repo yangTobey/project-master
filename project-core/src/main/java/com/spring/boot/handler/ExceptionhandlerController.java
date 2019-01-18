@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * Created by Yang on 2018/12/12.
  * 异常处理类，用于在系统抛出异常时。向前端返回错误信息，达到友好提示的效果
+ * 其中：返回码400表示异常数据
  * 注：可自定义异常类,并且主动抛出异常，如：throw new UserInvalidException("用户不存在或账户密码错误!");
  * 注：https://blog.csdn.net/stonetudou/article/details/77850937
  */
@@ -85,16 +86,42 @@ class ExceptionhandlerController {
         return R.error(ex.getStatus(), ex.getMessage());
     }
 
+    /**
+     * 自定义系统异常
+     * @param response
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(SysException.class)
     public R sysExceptionHandler(HttpServletResponse response, UserInvalidException ex) {
         //response.setStatus(200);
         logger.error(ex.getMessage(),ex);
         return R.error(400, ex.getMessage());
     }
+
+    /**
+     * xss过滤异常
+     * @param response
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(XssException.class)
     public R xssException(HttpServletResponse response, XssException ex) {
         //response.setStatus(200);
         logger.error(ex.getMessage(),ex);
         return R.error(400, ex.getMessage());
+    }
+
+    /**
+     * 数组越界异常
+     * @param response
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(ArrayIndexOutOfBoundsException.class)
+    public R arrayIndexOutOfBoundsException(HttpServletResponse response, ArrayIndexOutOfBoundsException ex) {
+        //response.setStatus(200);
+        logger.error(ex.getMessage(),ex);
+        return R.error(400, "数组越界，请检查数据格式的正确性！！");
     }
 }

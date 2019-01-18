@@ -12,6 +12,7 @@ import java.util.Map;
  * Created by Administrator on 2018/3/2.
  */
 public class SysBudgetDetails implements Serializable {
+    private static final long serialVersionUID = 3519598773294853106L;
     private Long budgetId;
     private Long companyId;
     private Integer year;

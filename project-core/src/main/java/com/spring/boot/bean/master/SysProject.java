@@ -48,11 +48,11 @@ public class SysProject implements Serializable {
     /**
      * 往来文件信息
      */
-    private Integer previousFileMes;
+    private String previousFileMes;
     /**
      * 验收文件信息
      */
-    private Integer acceptFileMes;
+    private String acceptFileMes;
 
 
 
@@ -248,19 +248,19 @@ public class SysProject implements Serializable {
         this.mtoMtConsumptionWaterScale = mtoMtConsumptionWaterScale;
     }
 
-    public Integer getPreviousFileMes() {
+    public String getPreviousFileMes() {
         return previousFileMes;
     }
 
-    public void setPreviousFileMes(Integer previousFileMes) {
+    public void setPreviousFileMes(String previousFileMes) {
         this.previousFileMes = previousFileMes;
     }
 
-    public Integer getAcceptFileMes() {
+    public String getAcceptFileMes() {
         return acceptFileMes;
     }
 
-    public void setAcceptFileMes(Integer acceptFileMes) {
+    public void setAcceptFileMes(String acceptFileMes) {
         this.acceptFileMes = acceptFileMes;
     }
 }

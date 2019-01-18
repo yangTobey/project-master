@@ -42,7 +42,11 @@ public class IsNotNullValidation implements ConstraintValidator<IsNotNull, Objec
                     }
                     //double类型只保留两位小数
                     Pattern pattern = Pattern.compile("^[0-9]+(.[0-9]{0,2})?$");
-                    Matcher isNum = pattern.matcher(value.toString());
+                    //double数字过大时，会以科学计数法显示，该处需要避免科学计数法
+                    BigDecimal bigDecimal = new BigDecimal(value.toString());
+                    //System.out.println("数据："+bigDecimal.toString());
+                    Matcher isNum = pattern.matcher(bigDecimal.toString());
+                    //System.out.println("数据格式："+isNum.matches());
                     return isNum.matches();
                 }else if (value instanceof String) {
                     return StringUtils.isNotEmpty(value.toString());

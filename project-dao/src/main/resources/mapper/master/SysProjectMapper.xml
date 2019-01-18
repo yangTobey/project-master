@@ -137,8 +137,8 @@
 	<!--查找年度工程能耗分析信息-->
 	<select id="sysProjectEnergyAnalysisForYear" resultMap="sysProject" >
 		SELECT
-		SUM(project.project_unfinished_total) AS yearProjectUnfinishedTotal,
-		SUM(project.project_finished_total) AS yearProjectFinishedTotal,
+		/*SUM(project.project_unfinished_total) AS yearProjectUnfinishedTotal,
+		SUM(project.project_finished_total) AS yearProjectFinishedTotal,*/
 		SUM(month_consumption_electricity) as yearConsumptionElectricity,
 		SUM(month_consumption_water) as yearConsumptionWater
 		FROM sys_project AS project
@@ -158,13 +158,13 @@
 			</choose>
 
 		and project.year=#{year}
-		<if test="month != null and month != 0">
+		<!--<if test="month != null and month != 0">
 			and project.month = #{month}
-		</if>
+		</if>-->
 		and project.status_code!=2
 	</select>
 
-	<!--查找年度工程能耗分析信息-->
+	<!--查找年度工程能耗分析信息（工程遗留问题、已处理遗留问题，统计月信息作为年度总结果信息，当月数据=上月总数据+当月实际数据）-->
 	<select id="sysProjectUnfinishedForYear" resultMap="sysProject" >
 		SELECT
 		project.project_unfinished_total AS projectUnfinishedTotal,
@@ -184,7 +184,11 @@
 			</otherwise>
 		</choose>
 
-		and project.year=#{year} and project.month=#{month} and project.status_code!=2
+		and project.year=#{year}
+		<if test="month != null and month != 0">
+			and project.month = #{month}
+		</if>
+		and project.status_code!=2
 	</select>
 	<!--根据年份、月份、公司id查找工程能耗分析信息-->
 	<select id="sysProjectEnergyByYearAndMonthAndCompanyId" resultMap="sysProject" >

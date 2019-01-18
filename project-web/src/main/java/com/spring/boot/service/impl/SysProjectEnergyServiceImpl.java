@@ -356,12 +356,12 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
             SysProject sysProjectForYear = sysProjectBusinessService.sysProjectEnergyAnalysisForYear(map);
 
             //获取工程遗留问题等年度信息（该处经过需求变更，已经由原来的12个月相加，变为获取当上月的数据：当月数据已经累计相加后包含了上月数据，根据10号更新的规格）2019-1-9号修改
-            //SysProject sysProjectUnfinishedForYear = sysProjectBusinessService.sysProjectUnfinishedForYear(unfinishedMap);
+            SysProject sysProjectUnfinishedForYear = sysProjectBusinessService.sysProjectUnfinishedForYear(unfinishedMap);
 
             if (null != sysProjectForYear) {
                 sysProjectForYear.setYearProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProjectForYear.getYearProjectFinishedTotal(),sysProjectForYear.getYearProjectUnfinishedTotal())));
 
-               /* if(null != sysProjectUnfinishedForYear){
+               if(null != sysProjectUnfinishedForYear){
                     sysProjectForYear.setYearProjectFinishedTotal(sysProjectUnfinishedForYear.getProjectFinishedTotal());
                     sysProjectForYear.setYearProjectUnfinishedTotal(sysProjectUnfinishedForYear.getProjectUnfinishedTotal());
                     sysProjectForYear.setYearProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProjectUnfinishedForYear.getProjectFinishedTotal(),sysProjectUnfinishedForYear.getProjectUnfinishedTotal())));
@@ -369,7 +369,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
                     sysProjectForYear.setYearProjectFinishedTotal(0);
                     sysProjectForYear.setYearProjectUnfinishedTotal(0);
                     sysProjectForYear.setYearProjectUnfinishedScale(0D);
-                }*/
+                }
 
                 //某一个月数据（每月10号到下个月10号显示上一个月的数据，即5月10号到6月10号显示4月份数据。）
                 SysProject sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(selectYear, selectMonth, sysUserCompanyIds);
