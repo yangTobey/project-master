@@ -61,15 +61,15 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 sysUserCompanyIds.add(companyId);
             }
             //当年
-            int year=UtilHelper.getYear();
+            int year = UtilHelper.getYear();
             //当周
-            int weekOfYear=UtilHelper.getWeekOfYear();
+            int weekOfYear = UtilHelper.getWeekOfYear();
             //当年第一周时，查找上一年的最后一周
-            if(weekOfYear==1){
-                year=year-1;
-                weekOfYear=UtilHelper.getMaxWeekNumOfYear(year);
-            }else{
-                weekOfYear=weekOfYear-1;
+            if (weekOfYear == 1) {
+                year = year - 1;
+                weekOfYear = UtilHelper.getMaxWeekNumOfYear(year);
+            } else {
+                weekOfYear = weekOfYear - 1;
             }
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("year", year);
@@ -113,8 +113,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         Map<String, Integer> resultMap = new HashMap<String, Integer>();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("companyId", companyId);
-        SysCompany sysCompany=sysCompanyBusinessService.findSysCompanyByCompanyId(map);
-        if(null!=sysCompany){
+        SysCompany sysCompany = sysCompanyBusinessService.findSysCompanyByCompanyId(map);
+        if (null != sysCompany) {
             //根据公司id、年份查找数据库当年周数最大的记录
             int year = UtilHelper.getYear();
             //判断是否存在
@@ -154,7 +154,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                             isExist = false;
                         } else {
                             //当上一年的数据已达到最大周数时，直接返回下一年的第一周数据
-                            if (sysChargeDetails.getYear() == year  && sysChargeDetails.getWeekOfYear() == UtilHelper.getMaxWeekNumOfYear(year)) {
+                            if (sysChargeDetails.getYear() == year && sysChargeDetails.getWeekOfYear() == UtilHelper.getMaxWeekNumOfYear(year)) {
                                 resultMap.put("year", year + 1);
                                 resultMap.put("weekOfYear", 1);
                                 isExist = true;
@@ -166,7 +166,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                         }
                     } else {
                         //当年的数据已达到最大周数时，直接返回下一年的第一周数据
-                        if (sysChargeDetails.getYear() == year &&  sysChargeDetails.getWeekOfYear() == UtilHelper.getMaxWeekNumOfYear(year)) {
+                        if (sysChargeDetails.getYear() == year && sysChargeDetails.getWeekOfYear() == UtilHelper.getMaxWeekNumOfYear(year)) {
                             resultMap.put("year", year + 1);
                             resultMap.put("weekOfYear", 1);
                             isExist = true;
@@ -182,15 +182,15 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             }
             if (resultMap.size() > 0) {
                 //2018年6月22周到24周数据，添加不受限制，因22周系统上线，周数添加控制需求更改
-                if(resultMap.get("year")==2018&&(resultMap.get("weekOfYear")==22||resultMap.get("weekOfYear")==23||resultMap.get("weekOfYear")==24)){
+                if (resultMap.get("year") == 2018 && (resultMap.get("weekOfYear") == 22 || resultMap.get("weekOfYear") == 23 || resultMap.get("weekOfYear") == 24)) {
                     return R.ok().putData(200, resultMap, "获取成功！");
-                }else{
+                } else {
                     //当需要添加的数据年份和周数都与当前前年份、周数一致时，才允许添加，避免前端提前添加数据造成误导
-                    if(UtilHelper.getYear()<resultMap.get("year")){
+                    if (UtilHelper.getYear() < resultMap.get("year")) {
                         return R.error(500, "本周数据已添加，下周数据暂不能添加，谢谢配合！");
-                    }else if(UtilHelper.getYear()==resultMap.get("year")&&UtilHelper.getWeekOfYear()<resultMap.get("weekOfYear")){
+                    } else if (UtilHelper.getYear() == resultMap.get("year") && UtilHelper.getWeekOfYear() < resultMap.get("weekOfYear")) {
                         return R.error(500, "本周数据已添加，下周数据暂不能添加，谢谢配合！");
-                    }else{
+                    } else {
                         return R.ok().putData(200, resultMap, "获取成功！");
                     }
                     /*if(UtilHelper.getYear()==resultMap.get("year")&&UtilHelper.getWeekOfYear()==resultMap.get("weekOfYear")){
@@ -203,7 +203,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             } else {
                 return R.error(500, "服务器异常，请联系系统管理员进行处理！");
             }
-        }else{
+        } else {
             return R.error(500, "公司不存在，请联系系统管理员进行处理！");
         }
 
@@ -211,9 +211,9 @@ public class SysFinancialServiceImpl implements SysFinancialService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addSysCharge(Long companyId, Double chargeMoney, Double chargeMoneyNow, Double chargeDebt, Double chargeDebtReturn,Integer year,Integer weekOfYear) {
+    public Map<String, Object> addSysCharge(Long companyId, Double chargeMoney, Double chargeMoneyNow, Double chargeDebt, Double chargeDebtReturn, Integer year, Integer weekOfYear) {
 
-        SysChargeDetails sysChargeDetails = sysChargeBusinessService.findSysChargeDetailsByWeekOfYear(year,weekOfYear, companyId);
+        SysChargeDetails sysChargeDetails = sysChargeBusinessService.findSysChargeDetailsByWeekOfYear(year, weekOfYear, companyId);
         if (null != sysChargeDetails) {
             return R.error(500, "本周数据已经添加，不能再次添加，如有疑问，请联系系统管理员！");
         } else {
@@ -283,7 +283,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             SysUpdateDataRules sysUpdateDataRules = sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
             //获取需要查询的年份和月份
             Map<String, Integer> yearAndMonthMap = SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
-            if(selectYear==null||selectMonth==null){
+            if (selectYear == null || selectMonth == null) {
                 selectYear = yearAndMonthMap.get("year");
                 selectMonth = yearAndMonthMap.get("month");
             }
@@ -295,54 +295,54 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             mapForMonth.put("month", selectMonth);
             mapForMonth.put("sysUserCompanyIds", sysUserCompanyIds);
             //注：应收账款里面的地产应收、已收款，小业主的应收、已收款，由原来的统计当月数据=当月数据，变更为当月数据=当月填写数据-上月填写数据（其中1月份不需要进行该操作） 2019-1-10修改
-            if(selectMonth==1){
+            if (selectMonth == 1) {
                 mapForLastMonth.put("year", selectYear);
                 mapForLastMonth.put("month", selectMonth);
                 mapForLastMonth.put("sysUserCompanyIds", sysUserCompanyIds);
-            }else{
+            } else {
                 mapForLastMonth.put("year", selectYear);
-                mapForLastMonth.put("month", selectMonth-1);
+                mapForLastMonth.put("month", selectMonth - 1);
                 mapForLastMonth.put("sysUserCompanyIds", sysUserCompanyIds);
             }
 
-            Double receivableAccountsOwnerData,completeAccountsOwnerData,completeCoupon,receivableCoupon,completeVacancy;
-            Double receivableVacancy,completeSubsidy,receivableSubsidy,completeSales,receivableSales,receivableOpen;
-            Double completeOpen,completePropertySubsidy,receivablePropertySubsidy,completeHouseOther,receivableHouseOther;
-            Double completeHouse,receivableHouse;
+            Double receivableAccountsOwnerData, completeAccountsOwnerData, completeCoupon, receivableCoupon, completeVacancy;
+            Double receivableVacancy, completeSubsidy, receivableSubsidy, completeSales, receivableSales, receivableOpen;
+            Double completeOpen, completePropertySubsidy, receivablePropertySubsidy, completeHouseOther, receivableHouseOther;
+            Double completeHouse, receivableHouse;
 
             //10号之前为上上月的数据，10号之前为上月的数据（也可以封装成map传值）
             SysAccountsReceivable sysAccountsReceivable = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(mapForMonth);
             //（10号之前为上上月的数据，10号之前为上月的数据）在这基础上再上一个月数据，比如，3月9号，该处查询的数据为1月的数据，3月10号，查询的也是1月数据，但4月10号查询的为2月数据
-            SysAccountsReceivable sysAccountsReceivableLsatMonth=null;
-            if(selectMonth!=1){
+            SysAccountsReceivable sysAccountsReceivableLsatMonth = null;
+            if (selectMonth != 1) {
                 sysAccountsReceivableLsatMonth = sysAccountsReceivableBusinessService.sysAccountsReceivableAnalysis(mapForLastMonth);
             }
 
             if (null != sysAccountsReceivable) {
-                if(selectMonth!=1&&null!=sysAccountsReceivableLsatMonth){
+                if (selectMonth != 1 && null != sysAccountsReceivableLsatMonth) {
                     //注：除了一月份，其他月份的数据需要减去上月数据
-                    receivableAccountsOwnerData=sysAccountsReceivable.getReceivableAccountsOwner()-sysAccountsReceivableLsatMonth.getReceivableAccountsOwner();
-                    completeAccountsOwnerData=sysAccountsReceivable.getCompleteAccountsOwner()-sysAccountsReceivableLsatMonth.getCompleteAccountsOwner();
-                    completeCoupon=sysAccountsReceivable.getCompleteCoupon()-sysAccountsReceivableLsatMonth.getCompleteCoupon();
-                    receivableCoupon=sysAccountsReceivable.getReceivableCoupon()-sysAccountsReceivableLsatMonth.getReceivableCoupon();
-                    completeVacancy=sysAccountsReceivable.getCompleteVacancy()-sysAccountsReceivableLsatMonth.getCompleteVacancy();
-                    receivableVacancy=sysAccountsReceivable.getReceivableVacancy()-sysAccountsReceivableLsatMonth.getReceivableVacancy();
-                    completeSubsidy=sysAccountsReceivable.getCompleteSubsidy()-sysAccountsReceivableLsatMonth.getCompleteSubsidy();
-                    receivableSubsidy=sysAccountsReceivable.getReceivableSubsidy()-sysAccountsReceivableLsatMonth.getReceivableSubsidy();
-                    completeSales=sysAccountsReceivable.getCompleteSales()-sysAccountsReceivableLsatMonth.getCompleteSales();
-                    receivableSales=sysAccountsReceivable.getReceivableSales()-sysAccountsReceivableLsatMonth.getReceivableSales();
-                    receivableOpen=sysAccountsReceivable.getReceivableOpen()-sysAccountsReceivableLsatMonth.getReceivableOpen();
-                    completeOpen=sysAccountsReceivable.getCompleteOpen()-sysAccountsReceivableLsatMonth.getCompleteOpen();
-                    completePropertySubsidy=sysAccountsReceivable.getCompletePropertySubsidy()-sysAccountsReceivableLsatMonth.getCompletePropertySubsidy();
-                    receivablePropertySubsidy=sysAccountsReceivable.getReceivablePropertySubsidy()-sysAccountsReceivableLsatMonth.getReceivablePropertySubsidy();
-                    completeHouseOther=sysAccountsReceivable.getCompleteHouseOther()-sysAccountsReceivableLsatMonth.getCompleteHouseOther();
-                    receivableHouseOther=sysAccountsReceivable.getReceivableHouseOther()-sysAccountsReceivableLsatMonth.getReceivableHouseOther();
-                    completeHouse=sysAccountsReceivable.getCompleteHouse()-sysAccountsReceivableLsatMonth.getCompleteHouse();
-                    receivableHouse=sysAccountsReceivable.getReceivableHouse()-sysAccountsReceivableLsatMonth.getReceivableHouse();
+                    receivableAccountsOwnerData = sysAccountsReceivable.getReceivableAccountsOwner() - sysAccountsReceivableLsatMonth.getReceivableAccountsOwner();
+                    completeAccountsOwnerData = sysAccountsReceivable.getCompleteAccountsOwner() - sysAccountsReceivableLsatMonth.getCompleteAccountsOwner();
+                    completeCoupon = sysAccountsReceivable.getCompleteCoupon() - sysAccountsReceivableLsatMonth.getCompleteCoupon();
+                    receivableCoupon = sysAccountsReceivable.getReceivableCoupon() - sysAccountsReceivableLsatMonth.getReceivableCoupon();
+                    completeVacancy = sysAccountsReceivable.getCompleteVacancy() - sysAccountsReceivableLsatMonth.getCompleteVacancy();
+                    receivableVacancy = sysAccountsReceivable.getReceivableVacancy() - sysAccountsReceivableLsatMonth.getReceivableVacancy();
+                    completeSubsidy = sysAccountsReceivable.getCompleteSubsidy() - sysAccountsReceivableLsatMonth.getCompleteSubsidy();
+                    receivableSubsidy = sysAccountsReceivable.getReceivableSubsidy() - sysAccountsReceivableLsatMonth.getReceivableSubsidy();
+                    completeSales = sysAccountsReceivable.getCompleteSales() - sysAccountsReceivableLsatMonth.getCompleteSales();
+                    receivableSales = sysAccountsReceivable.getReceivableSales() - sysAccountsReceivableLsatMonth.getReceivableSales();
+                    receivableOpen = sysAccountsReceivable.getReceivableOpen() - sysAccountsReceivableLsatMonth.getReceivableOpen();
+                    completeOpen = sysAccountsReceivable.getCompleteOpen() - sysAccountsReceivableLsatMonth.getCompleteOpen();
+                    completePropertySubsidy = sysAccountsReceivable.getCompletePropertySubsidy() - sysAccountsReceivableLsatMonth.getCompletePropertySubsidy();
+                    receivablePropertySubsidy = sysAccountsReceivable.getReceivablePropertySubsidy() - sysAccountsReceivableLsatMonth.getReceivablePropertySubsidy();
+                    completeHouseOther = sysAccountsReceivable.getCompleteHouseOther() - sysAccountsReceivableLsatMonth.getCompleteHouseOther();
+                    receivableHouseOther = sysAccountsReceivable.getReceivableHouseOther() - sysAccountsReceivableLsatMonth.getReceivableHouseOther();
+                    completeHouse = sysAccountsReceivable.getCompleteHouse() - sysAccountsReceivableLsatMonth.getCompleteHouse();
+                    receivableHouse = sysAccountsReceivable.getReceivableHouse() - sysAccountsReceivableLsatMonth.getReceivableHouse();
                     //completePropertySubsidy=sysAccountsReceivable.getReceivableAccountsOwner()-sysAccountsReceivableLsatMonth.getReceivableAccountsOwner();
                     //----------------------重新赋值-------------------------
-                    sysAccountsReceivable=new SysAccountsReceivable(receivableAccountsOwnerData,completeAccountsOwnerData,completeCoupon,receivableCoupon,completeVacancy,receivableVacancy,completeSubsidy,receivableSubsidy,
-                            completeSales,receivableSales,receivableOpen,completeOpen,completePropertySubsidy,receivablePropertySubsidy,completeHouseOther,receivableHouseOther,completeHouse,receivableHouse);
+                    sysAccountsReceivable = new SysAccountsReceivable(receivableAccountsOwnerData, completeAccountsOwnerData, completeCoupon, receivableCoupon, completeVacancy, receivableVacancy, completeSubsidy, receivableSubsidy,
+                            completeSales, receivableSales, receivableOpen, completeOpen, completePropertySubsidy, receivablePropertySubsidy, completeHouseOther, receivableHouseOther, completeHouse, receivableHouse);
 
                 }
 
@@ -397,7 +397,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
     }
 
     @Override
-    public Map<String, Object> sysAccountsReceivableList(Long companyId, Integer year, Integer limit, Integer offset,Integer month) {
+    public Map<String, Object> sysAccountsReceivableList(Long companyId, Integer year, Integer limit, Integer offset, Integer month) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
@@ -415,8 +415,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         map.put("offset", offset);
         try {
             //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
-            PageHelper.startPage((offset/limit)+1,limit);
-            List<SysAccountsReceivable> list=sysAccountsReceivableBusinessService.sysAccountsReceivableList(map);
+            PageHelper.startPage((offset / limit) + 1, limit);
+            List<SysAccountsReceivable> list = sysAccountsReceivableBusinessService.sysAccountsReceivableList(map);
             PageInfoBean result = new PageInfoBean(list);
             resultMap.put("total", result.getTotalOfData());
             resultMap.put("list", result.getList());
@@ -551,9 +551,9 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             SysUpdateDataRules sysUpdateDataRules = sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
             //获取需要查询的年份和月份
             Map<String, Integer> yearAndMonthMap = SysUtil.getYearAndMonth(sysUpdateDataRules.getDay());
-            if(selectYear==null||selectMonth==null){
-                selectYear=yearAndMonthMap.get("year");
-                selectMonth=yearAndMonthMap.get("month");
+            if (selectYear == null || selectMonth == null) {
+                selectYear = yearAndMonthMap.get("year");
+                selectMonth = yearAndMonthMap.get("month");
             }
             mapForMonth.put("year", selectYear);
             mapForMonth.put("month", selectMonth);
@@ -562,59 +562,59 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             mapForYear.put("year", selectYear);
             mapForYear.put("month", selectMonth);
             mapForYear.put("sysUserCompanyIds", sysUserCompanyIds);
-            if(selectMonth==1){
+            if (selectMonth == 1) {
                 mapForLastMonth.put("year", selectYear);
                 mapForLastMonth.put("month", selectMonth);
                 mapForLastMonth.put("sysUserCompanyIds", sysUserCompanyIds);
-            }else{
+            } else {
                 mapForLastMonth.put("year", selectYear);
-                mapForLastMonth.put("month", selectMonth-1);
+                mapForLastMonth.put("month", selectMonth - 1);
                 mapForLastMonth.put("sysUserCompanyIds", sysUserCompanyIds);
             }
             //mybatis涉及到in查询的，传参数时，可以一个或者多个，也可以封装成map进行传值
             SysBudgetDetails sysBudgetDetails = sysBudgetDetailsBusinessService.sysBudgetDetailsAnalysis(mapForMonth);
             //上月数据
             SysBudgetDetails sysBudgetLastMonthDetails = null;
-            if(selectMonth!=1){
+            if (selectMonth != 1) {
                 sysBudgetLastMonthDetails = sysBudgetDetailsBusinessService.sysBudgetDetailsAnalysis(mapForLastMonth);
             }
-             Double budgetIncomeData,realIncomeData;
-             Double budgetProfitsData;
-             Double realProfitsData;
-             Double budgetExpensesData;
-             Double personnelCostData;
-             Double administrativeCostData;
-             Double materialCost;
-             Double energyCost;
-             Double equipmentCost;
-             Double cleaningCost;
-             Double afforestCost;
-             Double orderMaintenanceCost;
-             Double communityActivitiesCost;
-             Double otherCost;
-             Double realExpensesTotalData;
+            Double budgetIncomeData, realIncomeData;
+            Double budgetProfitsData;
+            Double realProfitsData;
+            Double budgetExpensesData;
+            Double personnelCostData;
+            Double administrativeCostData;
+            Double materialCost;
+            Double energyCost;
+            Double equipmentCost;
+            Double cleaningCost;
+            Double afforestCost;
+            Double orderMaintenanceCost;
+            Double communityActivitiesCost;
+            Double otherCost;
+            Double realExpensesTotalData;
 
             if (null != sysBudgetDetails) {
                 //除了1月份外，其他月份的数据计算规则为：当月数据=当月数据总和-上月数据总和（每月的数据累计相加填写，需要减去上月总和才得到当月实际数据） 2019-1-10修改
-                if(selectMonth!=1&&sysBudgetLastMonthDetails!=null){
-                    budgetIncomeData=sysBudgetDetails.getBudgetIncome()-sysBudgetLastMonthDetails.getBudgetIncome();
-                    realIncomeData=sysBudgetDetails.getRealIncome()-sysBudgetLastMonthDetails.getRealIncome();
-                    budgetProfitsData=sysBudgetDetails.getBudgetProfits()-sysBudgetLastMonthDetails.getBudgetProfits();
-                    realProfitsData=sysBudgetDetails.getRealProfits()-sysBudgetLastMonthDetails.getRealProfits();
-                    budgetExpensesData=sysBudgetDetails.getBudgetExpenses()-sysBudgetLastMonthDetails.getBudgetExpenses();
-                    personnelCostData=sysBudgetDetails.getPersonnelCost()-sysBudgetLastMonthDetails.getPersonnelCost();
-                    administrativeCostData=sysBudgetDetails.getAdministrativeCost()-sysBudgetLastMonthDetails.getAdministrativeCost();
-                    materialCost=sysBudgetDetails.getMaterialCost()-sysBudgetLastMonthDetails.getMaterialCost();
-                    energyCost=sysBudgetDetails.getEnergyCost()-sysBudgetLastMonthDetails.getEnergyCost();
-                    equipmentCost=sysBudgetDetails.getEquipmentCost()-sysBudgetLastMonthDetails.getEquipmentCost();
-                    cleaningCost=sysBudgetDetails.getCleaningCost()-sysBudgetLastMonthDetails.getCleaningCost();
+                if (selectMonth != 1 && sysBudgetLastMonthDetails != null) {
+                    budgetIncomeData = sysBudgetDetails.getBudgetIncome() - sysBudgetLastMonthDetails.getBudgetIncome();
+                    realIncomeData = sysBudgetDetails.getRealIncome() - sysBudgetLastMonthDetails.getRealIncome();
+                    budgetProfitsData = sysBudgetDetails.getBudgetProfits() - sysBudgetLastMonthDetails.getBudgetProfits();
+                    realProfitsData = sysBudgetDetails.getRealProfits() - sysBudgetLastMonthDetails.getRealProfits();
+                    budgetExpensesData = sysBudgetDetails.getBudgetExpenses() - sysBudgetLastMonthDetails.getBudgetExpenses();
+                    personnelCostData = sysBudgetDetails.getPersonnelCost() - sysBudgetLastMonthDetails.getPersonnelCost();
+                    administrativeCostData = sysBudgetDetails.getAdministrativeCost() - sysBudgetLastMonthDetails.getAdministrativeCost();
+                    materialCost = sysBudgetDetails.getMaterialCost() - sysBudgetLastMonthDetails.getMaterialCost();
+                    energyCost = sysBudgetDetails.getEnergyCost() - sysBudgetLastMonthDetails.getEnergyCost();
+                    equipmentCost = sysBudgetDetails.getEquipmentCost() - sysBudgetLastMonthDetails.getEquipmentCost();
+                    cleaningCost = sysBudgetDetails.getCleaningCost() - sysBudgetLastMonthDetails.getCleaningCost();
 
-                    afforestCost=sysBudgetDetails.getAfforestCost()-sysBudgetLastMonthDetails.getAfforestCost();
-                    orderMaintenanceCost=sysBudgetDetails.getOrderMaintenanceCost()-sysBudgetLastMonthDetails.getOrderMaintenanceCost();
-                    communityActivitiesCost=sysBudgetDetails.getCommunityActivitiesCost()-sysBudgetLastMonthDetails.getCommunityActivitiesCost();
-                    otherCost=sysBudgetDetails.getOtherCost()-sysBudgetLastMonthDetails.getOtherCost();
-                    realExpensesTotalData=sysBudgetDetails.getRealExpensesTotal()-sysBudgetLastMonthDetails.getRealExpensesTotal();
-                    sysBudgetDetails=new SysBudgetDetails(budgetIncomeData, realIncomeData, budgetProfitsData, realProfitsData, budgetExpensesData, personnelCostData, administrativeCostData, materialCost, energyCost,
+                    afforestCost = sysBudgetDetails.getAfforestCost() - sysBudgetLastMonthDetails.getAfforestCost();
+                    orderMaintenanceCost = sysBudgetDetails.getOrderMaintenanceCost() - sysBudgetLastMonthDetails.getOrderMaintenanceCost();
+                    communityActivitiesCost = sysBudgetDetails.getCommunityActivitiesCost() - sysBudgetLastMonthDetails.getCommunityActivitiesCost();
+                    otherCost = sysBudgetDetails.getOtherCost() - sysBudgetLastMonthDetails.getOtherCost();
+                    realExpensesTotalData = sysBudgetDetails.getRealExpensesTotal() - sysBudgetLastMonthDetails.getRealExpensesTotal();
+                    sysBudgetDetails = new SysBudgetDetails(budgetIncomeData, realIncomeData, budgetProfitsData, realProfitsData, budgetExpensesData, personnelCostData, administrativeCostData, materialCost, energyCost,
                             equipmentCost, cleaningCost, afforestCost, orderMaintenanceCost, communityActivitiesCost, otherCost, realExpensesTotalData);
                 }
 
@@ -643,6 +643,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 SysBudgetDetails lastMonth_LastDetailis = null;
                 //上个月利润
                 Double lastMonthRealProfits = 0.00;
+                //当月实际利润
+                Double realProfits_month = 0.00;
 
                 realIncomeMap = new HashMap<Integer, Object>();
                 budgetIncomeMap = new HashMap<Integer, Object>();
@@ -668,27 +670,32 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                         budgetExpensesMap.put(month, budgetExpenses);
                         realProfitsMap.put(month, realProfits);
                         if (month == 1) {
+                            realProfits_month = realProfits;
                             lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(selectYear - 1, 12, sysUserCompanyIds);
                             //1月份时，查询上年11月的数据，经过与上年的12月比较，获取真正12月的数据 2019-1-10修改
                             lastMonth_LastDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(selectYear - 1, 11, sysUserCompanyIds);
-                            if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null&&null!=lastMonth_LastDetailis&&lastMonth_LastDetailis.getRealProfits()!=null) {
-                                lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits()-lastMonth_LastDetailis.getRealProfits());
+                            if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null) {
+                                lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits() - (lastMonth_LastDetailis == null ? 0 : lastMonth_LastDetailis.getRealProfits()));
                             }
-                            realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastMonthRealProfits), lastMonthRealProfits)));
-                        } else if(month == 2){
+                            realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits_month - lastMonthRealProfits), lastMonthRealProfits)));
+                        } else if (month == 2) {
                             lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(selectYear, 1, sysUserCompanyIds);
+
                             if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null) {
                                 lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits());
+                                realProfits_month = realProfits - lastMonthDetailis.getRealProfits();
                             }
-                            realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastMonthRealProfits), lastMonthRealProfits)));
-                        }else {
+                            realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits_month - lastMonthRealProfits), lastMonthRealProfits)));
+                        } else {
                             lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(selectYear, month - 1, sysUserCompanyIds);
+
                             //查询上月的上月的数据，经过与当月比较，获取当月的数据 2019-1-10修改
-                            lastMonth_LastDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(selectYear , month - 2, sysUserCompanyIds);
-                            if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null&&null!=lastMonth_LastDetailis&&lastMonth_LastDetailis.getRealProfits()!=null) {
-                                lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits()-lastMonth_LastDetailis.getRealProfits());
+                            lastMonth_LastDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(selectYear, month - 2, sysUserCompanyIds);
+                            if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null) {
+                                lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits() - (lastMonth_LastDetailis == null ? 0 : lastMonth_LastDetailis.getRealProfits()));
+                                realProfits_month = realProfits - lastMonthDetailis.getRealProfits();
                             }
-                            realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastMonthRealProfits), lastMonthRealProfits)));
+                            realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits_month - lastMonthRealProfits), lastMonthRealProfits)));
                         }
                     }
                 }
@@ -714,7 +721,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
     }
 
     @Override
-    public Map<String, Object> sysBudgetDetailsList(Long companyId, Integer year, Integer limit, Integer offset,Integer month) {
+    public Map<String, Object> sysBudgetDetailsList(Long companyId, Integer year, Integer limit, Integer offset, Integer month) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         List<Long> sysUserCompanyIds = null;
@@ -732,8 +739,8 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         map.put("offset", offset);
         try {
             //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
-            PageHelper.startPage((offset/limit)+1,limit);
-            List<SysBudgetDetails> list=sysBudgetDetailsBusinessService.sysBudgetDetailsList(map);
+            PageHelper.startPage((offset / limit) + 1, limit);
+            List<SysBudgetDetails> list = sysBudgetDetailsBusinessService.sysBudgetDetailsList(map);
             PageInfoBean result = new PageInfoBean(list);
             resultMap.put("total", result.getTotalOfData());
             resultMap.put("list", result.getList());
@@ -830,18 +837,18 @@ public class SysFinancialServiceImpl implements SysFinancialService {
         try {
             Map<String, Object> map = new HashMap<String, Object>();
             //当年
-            int year=UtilHelper.getYear();
+            int year = UtilHelper.getYear();
             //当周
-            int weekOfYear=UtilHelper.getWeekOfYear();
+            int weekOfYear = UtilHelper.getWeekOfYear();
             //当年第一周时，查找上一年的最后一周
-            if(weekOfYear==1){
-                year=year-1;
-                weekOfYear=UtilHelper.getMaxWeekNumOfYear(year);
-            }else{
-                weekOfYear=weekOfYear-1;
+            if (weekOfYear == 1) {
+                year = year - 1;
+                weekOfYear = UtilHelper.getMaxWeekNumOfYear(year);
+            } else {
+                weekOfYear = weekOfYear - 1;
             }
             map.put("year", year);
-            map.put("weekOfYear",weekOfYear);
+            map.put("weekOfYear", weekOfYear);
             map.put("sysUserCompanyIds", null);
             //也可以封装成map传值
             SysChargeDetails sysChargeDetails = sysChargeBusinessService.sysChargeDetails(map);
@@ -858,11 +865,11 @@ public class SysFinancialServiceImpl implements SysFinancialService {
                 Map<Integer, Double> yearChargeMoneyScale = new HashMap<Integer, Double>();
                 //一年清欠收缴率（针对大屏数据展示页面）
                 Map<Integer, Double> yearChargeDebtScale = new HashMap<Integer, Double>();
-                int listSize=list.size();
+                int listSize = list.size();
                 //注：查询sql结果为倒序排序,即为第一条为最新一周数据，需求显示为12周，最后一周12周为最新的周数数据
                 for (int i = 0; i < listSize; i++) {
-                    yearChargeMoneyScale.put(listSize-i, list.get(i).getChargeMoneyNow());
-                    yearChargeDebtScale.put(listSize-i, list.get(i).getChargeDebtReturn());
+                    yearChargeMoneyScale.put(listSize - i, list.get(i).getChargeMoneyNow());
+                    yearChargeDebtScale.put(listSize - i, list.get(i).getChargeDebtReturn());
                 }
                 sysChargeDetails.setYearChargeMoneyScale(yearChargeMoneyScale);
                 sysChargeDetails.setYearChargeDebtScale(yearChargeDebtScale);
@@ -888,7 +895,7 @@ public class SysFinancialServiceImpl implements SysFinancialService {
 
         Map<String, Object> mapForYear = new HashMap<String, Object>();
         //int thisYear = UtilHelper.getYear();
-       // int thisMonth = UtilHelper.getMonth();
+        // int thisMonth = UtilHelper.getMonth();
 
 
         SysUpdateDataRules sysUpdateDataRules = sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
@@ -986,88 +993,96 @@ public class SysFinancialServiceImpl implements SysFinancialService {
             //mybatis涉及到in查询的，传参数时，可以一个或者多个，也可以封装成map进行传值
             //注：原需求实际收入、实际利润等为月度数据，后改为年度信息
             //SysBudgetDetails sysBudgetDetailsForMonth = sysBudgetDetailsBusinessService.sysBudgetDetailsAnalysis(mapForMonth);
-            if (null != sysBudgetDetailsForyear) {
-                List<SysBudgetDetails> sysBudgetDetailsList = sysBudgetDetailsBusinessService.sysBudgetDetailsIncomeForMonth(mapForYear);
-                //实际收入
-                Map<Integer, Object> realIncomeMap = null;
-                //预算收入
-                Map<Integer, Object> budgetIncomeMap = null;
-                //实际支出
-                Map<Integer, Object> realExpensesTotalMap = null;
-                //预算支出
-                Map<Integer, Object> budgetExpensesMap = null;
-                //实际利润
-                Map<Integer, Object> realProfitsMap = null;
-                //实际利润环比
-                Map<Integer, Object> realProfitsScaleMap = null;
-                if (null != sysBudgetDetailsList) {
-                    //获取环比月份数据
-                    SysBudgetDetails lastMonthDetailis = null;
-                    //获取环比月份数据,上月的上个月数据
-                    SysBudgetDetails lastMonth_LastDetailis = null;
+            if (null == sysBudgetDetailsForyear) {
+                sysBudgetDetailsForyear = new SysBudgetDetails();
+            }
+            List<SysBudgetDetails> sysBudgetDetailsList = sysBudgetDetailsBusinessService.sysBudgetDetailsIncomeForMonth(mapForYear);
+            //实际收入
+            Map<Integer, Object> realIncomeMap = null;
+            //预算收入
+            Map<Integer, Object> budgetIncomeMap = null;
+            //实际支出
+            Map<Integer, Object> realExpensesTotalMap = null;
+            //预算支出
+            Map<Integer, Object> budgetExpensesMap = null;
+            //实际利润
+            Map<Integer, Object> realProfitsMap = null;
+            //实际利润环比
+            Map<Integer, Object> realProfitsScaleMap = null;
+            if (null != sysBudgetDetailsList) {
+                //获取环比月份数据
+                SysBudgetDetails lastMonthDetailis = null;
+                //获取环比月份数据,上月的上个月数据
+                SysBudgetDetails lastMonth_LastDetailis = null;
 
-                    //上个月利润
-                    Double lastMonthRealProfits = 0.00;
-                    realIncomeMap = new HashMap<Integer, Object>();
-                    budgetIncomeMap = new HashMap<Integer, Object>();
-                    realExpensesTotalMap = new HashMap<Integer, Object>();
-                    budgetExpensesMap = new HashMap<Integer, Object>();
-                    realProfitsMap = new HashMap<Integer, Object>();
-                    realProfitsScaleMap = new HashMap<Integer, Object>();
-                    for (SysBudgetDetails sysBudgetDetailsMonth : sysBudgetDetailsList) {
-                        Double realIncome = getNum(sysBudgetDetailsMonth.getRealIncome());
-                        Double budgetIncome = getNum(sysBudgetDetailsMonth.getBudgetIncome());
-                        Double realExpensesTotal = getNum(sysBudgetDetailsMonth.getRealExpensesTotal());
-                        Double budgetExpenses = getNum(sysBudgetDetailsMonth.getBudgetExpenses());
-                        Double realProfits = getNum(sysBudgetDetailsMonth.getRealProfits());
-                        Integer month = sysBudgetDetailsMonth.getMonth();
-                        lastMonthDetailis = null;
-                        lastMonth_LastDetailis = null;
+                //上个月利润
+                Double lastMonthRealProfits = 0.00;
+                //当月实际利润
+                Double realProfits_month = 0.00;
+                realIncomeMap = new HashMap<Integer, Object>();
+                budgetIncomeMap = new HashMap<Integer, Object>();
+                realExpensesTotalMap = new HashMap<Integer, Object>();
+                budgetExpensesMap = new HashMap<Integer, Object>();
+                realProfitsMap = new HashMap<Integer, Object>();
+                realProfitsScaleMap = new HashMap<Integer, Object>();
+                for (SysBudgetDetails sysBudgetDetailsMonth : sysBudgetDetailsList) {
+                    Double realIncome = getNum(sysBudgetDetailsMonth.getRealIncome());
+                    Double budgetIncome = getNum(sysBudgetDetailsMonth.getBudgetIncome());
+                    Double realExpensesTotal = getNum(sysBudgetDetailsMonth.getRealExpensesTotal());
+                    Double budgetExpenses = getNum(sysBudgetDetailsMonth.getBudgetExpenses());
+                    Double realProfits = getNum(sysBudgetDetailsMonth.getRealProfits());
+                    Integer month = sysBudgetDetailsMonth.getMonth();
+                    lastMonthDetailis = null;
+                    lastMonth_LastDetailis = null;
 
-                        lastMonthRealProfits = 0.00;
-                        if (null != month) {
-                            realIncomeMap.put(month, realIncome);
-                            budgetIncomeMap.put(month, budgetIncome);
-                            realExpensesTotalMap.put(month, realExpensesTotal);
-                            budgetExpensesMap.put(month, budgetExpenses);
-                            realProfitsMap.put(month, realProfits);
-                            if (month == 1) {
-                                lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year") - 1, 12, null);
+                    lastMonthRealProfits = 0.00;
+                    if (null != month) {
+                        realIncomeMap.put(month, realIncome);
+                        budgetIncomeMap.put(month, budgetIncome);
+                        realExpensesTotalMap.put(month, realExpensesTotal);
+                        budgetExpensesMap.put(month, budgetExpenses);
+                        realProfitsMap.put(month, realProfits);
+                        if (month == 1) {
+                            lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year") - 1, 12, null);
 
-                                //1月份时，查询上年11月的数据，经过与上年的12月比较，获取真正12月的数据 2019-1-10修改
-                                lastMonth_LastDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year") - 1, 11, null);
+                            realProfits_month = realProfits;
+                            //1月份时，查询上年11月的数据，经过与上年的12月比较，获取真正12月的数据 2019-1-10修改
+                            lastMonth_LastDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year") - 1, 11, null);
 
-                                if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null&&null!=lastMonth_LastDetailis&&lastMonth_LastDetailis.getRealProfits()!=null) {
-                                    lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits()-lastMonth_LastDetailis.getRealProfits());
-                                }
-                                realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastMonthRealProfits), lastMonthRealProfits)));
-                            } else if(month == 2){
-                                lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year"), 1, null);
-                                if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null) {
-                                    lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits());
-                                }
-                                realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastMonthRealProfits), lastMonthRealProfits)));
-                            }else {
-                                lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year"), month - 1, null);
-                                //查询上月的上月的数据，经过与当月比较，获取当月的数据 2019-1-10修改
-                                lastMonth_LastDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year") , month - 2, null);
-                                if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null&&null!=lastMonth_LastDetailis&&lastMonth_LastDetailis.getRealProfits()!=null) {
-                                    lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits()-lastMonth_LastDetailis.getRealProfits());
-                                }
-                                realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits - lastMonthRealProfits), lastMonthRealProfits)));
+                            if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null) {
+                                lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits() - (lastMonth_LastDetailis == null ? 0 : lastMonth_LastDetailis.getRealProfits()));
                             }
+                            realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits_month - lastMonthRealProfits), lastMonthRealProfits)));
+                        } else if (month == 2) {
+                            lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year"), 1, null);
+
+                            if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null) {
+                                lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits());
+                                realProfits_month = realProfits - lastMonthDetailis.getRealProfits();
+                            }
+                            realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits_month - lastMonthRealProfits), lastMonthRealProfits)));
+                        } else {
+                            lastMonthDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year"), month - 1, null);
+                            //查询上月的上月的数据，经过与当月比较，获取当月的数据 2019-1-10修改
+                            lastMonth_LastDetailis = sysBudgetDetailsBusinessService.sysBudgetRealProfitsByMonth(yearAndMonthMap.get("year"), month - 2, null);
+
+                            if (null != lastMonthDetailis && lastMonthDetailis.getRealProfits() != null) {
+                                lastMonthRealProfits = getNum(lastMonthDetailis.getRealProfits() - (lastMonth_LastDetailis == null ? 0 : lastMonth_LastDetailis.getRealProfits()));
+                                realProfits_month = realProfits - lastMonthDetailis.getRealProfits();
+                            }
+                            realProfitsScaleMap.put(month, UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatDoubleNumber((realProfits_month - lastMonthRealProfits), lastMonthRealProfits)));
                         }
                     }
                 }
-                sysBudgetDetailsForyear.setRealIncomeMap(realIncomeMap);
-                sysBudgetDetailsForyear.setBudgetIncomeMap(budgetIncomeMap);
-                sysBudgetDetailsForyear.setRealExpensesTotalMap(realExpensesTotalMap);
-                sysBudgetDetailsForyear.setBudgetExpensesMap(budgetExpensesMap);
-                sysBudgetDetailsForyear.setRealProfitsMap(realProfitsMap);
-                sysBudgetDetailsForyear.setRealProfitsScaleMap(realProfitsScaleMap);
-            }else{
-                sysBudgetDetailsForyear=new SysBudgetDetails();
             }
+            sysBudgetDetailsForyear.setRealIncomeMap(realIncomeMap);
+            sysBudgetDetailsForyear.setBudgetIncomeMap(budgetIncomeMap);
+            sysBudgetDetailsForyear.setRealExpensesTotalMap(realExpensesTotalMap);
+            sysBudgetDetailsForyear.setBudgetExpensesMap(budgetExpensesMap);
+            sysBudgetDetailsForyear.setRealProfitsMap(realProfitsMap);
+            sysBudgetDetailsForyear.setRealProfitsScaleMap(realProfitsScaleMap);
+
+
             //sysBudgetDetailsEntity.setSysBudgetDetailsForMonth(sysBudgetDetailsForMonth);
             //sysBudgetDetailsEntity.setSysBudgetDetailsForYear(sysBudgetDetailsForyear);
             //存储到redis缓存，为大屏财务数据页面展示提供服务

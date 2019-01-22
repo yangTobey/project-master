@@ -70,7 +70,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         //value = value.replaceAll("'", "& #39;");
         value = value.replaceAll("eval\\((.*)\\)", "");
         value = value.replaceAll("<script>(.*?)</script>", "");
-        value = value.replaceAll("</script>", "");
+        //value = value.replaceAll("</script>", "");
         value = value.replaceAll("expression\\((.*?)\\)", "");
         value = value.replaceAll("onload(.*?)=", "");
         value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
@@ -88,7 +88,10 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
                 "table|from|grant|use|group_concat|column_name|" +
                 "information_schema.columns|table_schema|union|where|select|delete|update|order|by|count|" +
                 "chr|mid|master|truncate|char|declare|or|;|-|--|,|like|//|/|%|#";*/
-        String badStr = "'|or|exec|execute|insert|select|delete|update|master|truncate|drop|javascript|count(*)|"
+        /*String badStr = "'|or|exec|execute|insert|select|delete|update|master|truncate|drop|javascript|count(*)|"
+                + "declare|create|" + "grant|script|iframe" + "|--";*/
+
+       /* String badStr = "'|or|exec|execute|insert|select|delete|master|truncate|drop|javascript|count(*)|"
                 + "declare|create|" + "grant|script|iframe" + "|--";
 
         String[] badStrs = badStr.split("\\|");
@@ -98,7 +101,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
                     values[j] = "forbid";
                 }
             }
-        }
+        }*/
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < values.length; i++) {
             if (i == values.length - 1) {

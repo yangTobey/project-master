@@ -38,7 +38,7 @@ public interface SysFileService {
      * @param type
      * @return
      */
-    Map<String,Object> deleteFileByFileId(HttpServletRequest request,String fileIds, String type);
+    Map<String,Object> deleteFileByFileId(HttpServletRequest request,String fileIds, String type,String fileUrl);
 
 
 }

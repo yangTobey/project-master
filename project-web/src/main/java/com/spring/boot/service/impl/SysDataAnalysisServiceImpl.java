@@ -117,6 +117,7 @@ public class SysDataAnalysisServiceImpl implements SysDataAnalysisService {
                 }
                 sysPropertyDataAnalysisEntity.setProjectUnfinishedTotal(sysProject.getYearProjectUnfinishedTotal());
                 sysPropertyDataAnalysisEntity.setProjectFinishedTotal(sysProject.getYearProjectFinishedTotal());
+                //年系统问题处理率
                 sysPropertyDataAnalysisEntity.setMonthProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProject.getYearProjectFinishedTotal(),sysProject.getYearProjectUnfinishedTotal())));
                 sysPropertyDataAnalysisEntity.setYearConsumptionElectricity(sysProject.getYearConsumptionElectricity());
                 sysPropertyDataAnalysisEntity.setYearConsumptionWater(sysProject.getYearConsumptionWater());

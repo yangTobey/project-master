@@ -388,21 +388,22 @@ public class FileManageController {
     }
 
     /**
-     * 系统文件删除操作管理
+     * 根据文件id或者文件路径删除系统文件，删除操作管理
      * @param request
      * @param fileIds
      * @param type
      * @return
      */
     @RequestMapping(value = "/deleteFileByFileId", method = RequestMethod.GET)
-    public R deleteFileByFileId(HttpServletRequest request,@RequestParam(value = "fileIds", required = false) String fileIds,@RequestParam(value = "type", required = false) String type){
-        if (UtilHelper.isEmpty(fileIds)) {
-            return R.error(400, "文件id格式不正确，请联系系统管理员进行处理！");
+    public R deleteFileByFileId(HttpServletRequest request,@RequestParam(value = "fileIds", required = false) String fileIds,@RequestParam(value = "type", required = false) String type
+            ,@RequestParam(value = "fileUrl", required = false) String fileUrl){
+        if (UtilHelper.isEmpty(fileIds)&&UtilHelper.isEmpty(fileUrl)) {
+            return R.error(400, "文件id和文件路径不能同时为空，请联系系统管理员进行处理！");
         }else if(UtilHelper.isEmpty(type)){
             return R.error(400, "删除文件类型格式不正确，请联系系统管理员进行处理！");
         }
         try {
-            Map<String, Object> map=sysFileService.deleteFileByFileId(request,fileIds,type);
+            Map<String, Object> map=sysFileService.deleteFileByFileId(request,fileIds,type,fileUrl);
             return R.ok(map);
         }catch (Exception e){
             e.printStackTrace();

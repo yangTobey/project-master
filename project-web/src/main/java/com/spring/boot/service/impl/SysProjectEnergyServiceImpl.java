@@ -359,7 +359,7 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
             SysProject sysProjectUnfinishedForYear = sysProjectBusinessService.sysProjectUnfinishedForYear(unfinishedMap);
 
             if (null != sysProjectForYear) {
-                sysProjectForYear.setYearProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProjectForYear.getYearProjectFinishedTotal(),sysProjectForYear.getYearProjectUnfinishedTotal())));
+                //sysProjectForYear.setYearProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProjectForYear.getYearProjectFinishedTotal(),sysProjectForYear.getYearProjectUnfinishedTotal())));
 
                if(null != sysProjectUnfinishedForYear){
                     sysProjectForYear.setYearProjectFinishedTotal(sysProjectUnfinishedForYear.getProjectFinishedTotal());
@@ -503,13 +503,25 @@ public class SysProjectEnergyServiceImpl implements SysProjectEnergyService {
         map.put("sysUserCompanyIds", null);
         map.put("year", yearAndMonthMap.get("year"));
         map.put("month", yearAndMonthMap.get("month"));
+
+
         /*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
         map.put("type", 2);
         SysProject sysProjectForYear = sysProjectBusinessService.sysProjectEnergyAnalysisForYear(map);
-
+        //获取工程遗留问题等年度信息（该处经过需求变更，已经由原来的12个月相加，变为获取当上月的数据：当月数据已经累计相加后包含了上月数据，根据10号更新的规格）2019-1-9号修改
+        SysProject sysProjectUnfinishedForYear = sysProjectBusinessService.sysProjectUnfinishedForYear(map);
         if (null != sysProjectForYear) {
-            sysProjectForYear.setYearProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProjectForYear.getYearProjectUnfinishedTotal(), sysProjectForYear.getYearProjectFinishedTotal())));
+            //sysProjectForYear.setYearProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProjectForYear.getYearProjectUnfinishedTotal(), sysProjectForYear.getYearProjectFinishedTotal())));
 
+            if(null != sysProjectUnfinishedForYear){
+                sysProjectForYear.setYearProjectFinishedTotal(sysProjectUnfinishedForYear.getProjectFinishedTotal());
+                sysProjectForYear.setYearProjectUnfinishedTotal(sysProjectUnfinishedForYear.getProjectUnfinishedTotal());
+                sysProjectForYear.setYearProjectUnfinishedScale(UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(sysProjectUnfinishedForYear.getProjectFinishedTotal(),sysProjectUnfinishedForYear.getProjectUnfinishedTotal())));
+            }else{
+                sysProjectForYear.setYearProjectFinishedTotal(0);
+                sysProjectForYear.setYearProjectUnfinishedTotal(0);
+                sysProjectForYear.setYearProjectUnfinishedScale(0D);
+            }
 
             //某一个月数据（每月10号到下个月10号显示上一个月的数据，即5月10号到6月10号显示4月份数据。）
             SysProject sysProjectForMonth = sysProjectBusinessService.sysProjectEnergyByYearAndMonthAndCompanyId(yearAndMonthMap.get("year"), yearAndMonthMap.get("month"), sysUserCompanyIds);

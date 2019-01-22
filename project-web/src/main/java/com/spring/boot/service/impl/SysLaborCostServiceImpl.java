@@ -72,7 +72,7 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
         }
         map.put("sysUserCompanyIds", sysUserCompanyIds);
         map.put("year", selectYear);
-        map.put("month", selectYear);
+        map.put("month", selectMonth);
         try {
             sysLaborCostDetails = sysLaborCostBusinessService.getSysLaborCostTotal(map);
             if (null != sysLaborCostDetails) {

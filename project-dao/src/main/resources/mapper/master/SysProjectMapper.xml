@@ -167,8 +167,8 @@
 	<!--查找年度工程能耗分析信息（工程遗留问题、已处理遗留问题，统计月信息作为年度总结果信息，当月数据=上月总数据+当月实际数据）-->
 	<select id="sysProjectUnfinishedForYear" resultMap="sysProject" >
 		SELECT
-		project.project_unfinished_total AS projectUnfinishedTotal,
-		project.project_finished_total AS projectFinishedTotal
+		sum(project.project_unfinished_total) AS projectUnfinishedTotal,
+		sum(project.project_finished_total) AS projectFinishedTotal
 		FROM sys_project AS project
 		WHERE 1=1
 		/*注：type为1时，为按区域查询（小区）查询数据，type为2时，不考虑登录用户权限内小区，查询全国数据，即是物业大屏数据展示分析接口使用*/
