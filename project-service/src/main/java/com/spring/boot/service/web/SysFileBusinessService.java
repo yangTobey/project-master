@@ -27,6 +27,12 @@ public interface SysFileBusinessService {
      * @return
      */
     SysContractFile fileSysContractFileById(Long fileId);
+    /**
+     * 根据文件id查找公司附件文档信息
+     * @param fileId
+     * @return
+     */
+    SysCompanyFile fileSysCompanyFileById(Long fileId);
 
     /**
      * 根据文件id基础数据附件文档信息
@@ -78,6 +84,12 @@ public interface SysFileBusinessService {
      * @return
      */
     int deleteSysBudgetFileById(Long fileId);
+    /**
+     * 根据文件id删除公司执行文件
+     * @param fileId
+     * @return
+     */
+    int deleteSysCompanyFileById(Long fileId);
 
 
 }

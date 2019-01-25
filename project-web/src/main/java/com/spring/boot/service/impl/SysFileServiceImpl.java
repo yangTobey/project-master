@@ -1,9 +1,6 @@
 package com.spring.boot.service.impl;
 
-import com.spring.boot.bean.master.SysBasicDataFile;
-import com.spring.boot.bean.master.SysContractFile;
-import com.spring.boot.bean.master.SysProjectEnergyFile;
-import com.spring.boot.bean.master.SysQualityManageFile;
+import com.spring.boot.bean.master.*;
 import com.spring.boot.service.SysFileService;
 import com.spring.boot.service.web.SysFileBusinessService;
 import com.spring.boot.util.R;
@@ -44,19 +41,19 @@ public class SysFileServiceImpl implements SysFileService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> deleteFileByFileId(HttpServletRequest request, String fileIds, String type, String fileUrl) {
-        //去掉最后那个逗号，在进行获取数据
-        String[] fileInfoArray = fileIds.substring(0, fileIds.length()).split(";");
+
         String filePath = "";
         boolean success = false;
         //删除在新增数据时，还没保存对应实体信息的文件，避免操作太多，造成服务器垃圾文件太多
-        if (!StringUtils.isEmpty(fileIds)) {
+        if (StringUtils.isEmpty(fileIds)) {
             filePath = request.getSession().getServletContext().getRealPath("/") + fileUrl;
             File file = new File(filePath);
             if (file.exists()) {
                 success = file.delete();
             }
         } else {
-
+            //去掉最后那个逗号，在进行获取数据
+            String[] fileInfoArray = fileIds.substring(0, fileIds.length()).split(";");
             for (String fileId : fileInfoArray) {
                 //每次循环，将success设置为false；
                 success = false;
@@ -87,13 +84,13 @@ public class SysFileServiceImpl implements SysFileService {
                         filePath = request.getSession().getServletContext().getRealPath("/") + sysBasicDataFile.getFileUrl();
                         count = sysFileBusinessService.deleteSysBasicFileById(id);
                     }
-                }/*else if("accountsReceivable".equals(type)){
-                    SysContractFile sysContractFile=sysFileBusinessService.fileSysContractFileById(id);
-                    if(null!=sysContractFile){
-                        filePath=request.getSession().getServletContext().getRealPath("/") + sysContractFile.getFileUrl();
-                        count=sysFileBusinessService.deleteSysAccountsReceivableFileById(id);
+                }else if("company".equals(type)){
+                    SysCompanyFile sysCompanyFile=sysFileBusinessService.fileSysCompanyFileById(id);
+                    if(null!=sysCompanyFile){
+                        filePath=request.getSession().getServletContext().getRealPath("/") + sysCompanyFile.getFileUrl();
+                        count=sysFileBusinessService.deleteSysCompanyFileById(id);
                     }
-                }else if("budget".equals(type)){
+                }/*else if("budget".equals(type)){
                     SysContractFile sysContractFile=sysFileBusinessService.fileSysContractFileById(id);
                     if(null!=sysContractFile){
                         filePath=request.getSession().getServletContext().getRealPath("/") + sysContractFile.getFileUrl();

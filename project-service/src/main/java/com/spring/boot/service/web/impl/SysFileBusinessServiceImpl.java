@@ -69,4 +69,14 @@ public class SysFileBusinessServiceImpl implements SysFileBusinessService {
     public SysBasicDataFile fileSysBasicDataFileById(Long fileId) {
         return sysFileDao.fileSysBasicDataFileById(fileId);
     }
+
+    @Override
+    public SysCompanyFile fileSysCompanyFileById(Long fileId) {
+        return sysFileDao.fileSysCompanyFileById(fileId);
+    }
+
+    @Override
+    public int deleteSysCompanyFileById(Long fileId) {
+        return sysFileDao.deleteSysCompanyFileById(fileId);
+    }
 }

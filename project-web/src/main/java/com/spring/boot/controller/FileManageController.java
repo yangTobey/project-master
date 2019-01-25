@@ -57,6 +57,8 @@ public class FileManageController {
                 dir.mkdir();
             }
             String fileUrl = "";
+            Map<String, String> map=new HashMap<String, String>();
+            map.put("error", "上传文件失败，请联系管理员！");
             for (int i = 0; i < files.length; i++) {
                 if (files[i] != null && files[i].getSize() > 0) {
                     //单个文件大小不能超过1024*8（8MB）
@@ -64,7 +66,7 @@ public class FileManageController {
                         return R.error(400, "单个文件不能超过8MB！");
                     }*/
                     //调用上传文件方法
-                    Map<String, String> map = executeUpload(uploadDir, files[i], uploadUrl);
+                    map = executeUpload(uploadDir, files[i], uploadUrl);
                     if (map.containsKey("success")) {
                         fileUrl += map.get("success") + ";";
                     }
@@ -74,7 +76,7 @@ public class FileManageController {
                 resultMap.put("url", fileUrl);
                 return JsonUtils.obj2JsonString(R.ok().putData(200, resultMap, "上传成功！"));
             } else {
-                return JsonUtils.obj2JsonString(R.error(500, "上传文件失败，请联系管理员！"));
+                return JsonUtils.obj2JsonString(R.error(500, map.get("error")));
             }
 
         } catch (Exception e) {
@@ -97,6 +99,11 @@ public class FileManageController {
         String originalFilename=file.getOriginalFilename().replace(",","").replace(";","").replace("，","").replace("；","");
         //获取文件后缀名
         String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+        //禁止上传html格式的文件，防止用户在html文件内编写js程序进行攻击
+        if("html".equals(suffix)){
+            map.put("error", "上传失败,不能上传html格式的文件！");
+            return map;
+        }
         String fileName = originalFilename.substring(0, originalFilename.lastIndexOf("."));
         //获取时间，最为文件名的一部分
         SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
