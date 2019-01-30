@@ -186,7 +186,7 @@ public class SysQualityManageServiceImpl implements SysQualityManageService {
         //sysQualityManage.setMonth(month);
         //sysQualityManage.setQualityCheck(qualityCheck);
         //sysQualityManage.setQualityCheckPass(qualityCheckPass);
-        //sysQualityManage.setQualityCheckFail(qualityCheck-qualityCheckPass);
+        sysQualityManage.setQualityCheckFail(sysQualityManage.getQualityCheck()-sysQualityManage.getQualityCheckPass());
         //sysQualityManage.setSecurityEvent(securityEvent);
         //sysQualityManage.setQualityCheckUnmodified(qualityCheckUnmodified);
         //sysQualityManage.setLastQualityCheckUnmodified(lastQualityCheckUnmodified);

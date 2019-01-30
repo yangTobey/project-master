@@ -21,13 +21,13 @@ public class SysProjectEnergyInfoEntity {
      * 工程遗留问题数量
      */
     @NotNull(message = "工程遗留问题数量不能为空")
-    @Range(min = 1,max = Integer.MAX_VALUE,message = "工程遗留问题数量格式不正确，或者不符合常理！！")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "工程遗留问题数量格式不正确，或者不符合常理！！")
     private Integer projectUnfinishedTotal;
     /**
      * 已处理工程遗留问题数量
      */
     @NotNull(message = "已处理工程遗留问题数量不能为空")
-    @Range(min = 1,max = Integer.MAX_VALUE,message = "已处理工程遗留问题数量格式不正确，或者不符合常理！！")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "已处理工程遗留问题数量格式不正确，或者不符合常理！！")
     private Integer projectFinishedTotal;
     /**
      * 公司id
