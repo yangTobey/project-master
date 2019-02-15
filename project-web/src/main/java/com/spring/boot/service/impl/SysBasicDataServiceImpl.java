@@ -255,10 +255,12 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             }
 
             SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
-            boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysBasicDataUpdate.getYear(),sysBasicDataUpdate.getMonth());
-            if(updateToRedis){
-                //存储统计信息到redis缓存
-                setBasicDataAnalysisDataToRedis();
+            if(sysUpdateDataRules!=null){
+                boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysBasicDataUpdate.getYear(),sysBasicDataUpdate.getMonth());
+                if(updateToRedis){
+                    //存储统计信息到redis缓存
+                    setBasicDataAnalysisDataToRedis();
+                }
             }
             return R.ok(200, "更新成功！");
         } else {

@@ -141,7 +141,7 @@ public class FileManageController {
             if (sysQualityManageFile != null) {
                 //获取文件路径+原文件名称
                 String realPath = request.getSession().getServletContext().getRealPath("/") + sysQualityManageFile.getFileUrl()+";"+sysQualityManageFile.getFileName();
-                System.out.println("品质文件路径为："+realPath);
+                //System.out.println("品质文件路径为："+realPath);
                 fileLists.add(realPath);
             }
         }
@@ -169,7 +169,7 @@ public class FileManageController {
             if (sysProjectEnergyFile != null) {
                 //获取文件路径+原文件名称
                 String realPath = request.getSession().getServletContext().getRealPath("/") + sysProjectEnergyFile.getFileUrl()+";"+sysProjectEnergyFile.getFileName();
-                System.out.println("工程文件路径为："+realPath);
+                //System.out.println("工程文件路径为："+realPath);
                 fileLists.add(realPath);
             }
         }
@@ -198,7 +198,7 @@ public class FileManageController {
             if (sysContractFile != null) {
                 //获取文件路径+原文件名称
                 String realPath = request.getSession().getServletContext().getRealPath("/") + sysContractFile.getFileUrl()+";"+sysContractFile.getFileName();
-                System.out.println("合同文件路径为："+realPath);
+                //System.out.println("合同文件路径为："+realPath);
                 fileLists.add(realPath);
             }
         }
@@ -327,7 +327,7 @@ public class FileManageController {
                 String[] fileInfo=createFilesPath.get(i).substring(0, createFilesPath.get(i).length()).split(";");
                 //String fileName = fileInfo[0].replace(fileInfo[0].substring(fileInfo[0].lastIndexOf("/")+1, fileInfo[0].lastIndexOf(".")),fileInfo[1]);
                 file1[i] = new File(fileInfo[0]);
-                System.out.println("文件名："+file1[i].getName());
+                //System.out.println("文件名："+file1[i].getName());
             }
             for (int i = 0; i < file1.length; i++) {
                 //首先判断该文件在服务器是否存在，避免抛出异常，下载失败

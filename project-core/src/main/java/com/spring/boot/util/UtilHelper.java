@@ -412,6 +412,16 @@ public class UtilHelper {
     }
 
     /**
+     * 根据输入的数值，计算百分比
+     * @param numberOne
+     * @param numberTwo
+     * @return
+     */
+    public static Double getPercentNum(Integer numberOne,Integer numberTwo){
+        return UtilHelper.DecimalFormatDouble(UtilHelper.DecimalFormatNumber(numberOne,numberOne));
+    }
+
+    /**
      * 判断字符串是否只包含0-9，a-z,A-Z(用于校验账号或者密码)
      * @param str
      * @return

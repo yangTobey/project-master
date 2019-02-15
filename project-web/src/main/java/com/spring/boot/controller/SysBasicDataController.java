@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.Map;
 
 /**
- * 系统基础数据控制类
+ * 系统基础数据控制管理类
  * Created by Administrator on 2018/3/16.
  */
 @RestController
