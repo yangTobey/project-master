@@ -42,6 +42,7 @@
         <result column="pay_people_total" property="payPeopleTotal"/>
         <result column="begin_month_people" property="beginMonthPeople"/>
         <result column="month_deploy" property="monthDeploy"/>
+        <result column="month_transfer" property="monthTransfer"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -210,7 +211,7 @@
     <!--更新人员成本详细信息-->
     <update id="updateSysLaborCostDetailsInfo" parameterType="com.spring.boot.bean.master.SysLaborCostDetails">
         update sys_labor_cost_details set employee_total = #{employeeTotal},headcount_total = #{headcountTotal},entry_total = #{entryTotal},demission_total = #{demissionTotal},
-        labor_cost_total = #{laborCostTotal},pay_people_total = #{payPeopleTotal},begin_month_people = #{beginMonthPeople},month_deploy = #{monthDeploy}
+        labor_cost_total = #{laborCostTotal},pay_people_total = #{payPeopleTotal},begin_month_people = #{beginMonthPeople},month_deploy = #{monthDeploy},month_transfer = #{monthTransfer}
         where labor_cost_id = #{laborCostId} and department_type=#{departmentType}
     </update>
 
@@ -219,8 +220,8 @@
               VALUES   (#{year},#{month},#{companyId},#{createTime})
 	</insert>
     <insert id="addSysLaborCostDetails" parameterType="map">
-        INSERT INTO sys_labor_cost_details (employee_total, headcount_total, entry_total, demission_total,labor_cost_total,department_type,labor_cost_id,pay_people_total,begin_month_people,month_deploy )
-        VALUES   (#{employeeTotal},#{headcountTotal},#{entryTotal},#{demissionTotal},#{laborCostTotal},#{departmentType},#{laborCostId},#{payPeopleTotal},#{beginMonthPeople},#{monthDeploy})
+        INSERT INTO sys_labor_cost_details (employee_total, headcount_total, entry_total, demission_total,labor_cost_total,department_type,labor_cost_id,pay_people_total,begin_month_people,month_deploy,month_transfer )
+        VALUES   (#{employeeTotal},#{headcountTotal},#{entryTotal},#{demissionTotal},#{laborCostTotal},#{departmentType},#{laborCostId},#{payPeopleTotal},#{beginMonthPeople},#{monthDeploy},#{monthTransfer})
     </insert>
     <update id="delete" parameterType="map">
 		update sys_labor_cost set status_code = 2

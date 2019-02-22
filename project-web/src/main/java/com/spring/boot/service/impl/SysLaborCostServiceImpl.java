@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.spring.boot.bean.PageInfoBean;
 import com.spring.boot.bean.master.*;
 import com.spring.boot.bean.master.entity.SysLaborCostDetailsEntity;
+import com.spring.boot.entity.SysLaborCostDetailsAddEntity;
 import com.spring.boot.service.SysDataAnalysisService;
 import com.spring.boot.service.SysLaborCostService;
 import com.spring.boot.service.web.SysBudgetDetailsBusinessService;
@@ -194,61 +195,61 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> addSysLaborCost(Long companyId, Integer year, Integer month, Double propertyLaborCost, Integer propertyHeadcountTotal, Integer propertyEmployeeTotal, Integer propertyEntryTotal, Integer propertyDemissionTotal,
-                                               Double eBusinessLaborCost, Integer eBusinessHeadcountTotal, Integer eBusinessEmployeeTotal, Integer eBusinessEntryTotal, Integer eBusinessDemissionTotal,
-                                               Double saleLaborCost, Integer saleHeadcountTotal, Integer saleEmployeeTotal, Integer saleEntryTotal, Integer saleDemissionTotal
-            , Integer propertyPayPeopleTotal, Integer propertyBeginMonthPeople, Integer propertyMonthDeploy, Integer eBusinessPayPeopleTotal, Integer eBusinessBeginMonthPeople, Integer eBusinessMonthDeploy, Integer salePayPeopleTotal, Integer saleBeginMonthPeople, Integer saleMonthDeploy) {
+    public Map<String, Object> addSysLaborCost(SysLaborCostDetailsAddEntity sysLaborCostDetailsEntity) {
 
-        SysLaborCost sysLaborCost = sysLaborCostBusinessService.findRecordByYearAndMonthAndCompanyId(companyId, year, month);
+        SysLaborCost sysLaborCost = sysLaborCostBusinessService.findRecordByYearAndMonthAndCompanyId(sysLaborCostDetailsEntity.getCompanyId(), sysLaborCostDetailsEntity.getYear(), sysLaborCostDetailsEntity.getMonth());
         if (null != sysLaborCost) {
-            return R.error(500, "新增失败，系统已存在" + year + "年" + month + "月的记录，不能重复添加");
+            return R.error(500, "新增失败，系统已存在" + sysLaborCostDetailsEntity.getYear() + "年" + sysLaborCostDetailsEntity.getMonth() + "月的记录，不能重复添加");
         } else {
             sysLaborCost = new SysLaborCost();
         }
-        sysLaborCost.setCompanyId(companyId);
+        sysLaborCost.setCompanyId(sysLaborCostDetailsEntity.getCompanyId());
         sysLaborCost.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
-        sysLaborCost.setYear(year);
-        sysLaborCost.setMonth(month);
+        sysLaborCost.setYear(sysLaborCostDetailsEntity.getYear());
+        sysLaborCost.setMonth(sysLaborCostDetailsEntity.getMonth());
         int count = sysLaborCostBusinessService.addSysLaborCost(sysLaborCost);
         if (count > 0) {
             long laborCostId = sysLaborCost.getLaborCostId();
             SysLaborCostDetails propertySysLaborCostDetails = new SysLaborCostDetails();
-            propertySysLaborCostDetails.setDemissionTotal(propertyDemissionTotal);
+            propertySysLaborCostDetails.setDemissionTotal(sysLaborCostDetailsEntity.getPropertyDemissionTotal());
             propertySysLaborCostDetails.setDepartmentType(1);
-            propertySysLaborCostDetails.setEmployeeTotal(propertyEmployeeTotal);
-            propertySysLaborCostDetails.setEntryTotal(propertyEntryTotal);
-            propertySysLaborCostDetails.setHeadcountTotal(propertyHeadcountTotal);
+            propertySysLaborCostDetails.setEmployeeTotal(sysLaborCostDetailsEntity.getPropertyEmployeeTotal());
+            propertySysLaborCostDetails.setEntryTotal(sysLaborCostDetailsEntity.getPropertyEntryTotal());
+            propertySysLaborCostDetails.setHeadcountTotal(sysLaborCostDetailsEntity.getPropertyHeadcountTotal());
             propertySysLaborCostDetails.setLaborCostId(laborCostId);
-            propertySysLaborCostDetails.setLaborCostTotal(propertyLaborCost);
-            propertySysLaborCostDetails.setPayPeopleTotal(propertyPayPeopleTotal);
-            propertySysLaborCostDetails.setBeginMonthPeople(propertyBeginMonthPeople);
-            propertySysLaborCostDetails.setMonthDeploy(propertyMonthDeploy);
+            propertySysLaborCostDetails.setLaborCostTotal(sysLaborCostDetailsEntity.getPropertyLaborCost());
+            propertySysLaborCostDetails.setPayPeopleTotal(sysLaborCostDetailsEntity.getPropertyPayPeopleTotal());
+            propertySysLaborCostDetails.setBeginMonthPeople(sysLaborCostDetailsEntity.getPropertyBeginMonthPeople());
+            propertySysLaborCostDetails.setMonthDeploy(sysLaborCostDetailsEntity.getPropertyMonthDeploy());
+            propertySysLaborCostDetails.setMonthTransfer(sysLaborCostDetailsEntity.getPropertyMonthTransfer());
             int propertyCount = sysLaborCostBusinessService.addSysLaborCostDetails(propertySysLaborCostDetails);
 
             SysLaborCostDetails eBusinessSysLaborCostDetails = new SysLaborCostDetails();
-            eBusinessSysLaborCostDetails.setDemissionTotal(eBusinessDemissionTotal);
+            eBusinessSysLaborCostDetails.setDemissionTotal(sysLaborCostDetailsEntity.geteBusinessDemissionTotal()==null?0:sysLaborCostDetailsEntity.geteBusinessDemissionTotal());
             eBusinessSysLaborCostDetails.setDepartmentType(2);
-            eBusinessSysLaborCostDetails.setEmployeeTotal(eBusinessEmployeeTotal);
-            eBusinessSysLaborCostDetails.setEntryTotal(eBusinessEntryTotal);
-            eBusinessSysLaborCostDetails.setHeadcountTotal(eBusinessHeadcountTotal);
+            eBusinessSysLaborCostDetails.setEmployeeTotal(sysLaborCostDetailsEntity.geteBusinessEmployeeTotal()==null?0:sysLaborCostDetailsEntity.geteBusinessEmployeeTotal());
+            eBusinessSysLaborCostDetails.setEntryTotal(sysLaborCostDetailsEntity.geteBusinessEntryTotal()==null?0:sysLaborCostDetailsEntity.geteBusinessEntryTotal());
+            eBusinessSysLaborCostDetails.setHeadcountTotal(sysLaborCostDetailsEntity.geteBusinessHeadcountTotal()==null?0:sysLaborCostDetailsEntity.geteBusinessHeadcountTotal());
             eBusinessSysLaborCostDetails.setLaborCostId(laborCostId);
-            eBusinessSysLaborCostDetails.setLaborCostTotal(eBusinessLaborCost);
-            eBusinessSysLaborCostDetails.setPayPeopleTotal(eBusinessPayPeopleTotal);
-            eBusinessSysLaborCostDetails.setBeginMonthPeople(eBusinessBeginMonthPeople);
-            eBusinessSysLaborCostDetails.setMonthDeploy(eBusinessMonthDeploy);
+            eBusinessSysLaborCostDetails.setLaborCostTotal(sysLaborCostDetailsEntity.geteBusinessLaborCost()==null?0:sysLaborCostDetailsEntity.geteBusinessLaborCost());
+            eBusinessSysLaborCostDetails.setPayPeopleTotal(sysLaborCostDetailsEntity.geteBusinessPayPeopleTotal()==null?0:sysLaborCostDetailsEntity.geteBusinessPayPeopleTotal());
+            eBusinessSysLaborCostDetails.setBeginMonthPeople(sysLaborCostDetailsEntity.geteBusinessBeginMonthPeople()==null?0:sysLaborCostDetailsEntity.geteBusinessBeginMonthPeople());
+            eBusinessSysLaborCostDetails.setMonthDeploy(sysLaborCostDetailsEntity.geteBusinessMonthDeploy()==null?0:sysLaborCostDetailsEntity.geteBusinessMonthDeploy());
+            eBusinessSysLaborCostDetails.setMonthTransfer(sysLaborCostDetailsEntity.geteBusinessMonthTransfer()==null?0:sysLaborCostDetailsEntity.geteBusinessMonthTransfer());
             int eBusinessCount = sysLaborCostBusinessService.addSysLaborCostDetails(eBusinessSysLaborCostDetails);
 
             SysLaborCostDetails saleSysLaborCostDetails = new SysLaborCostDetails();
-            saleSysLaborCostDetails.setDemissionTotal(saleDemissionTotal);
+            saleSysLaborCostDetails.setDemissionTotal(sysLaborCostDetailsEntity.getSaleDemissionTotal()==null?0:sysLaborCostDetailsEntity.getSaleDemissionTotal());
             saleSysLaborCostDetails.setDepartmentType(3);
-            saleSysLaborCostDetails.setEmployeeTotal(saleEmployeeTotal);
-            saleSysLaborCostDetails.setEntryTotal(saleEntryTotal);
-            saleSysLaborCostDetails.setHeadcountTotal(saleHeadcountTotal);
+            saleSysLaborCostDetails.setEmployeeTotal(sysLaborCostDetailsEntity.getSaleEmployeeTotal()==null?0:sysLaborCostDetailsEntity.getSaleEmployeeTotal());
+            saleSysLaborCostDetails.setEntryTotal(sysLaborCostDetailsEntity.getSaleEntryTotal()==null?0:sysLaborCostDetailsEntity.getSaleEntryTotal());
+            saleSysLaborCostDetails.setHeadcountTotal(sysLaborCostDetailsEntity.getSaleHeadcountTotal()==null?0:sysLaborCostDetailsEntity.getSaleHeadcountTotal());
             saleSysLaborCostDetails.setLaborCostId(laborCostId);
-            saleSysLaborCostDetails.setLaborCostTotal(saleLaborCost);
-            saleSysLaborCostDetails.setPayPeopleTotal(salePayPeopleTotal);
-            saleSysLaborCostDetails.setBeginMonthPeople(saleBeginMonthPeople);
-            saleSysLaborCostDetails.setMonthDeploy(saleMonthDeploy);
+            saleSysLaborCostDetails.setLaborCostTotal(sysLaborCostDetailsEntity.getSaleLaborCost()==null?0:sysLaborCostDetailsEntity.getSaleLaborCost());
+            saleSysLaborCostDetails.setPayPeopleTotal(sysLaborCostDetailsEntity.getSalePayPeopleTotal()==null?0:sysLaborCostDetailsEntity.getSalePayPeopleTotal());
+            saleSysLaborCostDetails.setBeginMonthPeople(sysLaborCostDetailsEntity.getSaleBeginMonthPeople()==null?0:sysLaborCostDetailsEntity.getSaleBeginMonthPeople());
+            saleSysLaborCostDetails.setMonthDeploy(sysLaborCostDetailsEntity.getSaleMonthDeploy()==null?0:sysLaborCostDetailsEntity.getSaleMonthDeploy());
+            saleSysLaborCostDetails.setMonthTransfer(sysLaborCostDetailsEntity.getSaleMonthTransfer()==null?0:sysLaborCostDetailsEntity.getSaleMonthTransfer());
             sysLaborCostBusinessService.addSysLaborCostDetails(saleSysLaborCostDetails);
 
 
@@ -264,62 +265,61 @@ public class SysLaborCostServiceImpl implements SysLaborCostService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> updateSysLaborCostInfo(Long laborCostId, Long companyId, Integer year, Integer month, Double propertyLaborCost, Integer propertyHeadcountTotal, Integer propertyEmployeeTotal
-            , Integer propertyEntryTotal, Integer propertyDemissionTotal, Double eBusinessLaborCost, Integer eBusinessHeadcountTotal, Integer eBusinessEmployeeTotal
-            , Integer eBusinessEntryTotal, Integer eBusinessDemissionTotal, Double saleLaborCost, Integer saleHeadcountTotal, Integer saleEmployeeTotal
-            , Integer saleEntryTotal, Integer saleDemissionTotal
-            ,Integer propertyPayPeopleTotal, Integer propertyBeginMonthPeople, Integer propertyMonthDeploy, Integer eBusinessPayPeopleTotal, Integer eBusinessBeginMonthPeople, Integer eBusinessMonthDeploy, Integer salePayPeopleTotal, Integer saleBeginMonthPeople, Integer saleMonthDeploy) {
-        SysLaborCost sysLaborCost = sysLaborCostBusinessService.findRecordByYearAndMonthAndCompanyId(companyId, year, month);
+    public Map<String, Object> updateSysLaborCostInfo(SysLaborCostDetailsAddEntity sysLaborCostDetailsEntity) {
+        SysLaborCost sysLaborCost = sysLaborCostBusinessService.findRecordByYearAndMonthAndCompanyId(sysLaborCostDetailsEntity.getCompanyId(), sysLaborCostDetailsEntity.getYear(), sysLaborCostDetailsEntity.getMonth());
         if (null != sysLaborCost) {
-            if (!laborCostId.equals(sysLaborCost.getLaborCostId())) {
-                return R.error(500, "更新失败，系统已存在" + year + "年" + month + "月的记录，不能出现重复数据！");
+            if (!sysLaborCostDetailsEntity.getLaborCostId().equals(sysLaborCost.getLaborCostId())) {
+                return R.error(500, "更新失败，系统已存在" + sysLaborCostDetailsEntity.getYear() + "年" + sysLaborCostDetailsEntity.getMonth() + "月的记录，不能出现重复数据！");
             }
         }
-        sysLaborCost = sysLaborCostBusinessService.findSysLaborCostByLaborCostId(Long.valueOf(laborCostId));
+        sysLaborCost = sysLaborCostBusinessService.findSysLaborCostByLaborCostId(sysLaborCostDetailsEntity.getLaborCostId());
         if (sysLaborCost != null) {
-            sysLaborCost.setMonth(month);
-            sysLaborCost.setYear(year);
-            sysLaborCost.setCompanyId(companyId);
+            sysLaborCost.setMonth(sysLaborCostDetailsEntity.getMonth());
+            sysLaborCost.setYear(sysLaborCostDetailsEntity.getYear());
+            sysLaborCost.setCompanyId(sysLaborCostDetailsEntity.getCompanyId());
             sysLaborCostBusinessService.updateSysLaborCostInfo(sysLaborCost);
 
-            long laborCostIdUpdate = Long.valueOf(laborCostId);
+            long laborCostIdUpdate = Long.valueOf(sysLaborCostDetailsEntity.getLaborCostId());
             SysLaborCostDetails propertySysLaborCostDetails = new SysLaborCostDetails();
-            propertySysLaborCostDetails.setDemissionTotal(propertyDemissionTotal);
-            propertySysLaborCostDetails.setEmployeeTotal(propertyEmployeeTotal);
-            propertySysLaborCostDetails.setEntryTotal(propertyEntryTotal);
+            propertySysLaborCostDetails.setDemissionTotal(sysLaborCostDetailsEntity.getPropertyDemissionTotal());
+            propertySysLaborCostDetails.setEmployeeTotal(sysLaborCostDetailsEntity.getPropertyEmployeeTotal());
+            propertySysLaborCostDetails.setEntryTotal(sysLaborCostDetailsEntity.getPropertyEntryTotal());
             propertySysLaborCostDetails.setDepartmentType(1);
-            propertySysLaborCostDetails.setHeadcountTotal(propertyHeadcountTotal);
+            propertySysLaborCostDetails.setHeadcountTotal(sysLaborCostDetailsEntity.getPropertyHeadcountTotal());
             propertySysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
-            propertySysLaborCostDetails.setLaborCostTotal(propertyLaborCost);
-            propertySysLaborCostDetails.setPayPeopleTotal(propertyPayPeopleTotal);
-            propertySysLaborCostDetails.setBeginMonthPeople(propertyBeginMonthPeople);
-            propertySysLaborCostDetails.setMonthDeploy(propertyMonthDeploy);
+            propertySysLaborCostDetails.setLaborCostTotal(sysLaborCostDetailsEntity.getPropertyLaborCost());
+            propertySysLaborCostDetails.setPayPeopleTotal(sysLaborCostDetailsEntity.getPropertyPayPeopleTotal());
+            propertySysLaborCostDetails.setBeginMonthPeople(sysLaborCostDetailsEntity.getPropertyBeginMonthPeople());
+            propertySysLaborCostDetails.setMonthDeploy(sysLaborCostDetailsEntity.getPropertyMonthDeploy());
+            propertySysLaborCostDetails.setMonthTransfer(sysLaborCostDetailsEntity.getPropertyMonthTransfer());
             int propertyCount = sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(propertySysLaborCostDetails);
 
             SysLaborCostDetails eBusinessSysLaborCostDetails = new SysLaborCostDetails();
-            eBusinessSysLaborCostDetails.setDemissionTotal(eBusinessDemissionTotal);
-            eBusinessSysLaborCostDetails.setEmployeeTotal(eBusinessEmployeeTotal);
-            eBusinessSysLaborCostDetails.setEntryTotal(eBusinessEntryTotal);
+            eBusinessSysLaborCostDetails.setDemissionTotal(sysLaborCostDetailsEntity.geteBusinessDemissionTotal()==null?0:sysLaborCostDetailsEntity.geteBusinessDemissionTotal());
+            eBusinessSysLaborCostDetails.setEmployeeTotal(sysLaborCostDetailsEntity.geteBusinessEmployeeTotal()==null?0:sysLaborCostDetailsEntity.geteBusinessEmployeeTotal());
+            eBusinessSysLaborCostDetails.setEntryTotal(sysLaborCostDetailsEntity.geteBusinessEntryTotal()==null?0:sysLaborCostDetailsEntity.geteBusinessEntryTotal());
             eBusinessSysLaborCostDetails.setDepartmentType(2);
-            eBusinessSysLaborCostDetails.setHeadcountTotal(eBusinessHeadcountTotal);
+            eBusinessSysLaborCostDetails.setHeadcountTotal(sysLaborCostDetailsEntity.geteBusinessHeadcountTotal()==null?0:sysLaborCostDetailsEntity.geteBusinessHeadcountTotal());
             eBusinessSysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
-            eBusinessSysLaborCostDetails.setLaborCostTotal(eBusinessLaborCost);
-            eBusinessSysLaborCostDetails.setPayPeopleTotal(eBusinessPayPeopleTotal);
-            eBusinessSysLaborCostDetails.setBeginMonthPeople(eBusinessBeginMonthPeople);
-            eBusinessSysLaborCostDetails.setMonthDeploy(eBusinessMonthDeploy);
+            eBusinessSysLaborCostDetails.setLaborCostTotal(sysLaborCostDetailsEntity.geteBusinessLaborCost()==null?0:sysLaborCostDetailsEntity.geteBusinessLaborCost());
+            eBusinessSysLaborCostDetails.setPayPeopleTotal(sysLaborCostDetailsEntity.geteBusinessPayPeopleTotal()==null?0:sysLaborCostDetailsEntity.geteBusinessPayPeopleTotal());
+            eBusinessSysLaborCostDetails.setBeginMonthPeople(sysLaborCostDetailsEntity.geteBusinessBeginMonthPeople()==null?0:sysLaborCostDetailsEntity.geteBusinessBeginMonthPeople());
+            eBusinessSysLaborCostDetails.setMonthDeploy(sysLaborCostDetailsEntity.geteBusinessMonthDeploy()==null?0:sysLaborCostDetailsEntity.geteBusinessMonthDeploy());
+            eBusinessSysLaborCostDetails.setMonthTransfer(sysLaborCostDetailsEntity.geteBusinessMonthTransfer()==null?0:sysLaborCostDetailsEntity.geteBusinessMonthTransfer());
             int eBusinessCount = sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(eBusinessSysLaborCostDetails);
 
             SysLaborCostDetails saleSysLaborCostDetails = new SysLaborCostDetails();
-            saleSysLaborCostDetails.setDemissionTotal(saleDemissionTotal);
-            saleSysLaborCostDetails.setEmployeeTotal(saleEmployeeTotal);
-            saleSysLaborCostDetails.setEntryTotal(saleEntryTotal);
+            saleSysLaborCostDetails.setDemissionTotal(sysLaborCostDetailsEntity.getSaleDemissionTotal()==null?0:sysLaborCostDetailsEntity.getSaleDemissionTotal());
+            saleSysLaborCostDetails.setEmployeeTotal(sysLaborCostDetailsEntity.getSaleEmployeeTotal()==null?0:sysLaborCostDetailsEntity.getSaleEmployeeTotal());
+            saleSysLaborCostDetails.setEntryTotal(sysLaborCostDetailsEntity.getSaleEntryTotal()==null?0:sysLaborCostDetailsEntity.getSaleEntryTotal());
             saleSysLaborCostDetails.setDepartmentType(3);
-            saleSysLaborCostDetails.setHeadcountTotal(saleHeadcountTotal);
+            saleSysLaborCostDetails.setHeadcountTotal(sysLaborCostDetailsEntity.getSaleHeadcountTotal()==null?0:sysLaborCostDetailsEntity.getSaleHeadcountTotal());
             saleSysLaborCostDetails.setLaborCostId(laborCostIdUpdate);
-            saleSysLaborCostDetails.setLaborCostTotal(saleLaborCost);
-            saleSysLaborCostDetails.setPayPeopleTotal(salePayPeopleTotal);
-            saleSysLaborCostDetails.setBeginMonthPeople(saleBeginMonthPeople);
-            saleSysLaborCostDetails.setMonthDeploy(saleMonthDeploy);
+            saleSysLaborCostDetails.setLaborCostTotal(sysLaborCostDetailsEntity.getSaleLaborCost()==null?0:sysLaborCostDetailsEntity.getSaleLaborCost());
+            saleSysLaborCostDetails.setPayPeopleTotal(sysLaborCostDetailsEntity.getSalePayPeopleTotal()==null?0:sysLaborCostDetailsEntity.getSalePayPeopleTotal());
+            saleSysLaborCostDetails.setBeginMonthPeople(sysLaborCostDetailsEntity.getSaleBeginMonthPeople()==null?0:sysLaborCostDetailsEntity.getSaleBeginMonthPeople());
+            saleSysLaborCostDetails.setMonthDeploy(sysLaborCostDetailsEntity.getSaleMonthDeploy()==null?0:sysLaborCostDetailsEntity.getSaleMonthDeploy());
+            saleSysLaborCostDetails.setMonthTransfer(sysLaborCostDetailsEntity.getSaleMonthTransfer()==null?0:sysLaborCostDetailsEntity.getSaleMonthTransfer());
             sysLaborCostBusinessService.updateSysLaborCostDetailsInfo(saleSysLaborCostDetails);
 
             //将统计信息存储到redis缓存中

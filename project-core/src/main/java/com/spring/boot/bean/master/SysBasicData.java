@@ -111,8 +111,8 @@ public class SysBasicData {
     /**
      * 销配
      */
-    @NotNull(message = "销配不能为空")
-    @Range(min = 0,max = Integer.MAX_VALUE,message = "销配数量格式不正确，或者不符合常理！！")
+   /* @NotNull(message = "销配不能为空")
+    @Range(min = 0,max = Integer.MAX_VALUE,message = "销配数量格式不正确，或者不符合常理！！")*/
     private Integer salesDistribution;
     /**
      * 状态码
@@ -153,8 +153,8 @@ public class SysBasicData {
     /**
      * 销配名称
      */
-    @NotBlank(message = "销配案场名称不能为空！")
-    @Length(min = 0,max = 30,message = "销配案场名称长度必须要在{min}和{max}之间")
+    /*@NotBlank(message = "销配案场名称不能为空！")
+    @Length(min = 0,max = 30,message = "销配案场名称长度必须要在{min}和{max}之间")*/
     //@Size(min=, max=) 验证对象（Array,Collection,Map,String）长度是否在给定的范围之内 
     private String salesDistributionName;
 

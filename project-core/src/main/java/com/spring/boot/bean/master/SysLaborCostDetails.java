@@ -16,6 +16,7 @@ public class SysLaborCostDetails {
     private Integer payPeopleTotal;
     private Integer beginMonthPeople;
     private Integer monthDeploy;
+    private Integer monthTransfer;
 
     public Long getDetailsId() {
         return detailsId;
@@ -103,5 +104,13 @@ public class SysLaborCostDetails {
 
     public void setMonthDeploy(Integer monthDeploy) {
         this.monthDeploy = monthDeploy;
+    }
+
+    public Integer getMonthTransfer() {
+        return monthTransfer;
+    }
+
+    public void setMonthTransfer(Integer monthTransfer) {
+        this.monthTransfer = monthTransfer;
     }
 }

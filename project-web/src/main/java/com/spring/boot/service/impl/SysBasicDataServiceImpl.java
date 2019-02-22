@@ -173,6 +173,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         sysBasicDataAdd.setForSaleParkingSpace(forSaleParkingSpace);
         sysBasicDataAdd.setSalesDistribution(salesDistribution);
         sysBasicDataAdd.setCompanyId(companyId);*/
+        sysBasicDataAdd.setSalesDistribution(sysBasicDataAdd.getSalesDistribution()==null?0:sysBasicDataAdd.getSalesDistribution());
         sysBasicDataAdd.setCreateTime(Timestamp.valueOf(UtilHelper.getNowTimeStr()));
 
         int count = sysBasicDataBusinessService.addSysBasicData(sysBasicDataAdd);
@@ -229,7 +230,7 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
         map.put("decorateHouseNumber", sysBasicDataUpdate.getDecorateHouseNumber());
         map.put("parkingSpace", sysBasicDataUpdate.getParkingSpace());
         map.put("forSaleParkingSpace", sysBasicDataUpdate.getForSaleParkingSpace());
-        map.put("salesDistribution", sysBasicDataUpdate.getSalesDistribution());
+        map.put("salesDistribution", sysBasicDataUpdate.getSalesDistribution()==null?0:sysBasicDataUpdate.getSalesDistribution());
         map.put("companyId", sysBasicDataUpdate.getCompanyId());
 
         map.put("projectName", sysBasicDataUpdate.getProjectName());
