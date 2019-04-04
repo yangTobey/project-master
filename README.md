@@ -1,5 +1,9 @@
 -------------------2019-1-11编写------------------
 
+注意：如需要使用sprinboot内置tomcat启动项目，请注释以下代码或者配置
+1.project-common的pom.xml需要注释spring-boot-starter-tomcat
+2.Application类中SpringApplicationBuilder configure、onStartup方法需要注释，extends SpringBootServletInitializer需要注释
+
 系统使用技术：springboot、mysql、redis、shiro、mybatis、前端使用layui+iquery
 系统集成：swagger在线接口文档、Valid实体字段校验
 大屏数据显示的来源：redis缓存，大屏的数据为实时数据，通过websocket进行长连接实现实时更新，在后台通过修改或者新增数据，大屏的数据都会实时的更新

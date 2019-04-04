@@ -195,6 +195,13 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
                 saveFile(sysBasicDataAdd.getBasicFileInfo(),sysBasicDataAdd.getBasicId(),5);
             }
 
+            if (!UtilHelper.isEmpty(sysBasicDataAdd.getPeccancyFileInfo())) {
+                saveFile(sysBasicDataAdd.getPeccancyFileInfo(),sysBasicDataAdd.getBasicId(),6);
+            }
+            if (!UtilHelper.isEmpty(sysBasicDataAdd.getStorageFileInfo())) {
+                saveFile(sysBasicDataAdd.getStorageFileInfo(),sysBasicDataAdd.getBasicId(),7);
+            }
+
             SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
             boolean updateToRedis=SysUtil.updateToRedis(sysUpdateDataRules.getDay(),sysBasicDataAdd.getYear(),sysBasicDataAdd.getMonth());
             if(updateToRedis){
@@ -254,6 +261,12 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
             if (!UtilHelper.isEmpty(sysBasicDataUpdate.getBasicFileInfo())) {
                 saveFile(sysBasicDataUpdate.getBasicFileInfo(),sysBasicDataUpdate.getBasicId(),5);
             }
+            if (!UtilHelper.isEmpty(sysBasicDataUpdate.getPeccancyFileInfo())) {
+                saveFile(sysBasicDataUpdate.getPeccancyFileInfo(),sysBasicDataUpdate.getBasicId(),6);
+            }
+            if (!UtilHelper.isEmpty(sysBasicDataUpdate.getStorageFileInfo())) {
+                saveFile(sysBasicDataUpdate.getStorageFileInfo(),sysBasicDataUpdate.getBasicId(),7);
+            }
 
             SysUpdateDataRules sysUpdateDataRules=sysUpdateDataRulesBusinessService.findSysUpdateDataRules();
             if(sysUpdateDataRules!=null){
@@ -301,6 +314,10 @@ public class SysBasicDataServiceImpl implements SysBasicDataService {
                 sysBasicDataFile.setFileType(4);
             }else if(type==5){
                 sysBasicDataFile.setFileType(5);
+            }else if(type==6){
+                sysBasicDataFile.setFileType(6);
+            }else if(type==7){
+                sysBasicDataFile.setFileType(7);
             }
             sysBasicDataBusinessService.addSysBasicDataFile(sysBasicDataFile);
         }

@@ -145,6 +145,14 @@ public class SysBasicData {
      */
     private String basicFileInfo;
     /**
+     * 违章文件
+     */
+    private String peccancyFileInfo;
+    /**
+     * 储藏文件
+     */
+    private String storageFileInfo;
+    /**
      * 项目名称
      */
     @NotBlank(message = "项目名称不能为空！")
@@ -361,6 +369,22 @@ public class SysBasicData {
 
     public void setBasicFileInfo(String basicFileInfo) {
         this.basicFileInfo = basicFileInfo;
+    }
+
+    public String getPeccancyFileInfo() {
+        return peccancyFileInfo;
+    }
+
+    public void setPeccancyFileInfo(String peccancyFileInfo) {
+        this.peccancyFileInfo = peccancyFileInfo;
+    }
+
+    public String getStorageFileInfo() {
+        return storageFileInfo;
+    }
+
+    public void setStorageFileInfo(String storageFileInfo) {
+        this.storageFileInfo = storageFileInfo;
     }
 }
 

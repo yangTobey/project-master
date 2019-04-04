@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 /**
@@ -94,7 +95,7 @@ public class SysLaborCostController {
      * @return
      */
     @RequestMapping(value = "/addSysLaborCost", method = RequestMethod.POST)
-    public R addSysLaborCost(SysLaborCostDetailsAddEntity sysLaborCostDetailsEntity) {
+    public R addSysLaborCost(@Valid SysLaborCostDetailsAddEntity sysLaborCostDetailsEntity) {
         /*if (!UtilHelper.isLongNumer(companyId)) {
             return R.error(400, "公司id格式不合理，或者不符合常理！");
         } else if (!UtilHelper.isIntegerNumer(year)) {
@@ -154,7 +155,7 @@ public class SysLaborCostController {
      * @return
      */
     @RequestMapping(value = "/updateSysLaborCost", method = RequestMethod.POST)
-    public R updateSysLaborCost(SysLaborCostDetailsAddEntity sysLaborCostDetailsEntity) {
+    public R updateSysLaborCost(@Valid SysLaborCostDetailsAddEntity sysLaborCostDetailsEntity) {
         if (!UtilHelper.isLongNumer(String.valueOf(sysLaborCostDetailsEntity.getLaborCostId()))) {
             return R.error(400, "人员成本id格式不正确，或者不符合常理，请联系系统管理员进行修改！");
         } /*else if (!UtilHelper.isLongNumer(companyId)) {

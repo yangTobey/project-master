@@ -37,8 +37,7 @@ import java.util.Collections;
 /*@ServletComponentScan(basePackages = {"com.spring.boot.xss.XssFilter"})*/
 public class Application extends SpringBootServletInitializer {
 
-    /*注：外部tomcat启动，类需要继承SpringBootServletInitializer,实现SpringBootServletInitializer可以让spring-boot项目在web容器中运行 */
-
+    /*注：外部tomcat启动，类需要继承SpringBootServletInitializer,实现SpringBootServletInitializer可以让spring-boot项目在web容器中运行，注：使用sptingboot内置tomcat启动，需要注释该方法 */
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(Application.class);
@@ -60,12 +59,13 @@ public class Application extends SpringBootServletInitializer {
         corsConfiguration.addAllowedMethod("*");
         //corsConfiguration.addExposedHeader("x-auth-token");
         corsConfiguration.addExposedHeader("x-total-count");
+        //corsConfiguration.setAllowCredentials(true);//允许cookies跨域
         //corsConfiguration.addExposedHeader("*");
         return corsConfiguration;
     }
 
     /**
-     * 解决spring boot项目中链接多出jsessionid的问题
+     * 解决spring boot项目中链接多出jsessionid的问题，注：使用sptingboot内置tomcat启动，需要注释该方法
      * @param servletContext
      * @throws ServletException
      */
