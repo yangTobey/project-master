@@ -220,6 +220,24 @@ public class Test {
         System.out.println(new Date());
         System.out.println(new Timestamp(System.currentTimeMillis()));
 
+        Double aaaa=2.200101E8;
+        System.out.println(aaaa.toString());
+        System.out.println(String.valueOf(aaaa));
+
+
+        String s11="hello";
+        String ABC=new String("hello");
+        if(s11==ABC){
+            System.out.println("AAAS");
+        }else{
+            System.out.println("ASCC");
+        }
+
+
+        int i=8;
+        System.out.println(++i +1);
+        System.out.println(i++ +1);
+
 
     }
     // 获取当前时间所在年的最大周数
